@@ -4,17 +4,31 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+// gcc -lreadline
+
+void	solve(char *s)
+{
+	int	i = 0;
+
+	while (s[i])
+	{
+		printf("%c\n", s[i]);
+		i++;
+	}
+	printf("\n");
+}
+
+
 int main()
 {
-	char* line;
+	char *line;
 	while (line = readline("> "))
 	{
-		printf("line is '%s'\n", line);
-		if (strlen(line) > 0) {
-		add_history(line);
-		}
+//		printf("line is '%s'\n", line);
+		solve(line);
+		if (strlen(line) > 0)
+			add_history(line);
 		free(line);
-		rl_replace_line("aaa", 0);
 	}
 	printf("\nexit\n");
 	return 0;
