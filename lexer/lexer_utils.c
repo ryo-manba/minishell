@@ -24,6 +24,8 @@ t_stack	*stack_new(char c)
 		return (NULL);
 	new_sta->next = NULL;
 	new_sta->c = c;
+	new_sta->i = 0;
+	new_sta->start = 0;
 	return (new_sta);
 }
 
@@ -57,11 +59,23 @@ char	sta_pop_front(t_stack **sta)
 int	check_word(char c)
 {
 	if (c == '\'')
-		return (TYPE_SINGLE);
+		return (TYPE_SQUOTE);
 	if (c == '\"')
-		return (TYPE_DOUBLE);
+		return (TYPE_DQUOTE);
 	if (c == ' ')
 		return (TYPE_SPACE);
+	if (c == '$')
+		return (TYPE_DOLLAR);
+	if (c == '|')
+		return (TYPE_PIPE);
+	if (c == '&')
+		return (TYPE_AND); // bonus
+	if (c == '*')
+		return (TYPE_WILD); // bonus
+	if (c == '<')
+		return (REDIRECT_INPUT);
+	if (c == '>')
+		return (REDIRECT_OUTPUT);
 	return (TYPE_NORMAL);
 }
 
