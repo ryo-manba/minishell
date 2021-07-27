@@ -79,36 +79,36 @@ int	check_word(char c)
 	return (TYPE_NORMAL);
 }
 
-char	*create_word(t_stack *sta, int start, int end)
+char	*create_word(t_stack *sta, int start, int end) // 1 5
 {
 	char	*s;
 	t_stack	*tmp;
 	int		i;
-	int		j;
 
-	s = (char *)malloc(sizeof(char) * end - start + 1);
+	s = (char *)malloc(sizeof(char) * end - start + 2); // 5 - 1
 	if (!s)
 		return (NULL);
 	i = 0;
-	j = 0;
 	tmp = sta;
-	while (j < start)
+	while (i < start)
 	{
 		tmp = tmp->next;
-		j++;
+		i++;
 	}
-	while (start <= end)
+	i = 0;
+	while (start <= end) // 
 	{
 		s[i] = tmp->c;
 		tmp = tmp->next;
 		start++;
 		i++;
 	}
+	s[i] = '\0';
 //	printf("%s, %s\n", s, __func__);
 	return (s);
 }
 
-t_word_list *wordlst_new(char *s, int flag)
+t_word_list *lst_new(char *s, int flag)
 {
 	t_word_list	*new_lst;
 
@@ -117,7 +117,7 @@ t_word_list *wordlst_new(char *s, int flag)
 		return (NULL);
 	new_lst->next = NULL;
 	new_lst->word = s;
-	new_lst->flags = flag;
+	new_lst->detail_type = flag;
 	return (new_lst);
 }
 
@@ -126,7 +126,7 @@ bool	lst_push_back(t_word_list *lst, char *s, int flag)
 	t_word_list	*new_lst;
 	t_word_list	*tmp;
 
-	new_lst = wordlst_new(s, flag);
+	new_lst = lst_new(s, flag);
 	if (!new_lst)
 		return (false);
 	tmp = lst;

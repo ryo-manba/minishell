@@ -2,7 +2,7 @@ NAME	=	lexer
 SRCS	=	lexer.c lexer_utils.c
 OBJS	=	$(SRCS:.c=.o)
 RM		=	rm -f
-CC		= 	gcc
+CC		= 	gcc -g #-fsanitize=address
 #CFLAGS	=	-Wall -Wextra -Werror
 
 all: $(NAME) ## Compile

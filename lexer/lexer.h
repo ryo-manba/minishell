@@ -13,16 +13,17 @@ typedef struct s_word_list
 {
 	struct s_word_list	*next;
 	char	*word;
-	int		flags;
+	int		detail_type;
+	int		token_type;
 }	t_word_list;
 
 typedef	enum s_status
 {
+	TYPE_NORMAL,
+	TYPE_SPACE,
 	TYPE_DQUOTE,
 	TYPE_SQUOTE,
-	TYPE_NORMAL,
 	TYPE_DOLLAR,
-	TYPE_SPACE,
 	TYPE_PIPE,
 	TYPE_AND,
 	TYPE_WILD,
@@ -32,12 +33,12 @@ typedef	enum s_status
 	REDIRECT_APPEND,
 }	t_status;
 
-typedef	enum s_flags
+typedef	enum s_token_type
 {
 	RESERVED,
 	WORD,
 	OPERATOR,
-}	t_flags;
+}	t_token_type;
 
 typedef struct s_stack
 {
@@ -54,4 +55,4 @@ char		*create_word(t_stack *sta, int start, int end);
 bool		lst_push_back(t_word_list *lst, char *s, int flag);
 bool		sta_push_back(t_stack *sta, char c);
 t_stack		*stack_new(char c);
-t_word_list *wordlst_new(char *s, int flag);
+t_word_list *lst_new(char *s, int flag);
