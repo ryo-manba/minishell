@@ -1,61 +1,5 @@
 #include "lexer.h"
 
-int	sta_get_size(t_stack *sta)
-{
-	int	len;
-	t_stack *tmp;
-
-	len = 0;
-	tmp = sta;
-	while (tmp)
-	{
-		tmp = tmp->next;
-		len++;
-	}
-	return (len);
-}
-
-t_stack	*stack_new(char c)
-{
-	t_stack	*new_sta;
-
-	new_sta = (t_stack *)malloc(sizeof(t_stack));
-	if (!new_sta)
-		return (NULL);
-	new_sta->next = NULL;
-	new_sta->c = c;
-	new_sta->i = 0;
-	new_sta->start = 0;
-	return (new_sta);
-}
-
-bool	sta_push_back(t_stack *sta, char c)
-{
-	t_stack	*new_sta;
-	t_stack	*tmp;
-
-	new_sta = stack_new(c);
-	if (!new_sta)
-		return (false);
-	tmp = sta;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new_sta;
-	return (true);
-}
-
-char	sta_pop_front(t_stack **sta)
-{
-	t_stack	*tmp;
-	char	c;
-
-	c = (*sta)->c;
-	tmp = (*sta)->next;
-	free(*sta);
-	*sta = tmp;
-	return (c);
-}
-
 int	check_word(char c)
 {
 	if (c == '\'')
@@ -79,36 +23,26 @@ int	check_word(char c)
 	return (TYPE_NORMAL);
 }
 
-char	*create_word(t_stack *sta, int start, int end) // 1 5
+char	*create_word(char *s, int start, int end)
 {
-	char	*s;
-	t_stack	*tmp;
+	char	*word;
 	int		i;
 
-	s = (char *)malloc(sizeof(char) * end - start + 2); // 5 - 1
-	if (!s)
+	word = (char *)malloc(sizeof(char) * end - start + 2);
+	if (!word)
 		return (NULL);
 	i = 0;
-	tmp = sta;
-	while (i < start)
+	while (start <= end)
 	{
-		tmp = tmp->next;
-		i++;
-	}
-	i = 0;
-	while (start <= end) // 
-	{
-		s[i] = tmp->c;
-		tmp = tmp->next;
+		word[i] = s[start];
 		start++;
 		i++;
 	}
-	s[i] = '\0';
-//	printf("%s, %s\n", s, __func__);
-	return (s);
+	word[i] = '\0';
+	return (word);
 }
 
-t_word_list *lst_new(char *s, int flag)
+t_word_list *lst_new(char *s, int token_type, int detail_type)
 {
 	t_word_list	*new_lst;
 
@@ -117,16 +51,19 @@ t_word_list *lst_new(char *s, int flag)
 		return (NULL);
 	new_lst->next = NULL;
 	new_lst->word = s;
-	new_lst->detail_type = flag;
+	new_lst->detail_type = detail_type;
+	new_lst->token_type = token_type;
+	new_lst->i = 0;
+	new_lst->start = 0;
 	return (new_lst);
 }
 
-bool	lst_push_back(t_word_list *lst, char *s, int flag)
+bool	lst_push_back(t_word_list *lst, char *s, int token_type, int detail_type)
 {
 	t_word_list	*new_lst;
 	t_word_list	*tmp;
 
-	new_lst = lst_new(s, flag);
+	new_lst = lst_new(s, token_type, detail_type);
 	if (!new_lst)
 		return (false);
 	tmp = lst;
