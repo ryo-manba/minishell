@@ -1,5 +1,5 @@
 NAME	=	lexer
-SRCS	=	lexer.c lexer_utils.c
+SRCS	=	main.c lexer.c lexer_utils.c
 OBJS	=	$(SRCS:.c=.o)
 RM		=	rm -f
 CC		= 	gcc -g #-fsanitize=address

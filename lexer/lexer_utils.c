@@ -3,9 +3,9 @@
 int	check_word(char c)
 {
 	if (c == '\'')
-		return (TYPE_SQUOTE);
+		return (TYPE_SINGLE_QUOTE);
 	if (c == '\"')
-		return (TYPE_DQUOTE);
+		return (TYPE_DOUBLE_QUOTE);
 	if (c == ' ')
 		return (TYPE_SPACE);
 	if (c == '$')
@@ -21,6 +21,19 @@ int	check_word(char c)
 	if (c == '>')
 		return (REDIRECT_OUTPUT);
 	return (TYPE_NORMAL);
+}
+
+int	check_type(int type)
+{
+	if (type == REDIRECT_INPUT)
+		type = REDIRECT_HEREDOC;
+	if (type == REDIRECT_OUTPUT)
+		type = REDIRECT_APPEND;
+	if (type == TYPE_PIPE)
+		type = TYPE_DOUBLE_PIPE;
+	if (type == TYPE_AND)
+		type = TYPE_DOUBLE_AND;
+	return (type);
 }
 
 char	*create_word(char *s, int start, int end)
