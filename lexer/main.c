@@ -17,10 +17,12 @@ int main()
 	lexer("&&&&  $$$$$$$ ||||| <<<<  >>>> <>|$&&$$");
 	lexer("echo<><><><><> <> <> ** * * *** ****");
 	lexer("$ $$$ $$$$$ $$$$$$$ $$$$$$$$$"); 	// 奇数
+	lexer("$$ $$$$ $$$$$$ $$$$$$$$ $$$$$$$$$$"); // 偶数
+	lexer("$$$ $$$$$ $$$$$$$ ");
 	lexer("<< >>>> <<<<<< >>>>>>>> <<<<<<<<<<");// 偶数
 	lexer("echo \"hello\"\"world\"");
-	lexer("echo \'hello world");
-	lexer("echo \"hello world");
+	lexer("echo \'hello world'''");
+	lexer("echo \"hello world\"'");
 	lexer("a 'b' \"c\" & | * $ && || < > << >>              ");
 	lexer("echo hello                    world");
 	lexer("echo 'hello'                    'world'");
@@ -28,6 +30,12 @@ int main()
 	lexer("echo hello world");
 	lexer("echo 'hello''world'"); // spaceの有無はどうするか
 	lexer("echo 'hello' 'world'");
+	lexer("echo 'hello''world'");
+	lexer("echo 'hello''world'abcde'hello'"); // 6
+	lexer("echo 'hello''wo'rld'abcde'hello'"); // 7
+
 
 	return (0);
 }
+
+// 奇数は2ずつ取る

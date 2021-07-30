@@ -7,7 +7,7 @@ static void debug(t_word_list *lst, char *s)
 	{
 		printf(
 		"-------------------------\n"
-		"word  -> [%s]\n"
+		"word   -> [%s]\n"
 		"token  -> [%d]\n"
 		"detail -> [%d]\n"
 		"", lst->word, lst->token_type, lst->detail_type);
@@ -28,24 +28,40 @@ void free_head_lst(t_word_list **lst)
 
 bool	in_quoting(t_word_list *lst, char *s, int type)
 {
-	while (1)
+	int	j;
+
+	j = 0;
+	while (s[lst->i])
 	{
 		lst->i++;
-		if (s[lst->i] == '\0')
+		if (check_word(s[lst->i]) == type) // ここから次のspaceが来るまで読む
 		{
-			printf("open quote is not supported...\n");
-			return (false);
-		}
-		if (type == check_word(s[lst->i]))
-		{
-			lst_push_back(lst, create_word(s, lst->start, lst->i), WORD, type);
-			lst->start = lst->i + 1;
-			break;
+			while (check_word(s[lst->i + 1]) != TYPE_SPACE && s[lst->i + 1])
+				lst->i++;
+			int k = lst->start;
+			int sq = 0;
+			int dq = 0;
+//			printf("start -> %d lst->i = %d\n", lst->start, lst->i);
+			while (k <= lst->i)
+			{
+				if (check_word(s[k]) == TYPE_SINGLE_QUOTE)
+					sq++;
+				if (check_word(s[k]) == TYPE_DOUBLE_QUOTE)
+					dq++;
+				k++;
+			}
+//			printf("sq -> %d dq -> %d k -> %d\n", sq, dq, k);
+			if (sq % 2 == 0 && dq % 2 == 0)
+			{
+				lst_push_back(lst, create_word(s, lst->start, lst->i), WORD, type);
+				lst->start = lst->i + 1;
+				return (true);
+			}
 		}
 	}
-	return (true);
+	printf("open quote is not supported...\n");
+	return (false);
 }
-
 
 void	check_operator_and_create_lst(t_word_list *lst, char *s, int type)
 {
@@ -66,18 +82,20 @@ void	check_operator_and_create_lst(t_word_list *lst, char *s, int type)
 			lst->i++;
 			j++;
 		}
-		if (j != 0 && j % 2 == 1) // 偶数だったら2個ずつ入れてく
+		if (j > 0)
 		{
 			type = check_type(type);
 			while (j > 0)
 			{
 				lst_push_back(lst, create_word(s, lst->i - j, lst->i - j + 1), OPERATOR, type);
 				j -= 2;
+				if (j == 0)
+					lst_push_back(lst, create_word(s, lst->i - j, lst->i - j), OPERATOR, type);
 			}
 		}
-		else // 奇数の場合とoperatorがつながってない場合
+		else
 			lst_push_back(lst, create_word(s, lst->i - j, lst->i), OPERATOR, type);
-		}
+	}
 	lst->start = lst->i + 1;
 }
 

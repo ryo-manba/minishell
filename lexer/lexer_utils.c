@@ -26,7 +26,7 @@ int	check_word(char c)
 int	check_type(int type)
 {
 	if (type == REDIRECT_INPUT)
-		type = REDIRECT_HEREDOC;
+		type = TYPE_HEREDOC;
 	if (type == REDIRECT_OUTPUT)
 		type = REDIRECT_APPEND;
 	if (type == TYPE_PIPE)
