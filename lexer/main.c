@@ -32,17 +32,15 @@ int main()
 //	lexer("echo 'hello' 'world'");
 //	lexer("echo 'hello''world'");
 //	lexer("echo 'hello''world'abcde'hello'"); // 6
-	lexer("echo 'hello''wo'rld'abcde'hello'"); // 7
+//	lexer("echo 'hello''wo'rld'abcde'hello'"); // 7
 //	lexer("echo 'hello'world");
 //	lexer("echo 'hello'world'salut'");
 //	lexer("echo 'hello'world'salut'$$");
 //	lexer("echo 'hello'world'salut'&<>");
 //	lexer("echo 'hello'world'salut'$USER");
-
-
-
-
+//	lexer("echo $USER $$PWD $$$HOME");
+//	lexer("echo $USER$$PWD$$$HOME");
+//	lexer("echo '$USER' \"$USER\" $USER");
+//	lexer("echo '$USER'\"$USER\"$USER"); // この場合の状態は?
 	return (0);
 }
-
-// 奇数は2ずつ取る

@@ -39,8 +39,6 @@ bool	check_delimiter(char *s, int i)
 		return (true);
 	if (type == TYPE_WILD)
 		return (true);
-	if (type == TYPE_DOLLAR)
-		return (true);
 	if (type == REDIRECT_OUTPUT)
 		return (true);
 	if (type == REDIRECT_INPUT)

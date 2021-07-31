@@ -8,8 +8,6 @@ int	check_word(char c)
 		return (TYPE_DOUBLE_QUOTE);
 	if (c == ' ')
 		return (TYPE_SPACE);
-	if (c == '$')
-		return (TYPE_DOLLAR);
 	if (c == '|')
 		return (TYPE_PIPE);
 	if (c == '&')
