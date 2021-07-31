@@ -26,29 +26,58 @@ void free_head_lst(t_word_list **lst)
 	*lst = tmp;
 }
 
+bool	check_delimiter(char *s, int i)
+{
+	int	type;
+
+	type = check_word(s[i]);
+	if (type == TYPE_SPACE)
+		return (true);
+	if (type == TYPE_AND)
+		return (true);
+	if (type == TYPE_PIPE)
+		return (true);
+	if (type == TYPE_WILD)
+		return (true);
+	if (type == TYPE_DOLLAR)
+		return (true);
+	if (type == REDIRECT_OUTPUT)
+		return (true);
+	if (type == REDIRECT_INPUT)
+		return (true);
+	if (s[i] == '\0')
+		return (true);
+	return (false);
+
+}
+
 bool	in_quoting(t_word_list *lst, char *s, int type)
 {
 	int	j;
+	int	tmp;
+	int	start;
 
 	j = 0;
+	start = lst->i;
 	while (s[lst->i])
 	{
 		lst->i++;
 		if (check_word(s[lst->i]) == type) // ここから次のspaceが来るまで読む
 		{
-			while (check_word(s[lst->i + 1]) != TYPE_SPACE && s[lst->i + 1])
+			while (!check_delimiter(s, lst->i + 1)) // 次の文字がdelimiter
+			{
 				lst->i++;
-			int k = lst->start;
+			}
 			int sq = 0;
 			int dq = 0;
 //			printf("start -> %d lst->i = %d\n", lst->start, lst->i);
-			while (k <= lst->i)
+			while (start <= lst->i)
 			{
-				if (check_word(s[k]) == TYPE_SINGLE_QUOTE)
+				if (check_word(s[start]) == TYPE_SINGLE_QUOTE)
 					sq++;
-				if (check_word(s[k]) == TYPE_DOUBLE_QUOTE)
+				if (check_word(s[start]) == TYPE_DOUBLE_QUOTE)
 					dq++;
-				k++;
+				start++;
 			}
 //			printf("sq -> %d dq -> %d k -> %d\n", sq, dq, k);
 			if (sq % 2 == 0 && dq % 2 == 0)

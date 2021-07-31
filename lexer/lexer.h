@@ -45,6 +45,7 @@ t_word_list *lexer(char *s);
 bool 		update_lst_accordingly_type(t_word_list *lst, char *s, int type);
 void		check_operator_and_create_lst(t_word_list *lst, char *s, int type);
 void 		free_head_lst(t_word_list **lst);
+bool		check_delimiter(char *s, int i);
 
 /* lexer_utils */
 int			check_word(char c);
