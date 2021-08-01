@@ -1,6 +1,6 @@
 #include "lexer.h"
 
-int	check_word(char c)
+int	check_word_type(char c)
 {
 	if (c == '\'')
 		return (TYPE_SINGLE_QUOTE);
@@ -21,7 +21,7 @@ int	check_word(char c)
 	return (TYPE_NORMAL);
 }
 
-int	check_type(int type)
+int	check_consecutively_type(int type)
 {
 	if (type == REDIRECT_INPUT)
 		type = TYPE_HEREDOC;

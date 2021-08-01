@@ -3,12 +3,15 @@ SRCS	=	main.c lexer.c lexer_utils.c
 OBJS	=	$(SRCS:.c=.o)
 RM		=	rm -f
 CC		= 	gcc -g #-fsanitize=address
+CFLAGS	= 	-I/usr/local/opt/readline/include
+
 #CFLAGS	=	-Wall -Wextra -Werror
 
 all: $(NAME) ## Compile
 
 $(NAME): $(OBJS)
-	$(CC) -o $(NAME) $(OBJS)
+	$(CC) -lreadline -lhistory -o lexer -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include $(OBJS)
+#	$(CC) -lreadline -o $(NAME) $(OBJS)
 
 clean: ## Delete *.o file
 	$(RM) $(OBJS)

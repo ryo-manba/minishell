@@ -1,19 +1,22 @@
 #include "lexer.h"
 
+
 static void debug(t_word_list *lst, char *s)
 {
-	printf("args -> %s\n", s);
+	const char	*token[3] = {"RESERVED", "WORD", "OPERATOR"};
+	const char	*type[13] ={"NORMAL", "SPACE", "SINGLE_QUOTE", "DOUBLE_QUOTE","AND", "PIPE",
+				"WILD","DOUBLE_AND", "DOUBLE_PIPE", "HEREDOC", "REDIRECT_INPUT",
+				"REDIRECT_OUTPUT", "REDIRECT_APPEND"};
 	while (lst)
 	{
 		printf(
-		"-------------------------\n"
-		"word   -> [%s]\n"
-		"token  -> [%d]\n"
-		"detail -> [%d]\n"
-		"", lst->word, lst->token_type, lst->detail_type);
+		"-----------------------------------\n"
+		"word -> [%s]\n"
+		"type -> [%s][%s]\n"
+		"", lst->word, token[lst->token_type], type[lst->detail_type]);
 		lst = lst->next;
 	}
-	printf("-------------------------\n");
+	printf("-----------------------------------\n");
 }
 
 void free_head_lst(t_word_list **lst)
@@ -30,7 +33,7 @@ bool	check_delimiter(char *s, int i)
 {
 	int	type;
 
-	type = check_word(s[i]);
+	type = check_word_type(s[i]);
 	if (type == TYPE_SPACE)
 		return (true);
 	if (type == TYPE_AND)
@@ -52,28 +55,29 @@ bool	check_delimiter(char *s, int i)
 bool	in_quoting(t_word_list *lst, char *s, int type)
 {
 	int	j;
-	int	tmp;
 	int	start;
+	int sq;
+	int dq;
 
 	j = 0;
+	sq = 0;
+	dq = 0;
 	start = lst->i;
 	while (s[lst->i])
 	{
 		lst->i++;
-		if (check_word(s[lst->i]) == type) // ここから次のspaceが来るまで読む
+		if (check_word_type(s[lst->i]) == type) // ここから次のspaceが来るまで読む
 		{
 			while (!check_delimiter(s, lst->i + 1)) // 次の文字がdelimiter
 			{
 				lst->i++;
 			}
-			int sq = 0;
-			int dq = 0;
 //			printf("start -> %d lst->i = %d\n", lst->start, lst->i);
 			while (start <= lst->i)
 			{
-				if (check_word(s[start]) == TYPE_SINGLE_QUOTE)
+				if (check_word_type(s[start]) == TYPE_SINGLE_QUOTE)
 					sq++;
-				if (check_word(s[start]) == TYPE_DOUBLE_QUOTE)
+				if (check_word_type(s[start]) == TYPE_DOUBLE_QUOTE)
 					dq++;
 				start++;
 			}
@@ -96,28 +100,28 @@ void	check_operator_and_create_lst(t_word_list *lst, char *s, int type)
 
 	j = 0;
 	if (lst->start < lst->i) // 後ろがスペースとかだったら何も入れない
-		lst_push_back(lst, create_word(s, lst->start, lst->i - 1), WORD, check_word(s[lst->i - 1]));
-	if (type == REDIRECT_INPUT && check_word(s[lst->i+1]) == REDIRECT_OUTPUT) // <>
+		lst_push_back(lst, create_word(s, lst->start, lst->i - 1), WORD, check_word_type(s[lst->i - 1]));
+	if (type == REDIRECT_INPUT && check_word_type(s[lst->i+1]) == REDIRECT_OUTPUT) // <>
 	{
 		lst_push_back(lst, create_word(s, lst->i, lst->i+1), OPERATOR, TYPE_NORMAL);
 		lst->i++;
 	}
 	else
 	{
-		while (type == check_word(s[lst->i + 1]))
+		while (type == check_word_type(s[lst->i + 1]))
 		{
 			lst->i++;
 			j++;
 		}
 		if (j > 0)
 		{
-			type = check_type(type);
+			type = check_consecutively_type(type);
 			while (j > 0)
 			{
 				lst_push_back(lst, create_word(s, lst->i - j, lst->i - j + 1), OPERATOR, type);
 				j -= 2;
 				if (j == 0)
-					lst_push_back(lst, create_word(s, lst->i - j, lst->i - j), OPERATOR, type);
+					lst_push_back(lst, create_word(s, lst->i - j, lst->i - j), OPERATOR, check_word_type(s[lst->i]));
 			}
 		}
 		else
@@ -138,7 +142,7 @@ bool update_lst_accordingly_type(t_word_list *lst, char *s, int type)
 	else if (type == TYPE_SPACE)
 	{
 		if (lst->start < lst->i)
-			lst_push_back(lst, create_word(s, lst->start, lst->i - 1), WORD, check_word(s[lst->i - 1]));
+			lst_push_back(lst, create_word(s, lst->start, lst->i - 1), WORD, check_word_type(s[lst->i - 1]));
 		lst->start = lst->i + 1; // startはspaceの次から
 	}
 	return (true);
@@ -152,7 +156,7 @@ t_word_list *lexer(char *s)
 	lst = lst_new(NULL, 0, 0); // 先頭 dummy node
 	while (1)
 	{
-		type = check_word(s[lst->i]);
+		type = check_word_type(s[lst->i]);
 		if (TYPE_SPACE <= type && type <= REDIRECT_OUTPUT)
 		{
 			if (!update_lst_accordingly_type(lst, s, type))
