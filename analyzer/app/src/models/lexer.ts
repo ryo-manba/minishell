@@ -1,6 +1,5 @@
 import * as MS from "./minishell";
 
-
 /**
  * 文字種別を判定する
  */
@@ -62,17 +61,20 @@ function add_lexer_token(
     const next: MS.WordList = {
         next: null,
         word: "",
-        detail_type: 0,
-        token_type: 0,
         i: i,
-        start: -1,
         concluded: current_token ? 0 : 1,
         starting_chartype,
+        right_delimiter: "",
+        lex_type: "TOKEN",
     };
     if (current_token) {
         current_token.next = next;
     }
     return next;
+}
+
+function is_digital_str(str: string) {
+    return !!str.match(/^\d+$/);
 }
 
 // 現在のトークンを終了する
@@ -85,7 +87,20 @@ function conclude_lexer_token(
     if (current_token.concluded) { return; }
     current_token.concluded = 1;
     current_token.word = line.substring(current_token.i, j);
-    // TODO: IO_NUMBERかどうかのテスト
+    if (j < line.length) {
+        current_token.right_delimiter = line[j];
+    }
+    if (current_token.starting_chartype == MS.CHARTYPE_NEWLINE) {
+        // 改行はトークン識別子NEWLINEになる。
+        current_token.lex_type = "NEWLINE";
+    } else if (is_a_operator(line, current_token, j)) {
+        // 演算子トークンは、その演算子トークンに対応するトークン識別子になる。
+        current_token.lex_type = "OPERATOR";
+    } else if ("<>".includes(current_token.right_delimiter) && is_digital_str(current_token.word)) {
+        // 区切り文字が<>である数字のみのトークンは トークン識別子IO_NUMBER となる。
+        current_token.lex_type = "IO_NUMBER"
+    }
+    // TOKENでキャッチオール
 }
 
 export function lexer(line: string): MS.WordList {
@@ -129,7 +144,6 @@ export function lexer(line: string): MS.WordList {
             // 空白文字 -> トークンが終了していなければトークンを終了する
             conclude_lexer_token(line, tail_list, i);
         } else if (is_an_operator_char(char_type)) {
-            console.log(i, line[i], char_type);
             // 演算子構成文字、つまり | & < > - ; のどれか
             if (tail_list.concluded) {
                 // - トークンが終了しているなら開始
@@ -139,7 +153,6 @@ export function lexer(line: string): MS.WordList {
                 if (is_an_operator_char(tail_list.starting_chartype)) {
                     // さらに、トークンの開始文字からこの文字までを含めた部分文字列が演算子をなすかどうかをチェック
                     const operator_type = is_a_operator(line, tail_list, i + 1);
-                    console.log(i, line[i], operator_type);
                     if (operator_type) {
                         // 演算子をなすなら、この文字までをトークンに含める
                     } else {

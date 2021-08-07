@@ -15,6 +15,7 @@
     .flattened_list(v-if="lexed_flattened_wordlist")
       .word(v-for="word in lexed_flattened_wordlist")
         .start_at start_at: {{ word.i }}
+        .lex_type(:class="word.lex_type") {{ word.lex_type }}
         .body
           code {{ word.word }}
   .parser
@@ -45,7 +46,7 @@ export default defineComponent({
     const eventHandlers = {
       readline: () => {
         setTimeout(() => {
-          const str = viewData.line_buffer || "";
+          const str = (viewData.line_buffer || "").replaceAll(/\n/g, "") + "\n";
           console.log({ str })
           if (!str.trim()) { return; }
           // line_buffer -> present_line に追加
@@ -135,6 +136,15 @@ export default defineComponent({
         border 1px solid black;
         code
           white-space pre-wrap
+        .lex_type
+          font-size smaller
+          font-weight bold
+          &.IO_NUMBER
+            color red
+          &.OPERATOR
+            color blue
+          &.NEWLINE
+            color green
 
   .parser
     flex-shrink 1

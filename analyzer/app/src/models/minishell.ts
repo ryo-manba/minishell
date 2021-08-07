@@ -15,6 +15,8 @@ export const CHARTYPESET = {
     WORD_INCLUDED: "\"'_",
 };
 
+export type WORD_LEX_TYPE = "TOKEN" | "IO_NUMBER" | "OPERATOR" | "NEWLINE";
+
 export const OP = {
     REDIR_INPUT: 1,
     REDIR_OUTPUT: 2,
@@ -32,13 +34,33 @@ export const OP = {
 };
 
 export type WordList = {
+    /**
+     * 次の要素
+     */
     next: WordList | null;
-	word: string;
-	detail_type: number;
-	token_type: number;
-	i: number;
-	start: number;
+    /**
+     * トークン文字列
+     */
+    word: string;
+    /**
+     * 入力文字列における開始インデックス
+     */
+    i: number;
+    /**
+     * トークンが終了しているか？
+     */
     concluded: number;
+    /**
+     * 開始文字の文字タイプ
+     */
     starting_chartype: string;
+    /**
+     * トークン最終文字の右隣の文字
+     */
+    right_delimiter: string;
+    /**
+     * Lexer時点で決まるラフなタイプ
+     */
+    lex_type: WORD_LEX_TYPE;
 };
 
