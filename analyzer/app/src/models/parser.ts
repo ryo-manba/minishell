@@ -243,10 +243,7 @@ export function parse(state: ParserState) {
     state.cursor.andorlist.joint = lexer_token.word as any;
     state.cursor.andorlist.next = new_andorlist();
     state.cursor.andorlist = state.cursor.andorlist.next;
-    state.cursor.pipeline = state.cursor.andorlist.pipeline;
-    state.cursor.clause = state.cursor.pipeline.clause;
-    state.cursor.stree = null;
-    state.cursor.redir = null;
+    reset_cursor_andorlist(state);
     return "continue";
 }
 
@@ -264,12 +261,9 @@ function subparse_term_pipeline(
         return "error";
     }
     state.cursor.pipeline.joint = lexer_token.word as any;
-    console.log(state.cursor.pipeline.joint);
     state.cursor.pipeline.next = new_pipeline();
     state.cursor.pipeline = state.cursor.pipeline.next;
-    state.cursor.clause = state.cursor.pipeline.clause;
-    state.cursor.stree = null;
-    state.cursor.redir = null;
+    reset_cursor_pipeline(state);
     return "continue";
 }
 
@@ -288,9 +282,23 @@ function subparse_term_clause(
     }
     state.cursor.clause.next = new_clause();
     state.cursor.clause = state.cursor.clause.next;
+    reset_cursor_clause(state);
+    return "continue";
+}
+
+function reset_cursor_andorlist(state: ParserState) {
+    state.cursor.clause = state.cursor.pipeline.clause;
+    reset_cursor_pipeline(state);
+}
+
+function reset_cursor_pipeline(state: ParserState) {
+    state.cursor.clause = state.cursor.pipeline.clause;
+    reset_cursor_clause(state);
+}
+
+function reset_cursor_clause(state: ParserState) {
     state.cursor.stree = null;
     state.cursor.redir = null;
-    return "continue";
 }
 
 /**

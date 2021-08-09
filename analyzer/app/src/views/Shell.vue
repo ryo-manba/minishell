@@ -71,7 +71,7 @@
                   code(
                     v-if="redir.operand_right"
                   ) {{ redir.operand_right.word }}
-              h5 Commands
+              h5 Command Tokens
               .strees
                 .stree(
                     v-for="stree in clause.strees"

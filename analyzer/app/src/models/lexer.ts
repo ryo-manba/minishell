@@ -9,18 +9,28 @@ function type_of_char(char: string) {
     if (char == MS.CHARTYPE_DOUBLE_QUOTE) { return char; }
     if (char == MS.CHARTYPE_SPACE) { return char; }
     if (char == MS.CHARTYPE_TAB) { return MS.CHARTYPE_SPACE; }
-    if (char == MS.CHARTYPE_PIPE) { return char; }
-    if (char == MS.CHARTYPE_AND) { return char; }
+    // 以下、演算子開始文字 <>&|;
     if (char == MS.CHARTYPE_REDIRECT_INPUT) { return char; }
     if (char == MS.CHARTYPE_REDIRECT_OUTPUT) { return char; }
+    if (char == MS.CHARTYPE_AND) { return char; }
+    if (char == MS.CHARTYPE_PIPE) { return char; }
     if (char == MS.CHARTYPE_SEMICOLON) { return char; }
     return MS.CHARTYPE_WORD;
 }
 
 /**
+ * 与えられた文字が演算子開始文字かどうか
+ */
+function is_an_operator_start_char(
+    c: string
+) {
+    return "|&<>;".includes(c);
+}
+
+/**
  * 与えられた文字が演算子構成文字かどうか
  */
-function is_an_operator_char(
+ function is_an_operator_consist_char(
     c: string
 ) {
     return "|&<>-;".includes(c);
@@ -88,8 +98,11 @@ function conclude_lexer_token(
     current_token.concluded = 1;
     current_token.word = line.substring(current_token.i, j);
     if (j < line.length) {
+        // 区切り文字をセット
         current_token.right_delimiter = line[j];
     }
+    // lex_typeの設定
+    // 初期値はTOKEN
     if (current_token.starting_chartype == MS.CHARTYPE_NEWLINE) {
         // 改行はトークン識別子NEWLINEになる。
         current_token.lex_type = "NEWLINE";
@@ -100,12 +113,11 @@ function conclude_lexer_token(
         // 区切り文字が<>である数字のみのトークンは トークン識別子IO_NUMBER となる。
         current_token.lex_type = "IO_NUMBER"
     }
-    // TOKENでキャッチオール
 }
 
 export function lexer(line: string): MS.WordList {
-    const root_list = add_lexer_token(null, -1, "");
-    let tail_list = root_list;
+    const root_token = add_lexer_token(null, -1, "");
+    let current_token = root_token;
     let under_quote: string = "";
     let i = 0;
     while (i < line.length) {
@@ -117,59 +129,127 @@ export function lexer(line: string): MS.WordList {
             // [シングルクオート]
             under_quote = char_type;
             // トークンが開始していない場合は開始
-            tail_list = add_lexer_token(tail_list, i, char_type);
+            current_token = add_lexer_token(current_token, i, char_type);
         } else if (char_type == MS.CHARTYPE_DOUBLE_QUOTE) {
             // [ダブルクオート]
             under_quote = char_type;
             // トークンが開始していない場合は開始
-            tail_list = add_lexer_token(tail_list, i, char_type);
+            current_token = add_lexer_token(current_token, i, char_type);
         } else if (under_quote || char_type == MS.CHARTYPE_WORD) {
             // [クオート下にあるクオートを解除しない文字]
             // or
             // [クオート下にない単語構成文字]
             // カレントトークンが単語でないならトークンを終了
-            if (!MS.CHARTYPESET.WORD_INCLUDED.includes(tail_list.starting_chartype)) {
-                conclude_lexer_token(line, tail_list, i);
+            if (!MS.CHARTYPESET.WORD_INCLUDED.includes(current_token.starting_chartype)) {
+                conclude_lexer_token(line, current_token, i);
             }
-            tail_list = add_lexer_token(tail_list, i, char_type);
+            current_token = add_lexer_token(current_token, i, char_type);
             // [[ 以下全てクオート下でない ]]
         } else if (char_type == MS.CHARTYPE_NEWLINE) {
             // [改行文字]
             // トークンを終了し、新しいトークンを開始した後解析を終了する。
-            conclude_lexer_token(line, tail_list, i);
-            tail_list = add_lexer_token(tail_list, i, char_type);
+            conclude_lexer_token(line, current_token, i);
+            current_token = add_lexer_token(current_token, i, char_type);
             i += 1;
             break;
         } else if (char_type == MS.CHARTYPE_SPACE) {
-            // 空白文字 -> トークンが終了していなければトークンを終了する
-            conclude_lexer_token(line, tail_list, i);
-        } else if (is_an_operator_char(char_type)) {
-            // 演算子構成文字、つまり | & < > - ; のどれか
-            if (tail_list.concluded) {
+            // [空白文字]
+            // トークンが終了していなければトークンを終了する
+            conclude_lexer_token(line, current_token, i);
+        } else if (is_an_operator_start_char(char_type)) {
+            // [演算子構成文字、つまり <>&|; のどれか]
+            if (current_token.concluded) {
                 // - トークンが終了しているなら開始
-                tail_list = add_lexer_token(tail_list, i, char_type);
-            } else {
-                // - そうでないなら、トークンの開始文字が演算子構成文字かどうかをチェック
-                if (is_an_operator_char(tail_list.starting_chartype)) {
-                    // さらに、トークンの開始文字からこの文字までを含めた部分文字列が演算子をなすかどうかをチェック
-                    const operator_type = is_a_operator(line, tail_list, i + 1);
-                    if (operator_type) {
-                        // 演算子をなすなら、この文字までをトークンに含める
-                    } else {
-                        conclude_lexer_token(line, tail_list, i);
-                        tail_list = add_lexer_token(tail_list, i, char_type);
-                    }
-                } else {
-                    // - そうでないなら、ここでトークンを普通に切り、トークンを開始
-                    conclude_lexer_token(line, tail_list, i);
-                    tail_list = add_lexer_token(tail_list, i, char_type);
-                }
+                current_token = add_lexer_token(current_token, i, char_type);
             }
+            // - そうでないなら、トークンの開始文字が演算子開始文字かどうかをチェック
+            if (!is_an_operator_start_char(current_token.starting_chartype)) {
+                // - そうでないなら、ここでトークンを普通に切り、トークンを開始
+                conclude_lexer_token(line, current_token, i);
+                current_token = add_lexer_token(current_token, i, char_type);
+            }
+            // トークンの開始文字が演算子開始文字なら、ここから最も長い演算子を切り出す。
+            if (char_type == "<") {
+                i = cut_operator_le(line, i);
+            } else if (char_type == ">") {
+                i = cut_operator_ge(line, i);
+            } else if (char_type == "&") {
+                i = cut_operator_and(line, i);
+            } else if (char_type == "|") {
+                i = cut_operator_pipe(line, i);
+            } else if (char_type == ";") {
+                i = cut_operator_semicolon(line, i);
+            }
+            conclude_lexer_token(line, current_token, i);
+            continue;
         }
         i += 1;
     }
     // トークンが終わってなければ終わらせる
-    conclude_lexer_token(line, tail_list, i);
-    return root_list;
+    conclude_lexer_token(line, current_token, i);
+    return root_token;
 }
 
+/**
+ * `line[i]`から"<"で始まる最も長い演算子が取れるまで`i`を進める
+ */
+function cut_operator_le(line: string, i: number) {
+    i += 1;
+    if (line[i] == "<") {
+        i += 1;
+        if (line[i] == "-") {
+            i += 1;
+        }
+    } else if (line[i] == ">") {
+        i += 1;
+    } else if (line[i] == "&") {
+        i += 1;
+    }
+    return i;
+}
+
+/**
+ * `line[i]`から">"で始まる最も長い演算子が取れるまで`i`を進める
+ */
+function cut_operator_ge(line: string, i: number) {
+    i += 1;
+    if (line[i] == ">") {
+        i += 1;
+    } else if (line[i] == "&") {
+        i += 1;
+    }
+    return i;
+}
+
+/**
+ * `line[i]`から"&"で始まる最も長い演算子が取れるまで`i`を進める
+ */
+function cut_operator_and(line: string, i: number) {
+    i += 1;
+    if (line[i] == "&") {
+        i += 1;
+    }
+    return i;
+}
+
+/**
+ * `line[i]`から"|"で始まる最も長い演算子が取れるまで`i`を進める
+ */
+function cut_operator_pipe(line: string, i: number) {
+    i += 1;
+    if (line[i] == "|") {
+        i += 1;
+    }
+    return i;
+}
+
+/**
+ * `line[i]`から";"で始まる最も長い演算子が取れるまで`i`を進める
+ */
+function cut_operator_semicolon(line: string, i: number) {
+    i += 1;
+    if (line[i] == ";") {
+        i += 1;
+    }
+    return i;
+}
