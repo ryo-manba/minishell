@@ -145,6 +145,27 @@ function syntax_check_term_clause(state: ParserState, by_newline: boolean) {
     return null;
 }
 
+function str_is_for_name(str: string) {
+    return !!str.match(/^[_A-Za-z][0-9_A-Za-z]*$/);
+}
+
+function is_assignment_word(state: ParserState, st: MS.STree) {
+    if (st.token_id !== "WORD") { return false; }
+    if (!state.cursor.stree) {
+        // トークンが(clauseの)先頭である場合
+        // トークンが=を含まないなら、ルール1(WORDか予約語か)に移行。
+    }
+    // トークンが=を含まないなら、このルールの評価を終了(たぶん)。
+    const ieq = st.token.indexOf("=");
+    if (ieq < 0 || ieq === 0) { return false; }
+    // =より前の部分がNAMEとして適格であれば、このトークンをASSIGNMENT_WORDとする。
+    const n = st.token.length;
+    if (n <= ieq + 1 || str_is_for_name(st.token.substring(ieq + 1))) {
+        return true;
+    }
+    return false;
+}
+
 /**
  * パース本体
  */
@@ -172,6 +193,8 @@ export function parse_unit(state: ParserState) {
             right: null,
         };
         if (lexer_token.lex_type === "IO_NUMBER") {
+            // [トークンがIO_NUMBERだった場合]
+            // リダイレクションの記述として処理を進める
             const next_token = shift_lexer_token(state);
             if (!next_token) {
                 // シンタックスエラー
@@ -180,6 +203,11 @@ export function parse_unit(state: ParserState) {
                 return "error";
             }
             return subparse_redirection(state, next_token, st);
+        }
+        // [トークンがTOKENだった場合]
+        // トークンがASSINMENT_WORDであるかどうかをチェックする。
+        if (is_assignment_word(state, st)) {
+            st.token_id = "ASSIGNMENT_WORD";
         }
         add_stree(state, st);
         console.log("parsed", lexer_token, st);
@@ -287,7 +315,7 @@ function subparse_term_clause(
 }
 
 function reset_cursor_andorlist(state: ParserState) {
-    state.cursor.clause = state.cursor.pipeline.clause;
+    state.cursor.pipeline = state.cursor.andorlist.pipeline;
     reset_cursor_pipeline(state);
 }
 
