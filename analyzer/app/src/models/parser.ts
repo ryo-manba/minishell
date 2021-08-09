@@ -1,4 +1,5 @@
 import * as MS from "./minishell";
+import * as EV from "./envvar";
 
 function new_clause(): MS.Clause {
     return {
@@ -51,12 +52,16 @@ export type ParserState = {
     finished: boolean;
     parse_error: string | null;
     error_location_token: MS.WordList | null;
+    varmap: EV.ShellVarMap;
 };
 
 /**
  * パーサを初期化
  */
-export function init_parser(word: MS.WordList): ParserState {
+export function init_parser(
+    word: MS.WordList,
+    varmap: EV.ShellVarMap,
+): ParserState {
     const plist = new_pipelinelist();
     const cursor: ParseCursor = {
         andorlist: plist.andorlist,
@@ -73,6 +78,7 @@ export function init_parser(word: MS.WordList): ParserState {
         finished: false,
         parse_error: null,
         error_location_token: null,
+        varmap,
     };
 }
 

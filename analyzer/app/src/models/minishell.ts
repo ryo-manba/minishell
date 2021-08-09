@@ -145,3 +145,15 @@ export type ANDORList = {
 export type PipelineList = {
     andorlist: ANDORList;
 }
+
+/**
+ * シェル変数
+ */
+export type ShellVariable = {
+    key: string;
+    value: string | null;
+    is_env: boolean;
+    attr: number;
+};
+
+
