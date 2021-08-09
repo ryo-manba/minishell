@@ -157,10 +157,9 @@ function is_assignment_word(state: ParserState, st: MS.STree) {
     }
     // トークンが=を含まないなら、このルールの評価を終了(たぶん)。
     const ieq = st.token.indexOf("=");
-    if (ieq < 0 || ieq === 0) { return false; }
+    if (ieq <= 0) { return false; }
     // =より前の部分がNAMEとして適格であれば、このトークンをASSIGNMENT_WORDとする。
-    const n = st.token.length;
-    if (n <= ieq + 1 || str_is_for_name(st.token.substring(ieq + 1))) {
+    if (str_is_for_name(st.token.substring(0, ieq))) {
         return true;
     }
     return false;
