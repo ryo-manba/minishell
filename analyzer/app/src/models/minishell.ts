@@ -17,6 +17,21 @@ export const CHARTYPESET = {
 
 export type WORD_LEX_TYPE = "TOKEN" | "IO_NUMBER" | "OPERATOR" | "NEWLINE";
 
+export const RedirectionOperators = ["<", ">", "<<", ">>", "<>", "<&", ">&", "<<-" ] as const;
+type TokenRedirectionOperator = typeof RedirectionOperators[number];
+
+export const ClauseTerminateOperators = ["|"] as const;
+type ClauseTerminateOperator = typeof ClauseTerminateOperators[number];
+
+export const PipelineTerminateOperators = ["&&", "||"] as const;
+type PipelineTerminateOperator = typeof PipelineTerminateOperators[number];
+
+export const ANDORListTerminateOperators = ["&", ";"] as const;
+type ANDORListTerminateOperator = typeof ANDORListTerminateOperators[number];
+
+type TokenOperator = ClauseTerminateOperator | PipelineTerminateOperator | ANDORListTerminateOperator | TokenRedirectionOperator;
+type TokenIdentifier = "WORD" | "IO_NUMBER" | "NAME" | "ASSIGNMENT_WORD" | TokenOperator;
+
 export const OP = {
     REDIR_INPUT: 1,
     REDIR_OUTPUT: 2,
@@ -64,3 +79,69 @@ export type WordList = {
     lex_type: WORD_LEX_TYPE;
 };
 
+/**
+ * リダイレクション演算子
+ */
+export type RedirList = {
+    /**
+     * 次の要素
+     */
+    next: RedirList | null;
+    /**
+     * 左オペランド
+     */
+    operand_left: STree | null;
+    /**
+     * 右オペランド
+     */
+    operand_right: WordList;
+    /**
+     * リダイレクション演算子種別
+     */
+    op: TokenRedirectionOperator;
+};
+
+export type STree = {
+    /**
+     * トークン文字列
+     */
+    token: string;
+    /**
+     * トークン識別子
+     */
+    token_id: TokenIdentifier;
+    /**
+     * このノードまでのツリー深度
+     */
+    depth: number;
+    /**
+     * 左ノード
+     */
+    left: STree | null;
+    /**
+     * 右ノード
+     */
+    right: STree | null;
+};
+
+export type Clause = {
+    redirs: RedirList | null;
+    stree: STree | null;
+    next: Clause | null;
+};
+
+export type Pipeline = {
+    clause: Clause;
+    next: Pipeline | null;
+    joint: PipelineTerminateOperator | null;
+};
+
+export type ANDORList = {
+    pipeline: Pipeline;
+    next: ANDORList | null;
+    joint: ANDORListTerminateOperator | null;
+};
+
+export type PipelineList = {
+    andorlist: ANDORList;
+}
