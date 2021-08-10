@@ -107,9 +107,19 @@
     v-if="viewData.mode === 'variables'"
   )
     .variables
+      ul
+        li
+          v-icon(color="blue") public
+          | ・・・ 環境変数
+        li
+          v-icon public_off
+          | ・・・ シェル変数
+        li アイコンクリックで切り替え
+      br
       table
         tr.var_item(
           v-for="item in var_items"
+          :class="!item.key ? '' : item.is_env ? 'env' : 'shell'"
         )
           template(
             v-if="!!item.key"
@@ -461,7 +471,11 @@ export default defineComponent({
     padding 0.6em
     overflow scroll
     
+    table
+      border-collapse collapse
     .var_item
+      &.shell
+        background-color #ddd
       .panel
         padding 2px 4px
       .define
