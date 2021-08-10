@@ -8,6 +8,8 @@ export const CHARTYPE_AND = '&';
 export const CHARTYPE_REDIRECT_INPUT = '<';
 export const CHARTYPE_REDIRECT_OUTPUT = '>';
 export const CHARTYPE_SEMICOLON = ';';
+export const CHARTYPE_PAREN_L = '(';
+export const CHARTYPE_PAREN_R = ')';
 export const CHARTYPE_WORD = '_';
 export const CHAR_SPACELIKE = [CHARTYPE_SPACE, CHARTYPE_TAB];
 
@@ -29,8 +31,14 @@ type PipelineTerminateOperator = typeof PipelineTerminateOperators[number];
 export const ANDORListTerminateOperators = ["&", ";"] as const;
 type ANDORListTerminateOperator = typeof ANDORListTerminateOperators[number];
 
-type TokenOperator = ClauseTerminateOperator | PipelineTerminateOperator | ANDORListTerminateOperator | TokenRedirectionOperator;
-type TokenIdentifier = "WORD" | "IO_NUMBER" | "NAME" | "ASSIGNMENT_WORD" | TokenOperator;
+export const SubshellOpenOperators = ["("] as const;
+type SubshellOpenOperator = typeof SubshellOpenOperators[number];
+
+export const SubshellCloseOperators = [")"] as const;
+type SubshellCloseOperator = typeof SubshellCloseOperators[number];
+
+type TokenOperator = SubshellOpenOperator | SubshellCloseOperator | ClauseTerminateOperator | PipelineTerminateOperator | ANDORListTerminateOperator | TokenRedirectionOperator;
+type TokenIdentifier = "WORD" | "IO_NUMBER" | "NAME" | "ASSIGNMENT_WORD" | "SUBSHELL" | TokenOperator;
 
 export const OP = {
     REDIR_INPUT: 1,
@@ -46,6 +54,8 @@ export const OP = {
     SEMICOLON: 51,
     DUPFD_IN: 61,
     DUPFD_OUT: 62,
+    PAREN_L: 81,
+    PAREN_R: 82,
 };
 
 export type WordList = {
@@ -122,6 +132,11 @@ export type STree = {
      * 右ノード
      */
     right: STree | null;
+    /**
+     * この要素がサブシェルなら、サブシェル(PipelineList)への参照を持つ。
+     */
+    subshell: PipelineList | null;
+    
 };
 
 export type Clause = {

@@ -9,12 +9,14 @@ function type_of_char(char: string) {
     if (char == MS.CHARTYPE_DOUBLE_QUOTE) { return char; }
     if (char == MS.CHARTYPE_SPACE) { return char; }
     if (char == MS.CHARTYPE_TAB) { return MS.CHARTYPE_SPACE; }
-    // 以下、演算子開始文字 <>&|;
+    // 以下、演算子開始文字 <>&|;()
     if (char == MS.CHARTYPE_REDIRECT_INPUT) { return char; }
     if (char == MS.CHARTYPE_REDIRECT_OUTPUT) { return char; }
     if (char == MS.CHARTYPE_AND) { return char; }
     if (char == MS.CHARTYPE_PIPE) { return char; }
     if (char == MS.CHARTYPE_SEMICOLON) { return char; }
+    if (char == MS.CHARTYPE_PAREN_L) { return char; }
+    if (char == MS.CHARTYPE_PAREN_R) { return char; }
     return MS.CHARTYPE_WORD;
 }
 
@@ -24,16 +26,7 @@ function type_of_char(char: string) {
 function is_an_operator_start_char(
     c: string
 ) {
-    return "|&<>;".includes(c);
-}
-
-/**
- * 与えられた文字が演算子構成文字かどうか
- */
- function is_an_operator_consist_char(
-    c: string
-) {
-    return "|&<>-;".includes(c);
+    return "|&<>;()".includes(c);
 }
 
 function is_a_operator(
@@ -56,6 +49,8 @@ function is_a_operator(
     if (str == ";") { return MS.OP.SEMICOLON; }
     if (str == "<&") { return MS.OP.DUPFD_IN; }
     if (str == ">&") { return MS.OP.DUPFD_OUT; }
+    if (str == "(") { return MS.OP.PAREN_L; }
+    if (str == ")") { return MS.OP.PAREN_R; }
     return null;
 }
 
@@ -157,7 +152,7 @@ export function lexer(line: string): MS.WordList {
             // トークンが終了していなければトークンを終了する
             conclude_lexer_token(line, current_token, i);
         } else if (is_an_operator_start_char(char_type)) {
-            // [演算子構成文字、つまり <>&|; のどれか]
+            // [演算子構成文字、つまり <>&|;() のどれか]
             if (current_token.concluded) {
                 // - トークンが終了しているなら開始
                 current_token = add_lexer_token(current_token, i, char_type);
@@ -179,6 +174,10 @@ export function lexer(line: string): MS.WordList {
                 i = cut_operator_pipe(line, i);
             } else if (char_type == ";") {
                 i = cut_operator_semicolon(line, i);
+            } else if (char_type == "(") {
+                i = cut_operator_paren_l(line, i);
+            } else if (char_type == ")") {
+                i = cut_operator_paren_r(line, i);
             }
             conclude_lexer_token(line, current_token, i);
             continue;
@@ -251,5 +250,21 @@ function cut_operator_semicolon(line: string, i: number) {
     if (line[i] == ";") {
         i += 1;
     }
+    return i;
+}
+
+/**
+ * `line[i]`から"("で始まる最も長い演算子が取れるまで`i`を進める
+ */
+ function cut_operator_paren_l(line: string, i: number) {
+    i += 1;
+    return i;
+}
+
+/**
+ * `line[i]`から")"で始まる最も長い演算子が取れるまで`i`を進める
+ */
+ function cut_operator_paren_r(line: string, i: number) {
+    i += 1;
     return i;
 }

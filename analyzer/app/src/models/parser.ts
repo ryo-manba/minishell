@@ -48,6 +48,7 @@ export type ParserState = {
      */
     cursor: ParseCursor;
     word: MS.WordList;
+    for_subshell: boolean;
 
     finished: boolean;
     parse_error: string | null;
@@ -61,6 +62,7 @@ export type ParserState = {
 export function init_parser(
     word: MS.WordList,
     varmap: EV.ShellVarMap,
+    for_subshell: boolean,
 ): ParserState {
     const plist = new_pipelinelist();
     const cursor: ParseCursor = {
@@ -75,6 +77,7 @@ export function init_parser(
         pipelinelist: plist,
         cursor,
         word,
+        for_subshell,
         finished: false,
         parse_error: null,
         error_location_token: null,
@@ -196,6 +199,7 @@ export function parse_unit(state: ParserState) {
             depth: 1,
             left: null,
             right: null,
+            subshell: null,
         };
         if (lexer_token.lex_type === "IO_NUMBER") {
             // [トークンがIO_NUMBERだった場合]
@@ -215,11 +219,33 @@ export function parse_unit(state: ParserState) {
             st.token_id = "ASSIGNMENT_WORD";
         }
         add_stree(state, st);
-        console.log("parsed", lexer_token, st);
+        // console.log("parsed", lexer_token, st);
         return "continue";
     }
     if (lexer_token.lex_type == "OPERATOR") {
         // [トークンがなんらかの演算子だった場合]
+
+        if (MS.SubshellOpenOperators.includes(lexer_token.word as any)) {
+            // [サブシェルを開始する演算子だった場合]
+            // ここから新たなサブシェルパースを開始する
+            // ParseStateはまっさらな状態で開始するが、 state.cursor.lexer_token だけは引き継がれる。
+            return parse_subshell(state, lexer_token);
+        }
+
+        if (MS.SubshellCloseOperators.includes(lexer_token.word as any)) {
+            // [サブシェルを終了する演算子だった場合]
+            // パースを終了する
+            if (!state.for_subshell) {
+                // サブシェル解析中でないのにサブシェル終了演算子に遭遇した場合はエラー
+                state.parse_error = "UNEXPECTED_SUBSHELL_CLOSER";
+                state.error_location_token = lexer_token;
+                return "error";
+            }
+            // TODO: NEWLINEによる終了とは異なり、state.cursor.lexer_token が残っていてもOKとすることに注意。
+            state.finished = true;
+            // エラーチェック
+            return "finish";
+        }
 
         if (MS.ANDORListTerminateOperators.includes(lexer_token.word as any)) {
             // [ANDOR-Listを区切る演算子だった場合]
@@ -248,6 +274,35 @@ export function parse_unit(state: ParserState) {
     state.parse_error = "NOT_CAPTURED";
     state.error_location_token = lexer_token;
     return "error";
+}
+
+function parse_subshell(state: ParserState, lexer_token: MS.WordList) {
+    if (!state.cursor.lexer_token) {
+        // lexerトークンが尽きていればエラー
+        state.parse_error = "NO_RIGHT_ELEM";
+        state.error_location_token = lexer_token;
+        return "error";
+    }
+    if (state.cursor.stree) {
+        // clauseの先頭出なければエラー
+        state.parse_error = "SUBSHELL_IS_NOT_LEADING";
+        state.error_location_token = lexer_token;
+        return "error";
+    }
+    const substate = init_parser(state.cursor.lexer_token, state.varmap, true);
+    parse(substate);
+    state.cursor.lexer_token = substate.cursor.lexer_token;
+    const subshell = substate.pipelinelist;
+    const st: MS.STree = {
+        token: "(subshell)",
+        token_id: "SUBSHELL",
+        depth: 1,
+        left: null,
+        right: null,
+        subshell,
+    };
+    add_stree(state, st);
+    return "continue";
 }
 
 export function parse(state: ParserState) {
@@ -380,10 +435,14 @@ type FlatANDOR = {
     pipelines: FlatPipeline[];
 }
 
-type FlatPipelineList = {
+export type FlatPipelineList = {
     pipelinelist: MS.PipelineList;
     andors: FlatANDOR[];
 }
+
+export type FlattenedState = ParserState | {
+    flattened_pipelinelist: FlatPipelineList;
+};
 
 /**
  * パースして得られた再帰構造を非再帰化(配列化)する。
