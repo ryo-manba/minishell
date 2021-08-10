@@ -1,9 +1,10 @@
 NAME	=	lexer
-SRCS	=	main.c lexer.c lexer_utils.c
+SRCS	=	main.c ms_lexer.c ms_lexer_utils.c ms_lexer_checks.c
 OBJS	=	$(SRCS:.c=.o)
 RM		=	rm -f
 CC		= 	gcc -g #-fsanitize=address
-CFLAGS	= 	-I/usr/local/opt/readline/include
+#CFLAGS	= 	-I/usr/local/opt/readline/include
+CFLAGS	= 	-I/usr/local/opt/readline/include/
 
 #CFLAGS	=	-Wall -Wextra -Werror
 

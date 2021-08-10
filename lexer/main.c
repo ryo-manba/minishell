@@ -1,12 +1,6 @@
-#include "lexer.h"
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <string.h>
-#include <signal.h>
+#include "ms_lexer.h"
 
-volatile sig_atomic_t g_flag = true;
-
-void	sigint_handler(int sig)
+static void	sigint_handler(int sig)
 {
 	printf("\n");
 	rl_on_new_line();
@@ -27,11 +21,10 @@ int	main()
 		line = readline("> ");
 		if (!line)
 			break ;
-		lexer(line);
+		ms_lexer(line);
 		if (strlen(line) > 0)
 			add_history(line);
 		free(line);
-
 	}
 	printf("> exit\n");
 	return (0);
@@ -39,45 +32,46 @@ int	main()
 
 // int main()
 // {
-// 	lexer("echo hello world");
-// 	lexer("echo hello world || cat res.text || grep hello");
-// 	lexer("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-// 	lexer("echo \"hello world\"");
-// 	lexer("echo 'hello world'");
-// 	lexer("echo \'h\"\"\"\"ello world\'");
-// 	lexer("echo \"\"\"     \"\'hello world\'");
-// 	lexer("echo \"\'hello world\'\"");
-// 	lexer("echo \'\"hello world hello\"\'");
-// 	lexer("echo hello|cat");
-// 	lexer("& | $                     * < >");
-// 	lexer("&& || << >> $$");
-// 	lexer("&&&&  $$$$$$$ ||||| <<<<  >>>> <>|$&&$$");
-// 	lexer("echo<><><><><> <> <> ** * * *** ****");
-// 	lexer("$ $$$ $$$$$ $$$$$$$ $$$$$$$$$"); 	// 奇数
-// 	lexer("$$ $$$$ $$$$$$ $$$$$$$$ $$$$$$$$$$"); // 偶数
-// 	lexer("$$$ $$$$$ $$$$$$$ ");
-// 	lexer("<< >>>> <<<<<< >>>>>>>> <<<<<<<<<<");// 偶数
-// 	lexer("echo \"hello\"\"world\"");
-// 	lexer("echo \'hello world'''");
-// 	lexer("echo \"hello world\"'");
-// 	lexer("a 'b' \"c\" & | * $ && || < > << >>              ");
-// 	lexer("echo hello                    world");
-// 	lexer("echo 'hello'                    'world'");
-// 	lexer("echo helloworld");
-// 	lexer("echo hello world");
-// 	lexer("echo 'hello''world'"); // spaceの有無はどうするか
-// 	lexer("echo 'hello' 'world'");
-// 	lexer("echo 'hello''world'");
-// 	lexer("echo 'hello''world'abcde'hello'"); // 6
-// 	lexer("echo 'hello''wo'rld'abcde'hello'"); // 7
-// 	lexer("echo 'hello'world");
-// 	lexer("echo 'hello'world'salut'");
-// 	lexer("echo 'hello'world'salut'$$");
-// 	lexer("echo 'hello'world'salut'&<>");
-// 	lexer("echo 'hello'world'salut'$USER");
-// 	lexer("echo $USER $$PWD $$$HOME");
-// 	lexer("echo $USER$$PWD$$$HOME");
-// 	lexer("echo '$USER' \"$USER\" $USER");
-// 	lexer("echo '$USER'\"$USER\"$USER"); // この場合の状態は?
+// 	ms_lexer("echo hello world");
+// 	ms_lexer("echo hello world || cat res.text || grep hello");
+// 	ms_lexer("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+// 	ms_lexer("echo \"hello world\"");
+// 	ms_lexer("echo 'hello world'");
+// 	ms_lexer("echo \'h\"\"\"\"ello world\'");
+// 	ms_lexer("echo \"\"\"     \"\'hello world\'");
+// 	ms_lexer("echo \"\'hello world\'\"");
+// 	ms_lexer("echo \'\"hello world hello\"\'");
+// 	ms_lexer("echo hello|cat");
+// 	ms_lexer("& | $                     * < >");
+// 	ms_lexer("&& || << >> $$");
+// 	ms_lexer("&&&&  $$$$$$$ ||||| <<<<  >>>> <>|$&&$$");
+// 	ms_lexer("echo<><><><><> <> <> ** * * *** ****");
+// 	ms_lexer("$ $$$ $$$$$ $$$$$$$ $$$$$$$$$"); 	// 奇数
+// 	ms_lexer("$$ $$$$ $$$$$$ $$$$$$$$ $$$$$$$$$$"); // 偶数
+// 	ms_lexer("$$$ $$$$$ $$$$$$$ ");
+// 	ms_lexer("<< >>>> <<<<<< >>>>>>>> <<<<<<<<<<");// 偶数
+// 	ms_lexer("echo \"hello\"\"world\"");
+// 	ms_lexer("echo \'hello world'''");
+// 	ms_lexer("echo \"hello world\"'");
+// 	ms_lexer("a 'b' \"c\" & | * $ && || < > << >>              ");
+// 	ms_lexer("echo hello                    world");
+// 	ms_lexer("echo 'hello'                    'world'");
+// 	ms_lexer("echo helloworld");
+// 	ms_lexer("echo hello world");
+// 	ms_lexer("echo 'hello''world'"); // spaceの有無はどうするか
+// 	ms_lexer("echo 'hello' 'world'");
+// 	ms_lexer("echo 'hello''world'");
+// 	ms_lexer("echo 'hello''world'abcde'hello'"); // 6
+// 	ms_lexer("echo 'hello''wo'rld'abcde'hello'"); // 7
+// 	ms_lexer("echo 'hello'world");
+// 	ms_lexer("echo 'hello'world'salut'");
+// 	ms_lexer("echo 'hello'world'salut'$$");
+// 	ms_lexer("echo 'hello'world'salut'&<>");
+// 	ms_lexer("echo 'hello'world'salut'$USER");
+// 	ms_lexer("echo $USER $$PWD $$$HOME");
+// 	ms_lexer("echo $USER$$PWD$$$HOME");
+// 	ms_lexer("echo '$USER' \"$USER\" $USER");
+// 	ms_lexer("echo '$USER'\"$USER\"$USER"); // この場合の状態は?
+//	ms_lexer("<<>><><><><<<>><>");
 // 	return (0);
 // }
