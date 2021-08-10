@@ -4,6 +4,38 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+// 最初のコマンド 標準出力をパイプの入り口に繋げる
+void ms_first_pipe(int pipe_fd[2])
+{
+	dup2(pipe_fd[1], 1);
+	close(pipe_fd[0]);
+	close(pipe_fd[1]);
+}
+
+// 最後のコマンド 出力はそのままで入力だけ一つ前のpipeから受け取る
+void ms_last_pipe(int before_pipe[2])
+{
+	dup2(before_pipe[0], 0);
+	close(before_pipe[0]);
+	close(before_pipe[1]);
+}
+
+// 途中のコマンドなので上記の処理を両方やる
+void ms_middle_pipe(int pipe_fd[2], int before_pipe[2])
+{
+	last_pipe(before_pipe);
+	first_pipe(pipe_fd);
+}
+
+// つなげ終わったパイプを閉じて一つ前のpipeを保持する
+void ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2])
+{
+	close(before_pipe[0]);
+	close(before_pipe[1]);
+	before_pipe[0] = pipe_fd[0];
+	before_pipe[1] = pipe_fd[1];
+}
+
 int main()
 {
 	int pipe_fd[2];
@@ -13,7 +45,6 @@ int main()
 	int i;
 	pid_t	pid;
 	char *argv[] = {"ls", "|", "cat", "|", "cat", "|", "cat", "|",  "wc", NULL};
-
 	pipe_locate[0] = -1; // 先頭のコマンド用
 	i = 0;
 	while (argv[i])
@@ -29,7 +60,7 @@ int main()
 	i = 0;
 	while (i < pipe_cnt + 1) // 実行するのはpipeの数足す1個
 	{
-		if (i != pipe_cnt)
+		if (i != pipe_cnt) // 最後以外pipeを作る
 		{
 			pipe(pipe_fd);
 		}
@@ -38,33 +69,21 @@ int main()
 		{
 			if (i == 0)
 			{
-				dup2(pipe_fd[1], 1); // 最初のコマンド標準出力をパイプの入り口に繋げる
-				close(pipe_fd[0]);
-				close(pipe_fd[1]);
+				ms_first_pipe(pipe_fd);
 			}
-			else if (i == pipe_cnt) // 最後のコマンドなので標準出力をパイプの入り口へ繋げる
+			else if (i == pipe_cnt)
 			{
-				dup2(before_pipe[0], 0);
-				close(before_pipe[0]);
-				close(before_pipe[1]);
+				ms_last_pipe(before_pipe);
 			}
-			else					// 途中のコマンドなので上記の処理を両方やる
+			else
 			{
-				dup2(before_pipe[0], 0);
-				dup2(pipe_fd[1], 1);
-				close(before_pipe[0]);
-				close(before_pipe[1]);
-				close(pipe_fd[0]);
-				close(pipe_fd[1]);
+				ms_middle_pipe(pipe_fd, before_pipe);
 			}
 			execvp(argv[pipe_locate[i] + 1], argv + pipe_locate[i] + 1);
 		}
-		else // つなげ終わったパイプを閉じる
+		else
 		{
-			close(before_pipe[0]);
-			close(before_pipe[1]);
-			before_pipe[0] = pipe_fd[0];
-			before_pipe[1] = pipe_fd[1];
+			ms_close_and_update_pipe(pipe_fd, before_pipe); // 親でpipeを閉じる
 		}
 		i++;
 	}
