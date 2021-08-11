@@ -17,22 +17,13 @@ function new_pipeline(): MS.Pipeline {
     };
 }
 
-function new_andorlist(): MS.ANDORList {
-    return {
-        pipeline: new_pipeline(),
-        next: null,
-        joint: null,
-    };
-}
-
 function new_pipelinelist(): MS.PipelineList {
     return {
-        andorlist: new_andorlist(),
+        pipeline: new_pipeline(),
     };
 }
 
 export type ParseCursor = {
-    andorlist: MS.ANDORList;
     pipeline: MS.Pipeline;
     clause: MS.Clause;
     redir: MS.RedirList | null;
@@ -66,9 +57,8 @@ export function init_parser(
 ): ParserState {
     const plist = new_pipelinelist();
     const cursor: ParseCursor = {
-        andorlist: plist.andorlist,
-        pipeline: plist.andorlist.pipeline,
-        clause: plist.andorlist.pipeline.clause,
+        pipeline: plist.pipeline,
+        clause: plist.pipeline.clause,
         redir: null,
         stree: null,
         lexer_token: word,
@@ -262,12 +252,6 @@ export function parse_unit(state: ParserState) {
             return "finish";
         }
 
-        if (MS.ANDORListTerminateOperators.includes(lexer_token.word as any)) {
-            // [ANDOR-Listを区切る演算子だった場合]
-            // ANDORリスト終端処理を行う。
-            return subparse_term_andor_list(state, lexer_token);
-        }
-
         if (MS.PipelineTerminateOperators.includes(lexer_token.word as any)) {
             // [Pipelineを区切る演算子だった場合]
             // パイプライン終端処理を行う。
@@ -337,24 +321,6 @@ export function parse(state: ParserState) {
 }
 
 /**
- * ANDORリスト終端処理を行う。
- */
- function subparse_term_andor_list(
-    state: ParserState,
-    lexer_token: MS.WordList,
-) {
-    const serr = syntax_check_term_andor_list(state, false);
-    if (serr) {
-        return return_with_error(state, lexer_token, serr);
-    }
-    state.cursor.andorlist.joint = lexer_token.word as any;
-    state.cursor.andorlist.next = new_andorlist();
-    state.cursor.andorlist = state.cursor.andorlist.next;
-    reset_cursor_andorlist(state);
-    return "continue";
-}
-
-/**
  * パイプライン終端処理を行う。
  */
 function subparse_term_pipeline(
@@ -387,11 +353,6 @@ function subparse_term_clause(
     state.cursor.clause = state.cursor.clause.next;
     reset_cursor_clause(state);
     return "continue";
-}
-
-function reset_cursor_andorlist(state: ParserState) {
-    state.cursor.pipeline = state.cursor.andorlist.pipeline;
-    reset_cursor_pipeline(state);
 }
 
 function reset_cursor_pipeline(state: ParserState) {
@@ -443,14 +404,9 @@ type FlatPipeline = {
     clauses: FlatClause[];
 }
 
-type FlatANDOR = {
-    andor: MS.ANDORList;
-    pipelines: FlatPipeline[];
-}
-
 export type FlatPipelineList = {
     pipelinelist: MS.PipelineList;
-    andors: FlatANDOR[];
+    pipelines: FlatPipeline[];
 }
 
 export type FlattenedState = ParserState | {
@@ -464,45 +420,36 @@ export type FlattenedState = ParserState | {
 export function flatten_pipelinelist(pipelinelist: MS.PipelineList) {
     const fpl: FlatPipelineList = {
         pipelinelist,
-        andors: [],
+        pipelines: [],
     };
-    let cursor_andor: MS.ANDORList | null = pipelinelist.andorlist;
-    while (cursor_andor) {
-        const flat_ao: FlatANDOR = {
-            andor: cursor_andor,
-            pipelines: [],
-        }
-        let cursor_pipeline: MS.Pipeline | null = cursor_andor.pipeline;
-        while (cursor_pipeline) {
-            const flat_pl: FlatPipeline = {
-                pipeline: cursor_pipeline,
-                clauses: [],
+    let cursor_pipeline: MS.Pipeline | null = pipelinelist.pipeline;
+    while (cursor_pipeline) {
+        const flat_pl: FlatPipeline = {
+            pipeline: cursor_pipeline,
+            clauses: [],
+        };
+        let cursor_clause: MS.Clause | null = cursor_pipeline.clause;
+        while (cursor_clause) {
+            const flat_cl: FlatClause = {
+                clause: cursor_clause,
+                redirs: [],
+                strees: [],
             };
-            let cursor_clause: MS.Clause | null = cursor_pipeline.clause;
-            while (cursor_clause) {
-                const flat_cl: FlatClause = {
-                    clause: cursor_clause,
-                    redirs: [],
-                    strees: [],
-                };
-                let cursor_redir: MS.RedirList | null = cursor_clause.redirs;
-                while (cursor_redir) {
-                    flat_cl.redirs.push(cursor_redir);
-                    cursor_redir = cursor_redir.next;
-                }
-                let cursor_stree: MS.STree | null = cursor_clause.stree;
-                while (cursor_stree) {
-                    flat_cl.strees.push(cursor_stree);
-                    cursor_stree = cursor_stree.right;
-                }
-                flat_pl.clauses.push(flat_cl);
-                cursor_clause = cursor_clause.next;
+            let cursor_redir: MS.RedirList | null = cursor_clause.redirs;
+            while (cursor_redir) {
+                flat_cl.redirs.push(cursor_redir);
+                cursor_redir = cursor_redir.next;
             }
-            flat_ao.pipelines.push(flat_pl);
-            cursor_pipeline = cursor_pipeline.next;
+            let cursor_stree: MS.STree | null = cursor_clause.stree;
+            while (cursor_stree) {
+                flat_cl.strees.push(cursor_stree);
+                cursor_stree = cursor_stree.right;
+            }
+            flat_pl.clauses.push(flat_cl);
+            cursor_clause = cursor_clause.next;
         }
-        fpl.andors.push(flat_ao)
-        cursor_andor = cursor_andor.next;
+        fpl.pipelines.push(flat_pl);
+        cursor_pipeline = cursor_pipeline.next;
     }
     return fpl;
 }

@@ -2,58 +2,49 @@
 
 .pipelinelist
   .list(v-if="flattened_pipelinelist")
-    .andor_list(
-      v-for="andor in flattened_pipelinelist.andors"
+    .pipeline(
+      v-for="pipeline in flattened_pipelinelist.pipelines"
     )
       .head
-        h5 AND-OR list
-        .joint(v-if="andor.andor.joint")
-          | term:
-          code {{ andor.andor.joint }}
-      .pipeline(
-        v-for="pipeline in andor.pipelines"
+        h5 Pipeline
+      .clause(
+        v-for="clause in pipeline.clauses"
       )
-        .head
-          h5 Pipeline
-          .joint(v-if="pipeline.pipeline.joint")
-            | term:
-            code {{ pipeline.pipeline.joint }}
-        .clause(
-          v-for="clause in pipeline.clauses"
+        h5 Clause
+        h5 Redirections
+        .redirs(
+          v-if="clause.redirs && clause.redirs.length > 0"
         )
-          h5 Clause
-          h5 Redirections
-          .redirs(
-            v-if="clause.redirs && clause.redirs.length > 0"
+          .redir(
+            v-for="redir in clause.redirs"
           )
-            .redir(
-              v-for="redir in clause.redirs"
-            )
-              .operator
-                | {{ get_desc_redir_op(redir) }}
-              | fd:
-              code {{ get_redir_fd(redir).fd }}
-              span(
-                v-if="get_redir_fd(redir).default"
-              ) (default)
-              |, target:
+            .operator
+              | {{ get_desc_redir_op(redir) }}
+            | fd:
+            code {{ get_redir_fd(redir).fd }}
+            span(
+              v-if="get_redir_fd(redir).default"
+            ) (default)
+            |, target:
+            code(
+              v-if="redir.operand_right"
+            ) {{ redir.operand_right.word }}
+        h5 Command Tokens
+        .strees
+          .stree(
+              v-for="stree in clause.strees"
+          )
+            .token_id {{ stree.token_id }}
+            .body
+              pipeline-list(
+                v-if="ss = reflat_subshell(stree)"
+                :flattened_pipelinelist="ss"
+              )
               code(
-                v-if="redir.operand_right"
-              ) {{ redir.operand_right.word }}
-          h5 Command Tokens
-          .strees
-            .stree(
-                v-for="stree in clause.strees"
-            )
-              .token_id {{ stree.token_id }}
-              .body
-                pipeline-list(
-                  v-if="ss = reflat_subshell(stree)"
-                  :flattened_pipelinelist="ss"
-                )
-                code(
-                  v-else
-                ) {{ stree.token }}
+                v-else
+              ) {{ stree.token }}
+      .joint(v-if="pipeline.pipeline.joint")
+        code {{ pipeline.pipeline.joint }}
 </template>
 
 
@@ -137,35 +128,36 @@ export default defineComponent({
 </script>
 
 <style lang="stylus" scoped>
+.pipelinelist
+  display flex
 .list
   padding 4px
-  border 1px solid black
+  border 1px solid blue
   display flex
   overflow-x scroll
-  .andor_list
+  .pipeline
     padding 4px
-    border 1px solid black
+    border 1px solid violet
     display flex
+    justify-content center
+    align-items center
     margin-left 4px
-    .pipeline
+    .joint
       padding 4px
-      border 1px solid black
-      display flex
+    .clause
+      padding 4px
+      border 1px solid green
       margin-left 4px
-      .clause
+      .redirs, .strees
+        padding 4px
+        display flex
+      .redir
         padding 4px
         border 1px solid black
+        border-radius 8px
         margin-left 4px
-        .redirs, .strees
-          padding 4px
-          display flex
-        .redir
-          padding 4px
-          border 1px solid black
-          border-radius 8px
-          margin-left 4px
-        .stree
-          padding 4px
-          border 1px solid black
-          margin-left 4px
+      .stree
+        padding 4px
+        border 1px solid orange
+        margin-left 4px
 </style>

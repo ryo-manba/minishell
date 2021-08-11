@@ -25,11 +25,8 @@ type TokenRedirectionOperator = typeof RedirectionOperators[number];
 export const ClauseTerminateOperators = ["|"] as const;
 type ClauseTerminateOperator = typeof ClauseTerminateOperators[number];
 
-export const PipelineTerminateOperators = ["&&", "||"] as const;
+export const PipelineTerminateOperators = ["&&", "||",  "&", ";"] as const;
 type PipelineTerminateOperator = typeof PipelineTerminateOperators[number];
-
-export const ANDORListTerminateOperators = ["&", ";"] as const;
-type ANDORListTerminateOperator = typeof ANDORListTerminateOperators[number];
 
 export const SubshellOpenOperators = ["("] as const;
 type SubshellOpenOperator = typeof SubshellOpenOperators[number];
@@ -37,7 +34,7 @@ type SubshellOpenOperator = typeof SubshellOpenOperators[number];
 export const SubshellCloseOperators = [")"] as const;
 type SubshellCloseOperator = typeof SubshellCloseOperators[number];
 
-type TokenOperator = SubshellOpenOperator | SubshellCloseOperator | ClauseTerminateOperator | PipelineTerminateOperator | ANDORListTerminateOperator | TokenRedirectionOperator;
+type TokenOperator = SubshellOpenOperator | SubshellCloseOperator | ClauseTerminateOperator | PipelineTerminateOperator | TokenRedirectionOperator;
 type TokenIdentifier = "WORD" | "IO_NUMBER" | "NAME" | "ASSIGNMENT_WORD" | "SUBSHELL" | TokenOperator;
 
 export const OP = {
@@ -151,14 +148,8 @@ export type Pipeline = {
     joint: PipelineTerminateOperator | null;
 };
 
-export type ANDORList = {
-    pipeline: Pipeline;
-    next: ANDORList | null;
-    joint: ANDORListTerminateOperator | null;
-};
-
 export type PipelineList = {
-    andorlist: ANDORList;
+    pipeline: Pipeline;
 }
 
 /**
