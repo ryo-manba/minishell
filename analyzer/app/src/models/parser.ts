@@ -174,6 +174,12 @@ function is_assignment_word(state: ParserState, st: MS.STree) {
     return false;
 }
 
+function return_with_error(state: ParserState, lexer_token: MS.WordList, error_type: string) {
+    state.parse_error = error_type;
+    state.error_location_token = lexer_token;
+    return "error";
+}
+
 /**
  * パース本体
  */
@@ -183,6 +189,12 @@ export function parse_unit(state: ParserState) {
 
     if (lexer_token.lex_type === "NEWLINE") {
         // [トークンがNEWLINEだった場合]
+
+        // サブシェル内だった場合はエラー
+        if (state.for_subshell) {
+            return return_with_error(state, lexer_token, "NEWLINE_IN_SUBSHELL");
+        }
+
         // パース終了処理を行う。
         state.finished = true;
         // エラーチェック
@@ -207,12 +219,17 @@ export function parse_unit(state: ParserState) {
             const next_token = shift_lexer_token(state);
             if (!next_token) {
                 // シンタックスエラー
-                state.parse_error = "SOLE_IO_NUMBER";
-                state.error_location_token = lexer_token;
-                return "error";
+                return return_with_error(state, lexer_token, "SOLE_IO_NUMBER");
             }
             return subparse_redirection(state, next_token, st);
         }
+
+        // [先行するトークンがサブシェルだった場合]
+        // -> エラー
+        if (state.cursor.stree && state.cursor.stree.token_id ===  "SUBSHELL") {
+            return return_with_error(state, lexer_token, "NEXT_TO_SUBSHELL");
+        }
+
         // [トークンがTOKENだった場合]
         // トークンがASSINMENT_WORDであるかどうかをチェックする。
         if (is_assignment_word(state, st)) {
@@ -237,9 +254,7 @@ export function parse_unit(state: ParserState) {
             // パースを終了する
             if (!state.for_subshell) {
                 // サブシェル解析中でないのにサブシェル終了演算子に遭遇した場合はエラー
-                state.parse_error = "UNEXPECTED_SUBSHELL_CLOSER";
-                state.error_location_token = lexer_token;
-                return "error";
+                return return_with_error(state, lexer_token, "UNEXPECTED_SUBSHELL_CLOSER");
             }
             // TODO: NEWLINEによる終了とは異なり、state.cursor.lexer_token が残っていてもOKとすることに注意。
             state.finished = true;
@@ -271,26 +286,32 @@ export function parse_unit(state: ParserState) {
         }
 
     }
-    state.parse_error = "NOT_CAPTURED";
-    state.error_location_token = lexer_token;
-    return "error";
+    return return_with_error(state, lexer_token, "NOT_CAPTURED");
 }
 
+/**
+ * サブシェルのパースを行う
+ * (正確にはパースをキックする)
+ */
 function parse_subshell(state: ParserState, lexer_token: MS.WordList) {
     if (!state.cursor.lexer_token) {
         // lexerトークンが尽きていればエラー
-        state.parse_error = "NO_RIGHT_ELEM";
-        state.error_location_token = lexer_token;
-        return "error";
+        return return_with_error(state, lexer_token, "NO_RIGHT_ELEM");
     }
     if (state.cursor.stree) {
-        // clauseの先頭出なければエラー
-        state.parse_error = "SUBSHELL_IS_NOT_LEADING";
-        state.error_location_token = lexer_token;
-        return "error";
+        // clauseの先頭でなければエラー
+        return return_with_error(state, lexer_token, "SUBSHELL_IS_NOT_LEADING");
+    }
+    if (state.cursor.redir) {
+        // リダイレクションがすでに記述されている場合はエラー
+        return return_with_error(state, lexer_token, "REDIR_BEFORE_SUBSHELL");
     }
     const substate = init_parser(state.cursor.lexer_token, state.varmap, true);
     parse(substate);
+    // パース完了後、結果(substate)からサブシェルを取り出す
+    if (substate.parse_error && substate.error_location_token) {
+        return return_with_error(state, substate.error_location_token, substate.parse_error);
+    }
     state.cursor.lexer_token = substate.cursor.lexer_token;
     const subshell = substate.pipelinelist;
     const st: MS.STree = {
@@ -324,9 +345,7 @@ export function parse(state: ParserState) {
 ) {
     const serr = syntax_check_term_andor_list(state, false);
     if (serr) {
-        state.parse_error = serr;
-        state.error_location_token = lexer_token;
-        return "error";
+        return return_with_error(state, lexer_token, serr);
     }
     state.cursor.andorlist.joint = lexer_token.word as any;
     state.cursor.andorlist.next = new_andorlist();
@@ -344,9 +363,7 @@ function subparse_term_pipeline(
 ) {
     const serr = syntax_check_term_pipeline(state, false);
     if (serr) {
-        state.parse_error = serr;
-        state.error_location_token = lexer_token;
-        return "error";
+        return return_with_error(state, lexer_token, serr);
     }
     state.cursor.pipeline.joint = lexer_token.word as any;
     state.cursor.pipeline.next = new_pipeline();
@@ -364,9 +381,7 @@ function subparse_term_clause(
 ) {
     const serr = syntax_check_term_clause(state, false);
     if (serr) {
-        state.parse_error = serr;
-        state.error_location_token = lexer_token;
-        return "error";
+        return return_with_error(state, lexer_token, serr);
     }
     state.cursor.clause.next = new_clause();
     state.cursor.clause = state.cursor.clause.next;
@@ -405,9 +420,7 @@ function subparse_redirection(
     if (!next_token || next_token.lex_type !== "TOKEN") {
         // 続くlexerトークンが存在しないか、トークン種別がTOKENではない
         // -> シンタックスエラー
-        state.parse_error = "NO_RIGHT_OPERAND";
-        state.error_location_token = next_token || lexer_token;
-        return "error";
+        return return_with_error(state, next_token || lexer_token, "NO_RIGHT_OPERAND");
     }
     const redir: MS.RedirList = {
         next: null,
