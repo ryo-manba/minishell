@@ -30,6 +30,8 @@ export type ParseCursor = {
     stree: MS.STree | null;
 
     lexer_token: MS.WordList | null;
+
+    expecting_continuation: boolean;
 };
 
 export type ParserState = {
@@ -62,6 +64,7 @@ export function init_parser(
         redir: null,
         stree: null,
         lexer_token: word,
+        expecting_continuation: false,
     };
     return {
         pipelinelist: plist,
@@ -97,6 +100,7 @@ function add_stree(state: ParserState, stree: MS.STree) {
         cursor.clause.stree = stree;
     }
     cursor.stree = stree;
+    cursor.expecting_continuation = false;
 }
 
 /**
@@ -111,16 +115,14 @@ function add_stree(state: ParserState, stree: MS.STree) {
         cursor.clause.redirs = redir;
     }
     cursor.redir = redir;
+    cursor.expecting_continuation = false;
 }
 
-function syntax_check_finalize(state: ParserState) {
-
-}
-
-function syntax_check_term_andor_list(state: ParserState, by_newline: boolean) {
-    const subresult = syntax_check_term_pipeline(state, by_newline);
-    if (subresult) {
-        return subresult;
+function syntax_check_final(state: ParserState) {
+    if (!state.cursor.clause.stree) {
+        if (state.cursor.expecting_continuation) {
+            return "EXPECTED_CONTINUATION";
+        }
     }
     return null;
 }
@@ -139,6 +141,10 @@ function syntax_check_term_clause(state: ParserState, by_newline: boolean) {
         if (!by_newline) {
             // NEWLINEによる呼び出しでないならシンタックスエラー
             return "BLANK_CLAUSE";
+        }
+        if (state.cursor.expecting_continuation) {
+            // NEWLINEによる呼び出しであってもシンタックスエラー
+            return "EXPECTED_CONTINUATION";
         }
     }
     return null;
@@ -184,7 +190,10 @@ export function parse_unit(state: ParserState) {
         if (state.for_subshell) {
             return return_with_error(state, lexer_token, "NEWLINE_IN_SUBSHELL");
         }
-
+        const serr = syntax_check_final(state);
+        if (serr) {
+            return return_with_error(state, lexer_token, serr);
+        }
         // パース終了処理を行う。
         state.finished = true;
         // エラーチェック
@@ -245,6 +254,10 @@ export function parse_unit(state: ParserState) {
             if (!state.for_subshell) {
                 // サブシェル解析中でないのにサブシェル終了演算子に遭遇した場合はエラー
                 return return_with_error(state, lexer_token, "UNEXPECTED_SUBSHELL_CLOSER");
+            }
+            const serr = syntax_check_final(state);
+            if (serr) {
+                return return_with_error(state, lexer_token, serr);
             }
             // TODO: NEWLINEによる終了とは異なり、state.cursor.lexer_token が残っていてもOKとすることに注意。
             state.finished = true;
@@ -335,6 +348,11 @@ function subparse_term_pipeline(
     state.cursor.pipeline.next = new_pipeline();
     state.cursor.pipeline = state.cursor.pipeline.next;
     reset_cursor_pipeline(state);
+    if (["&&", "||"].includes(lexer_token.word)) {
+        state.cursor.expecting_continuation = true;
+    } else {
+        state.cursor.expecting_continuation = false;
+    }
     return "continue";
 }
 
@@ -352,6 +370,11 @@ function subparse_term_clause(
     state.cursor.clause.next = new_clause();
     state.cursor.clause = state.cursor.clause.next;
     reset_cursor_clause(state);
+    if (["|"].includes(lexer_token.word)) {
+        state.cursor.expecting_continuation = true;
+    } else {
+        state.cursor.expecting_continuation = false;
+    }
     return "continue";
 }
 
