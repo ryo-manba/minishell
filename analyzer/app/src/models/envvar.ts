@@ -49,3 +49,8 @@ export function assign_var(varmap: ShellVarMap, key: string, value: string) {
     }
     varmap[key].value = value;
 }
+
+export function get_var(varmap: ShellVarMap, key: string) {
+    if (!varmap[key] || typeof varmap[key].value !== "string") { return null; }
+    return varmap[key].value;
+}

@@ -5,7 +5,7 @@
       elevation=0
       :color="viewData.mode === 'prompt' ? 'info' : ''"
       @click="viewData.mode = 'prompt'"
-    ) prompt
+    ) Prompt
 
     v-btn(
       elevation=0
@@ -14,7 +14,7 @@
     ) Variables
 
 
-  template(
+  .view(
     v-if="viewData.mode === 'prompt'"
   )
     .prompt
@@ -55,12 +55,26 @@
           :flattened_pipelinelist="parsed_state.flattened_pipelinelist"
         )
 
-        h5 Parse Cursor
-        .cursor(v-if="parsed_state.cursor")
-          | {{ parsed_state.cursor }}
+    .expander.params
+      h3 Expanded Parameters
+      .state(v-if="expanded_params_state")
+        h4.parse_finished(v-if="expanded_params_state.finished") Finished
+        h4.parse_error(v-else-if="expanded_params_state.parse_error")
+          | Parse Error: {{ expanded_params_state.parse_error }}
+          template(
+            v-if="expanded_params_state.error_location_token"
+          ) 
+            | (at token {{ expanded_params_state.error_location_token.lex_type }}
+            code {{ expanded_params_state.error_location_token.word }}
+            | )
+        h4.parse_unexpexted(v-else) Unexpected State
+        h5 PipelineList
+        PipelineList.pipelinelist(
+          :flattened_pipelinelist="expanded_params_state.flattened_pipelinelist"
+        )
 
 
-  template(
+  .view(
     v-if="viewData.mode === 'variables'"
   )
     .variables
@@ -137,6 +151,7 @@ import PipelineList from "@/components/PipelineList.vue";
 import * as Lexer from "@/models/lexer";
 import * as Parser from "@/models/parser";
 import * as MS from "@/models/minishell";
+import * as Expander from "@/models/expander";
 import * as EV from "@/models/envvar";
 
 export default defineComponent({
@@ -157,7 +172,7 @@ export default defineComponent({
       assign_var_key: string;
       assign_var_value: string;
     } = reactive({
-      mode: "variables",
+      mode: "prompt",
       line_buffer: "",
       lines: [],
       line_pointer: -1,
@@ -165,7 +180,6 @@ export default defineComponent({
       assign_var_key: "",
       assign_var_value: "",
     });
-
 
     const eventHandlers = {
       readline: () => {
@@ -217,14 +231,34 @@ export default defineComponent({
       return flist.slice(1);
     });
 
+    const parse_words = (words: MS.WordList) => {
+      const state = Parser.init_parser(words, varmap, false);
+      Parser.parse(state);
+      return state;
+    }
+
     /**
      * パース結果
      */
     const parsed_state = computed(() => {
       const wordlist = lexed_wordlist.value;
       if (!wordlist || !wordlist.next) { return null; }
-      const state = Parser.init_parser(wordlist.next, varmap, false);
-      Parser.parse(state);
+      const state = parse_words(wordlist.next);
+      const flattened_pipelinelist = Parser.flatten_pipelinelist(state.pipelinelist);
+      return {
+        ...state,
+        flattened_pipelinelist,
+      };
+    });
+
+    /**
+     * パース結果
+     */
+    const expanded_params_state = computed(() => {
+      const wordlist = lexed_wordlist.value;
+      if (!wordlist || !wordlist.next) { return null; }
+      const state = parse_words(wordlist.next);
+      Expander.expand_shell_param(state);
       const flattened_pipelinelist = Parser.flatten_pipelinelist(state.pipelinelist);
       return {
         ...state,
@@ -277,6 +311,7 @@ export default defineComponent({
       present_line_fordisp,
       lexed_flattened_wordlist,
       parsed_state,
+      expanded_params_state,
 
       var_items,
       assign_var,
@@ -299,7 +334,13 @@ export default defineComponent({
     flex-shrink 0
     flex-grow 0
     padding 0.6em
-
+  .view
+    flex-shrink 1
+    flex-grow 1
+    padding 0.6em
+    overflow scroll
+    display flex
+    flex-direction column
 
   .prompt
     flex-shrink 0
@@ -338,7 +379,7 @@ export default defineComponent({
           &.NEWLINE
             color green
 
-  .parser
+  .parser, .expander
     flex-shrink 1
     flex-grow 1
     padding 0.6em
@@ -353,7 +394,6 @@ export default defineComponent({
     flex-shrink 1
     flex-grow 1
     padding 0.6em
-    overflow scroll
     
     table
       border-collapse collapse

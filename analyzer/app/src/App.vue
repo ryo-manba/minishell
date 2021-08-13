@@ -5,8 +5,8 @@
       color="primary"
       dark
     )
-      h3 n8shell v23
-    v-main
+      h3 n8shell v24
+    v-main.main
       router-view
 </template>
 
@@ -30,6 +30,8 @@ html
 body
   height 100%
   margin 0
+.main
+  height 100%
 
 #app
   height 100%

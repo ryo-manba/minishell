@@ -86,28 +86,6 @@ export type WordList = {
     lex_type: WORD_LEX_TYPE;
 };
 
-/**
- * リダイレクション演算子
- */
-export type RedirList = {
-    /**
-     * 次の要素
-     */
-    next: RedirList | null;
-    /**
-     * 左オペランド
-     */
-    operand_left: STree | null;
-    /**
-     * 右オペランド
-     */
-    operand_right: WordList;
-    /**
-     * リダイレクション演算子種別
-     */
-    op: TokenRedirectionOperator;
-};
-
 export type STree = {
     /**
      * トークン文字列
@@ -133,8 +111,30 @@ export type STree = {
      * この要素がサブシェルなら、サブシェル(PipelineList)への参照を持つ。
      */
     subshell: PipelineList | null;
-    
 };
+
+/**
+ * リダイレクション演算子
+ */
+export type RedirList = {
+    /**
+     * 次の要素
+     */
+    next: RedirList | null;
+    /**
+     * 左オペランド
+     */
+    operand_left: STree | null;
+    /**
+     * 右オペランド
+     */
+    operand_right: STree;
+    /**
+     * リダイレクション演算子種別
+     */
+    op: TokenRedirectionOperator;
+};
+
 
 export type Clause = {
     redirs: RedirList | null;
@@ -162,4 +162,19 @@ export type ShellVariable = {
     attr: number;
 };
 
+export function char_is_for_name(char: string, i: number) {
+    if (i === 0) {
+        return !!char.match(/[_A-Za-z]/);
+    } else {
+        return !!char.match(/[0-9_A-Za-z]/);
+    }
+}
 
+export function str_is_for_name(str: string) {
+    let i = 0;
+    while (i < str.length) {
+        if (!char_is_for_name(str[i], i)) { return false; }
+        i += 1;
+    }
+    return true;
+}

@@ -28,7 +28,7 @@
             |, target:
             code(
               v-if="redir.operand_right"
-            ) {{ redir.operand_right.word }}
+            ) {{ redir.operand_right.token }}
         h5 Command Tokens
         .strees
           .stree(

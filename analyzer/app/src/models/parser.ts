@@ -150,10 +150,6 @@ function syntax_check_term_clause(state: ParserState, by_newline: boolean) {
     return null;
 }
 
-function str_is_for_name(str: string) {
-    return !!str.match(/^[_A-Za-z][0-9_A-Za-z]*$/);
-}
-
 function is_assignment_word(state: ParserState, st: MS.STree) {
     if (st.token_id !== "WORD") { return false; }
     if (!state.cursor.stree) {
@@ -164,7 +160,7 @@ function is_assignment_word(state: ParserState, st: MS.STree) {
     const ieq = st.token.indexOf("=");
     if (ieq <= 0) { return false; }
     // =より前の部分がNAMEとして適格であれば、このトークンをASSIGNMENT_WORDとする。
-    if (str_is_for_name(st.token.substring(0, ieq))) {
+    if (MS.str_is_for_name(st.token.substring(0, ieq))) {
         return true;
     }
     return false;
@@ -406,10 +402,18 @@ function subparse_redirection(
         // -> シンタックスエラー
         return return_with_error(state, next_token || lexer_token, "NO_RIGHT_OPERAND");
     }
+    const st: MS.STree = {
+        token: next_token.word,
+        token_id: "WORD",
+        depth: 1,
+        left: null,
+        right: null,
+        subshell: null,
+    };
     const redir: MS.RedirList = {
         next: null,
         operand_left: ion_token,
-        operand_right: next_token,
+        operand_right: st,
         op: lexer_token.word as any,
     };
     add_redir(state, redir);
