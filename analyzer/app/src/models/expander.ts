@@ -65,99 +65,109 @@ function push_back_subtoken(token: string, token_id: SubtokenId, subhead: Subtok
  * expand shell params in given stree DESTRUCTIVE.
  */
 function expand_token_shell_param(state: Parser.ParserState, stree: MS.STree) {
-    /**
-     * 現在位置
-     */
-    let i = 0;
-    /**
-     * 変数の開始位置
-     */
-    let var_start = 0;
-    let stat: ExSubtokenId = "Naked";
-    let subtokens: Subtoken | null = null;
-    let subhead: Subtoken | null = subtokens;
-    let finished_expectedly = false;
-    while (i <= stree.token.length) {
-        // 終了条件
-        if (stat === "SQuoted" && i < stree.token.length && stree.token[i] === "'") {
-            // SQuoted
-            // (クオートされていない)'に遭遇すること。
-            subhead = push_back_subtoken(stree.token.substring(var_start, i), stat, subhead);
-            subtokens = subtokens || subhead;
-            i += 1;
-        } else if (stat === "DQuoted" && i < stree.token.length && stree.token[i] === "\"") {
-            // DQuoted
-            // (クオートされていない)"に遭遇すること。
-            // TODO: Parameter Expansion
-            subhead = push_back_subtoken(stree.token.substring(var_start, i), stat, subhead);
-            subtokens = subtokens || subhead;
-            i += 1;
-        } else if (stat === "Variable" && var_start === i && stree.token[i] === "{") {
-            // BracedVariableの**開始**
-            // **Variable**状態で、`$`の次に(つまり`var_start === i`の時に)`{`に遭遇すること。
-            var_start = i + 1;
-            stat = "BracedVariable";
-            i += 1;
-            continue;
-        } else if (stat === "BracedVariable" && stree.token[i] === "}") {
-            // BracedVariableの**終了**
-            // }に遭遇すること。
-            const name = stree.token.substring(var_start, i);
-            const val = EV.get_var(state.varmap, name);
-            subhead = push_back_subtoken(val || "", "Variable", subhead);
-            subtokens = subtokens || subhead;
-            i += 1;
-        } else if (stat === "Variable" && !MS.char_is_for_name(stree.token[i], i - var_start - 1)) {
-            // Variable
-            // NAME適格文字ではない文字または文字列終端に遭遇すること。
-            const name = stree.token.substring(var_start, i);
-            const val = EV.get_var(state.varmap, name);
-            subhead = push_back_subtoken(val || "", stat, subhead);
-            subtokens = subtokens || subhead;
-        } else if (stat === "Naked" && !MS.char_is_for_naked(stree.token[i])) {
-            // Naked
-            // クオートされていない'"$または文字列終端に遭遇すること。
-            // 長さが0になる場合はpushしない
-            if (var_start < i) {
-                subhead = push_back_subtoken(stree.token.substring(var_start, i), stat, subhead);
+    function inner_expansion(state: Parser.ParserState, token_str: string) {
+        /**
+         * 現在位置
+         */
+        let i = 0;
+        /**
+         * 変数の開始位置
+         */
+        let var_start = 0;
+        let stat: ExSubtokenId = "Naked";
+        let subtokens: Subtoken | null = null;
+        let subhead: Subtoken | null = subtokens;
+        let finished_expectedly = false;
+        while (i <= token_str.length) {
+            // 終了条件
+            if (stat === "SQuoted" && i < token_str.length && token_str[i] === "'") {
+                // SQuoted
+                // (クオートされていない)'に遭遇すること。
+                subhead = push_back_subtoken(token_str.substring(var_start, i), stat, subhead);
                 subtokens = subtokens || subhead;
+                i += 1;
+            } else if (stat === "DQuoted" && i < token_str.length && token_str[i] === "\"") {
+                // DQuoted
+                // (クオートされていない)"に遭遇すること。
+                // TODO: Parameter Expansion
+                const quoted_text = token_str.substring(var_start, i);
+                let subtree = inner_expansion(state, quoted_text);
+                let sub_text = "";
+                while (subtree) {
+                    sub_text += subtree.token;
+                    subtree = subtree.next;
+                }
+                subhead = push_back_subtoken(sub_text, stat, subhead);
+                subtokens = subtokens || subhead;
+                i += 1;
+            } else if (stat === "Variable" && var_start === i && token_str[i] === "{") {
+                // BracedVariableの**開始**
+                // **Variable**状態で、`$`の次に(つまり`var_start === i`の時に)`{`に遭遇すること。
+                var_start = i + 1;
+                stat = "BracedVariable";
+                i += 1;
+                continue;
+            } else if (stat === "BracedVariable" && token_str[i] === "}") {
+                // BracedVariableの**終了**
+                // }に遭遇すること。
+                const name = token_str.substring(var_start, i);
+                const val = EV.get_var(state.varmap, name);
+                subhead = push_back_subtoken(val || "", "Variable", subhead);
+                subtokens = subtokens || subhead;
+                i += 1;
+            } else if (stat === "Variable" && !MS.char_is_for_name(token_str[i], i - var_start - 1)) {
+                // Variable
+                // NAME適格文字ではない文字または文字列終端に遭遇すること。
+                const name = token_str.substring(var_start, i);
+                const val = EV.get_var(state.varmap, name);
+                subhead = push_back_subtoken(val || "", stat, subhead);
+                subtokens = subtokens || subhead;
+            } else if (stat === "Naked" && !MS.char_is_for_naked(token_str[i])) {
+                // Naked
+                // クオートされていない'"$または文字列終端に遭遇すること。
+                // 長さが0になる場合はpushしない
+                if (var_start < i) {
+                    subhead = push_back_subtoken(token_str.substring(var_start, i), stat, subhead);
+                    subtokens = subtokens || subhead;
+                }
+            } else {
+                // 何も終わらなかった
+                i += 1;
+                continue;
             }
-        } else {
-            // 何も終わらなかった
+            // 開始条件
+            if (i === token_str.length) {
+                finished_expectedly = true;
+                break;
+            }
+            if (token_str[i] === "'") {
+                // SQuoted
+                // (クオートされていない)'に遭遇すること。
+                var_start = i + 1;
+                stat = "SQuoted"
+            } else if (token_str[i] === "\"") {
+                // DQuoted
+                // (クオートされていない)"に遭遇すること。
+                var_start = i + 1;
+                stat = "DQuoted"
+            } else if (token_str[i] === "$") {
+                // Variable
+                // (クオートされていない)$に遭遇すること。
+                var_start = i + 1;
+                stat = "Variable"
+            } else {
+                var_start = i;
+                stat = "Naked"
+            }
             i += 1;
-            continue;
         }
-        // 開始条件
-        if (i === stree.token.length) {
-            finished_expectedly = true;
-            break;
+        if (!finished_expectedly) {
+            console.warn("[!!] finished unexpectely");
         }
-        if (stree.token[i] === "'") {
-            // SQuoted
-            // (クオートされていない)'に遭遇すること。
-            var_start = i + 1;
-            stat = "SQuoted"
-        } else if (stree.token[i] === "\"") {
-            // DQuoted
-            // (クオートされていない)"に遭遇すること。
-            var_start = i + 1;
-            stat = "DQuoted"
-        } else if (stree.token[i] === "$") {
-            // Variable
-            // (クオートされていない)$に遭遇すること。
-            var_start = i + 1;
-            stat = "Variable"
-        } else {
-            var_start = i;
-            stat = "Naked"
-        }
-        i += 1;
+        return subtokens;
     }
-    if (!finished_expectedly) {
-        console.warn("[!!] finished unexpectely");
-    }
-    console.log(subtokens);
-    return subtokens;
+    const token_str = stree.token;
+    return inner_expansion(state, token_str);
 }
 
 export function expand_split(state: Parser.ParserState) {
