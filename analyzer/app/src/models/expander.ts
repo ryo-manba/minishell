@@ -10,6 +10,19 @@ type Subtoken = {
     next: Subtoken | null;
 };
 
+
+function push_back_stree(t1: MS.STree, t2: MS.STree | null) {
+    let st: MS.STree | null = t1;
+    if (!st) { return null; }
+    while (st && st.right) {
+        st = st.right
+    }
+    if (st) {
+        st.right = t2;
+    }
+    return st;
+}
+
 export function expand_shell_param(state: Parser.ParserState) {
     let pipeline: MS.Pipeline | null = state.pipelinelist.pipeline;
     while (pipeline) {
@@ -17,13 +30,33 @@ export function expand_shell_param(state: Parser.ParserState) {
         while (clause) {
             let redir = clause.redirs;
             while (redir) {
-                expand_token_flow(state, redir.operand_right);
+                const expanded = expand_token_flow(state, redir.operand_right);
+                if (expanded) {
+                    // TODO: !expanded の時エラー
+                    redir.operand_right = expanded;
+                }
                 redir = redir.next;
             }
             let stree = clause.stree;
+            let par_stree: MS.STree | null = null;
             while (stree) {
-                expand_token_flow(state, stree);
-                stree = stree.right;
+                const old_right = stree.right;
+                const expanded = expand_token_flow(state, stree);
+                if (expanded) {
+                    if (par_stree) {
+                        par_stree.right = expanded;
+                    } else {
+                        clause.stree = expanded;
+                    }
+                    par_stree = push_back_stree(expanded, old_right);
+                } else {
+                    if (par_stree) {
+                        par_stree.right = old_right;
+                    } else {
+                        clause.stree = old_right;
+                    }
+                }
+                stree = old_right;
             }
             clause = clause.next;
         }
@@ -38,17 +71,9 @@ export function expand_shell_param(state: Parser.ParserState) {
 function expand_token_flow(state: Parser.ParserState, stree: MS.STree) {
     let subtokens: Subtoken | null = expand_token_shell_param(state, stree);
 
-    expand_token_split(state, subtokens);
-
-    let expanded = "";
-    let subhead: Subtoken | null = subtokens;
-    subhead = subtokens;
-    console.log(stree);
-    while (subhead) {
-        expanded += subhead.token;
-        subhead = subhead.next;
-    }
-    stree.token = expanded;
+    subtokens = expand_token_split(state, subtokens);
+    const joined_stree = expand_token_join(state, subtokens);
+    return joined_stree;
 }
 
 function push_back_subtoken(token: string, token_id: SubtokenId, subhead: Subtoken | null) {
@@ -203,7 +228,7 @@ function expand_token_split(state: Parser.ParserState, stree: Subtoken | null) {
     const ifsv = EV.get_var(state.varmap, "IFS");
     // 0. そもそも実施する？
     if (typeof ifsv === "string" && ifsv.length === 0) {
-        return;
+        return stree;
     }
     const ifs = ifsv || ` \t\n`;
     const ifs_ws = ifs.split("").filter(c => ` \t\n\v\f\r`.includes(c)).join("");
@@ -356,4 +381,52 @@ function expand_token_split(state: Parser.ParserState, stree: Subtoken | null) {
     }
     console.log("WS(3)", JSON.stringify(xht, null, 2));
     return xht;
+}
+
+function expand_token_join(state: Parser.ParserState, stree: Subtoken | null) {
+    let joined: MS.STree | null = null;
+    let joined_head: MS.STree | null = null;
+    let sublist: Subtoken | null = null;
+    let subhead: Subtoken | null = null;
+    while (true) {
+        if (!stree || stree.token_id === "Divider") {
+            if (sublist || !stree) {
+                let subtoken = "";
+                if (subhead) {
+                    subhead.next = null;
+                }
+                console.log("join", JSON.stringify(sublist, null, 2));
+                while (sublist) {
+                    subtoken += sublist.token;
+                    sublist = sublist.next;
+                }
+                const st: MS.STree = {
+                    token: subtoken,
+                    token_id: "WORD",
+                    depth: 0,
+                    left: null,
+                    right: null,
+                    subshell: null,
+                };
+                if (joined_head) {
+                    joined_head.right = st;
+                }
+                joined_head = st;
+                joined = joined || joined_head;
+                sublist = null;
+                subhead = null;
+            }
+        } else {
+            if (subhead) {
+                subhead.next = stree;
+            }
+            subhead = stree;
+            sublist = sublist || subhead;
+        }
+        if (!stree) { break; }
+        stree = stree.next;
+        console.log("stree", stree);
+    }
+    console.log("joined", joined);
+    return joined;
 }
