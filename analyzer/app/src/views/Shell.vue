@@ -56,7 +56,7 @@
         )
 
     .expander.params
-      h3 Expanded Parameters
+      h3 Expanded
       .state(v-if="expanded_params_state")
         h4.parse_finished(v-if="expanded_params_state.finished") Finished
         h4.parse_error(v-else-if="expanded_params_state.parse_error")
@@ -380,8 +380,8 @@ export default defineComponent({
             color green
 
   .parser, .expander
-    flex-shrink 1
-    flex-grow 1
+    flex-shrink 0
+    flex-grow 0
     padding 0.6em
 
     .state

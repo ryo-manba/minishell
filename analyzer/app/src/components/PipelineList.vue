@@ -160,4 +160,8 @@ export default defineComponent({
         padding 4px
         border 1px solid orange
         margin-left 4px
+code
+  white-space pre-wrap
+  font-family "Courier New", Consolas, monospace
+  font-weight bold
 </style>

@@ -163,6 +163,9 @@ export type ShellVariable = {
 };
 
 export function char_is_for_name(char: string, i: number) {
+    if (!char) {
+        return false;
+    }
     if (i === 0) {
         return !!char.match(/[_A-Za-z]/);
     } else {
@@ -177,4 +180,11 @@ export function str_is_for_name(str: string) {
         i += 1;
     }
     return true;
+}
+
+export function char_is_for_naked(char: string) {
+    if (!char) {
+        return false;
+    }
+    return !char.match(/['"$]/);
 }

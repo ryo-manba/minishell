@@ -5,7 +5,7 @@
       color="primary"
       dark
     )
-      h3 n8shell v24
+      h3 n8shell v26
     v-main.main
       router-view
 </template>
