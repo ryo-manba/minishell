@@ -69,9 +69,13 @@ export function expand_shell_param(state: Parser.ParserState) {
  * expand shell params in given stree DESTRUCTIVE.
  */
 function expand_token_flow(state: Parser.ParserState, stree: MS.STree) {
+    // 変数展開
     let subtokens: Subtoken | null = expand_token_shell_param(state, stree);
-
+    // ワードスプリット
     subtokens = expand_token_split(state, subtokens);
+    // ファイル名展開
+    subtokens = expand_token_filename(state, subtokens);
+    // 連結
     const joined_stree = expand_token_join(state, subtokens);
     return joined_stree;
 }
@@ -218,7 +222,7 @@ export function expand_split(state: Parser.ParserState) {
 
 
 /**
- * 与えられたSTreeについて、word splittingを破壊的に行う。
+ * 与えられたSubtokenについて、word splittingを破壊的に行う。
  * split word in given stree DESTRUCTIVE.
  */
 function expand_token_split(state: Parser.ParserState, stree: Subtoken | null) {
@@ -233,8 +237,8 @@ function expand_token_split(state: Parser.ParserState, stree: Subtoken | null) {
     const ifs = ifsv || ` \t\n`;
     const ifs_ws = ifs.split("").filter(c => ` \t\n\v\f\r`.includes(c)).join("");
     const ifs_ns = ifs.split("").filter(c => !` \t\n\v\f\r`.includes(c)).join("");
-    console.log({ ifs, ifs_ws, ifs_ns });
-    console.log("WS(0)", JSON.stringify(st, null, 2));
+    // console.log({ ifs, ifs_ws, ifs_ns });
+    // console.log("WS(0)", JSON.stringify(st, null, 2));
     // 1. Variableサブトークンを空白・非空白に分割
     while (st) {
         if (st.token_id !== "Variable") {
@@ -301,7 +305,7 @@ function expand_token_split(state: Parser.ParserState, stree: Subtoken | null) {
         }
         st = st.next;
     }
-    console.log("WS(1)", JSON.stringify(xht, null, 2));
+    // console.log("WS(1)", JSON.stringify(xht, null, 2));
     // 2. NS*WSNS* の並びでDividerを入れる
     let ns_eating_ws = false;
     st = xht;
@@ -344,7 +348,7 @@ function expand_token_split(state: Parser.ParserState, stree: Subtoken | null) {
     if (xt) {
         xt.next = null;
     }
-    console.log("WS(2)", JSON.stringify(xht, null, 2));
+    // console.log("WS(2)", JSON.stringify(xht, null, 2));
     // 3. WS+の並びでDividerを入れる
     st = xht;
     xt = null;
@@ -379,10 +383,13 @@ function expand_token_split(state: Parser.ParserState, stree: Subtoken | null) {
     if (xt) {
         xt.next = null;
     }
-    console.log("WS(3)", JSON.stringify(xht, null, 2));
+    // console.log("WS(3)", JSON.stringify(xht, null, 2));
     return xht;
 }
 
+/**
+ * splitされたトークンをjoinする
+ */
 function expand_token_join(state: Parser.ParserState, stree: Subtoken | null) {
     let joined: MS.STree | null = null;
     let joined_head: MS.STree | null = null;
@@ -395,7 +402,7 @@ function expand_token_join(state: Parser.ParserState, stree: Subtoken | null) {
                 if (subhead) {
                     subhead.next = null;
                 }
-                console.log("join", JSON.stringify(sublist, null, 2));
+                // console.log("join", JSON.stringify(sublist, null, 2));
                 while (sublist) {
                     subtoken += sublist.token;
                     sublist = sublist.next;
@@ -425,8 +432,154 @@ function expand_token_join(state: Parser.ParserState, stree: Subtoken | null) {
         }
         if (!stree) { break; }
         stree = stree.next;
-        console.log("stree", stree);
+        // console.log("stree", stree);
     }
-    console.log("joined", joined);
+    // console.log("joined", joined);
     return joined;
+}
+
+/**
+ * 与えられたSubtokenについて、ファイル名展開を破壊的に行う。
+ * expand file-names in given stree DESTRUCTIVE.
+ */
+function expand_token_filename(state: Parser.ParserState, stree: Subtoken | null) {
+    // そもそも、展開する必要があるのか？
+
+    // Dividerまたは末尾がきたら、それまでのサブトークンを判定に回す
+    let retlist: Subtoken[] = [];
+    let sublist: Subtoken[] = [];
+    let subhead: Subtoken | null = stree;
+    let files: string[] | null = null;
+    let subnext: Subtoken | null = null;
+    while (true) {
+        if (subhead) {
+            sublist.push(subhead);
+        }
+        subnext = subhead ? subhead.next : null;
+        if ((!subhead && sublist.length > 0) ||
+            (subhead && subhead.token_id === "Divider")) {
+            // 判定
+            // sublistのクオートされていないトークンに"*"が1つでも含まれていれば、展開を行う。
+            if (subhead) {
+                subhead.next = null;
+            }
+            const contains_star = sublist
+                .filter(st => st.token_id !== "DQuoted" && st.token_id !== "SQuoted")
+                .some(st => st.token.includes("*"));
+            console.log(
+                "FN",
+                sublist
+                    .filter(st => st.token_id !== "DQuoted" && st.token_id !== "SQuoted")
+                    .map(st => st.token),
+                contains_star,
+                sublist,
+            );
+            if (contains_star && sublist.length > 0) {
+                // ファイル名展開
+                files = files || fetch_files(state);
+                console.log({ files });
+                let i = 0;
+                while (i < files.length) {
+                    const filename = files[i];
+                    if (match_to_list(filename, sublist[0])) {
+                        console.log("[matched]", filename);
+                        if (retlist.length > 0) {
+                            retlist.push({
+                                token: "",
+                                token_id: "Divider",
+                                next: null,
+                            });
+                        }
+                        retlist.push({
+                            token: filename,
+                            token_id: "Variable",
+                            next: null,
+                        });
+                    }
+                    i += 1;
+                }
+                if (retlist.length === 0) {
+                    retlist.push(...sublist);
+                } else if (subhead) {
+                    retlist.push({
+                        token: "",
+                        token_id: "Divider",
+                        next: null,
+                    });
+                }
+            } else {
+                // ファイル名展開不要
+                retlist.push(...sublist);
+            }
+
+            // つぎつぎ
+            sublist = [];
+        }
+        if (!subhead) { break; }
+        subhead = subnext;
+    }
+    let k = 0;
+    while (k < retlist.length - 1) {
+        retlist[k].next = retlist[k + 1];
+        k += 1;
+    }
+    return retlist.length > 0 ? retlist[0] : null;
+}
+
+function fetch_files(state: Parser.ParserState) {
+    const v = EV.get_var(state.varmap, "FILE_NAMES");
+    if (v) { return v.split(" "); }
+    return [];
+}
+
+/**
+ * 文字列nameがパターンsublistにマッチするかどうかを判定する
+ */
+function match_to_list(name: string, sublist: Subtoken) {
+    let dp1: number[] = new Array(name.length + 1);
+    let dp2: number[] = new Array(name.length + 1);
+    let k = 0;
+    while (k < name.length + 1) {
+        dp1[k] = 0;
+        dp2[k] = 0;
+        k += 1;
+    }
+    dp1[0] = 1;
+    // console.log(name, dp1, dp2);
+    let subhead: Subtoken | null = sublist;
+    while (subhead) {
+        let i = 0;
+        while (i < subhead.token.length) {
+            const c = subhead.token[i];
+            let j = 0;
+            while (j < dp1.length) {
+                // console.log(name, i, j, c, name[j], dp1[j])
+                if (dp1[j]) {
+                    if (subhead.token_id !== "DQuoted" && subhead.token_id !== "SQuoted" && c === "*") {
+                        // - パターンの`i`文字目が`*`の時
+                        // - 表の外に出ないなら、1つ下・1つ右・1つ右下の各セルに移動できる。
+                        if (j + 1 < dp1.length) {
+                            dp1[j + 1] = 1;
+                            dp2[j + 1] = 1;
+                        }
+                        dp2[j] = 1;
+                    } else if (c === name[j]) {
+                        // パターンのi文字目と文字列のj文字目が一致するなら、1つ右下のセルに移動できる。
+                        if (j + 1 < dp1.length) {
+                            dp2[j + 1] = 1;
+                        }
+                    }
+                }
+                j += 1;
+            }
+            dp1.forEach((v, j) => {
+                dp1[j] = dp2[j];
+                dp2[j] = 0;
+            })
+            // console.log(name, i, dp1);
+            i += 1;
+        }
+        subhead = subhead.next;
+    }
+    return dp1[dp1.length - 1];
 }

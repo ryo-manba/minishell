@@ -28,7 +28,7 @@
             |, target:
             code(
               v-if="redir.operand_right"
-            ) {{ redir.operand_right.token }}
+            ) {{ get_redir_right_tokens(redir) }}
         h5 Command Tokens
         .strees
           .stree(
@@ -116,11 +116,22 @@ export default defineComponent({
       }
     }
 
+    const get_redir_right_tokens = (redir: MS.RedirList) => {
+      let right = redir.operand_right;
+      const targets: string[] = [];
+      while (true) {
+        targets.push(right.token);
+        if (!right.right) { break; }
+        right = right.right;
+      }
+      return targets.join(", ");
+    };
 
     return {
       reflat_subshell,
       get_desc_redir_op,
       get_redir_fd,
+      get_redir_right_tokens,
     }
   },
 
