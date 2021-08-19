@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstpush_back.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/23 21:57:34 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/07/23 22:08:05 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/08/16 20:58:54 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
