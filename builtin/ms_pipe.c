@@ -1,12 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <stdbool.h>
-#include <dirent.h>
-#include <fcntl.h>
 #include "libft.h"
 #include "../lexer/ms_lexer.h"
 #include "ms_utils.h"
@@ -95,7 +86,7 @@ char	*ms_get_path(char *cmd)
 }
 
 // 子プロセスでpipeをつなぐ
-int	ms_do_piping(t_test *test, int pipe_fd[2], int before_pipe[2])
+int	ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2])
 {
 	if (before_pipe[0] == -1) // 最初
 	{
@@ -115,25 +106,24 @@ int	ms_do_piping(t_test *test, int pipe_fd[2], int before_pipe[2])
 // 子プロセスでの処理
 // pipeをつなぐ->リダイレクト
 // ビルトインなら実行してexit(), 通常コマンドならexecve()で実行する
-void	ms_execute_child(t_test *test, int pipe_fd[2], int before_pipe[2], char **envp)
+void	ms_execute_child(t_clause *test, int pipe_fd[2], int before_pipe[2], char **envp)
 {
-	char *new_cmd[2]; // ms_create_cmd()作る。
-	new_cmd[0] = test->cmd;
-	new_cmd[1] = NULL;
+//	char *new_cmd[2]; // ms_create_cmd()作る。
+//	new_cmd[0] = test->cmd;
+//	new_cmd[1] = NULL;
 
 	ms_do_piping(test, pipe_fd, before_pipe);
-	if (test->has_redirect && ms_redirect(test->io_number, test->file_path, test->detail_type) == -1) // redirect(io_number or file_path)
+	if (test->redir != NULL)
 	{
-		strerror(errno);
-		exit(1);
+		ms_redirect(test->redir->operand_left, test->operand_right, test->redir_op); // left = io_number, right = file_path
 	}
-	if (test->is_builtin == true) // builtinならそのまま実行してexitする
-	{
-		exit(1); // do_builtin()
-	}
+//	if (test->is_builtin == true) // builtinならそのまま実行してexitする
+//	{
+//		exit(1); // do_builtin()
+//	}
 	else
 	{
- 		execve(ms_get_path(test->cmd), new_cmd, envp); // builtin以外
+ 		execve(ms_get_path(test->stree->token), new_cmd, envp); // builtin以外
 	}
 }
 
@@ -147,7 +137,7 @@ void	ms_execute_child(t_test *test, int pipe_fd[2], int before_pipe[2], char **e
  * 5) execve ()
  * 6) If the execve failed, see if the file has executable mode set.
  */
-void	ms_execute_command(t_test *test, char **envp)
+void	ms_execute_command(t_clause *test, char **envp)
 {
 	static int	before_pipe[2] = {-1, -1};
 	int	pipe_fd[2];

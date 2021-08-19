@@ -13,6 +13,7 @@
 #include <sys/errno.h>
 #include "libft.h"
 #include "../lexer/ms_lexer.h"
+#include "../analyzer/ms_analyzer.h"
 
 typedef struct s_test
 {

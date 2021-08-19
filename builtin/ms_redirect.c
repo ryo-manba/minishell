@@ -40,7 +40,7 @@ t_list	*ms_redirect_heredoc(int fd, int pipe_fd, char *delimiter)
 	}
 	if (g_flag == 1)
 	{
-		dup2(backup, 0);
+		dup2(backup, STDIN_FILENO);
 		close(backup);
 		ft_lstclear(&lst, free);
 		return (NULL);
@@ -57,7 +57,7 @@ t_list	*ms_redirect_heredoc(int fd, int pipe_fd, char *delimiter)
 // the function closes `fd` before opening `path`.
 int ms_open_at(int fd, const char *path, int oflag, int mode)
 {
-	int	open_fd; // close(read)
+	int	open_fd;
 
 	if (mode == -1) // stdin
 		open_fd = open(path, oflag);
@@ -103,30 +103,41 @@ int	ms_open_redirect_append(int io_number, const char *path)
 	return (ms_open_at(io_number, path, O_WRONLY | O_CREAT | O_APPEND, 0666));
 }
 
-// heredocの場合どうするか
-int	ms_open_redirect_heredoc()
+// heredocの場合
+// < の特殊ケース
+int	ms_redirect_heredoc(int io_number)
 {
-	return (1);
+	int pipe_fd[2];
+
+	pipe(pipe_fd);
+	ms_redirect_heredoc(); // heredoc読み込み
+	ms_expandable(); // 環境変数展開
+	dup2(pipe_fd[1], 1);
+	close(pipe_fd[1]);
+	ms_write_heredoc(); // 展開したやつを改行区切りでパイプに書き込む
+	dup2(pipe_fd[0], io_number);
+	close(pipe_fd[0]);
+	return (0);
 }
 
 //void	ms_redirect(int io_number, const char *path, t_word_list *lst)
 int	ms_redirect(int io_number, const char *path, int  detail_type)
 {
-	if (detail_type == REDIRECT_INPUT)
+	if (detail_type == TI_LT) // <
 	{
 		return (ms_open_redirect_input(io_number, path));
 	}
-	else if (detail_type == REDIRECT_OUTPUT)
+	else if (detail_type == TI_GT) // >
 	{
 		return (ms_open_redirect_output(io_number, path));
 	}
-	else if (detail_type == REDIRECT_APPEND)
+	else if (detail_type == TI_GTGT) // >>
 	{
 		return (ms_open_redirect_append(io_number, path));
 	}
-	else if (detail_type == TYPE_HEREDOC)
+	else if (detail_type == TI_LTLT) // <<
 	{
-//		return (ms_open_redirect_heredoc(io_number));
+		return (ms_redirect_heredoc(io_number));
 	}
 	return (-1);
 }
