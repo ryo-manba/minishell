@@ -11,7 +11,6 @@ export const CHARTYPE_SEMICOLON = ';';
 export const CHARTYPE_PAREN_L = '(';
 export const CHARTYPE_PAREN_R = ')';
 export const CHARTYPE_WORD = '_';
-export const CHAR_SPACELIKE = [CHARTYPE_SPACE, CHARTYPE_TAB];
 
 export const CHARTYPESET = {
     WORD_INCLUDED: "\"'_",
@@ -35,7 +34,8 @@ export const SubshellCloseOperators = [")"] as const;
 type SubshellCloseOperator = typeof SubshellCloseOperators[number];
 
 type TokenOperator = SubshellOpenOperator | SubshellCloseOperator | ClauseTerminateOperator | PipelineTerminateOperator | TokenRedirectionOperator;
-type TokenIdentifier = "WORD" | "IO_NUMBER" | "NAME" | "ASSIGNMENT_WORD" | "SUBSHELL" | TokenOperator;
+type TokenIdentifier =
+    "WORD" | "IO_NUMBER" | "NAME" | "ASSIGNMENT_WORD" | "SUBSHELL" | TokenOperator;
 
 export const OP = {
     REDIR_INPUT: 1,
@@ -96,10 +96,6 @@ export type STree = {
      */
     token_id: TokenIdentifier;
     /**
-     * このノードまでのツリー深度
-     */
-    depth: number;
-    /**
      * 左ノード
      */
     left: STree | null;
@@ -116,11 +112,11 @@ export type STree = {
 /**
  * リダイレクション演算子
  */
-export type RedirList = {
+export type SRedir = {
     /**
      * 次の要素
      */
-    next: RedirList | null;
+    next: SRedir | null;
     /**
      * 左オペランド
      */
@@ -137,7 +133,7 @@ export type RedirList = {
 
 
 export type Clause = {
-    redirs: RedirList | null;
+    redirs: SRedir | null;
     stree: STree | null;
     next: Clause | null;
 };

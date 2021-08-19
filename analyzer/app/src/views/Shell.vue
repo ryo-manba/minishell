@@ -258,7 +258,7 @@ export default defineComponent({
       const wordlist = lexed_wordlist.value;
       if (!wordlist || !wordlist.next) { return null; }
       const state = parse_words(wordlist.next);
-      Expander.expand_shell_param(state);
+      Expander.expand_shell_param(state, state.pipelinelist);
       const flattened_pipelinelist = Parser.flatten_pipelinelist(state.pipelinelist);
       return {
         ...state,
