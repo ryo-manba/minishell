@@ -5,11 +5,11 @@ RM		=	rm -f
 CC		= 	gcc -g #-fsanitize=address
 #CFLAGS	=	-Wall -Wextra -Werror
 CFLAGS	= 	-I/usr/local/opt/readline/include/
-
+LIBFT	=	../libft/libft.a
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) -lreadline -lhistory -o $(NAME) libft.a -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include $(OBJS)
+	$(CC) -lreadline -lhistory -o $(NAME) $(LIBFT) -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include $(OBJS)
 
 clean:
 	$(RM) $(OBJS)

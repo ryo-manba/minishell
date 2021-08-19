@@ -11,7 +11,7 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <sys/errno.h>
-#include "libft.h"
+#include "../libft/libft.h"
 #include "../lexer/ms_lexer.h"
 #include "../analyzer/ms_analyzer.h"
 
@@ -31,10 +31,11 @@ void ms_first_pipe(int pipe_fd[2]);
 void ms_last_pipe(int before_pipe[2]);
 void ms_middle_pipe(int pipe_fd[2], int before_pipe[2]);
 void ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2]);
+char *ms_search_execution_path(DIR *dir, char *cmd, char *path);
 char *ms_get_path(char *cmd);
-int	ms_do_piping(t_test *test, int pipe_fd[2], int before_pipe[2]);
-void	ms_execute_command(t_test *test, char **envp);
-void	t_pushback(t_test *test, int io_number, int detail_type, char *path, char *cmd);
+int	ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2]);
+void	ms_execute_child(t_clause *test, int pipe_fd[2], int before_pipe[2], char **envp);
+void	ms_execute_command(t_clause *test, char **envp);
 
 /* ms_redirect.c */
 int ms_open_at(int fd, const char *path, int oflag, int mode);
@@ -43,6 +44,10 @@ int ms_open_redirect_input(int io_number, const char *path);
 int ms_open_redirect_output(int io_number, const char *path);
 int	ms_open_redirect_append(int io_number, const char *path);
 int	ms_redirect(int io_number, const char *path, int  detail_type);
+
+static void	ms_heredoc_sigint_handler(int sig);
+int	ms_heredoc_signal_set(void);
+t_list	*ms_redirect_heredoc(int fd, int pipe_fd, char *delimiter);
 
 
 #endif

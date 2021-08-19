@@ -3,13 +3,13 @@
 volatile sig_atomic_t g_flag = 0;
 
 // ctrl+Cが来たら標準入力をcloseすることでreadlineはNULLを返す
-static void	ms_heredoc_sigint_handler(int sig)
+void	ms_heredoc_sigint_handler(int sig)
 {
 	g_flag = 1;
 	close(STDIN_FILENO);
 }
 
-static int	ms_heredoc_signal_set()
+int	ms_heredoc_signal_set()
 {
 	if (signal(SIGINT, ms_heredoc_sigint_handler) == SIG_ERR)
 		return (1);
@@ -120,7 +120,6 @@ int	ms_redirect_heredoc(int io_number)
 	return (0);
 }
 
-//void	ms_redirect(int io_number, const char *path, t_word_list *lst)
 int	ms_redirect(int io_number, const char *path, int  detail_type)
 {
 	if (detail_type == TI_LT) // <
