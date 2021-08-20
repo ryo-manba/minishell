@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+         #
+#    By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:59:59 by rmatsuka          #+#    #+#              #
-#    Updated: 2021/07/23 22:06:50 by rmatsuka         ###   ########.fr        #
+#    Updated: 2021/08/20 21:00:43 by rmatsuka         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS	=	ft_strlen.c \
 			ft_strdup.c \
 			ft_substr.c \
 			ft_strchr.c \
+			ft_strchr_i.c \
 			ft_strrchr.c \
 			ft_strnstr.c \
 			ft_strjoin.c \
@@ -48,9 +49,8 @@ SRCS	=	ft_strlen.c \
 			ft_putnbr_fd.c \
 			free_strjoin.c \
 			safe_free.c \
-			get_next_line.c
-
-SRCS_B	=	ft_lstnew.c \
+			get_next_line.c \
+			ft_lstnew.c \
 			ft_lstadd_front.c \
 			ft_lstsize.c \
 			ft_lstlast.c \
@@ -62,27 +62,22 @@ SRCS_B	=	ft_lstnew.c \
 			ft_lstpush_back.c \
 
 OBJS	=	$(SRCS:.c=.o)
-OBJS_B	=	$(SRCS_B:.c=.o)
 RM		=	rm -f
 LIBC	=	ar rcs
 CC		= 	gcc
 CFLAGS	=	-Wall -Wextra -Werror
 
-
 all:		$(NAME)
-
-bonus:		$(NAME) $(OBJS_B)
-			$(LIBC) $(NAME) $(OBJS_B)
 
 $(NAME):	$(OBJS)
 			$(LIBC) $(NAME) $(OBJS)
 
 clean:
-		$(RM) $(OBJS) $(OBJS_B)
+		$(RM) $(OBJS)
 
 fclean:		clean
-			$(RM) $(NAME) $(bonus)
+			$(RM) $(NAME)
 
 re:			fclean all
 
-.PHONY:		all clean fclean re bonus
+.PHONY:		all clean fclean re
