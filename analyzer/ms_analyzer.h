@@ -1,6 +1,7 @@
 #ifndef MS_ANALYZER_H
 # define MS_ANALYZER_H
-# include "../lexer/lexer.h"
+# include "../libft/libft.h"
+# include "ms_lex.h"
 
 typedef enum	e_token_id
 {
@@ -55,7 +56,7 @@ typedef struct	s_redir
 	t_stree			operand_right;
 	// 取りうる値は以下の通り:
 	// TI_LT(<), TI_GT(>), TI_LTLT(<<), TI_GTGT(>>), TI_LTGT(<>), TI_LTAND(<&), TI_GTAND(>&), TI_LTLTHYPHEN(<<-)
-    t_token_id			redir_op;
+    t_token_id		redir_op;
 }	t_redir;
 
 // clause
@@ -65,9 +66,9 @@ typedef struct	s_redir
 typedef struct	s_clause
 {
 	// 存在しないことがある
-	t_redir		*redir;
+	t_redir			*redir;
 	// 存在しないことがある(たとえば、コマンド`> x`はパースエラーにならない。)
-	t_stree		*stree;
+	t_stree			*stree;
 	// なお、redirかstreeの少なくとも一方は存在している。
 
 	struct s_clause	*next;
@@ -91,5 +92,13 @@ typedef struct	s_pipelinelist
 {
 	t_pipeline	*pipeline;
 }	t_pipelinelist;
+
+typedef struct	s_shellvar
+{
+	char	*key;
+	char 	*value;
+	int		is_env;
+    int		attr;
+}	t_shellvar;
 
 #endif

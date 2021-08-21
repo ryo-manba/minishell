@@ -1,3 +1,36 @@
+export type WORD_LEX_TYPE = "TOKEN" | "IO_NUMBER" | "OPERATOR" | "NEWLINE";
+
+export type WordList = {
+    /**
+     * 次の要素
+     */
+    next: WordList | null;
+    /**
+     * トークン文字列
+     */
+    word: string;
+    /**
+     * 入力文字列における開始インデックス
+     */
+    i: number;
+    /**
+     * トークンが終了しているか？
+     */
+    concluded: number;
+    /**
+     * 開始文字の文字タイプ
+     */
+    starting_chartype: string;
+    /**
+     * トークン最終文字の右隣の文字
+     */
+    right_delimiter: string;
+    /**
+     * Lexer時点で決まるラフなタイプ
+     */
+    lex_type: WORD_LEX_TYPE;
+};
+
 export const CHARTYPE_NEWLINE = '\n';
 export const CHARTYPE_SINGLE_QUOTE = "'";
 export const CHARTYPE_DOUBLE_QUOTE = '"';
@@ -13,10 +46,8 @@ export const CHARTYPE_PAREN_R = ')';
 export const CHARTYPE_WORD = '_';
 
 export const CHARTYPESET = {
-    WORD_INCLUDED: "\"'_",
+    WORD_INCLUDED: "\"'_" as const,
 };
-
-export type WORD_LEX_TYPE = "TOKEN" | "IO_NUMBER" | "OPERATOR" | "NEWLINE";
 
 export const RedirectionOperators = ["<", ">", "<<", ">>", "<>", "<&", ">&", "<<-" ] as const;
 type TokenRedirectionOperator = typeof RedirectionOperators[number];
@@ -53,37 +84,6 @@ export const OP = {
     DUPFD_OUT: 62,
     PAREN_L: 81,
     PAREN_R: 82,
-};
-
-export type WordList = {
-    /**
-     * 次の要素
-     */
-    next: WordList | null;
-    /**
-     * トークン文字列
-     */
-    word: string;
-    /**
-     * 入力文字列における開始インデックス
-     */
-    i: number;
-    /**
-     * トークンが終了しているか？
-     */
-    concluded: number;
-    /**
-     * 開始文字の文字タイプ
-     */
-    starting_chartype: string;
-    /**
-     * トークン最終文字の右隣の文字
-     */
-    right_delimiter: string;
-    /**
-     * Lexer時点で決まるラフなタイプ
-     */
-    lex_type: WORD_LEX_TYPE;
 };
 
 export type STree = {
