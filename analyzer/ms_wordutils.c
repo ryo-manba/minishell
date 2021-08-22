@@ -9,21 +9,21 @@ int	is_a_operator(t_wordcursor	*cursor)
 	strhead = (char *)(cursor->line + cursor->tail->i);
 	if (cursor->i - cursor->tail->i == 1)
 	{
-		if (ft_strncmp(strhead, "<", 1) || ft_strncmp(strhead, ">", 1) ||
-			ft_strncmp(strhead, "&", 1) || ft_strncmp(strhead, ";", 1) ||
-			ft_strncmp(strhead, "(", 1) || ft_strncmp(strhead, ")", 1) ||
-			ft_strncmp(strhead, "|", 1))
+		if (!ft_strncmp(strhead, "<", 1) || !ft_strncmp(strhead, ">", 1) ||
+			!ft_strncmp(strhead, "&", 1) || !ft_strncmp(strhead, ";", 1) ||
+			!ft_strncmp(strhead, "(", 1) || !ft_strncmp(strhead, ")", 1) ||
+			!ft_strncmp(strhead, "|", 1))
 				return (1);
 	}
 	if (cursor->i - cursor->tail->i == 2)
 	{
-		if (ft_strncmp(strhead, ">>", 2) || ft_strncmp(strhead, "<<", 2) ||
-			ft_strncmp(strhead, "&&", 2) || ft_strncmp(strhead, "||", 2) ||
-			ft_strncmp(strhead, "<&", 2) || ft_strncmp(strhead, ">&", 2))
+		if (!ft_strncmp(strhead, ">>", 2) || !ft_strncmp(strhead, "<<", 2) ||
+			!ft_strncmp(strhead, "&&", 2) || !ft_strncmp(strhead, "||", 2) ||
+			!ft_strncmp(strhead, "<&", 2) || !ft_strncmp(strhead, ">&", 2))
 				return (1);
 	}
 	if (cursor->i - cursor->tail->i == 3)
-		if (ft_strncmp(strhead, "<<-", 3))
+		if (!ft_strncmp(strhead, "<<-", 3))
 			return (1);
 	return (0);
 }

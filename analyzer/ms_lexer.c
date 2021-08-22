@@ -137,7 +137,7 @@ int	ms_lex_treat_operator(t_wordcursor *cursor, char c, char ct)
 		return (0);
 	// [演算子構成文字、つまり <>&|;() のどれか]
 	// - トークンが終了しているなら開始
-	if (cursor->tail->concluded)
+	if (!cursor->tail || cursor->tail->concluded)
 		ms_add_lexer_token(cursor, ct);
 	// - そうでないなら、トークンの開始文字が演算子開始文字かどうかをチェック
 	if (!ft_strchr("|&<>;()", cursor->line[cursor->tail->i]))
@@ -166,7 +166,7 @@ t_wdlist	*ms_lexer(const char *line)
 	while (line[cursor.i])
 	{
 		ct = ms_type_of_char(cursor.line[cursor.i]);
-		printf("[%d] cursor: (head %p tail %p quoted %d) '%c'\n", cursor.i, cursor.head, cursor.tail, cursor.under_quoted, ct);
+		// printf("[%d] cursor: (head %p tail %p quoted %d) '%c'\n", cursor.i, cursor.head, cursor.tail, cursor.under_quoted, ct);
 		if (ms_lex_treat_quote(&cursor, cursor.line[cursor.i], ct))
 			continue ;
 		else if (ms_lex_treat_nl(&cursor, cursor.line[cursor.i], ct))
