@@ -8,8 +8,8 @@ int	ms_is_builtin(t_shellvar *env, char *s)
 //		return (ms_cd());
 //	if (ft_strcmp(s, "pwd") == 0)
 //		return (ms_pwd());
-//	if (ft_strcmp(s, "export") == 0)
-//		return (ms_export());
+	if (ft_strcmp(s, "export") == 0)
+		return (ms_export(env, s));
 //	if (ft_strcmp(s, "unset") == 0)
 //		return (ms_unset());
 	if (ft_strcmp(s, "env") == 0)
@@ -25,7 +25,8 @@ int main()
 	t_shellvar *env;
 
 	env = ms_create_env();
-	ms_is_builtin(env, "env");
+//	ms_is_builtin(env, "env");
+	ms_is_builtin(env, "export");
 
 	return (0);
 }

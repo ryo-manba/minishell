@@ -10,6 +10,7 @@ t_shellvar *ms_create_env(void)
 	char *key;
 	char *value;
 
+	env = NULL;
 	i = 0;
 	while (environ[i])
 	{
