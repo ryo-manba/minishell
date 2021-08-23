@@ -33,7 +33,10 @@ t_shellvar	*ms_new_env(char *key, char *value, int is_env)
 	if (new_env == NULL)
 		perror("malloc");
 	new_env->key = ft_strdup(key);
-	new_env->value = ft_strdup(value);
+	if (value == NULL) // export VAR  =がつながってない場合
+		new_env->value = NULL;
+	else
+		new_env->value = ft_strdup(value);
 	new_env->is_env = is_env;
 	new_env->attr = 0;	// とりあえず保留
 	new_env->next = NULL;
@@ -73,7 +76,8 @@ int	ms_env(t_shellvar *env)
 	tmp = env;
 	while (tmp)
 	{
-		printf("%s=%s\n", tmp->key, tmp->value);
+		if (tmp->value != NULL) // valueが設定されていなかったら出力しない
+			printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
 	return (0);
