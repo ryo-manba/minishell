@@ -27,9 +27,7 @@ void	ms_env_clear(t_shellvar *env)
 	{
 		tmp = env;
 		env = env->next;
-		free(tmp->value);
-		free(tmp->key);
-		free(tmp);
+		ms_env_free(tmp);
 	}
 }
 
@@ -59,18 +57,6 @@ void	ms_print_sort_env(t_shellvar *env)
 	ms_env_clear(copy); // copyをfreeする
 }
 
-static void ms_export_test(t_shellvar *env)
-{
-	ms_append_or_update_env(env, "key", "update");
-	ms_append_or_update_env(env, "empty_string", "");
-	ms_append_or_update_env(env, "null", NULL);
-	ms_append_or_update_env(env, "null_update", "null");
-	ms_append_or_update_env(env, "null_update", NULL);
-	ms_append_or_update_env(env, "empty_update", "empty");
-	ms_append_or_update_env(env, "empty_update", "");
-	ms_print_export(env);
-}
-
 // exportの引数どうするか
 int	ms_export(t_shellvar *env, char *s)
 {
@@ -82,7 +68,6 @@ int	ms_export(t_shellvar *env, char *s)
 	else // 環境変数を追加または更新する
 	{
 		ms_append_or_update_env(env, "key", "value");
-		ms_export_test(env);
 	}
 	return (0);
 }

@@ -1,5 +1,12 @@
 #include "ms_builtin.h"
 
+void	ms_env_free(t_shellvar *env)
+{
+	free(env->key);
+	free(env->value);
+	free(env);
+}
+
 t_shellvar	*ms_search_key(t_shellvar *env, char *key)
 {
 	t_shellvar	*tmp;

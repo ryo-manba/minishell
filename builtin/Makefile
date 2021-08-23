@@ -4,7 +4,8 @@ SRCS	=	ms_env.c \
 			ms_builtin.c \
 			ms_export.c \
 			ms_export_utils.c \
-			main.c
+			ms_unset.c \
+			main.c \
 
 OBJS	=	$(SRCS:.c=.o)
 RM		=	rm -f
