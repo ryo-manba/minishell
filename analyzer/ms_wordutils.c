@@ -1,6 +1,6 @@
 #include "ms_analyzer.h"
 
-int	is_a_operator(t_wordcursor	*cursor)
+int	is_a_operator(t_lex_cursor	*cursor)
 {
 	char	*strhead;
 
@@ -42,7 +42,7 @@ t_wdlist	*ms_new_lexer_token(int i, char starting_char)
 	return (new);
 }
 
-void	ms_add_lexer_token(t_wordcursor *cursor, char starting_char)
+void	ms_add_lexer_token(t_lex_cursor *cursor, char starting_char)
 {
 	t_wdlist	*new;
 
@@ -57,33 +57,29 @@ void	ms_add_lexer_token(t_wordcursor *cursor, char starting_char)
 	cursor->tail = new;
 	if (!cursor->head)
 		cursor->head = cursor->tail;
+	cursor->tail->word = (char *)cursor->line + cursor->tail->i;
 	printf("added %p at %d: starts with '%c'\n", cursor->head, cursor->i, starting_char);
 }
 
-void	ms_conclude_lexer_token(t_wordcursor *cursor)
+// Lexerトークンを閉じる
+void	ms_conclude_lexer_token(t_lex_cursor *cursor)
 {
 	if (!cursor->tail || cursor->tail->concluded)
 		return ;
 	cursor->tail->concluded = 1;
-	cursor->tail->word = ft_substr_range(cursor->line, cursor->tail->i, cursor->i);
-	if (!cursor->tail->word)
-		return ; // ERROR
-	printf("(%d, %d) -> \"%s\"\n", cursor->tail->i, cursor->i, cursor->tail->word);
+	cursor->tail->len = cursor->i - cursor->tail->i;
+	printf("(%d, %d) -> \"%.*s\"\n", cursor->tail->i, cursor->i, cursor->tail->len, cursor->tail->word);
 	// 区切り文字をセット
 	if (cursor->line[cursor->i])
 		cursor->tail->right_delimiter = cursor->line[cursor->i];
 	// lex_typeの設定
 	// 初期値はTOKEN
-    if (cursor->tail->starting_chartype == LC_NEWLINE) {
-		// 改行はトークン識別子NEWLINEになる。
-		cursor->tail->lex_type = LT_NEWLINE;
-    } else if (is_a_operator(cursor)) {
-        // 演算子トークンは、その演算子トークンに対応するトークン識別子になる。
-		cursor->tail->lex_type = LT_OPERATOR;
-    } else if (ft_strchr("<>", cursor->tail->right_delimiter) &&
-		ms_is_digital_str(cursor->tail->word)) {
-        // 区切り文字が<>である数字のみのトークンは トークン識別子IO_NUMBER となる。
-		cursor->tail->lex_type = LT_IO_NUMBER;
-    }
+	if (cursor->tail->starting_chartype == LC_NEWLINE)
+		cursor->tail->lex_type = LT_NEWLINE; // 改行はトークン識別子NEWLINEになる。
+	else if (is_a_operator(cursor))
+		cursor->tail->lex_type = LT_OPERATOR; // 演算子トークンは、その演算子トークンに対応するトークン識別子になる。
+	else if (ft_strchr("<>", cursor->tail->right_delimiter) &&
+		ms_is_digital_str(cursor->tail->word, cursor->tail->len))
+		cursor->tail->lex_type = LT_IO_NUMBER; // 区切り文字が<>である数字のみのトークンは トークン識別子IO_NUMBER となる。
 	printf("concluded %p at %d: type is %d\n", cursor->tail, cursor->i, cursor->tail->lex_type);
 }

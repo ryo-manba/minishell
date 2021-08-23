@@ -1,12 +1,5 @@
 #include "ms_analyzer.h"
 
-// 演算子文字列(長さ降順)
-const char	*g_operator_desc[] = {
-	"<<-",
-	"<<", ">>", "<&", ">&", "<>", "&&", "||",
-	"<", ">", "|", "&", ";", "(", ")",
-	NULL};
-
 /**
  * 文字種別を判定する
  */
@@ -39,7 +32,7 @@ static char	ms_type_of_char(char c)
 
 // lexerのうちクオート関連処理
 // 引っかからなかった場合は0を返す。
-int	ms_lex_treat_quote(t_wordcursor *cursor, char c, char ct)
+int	ms_lex_treat_quote(t_lex_cursor *cursor, char c, char ct)
 {
 	if (cursor->under_quoted && cursor->under_quoted == c)
 		cursor->under_quoted = '\0'; // [クオート解除]
@@ -80,7 +73,7 @@ int	ms_lex_treat_quote(t_wordcursor *cursor, char c, char ct)
 
 // lexerのうちNEWLINE処理
 // 引っかからなかった場合は0を返す。
-int	ms_lex_treat_nl(t_wordcursor *cursor, char c, char ct)
+int	ms_lex_treat_nl(t_lex_cursor *cursor, char c, char ct)
 {
 	(void)c;
 	if (ct == LC_NEWLINE)
@@ -98,7 +91,7 @@ int	ms_lex_treat_nl(t_wordcursor *cursor, char c, char ct)
 
 // lexerのうち空白処理
 // 引っかからなかった場合は0を返す。
-int	ms_lex_treat_space(t_wordcursor *cursor, char c, char ct)
+int	ms_lex_treat_space(t_lex_cursor *cursor, char c, char ct)
 {
 	(void)c;
 	if (ct == LC_SPACE)
@@ -111,27 +104,9 @@ int	ms_lex_treat_space(t_wordcursor *cursor, char c, char ct)
 	return (0);
 }
 
-/**
- * `line[i]`から"<"で始まる最も長い演算子が取れるまで`i`を進める
- */
-size_t	cut_operator(t_wordcursor *cursor) {
-	size_t	k;
-	size_t	n;
-
-	k = 0;
-	while (g_operator_desc[k])
-	{
-		n = ft_starts_with(&(cursor->line[cursor->i]), g_operator_desc[k]);
-		if (n)
-			return (n);
-		k += 1;
-	}
-	return (0);
-}
-
 // lexerのうち演算子関連処理
 // 引っかからなかった場合は0を返す。
-int	ms_lex_treat_operator(t_wordcursor *cursor, char c, char ct)
+int	ms_lex_treat_operator(t_lex_cursor *cursor, char c, char ct)
 {
 	if (!ft_strchr("|&<>;()", c))
 		return (0);
@@ -147,7 +122,7 @@ int	ms_lex_treat_operator(t_wordcursor *cursor, char c, char ct)
 		ms_add_lexer_token(cursor, ct);
 	}
 	// トークンの開始文字が演算子開始文字なら、ここから最も長い演算子を切り出す。
-	cursor->i += cut_operator(cursor);
+	cursor->i += ms_cut_operator(cursor);
 	ms_conclude_lexer_token(cursor);
 	printf("treated ope\n");
 	return (1);
@@ -155,7 +130,7 @@ int	ms_lex_treat_operator(t_wordcursor *cursor, char c, char ct)
 
 t_wdlist	*ms_lexer(const char *line)
 {
-	t_wordcursor	cursor;
+	t_lex_cursor	cursor;
 	char			ct;
 
 	cursor.head = NULL;

@@ -32,29 +32,32 @@ typedef struct s_wdlist
 	struct s_wdlist	*next;
 	char			*word;
 	int				i;
+	int				len;
 	int				concluded;
 	char			starting_chartype;
 	char			right_delimiter;
 	t_lex_type		lex_type;
 }	t_wdlist;
 
-typedef struct s_wordcursor
+typedef struct s_lex_cursor
 {
 	t_wdlist	*head;
 	t_wdlist	*tail;
 	const char	*line;
 	char		under_quoted;
 	int			i;
-}	t_wordcursor;
+}	t_lex_cursor;
 
 # define UQ_SINGLE 1
 # define UQ_DOUBLE 2
 
 # define CHARS_WORD_INCLUDED "\"'_"
 
-void		ms_add_lexer_token(t_wordcursor *cursor, char starting_char);
-void		ms_conclude_lexer_token(t_wordcursor *cursor);
-int			ms_is_digital_str(const	char *str);
+void		ms_add_lexer_token(t_lex_cursor *cursor, char starting_char);
+void		ms_conclude_lexer_token(t_lex_cursor *cursor);
+int			ms_is_digital_str(const	char *str, size_t len);
+int			ms_is_name(const char *str, size_t len);
+int			ms_is_assignment_word(const char *str, size_t len);
 t_wdlist	*ms_lexer(const char *line);
 
 #endif

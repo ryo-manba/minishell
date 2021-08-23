@@ -1,28 +1,6 @@
 import * as MS from "./minishell";
 import * as EV from "./envvar";
 
-function new_clause(): MS.Clause {
-    return {
-        redirs: null,
-        stree: null,
-        next: null,
-    };
-}
-
-function new_pipeline(): MS.Pipeline {
-    return {
-        clause: new_clause(),
-        next: null,
-        joint: null,
-    };
-}
-
-function new_pipelinelist(): MS.PipelineList {
-    return {
-        pipeline: new_pipeline(),
-    };
-}
-
 export type ParseCursor = {
     pipeline: MS.Pipeline;
     clause: MS.Clause;
@@ -48,6 +26,28 @@ export type ParserState = {
     error_location_token: MS.WordList | null;
     varmap: EV.ShellVarMap;
 };
+
+function new_clause(): MS.Clause {
+    return {
+        redirs: null,
+        stree: null,
+        next: null,
+    };
+}
+
+function new_pipeline(): MS.Pipeline {
+    return {
+        clause: new_clause(),
+        next: null,
+        joint: null,
+    };
+}
+
+function new_pipelinelist(): MS.PipelineList {
+    return {
+        pipeline: new_pipeline(),
+    };
+}
 
 /**
  * パーサを初期化
@@ -76,6 +76,16 @@ export function init_parser(
         error_location_token: null,
         varmap,
     };
+}
+
+export function parse(state: ParserState) {
+    for(let n = 0; n < 1000; ++n) {
+        if (state.finished) { break; }
+        if (state.parse_error) { break; }
+        const result = parse_unit(state);
+        if (result === "exhausted") { break; }
+    }
+    return state;
 }
 
 /**
@@ -176,7 +186,7 @@ function return_with_error(state: ParserState, lexer_token: MS.WordList, error_t
 /**
  * パース本体
  */
-export function parse_unit(state: ParserState) {
+function parse_unit(state: ParserState) {
     const lexer_token = shift_lexer_token(state);
     if (!lexer_token) { return "exhausted"; }
 
@@ -320,16 +330,6 @@ function parse_subshell(state: ParserState, lexer_token: MS.WordList) {
     };
     add_stree(state, st);
     return "continue";
-}
-
-export function parse(state: ParserState) {
-    for(let n = 0; n < 1000; ++n) {
-        if (state.finished) { break; }
-        if (state.parse_error) { break; }
-        const result = parse_unit(state);
-        if (result === "exhausted") { break; }
-    }
-    return state;
 }
 
 /**
