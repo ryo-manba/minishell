@@ -24,24 +24,32 @@ typedef struct s_shellvar
 	struct s_shellvar *next;
 }	t_shellvar;
 
+/* ms_builtin */
+int	ms_exec_builtin(t_shellvar *env, char *s);
 
 /* ms_env */
-t_shellvar *ms_create_env(void);
+t_shellvar	*ms_create_env(void);
 t_shellvar	*ms_new_env(char *key, char *value, int is_env);
 t_shellvar	*ms_envlast(t_shellvar *env);
 void		ms_env_add_back(t_shellvar **env, t_shellvar *new);
 int			ms_env(t_shellvar *env);
 
 /* ms_export */
-int	ms_export(t_shellvar *env, char *s);
-int	ms_print_export(t_shellvar *env);
-void	ms_env_clear(t_shellvar *env);
+int			ms_export(t_shellvar *env, char *s);
+int			ms_print_export(t_shellvar *env);
+void		ms_env_clear(t_shellvar *env);
 t_shellvar *ms_copy_env(t_shellvar *env);
 
 /* ms_env_sort */
-void	ms_quick_sort(t_shellvar *first, t_shellvar *last);
-void	ms_swap_env(t_shellvar *env1, t_shellvar *env2);
+void		ms_quick_sort(t_shellvar *first, t_shellvar *last);
+void		ms_swap_env(t_shellvar *env1, t_shellvar *env2);
 t_shellvar *ms_partition(t_shellvar *first, t_shellvar *last);
+
+/* ms_export_utils */
+t_shellvar	*ms_search_key(t_shellvar *env, char *key);
+void		ms_append_env(t_shellvar *env, char *key, char *value);
+void		ms_update_env(t_shellvar *update_pos, char *value);
+int			ms_append_or_update_env(t_shellvar *env, char *key, char *value);
 
 
 
