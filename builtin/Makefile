@@ -1,5 +1,9 @@
 NAME	=	a.out
-SRCS	=	ms_env.c ms_builtin.c
+SRCS	=	ms_env.c \
+			ms_builtin.c \
+			ms_export.c \
+			ms_env_sort.c \
+
 OBJS	=	$(SRCS:.c=.o)
 RM		=	rm -f
 CC		= 	gcc -g #-fsanitize=address
