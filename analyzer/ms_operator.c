@@ -116,7 +116,7 @@ const char	*g_all_token_label[] = {
 	NULL};
 
 /**
- * `line[i]`から"<"で始まる最も長い演算子が取れるまで`i`を進める
+ * `line[i]`から最も長い演算子が取れるまで`i`を進める
  */
 size_t	ms_cut_operator(t_lex_cursor *cursor)
 {

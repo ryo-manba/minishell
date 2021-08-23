@@ -1,6 +1,6 @@
 #include "ms_analyzer.h"
 
-int	is_a_operator(t_lex_cursor	*cursor)
+int	is_a_operator(t_lex_cursor *cursor)
 {
 	char	*strhead;
 
@@ -17,9 +17,10 @@ int	is_a_operator(t_lex_cursor	*cursor)
 	}
 	if (cursor->i - cursor->tail->i == 2)
 	{
-		if (!ft_strncmp(strhead, ">>", 2) || !ft_strncmp(strhead, "<<", 2) ||
-			!ft_strncmp(strhead, "&&", 2) || !ft_strncmp(strhead, "||", 2) ||
-			!ft_strncmp(strhead, "<&", 2) || !ft_strncmp(strhead, ">&", 2))
+		if (!ft_strncmp(strhead, "&&", 2) || !ft_strncmp(strhead, "||", 2) ||
+			!ft_strncmp(strhead, "<<", 2) || !ft_strncmp(strhead, ">>", 2) ||
+			!ft_strncmp(strhead, "<&", 2) || !ft_strncmp(strhead, ">&", 2) ||
+			!ft_strncmp(strhead, "<>", 2))
 				return (1);
 	}
 	if (cursor->i - cursor->tail->i == 3)

@@ -7,6 +7,9 @@ int	ms_init_parse_state(
 	int for_subshell)
 {
 	ft_bzero(state, sizeof(t_parse_state));
+	state->pipelinelist = ft_calloc(1, sizeof(t_pipelinelist));
+	if (!state->pipelinelist)
+		return (MS_AZ_FAIL);
 	printf("%p, %p, %p\n", state, &(state->cursor), state->cursor.word);
 	state->cursor.word = words;
 	state->for_subshell = for_subshell;

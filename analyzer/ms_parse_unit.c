@@ -30,7 +30,7 @@ int	ms_unit_token_io_number(t_parse_state *state, t_wdlist *word)
 	t_stree		*st;
 	t_wdlist	*next_word;
 
-	st = ms_make_stree(word);
+	st = ms_make_stree(word, 0);
 	if (!st)
 		return (ms_return_with_error(state, word, "ALLOCATION FAILED"));
 	// [トークンがIO_NUMBERだった場合]
@@ -46,9 +46,9 @@ int	ms_unit_token_io_number(t_parse_state *state, t_wdlist *word)
 // TOKENトークンのパース
 int	ms_unit_token_token(t_parse_state *state, t_wdlist *word)
 {
-	t_stree		*st;
+	t_stree	*st;
 
-	st = ms_make_stree(word);
+	st = ms_make_stree(word, 0);
 	printf("%p(%.*s) -> %p\n", word, word->len, word->word, st);
 	if (!st)
 		return (ms_return_with_error(state, word, "ALLOCATION FAILED"));

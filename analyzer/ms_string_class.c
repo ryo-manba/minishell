@@ -43,7 +43,7 @@ int	ms_is_assignment_word(const char *str, size_t len)
 	while (n < len && str[n])
 	{
 		if (str[n] == '=')
-			return (ms_is_assignment_word(str, n));
+			return (ms_is_name(str, n));
 		n += 1;
 	}
 	return (0);

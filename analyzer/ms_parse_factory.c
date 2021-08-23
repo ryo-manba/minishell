@@ -2,7 +2,7 @@
 
 // factory funcs for parser.
 
-t_stree	*ms_make_stree(t_wdlist *word)
+t_stree	*ms_make_stree(t_wdlist *word, int for_subshell)
 {
 	t_stree	*st;
 
@@ -16,7 +16,9 @@ t_stree	*ms_make_stree(t_wdlist *word)
 		free(st);
 		return (NULL);
 	}
-	if (word->lex_type == LT_IO_NUMBER)
+	if (for_subshell)
+		st->token_id = TI_SUBSHELL;
+	else if (word->lex_type == LT_IO_NUMBER)
 		st->token_id = TI_IO_NUMBER;
 	else
 		st->token_id = TI_WORD;

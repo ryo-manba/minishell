@@ -119,7 +119,7 @@ typedef struct	s_parse_cursor
 typedef struct s_parse_state
 {
 	t_wdlist		*words; // こっちは代入後に変更しない
-	t_pipelinelist	pipelinelist;
+	t_pipelinelist	*pipelinelist;
 	t_parse_cursor	cursor;
 	int				for_subshell;
 
@@ -127,7 +127,6 @@ typedef struct s_parse_state
 	char			*error_message;
 	t_wdlist		*error_word;
 }	t_parse_state;
-
 
 size_t	ms_cut_operator(t_lex_cursor *cursor);
 t_token_id	ms_operator_token_id(t_wdlist *word);
@@ -138,7 +137,7 @@ int	ms_parse(t_parse_state *state);
 int	ms_parse_unit(t_parse_state *state);
 t_wdlist	*ms_shift_word(t_parse_state *state);
 int	ms_return_with_error(t_parse_state *state, t_wdlist *word, char *message);
-t_stree	*ms_make_stree(t_wdlist *word);
+t_stree	*ms_make_stree(t_wdlist *word, int for_subshell);
 t_redir	*ms_make_redir(t_wdlist *op_word, t_stree *target, t_stree *ion);
 t_stree	*ms_parse_add_stree(t_parse_state *state, t_stree *stree);
 t_redir	*ms_parse_add_redir(t_parse_state *state, t_redir *redir);

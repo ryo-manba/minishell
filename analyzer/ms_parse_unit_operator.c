@@ -5,22 +5,23 @@ int	ms_subparse_subshell(t_parse_state *state, t_wdlist *word)
 	t_parse_state	substate;
 	t_stree			*st;
 
-	if (!state->cursor.word)
+	if (!state->cursor.word->next)
 		return (ms_return_with_error(state, word, "NO_RIGHT_ELEM"));
-	if (!state->cursor.stree)
+	if (state->cursor.stree)
 		return (ms_return_with_error(state, word, "SUBSHELL_IS_NOT_LEADING"));
-	if (!state->cursor.redir)
+	if (state->cursor.redir)
 		return (ms_return_with_error(state, word, "REDIR_BEFORE_SUBSHELL"));
 	st = (t_stree *)ft_calloc(1, sizeof(t_stree));
 	if (!st)
 		return (ms_return_with_error(state, word, "ALLOCATION FAILED"));
-	ms_init_parse_state(&substate, word, 1);
+	if (ms_init_parse_state(&substate, word->next, 1))
+		return (ms_return_with_error(state, word, "ALLOCATION FAILED"));
 	ms_parse(&substate);
-	// パース完了後、結果(substate)からサブシェルを取り出す
 	if (substate.error_message && substate.error_word)
 		return (ms_return_with_error(state, substate.error_word, substate.error_message));
 	state->cursor.word = substate.cursor.word;
 	st->token_id = TI_SUBSHELL;
+	st->subshell = substate.pipelinelist;
 	if (!ms_parse_add_stree(state, st))
 	{
 		free(st);
