@@ -11,7 +11,7 @@ void	ms_search_and_update_env(t_shellvar *env, char *key, char *new_value)
 	}
 }
 
-// PWD, OLDPWDが unsetされている場合は新しく作らない(minishell的には作っても良さそう)
+// PWD, OLDPWDが unsetされている場合は新しく作らない
 int	ms_update_pwd(t_shellvar *env, char *old_pwd)
 {
 	char	*pwd;
@@ -52,6 +52,7 @@ int	ms_cd(t_shellvar *env, char *arg)
 	bool	is_success;
 
 	is_success = true;
+	errno = 0; // 初期化しないと正しくエラー判定できない
 	old_pwd = getcwd(NULL, 0);
 	if (errno != 0)
 	{

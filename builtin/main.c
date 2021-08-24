@@ -36,6 +36,58 @@ static void ms_export_test(t_shellvar *env)
 	ms_print_sort_env(env);
 }
 
+static void	ms_cd_pwd_oldpwd(t_shellvar *env, char *path)
+{
+	t_shellvar *pwd;
+	t_shellvar *oldpwd;
+
+	pwd = ms_search_key(env, "PWD");
+	oldpwd = ms_search_key(env, "OLDPWD");
+	printf("OLDPWD :  %s\n", oldpwd->value);
+	printf("PWD    :  %s\n", pwd->value);
+	printf("command: [cd %s]\n", path);
+	ms_cd(env, path);
+	printf("=====================================\n");
+
+//	pwd = ms_search_key(env, "PWD");
+//	oldpwd = ms_search_key(env, "OLDPWD");
+//	printf("OLDPWD is %s\n", oldpwd->value);
+//	printf("PWD    is %s\n", pwd->value);
+}
+
+
+static void ms_cd_pwd(t_shellvar *env, char *path)
+{
+	printf("command: [cd %s]\n", path);
+	printf("before: ");
+	ms_exec_builtin(env, "pwd");
+	ms_cd(env, path);
+	printf("after:  ");
+	ms_exec_builtin(env, "pwd");
+}
+
+static void	ms_cd_test(t_shellvar *env)
+{
+	// printf("-----cd test-----\n");
+	// ms_cd_pwd(env, "../");
+	// ms_cd_pwd(env, "./");
+	// ms_cd_pwd(env, "");
+	// ms_cd_pwd(env, NULL);
+	// ms_cd_pwd(env, "../../../../.././../");
+
+	printf("-----cd pwd oldpwd test-----\n");
+	ms_cd_pwd_oldpwd(env, "../");
+	ms_cd_pwd_oldpwd(env, "./");
+	ms_cd_pwd_oldpwd(env, NULL);
+	ms_cd_pwd_oldpwd(env, ".");
+	ms_cd_pwd_oldpwd(env, "nosuchfile");
+	ms_cd_pwd_oldpwd(env, "/Users/rmatsuka/test1/test2/test3");
+	ms_cd_pwd_oldpwd(env, "../../../../../../../");
+	ms_cd_pwd_oldpwd(env, ".././.././.././../");
+	ms_cd_pwd_oldpwd(env, "./././../../../");
+}
+
+
 int main()
 {
 	t_shellvar *env;
@@ -44,8 +96,13 @@ int main()
 //	ms_exec_builtin(env, "env");
 //	ms_exec_builtin(env, "export");
 //	ms_exec_builtin(env, "unset");
-	ms_export_test(env);
-	ms_unset_test(env);
+//	ms_exec_builtin(env, "pwd");
+//	ms_exec_builtin(env, "cd");
+
+
+//	ms_export_test(env);
+//	ms_unset_test(env);
+	ms_cd_test(env);
 
 	return (0);
 }
