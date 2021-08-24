@@ -3,7 +3,7 @@
 static t_wdlist	*new_lexer_token(int i, char starting_char)
 {
 	t_wdlist	*new;
-	
+
 	new = (t_wdlist *)ft_calloc(1, sizeof(t_wdlist));
 	if (new)
 	{
@@ -56,8 +56,8 @@ void	ms_lexer_conclude_token(t_lex_cursor *cursor)
 		tail->lex_type = LT_NEWLINE;
 	else if (ms_is_an_operator(cursor))
 		tail->lex_type = LT_OPERATOR;
-	else if (ft_strchr("<>", tail->delimiter) &&
-		ms_is_digital_str(tail->word, tail->len))
+	else if (ft_strchr("<>", tail->delimiter)
+		&& ms_is_digital_str(tail->word, tail->len))
 		cursor->tail->lex_type = LT_IO_NUMBER;
 	printf("concluded %p at %d: type is %d\n", tail, cursor->i, tail->lex_type);
 }

@@ -30,8 +30,8 @@ static int	treat_quote(t_lex_cursor *cursor, char c, char ct)
 	}
 	else if (cursor->under_quoted || ct == LC_WORD)
 	{
-		if (cursor->tail &&
-			!ft_strchr(CHARS_WORD_INCLUDED, cursor->tail->starting_chartype))
+		if (cursor->tail
+			&& !ft_strchr(CHARS_WORD_INCLUDED, cursor->tail->starting_chartype))
 			ms_lexer_conclude_token(cursor);
 		if (ms_lexer_add_token(cursor, ct))
 			return (1);

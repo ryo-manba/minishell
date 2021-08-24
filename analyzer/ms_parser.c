@@ -39,12 +39,10 @@ int	ms_parse(t_parse_state *state)
 	{
 		if (state->finished)
 			break ;
-		if (state->error_message)
+		if (state->err_message)
 			break ;
 		if (ms_parse_unit(state))
 			break ;
 	}
 	return (MS_AZ_SUCC);
 }
-
-

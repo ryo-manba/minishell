@@ -16,7 +16,7 @@ int	ms_is_digital_str(const	char *str, size_t len)
 // 1. 長さが1以上
 // 2. 先頭の文字が[A-Za-z_]のいずれか
 // 3. 先頭以外の文字が[0-9A-Za-z_]のいずれか
-int ms_is_name(const char *str, size_t len)
+int	ms_is_name(const char *str, size_t len)
 {
 	size_t	n;
 

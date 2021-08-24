@@ -116,8 +116,8 @@ typedef struct s_parse_state
 	int				for_subshell;
 
 	int				finished;
-	char			*error_message;
-	t_wdlist		*error_word;
+	char			*err_message;
+	t_wdlist		*err_word;
 }	t_parse_state;
 
 int	ms_is_an_operator(t_lex_cursor *cursor);
@@ -129,7 +129,7 @@ int	ms_init_parse_state(t_parse_state *state, t_wdlist *words, int for_subshell)
 int	ms_parse(t_parse_state *state);
 int	ms_parse_unit(t_parse_state *state);
 t_wdlist	*ms_shift_word(t_parse_state *state);
-int	ms_return_with_error(t_parse_state *state, t_wdlist *word, char *message);
+int	ms_syntax_error(t_parse_state *state, t_wdlist *word, char *message);
 t_stree	*ms_make_stree(t_wdlist *word, int for_subshell);
 t_redir	*ms_make_redir(t_wdlist *op_word, t_stree *target, t_stree *ion);
 t_stree	*ms_parse_add_stree(t_parse_state *state, t_stree *stree);

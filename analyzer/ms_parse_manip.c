@@ -29,7 +29,6 @@ t_clause	*ms_parse_add_new_clause(t_parse_state *state)
 {
 	t_clause	*clause;
 
-	// pipelineがなければ空のpipelineを作成
 	if (!state->cursor.pipeline)
 		if (!ms_parse_add_new_pipeline(state))
 			return (NULL);
@@ -53,7 +52,6 @@ t_clause	*ms_parse_add_new_clause(t_parse_state *state)
 // 成功したら、redir自身を返す。
 t_redir	*ms_parse_add_redir(t_parse_state *state, t_redir *redir)
 {
-	// clauseがなければ空のclauseを作成
 	if (!state->cursor.clause)
 		if (!ms_parse_add_new_clause(state))
 			return (NULL);
@@ -72,13 +70,14 @@ t_redir	*ms_parse_add_redir(t_parse_state *state, t_redir *redir)
 // 成功したら、stree自身を返す。
 t_stree	*ms_parse_add_stree(t_parse_state *state, t_stree *stree)
 {
-	// clauseがなければ空のclauseを作成
 	if (!state->cursor.clause)
+	{
 		if (!ms_parse_add_new_clause(state))
 		{
 			free(stree);
 			return (NULL);
 		}
+	}
 	if (state->cursor.stree)
 		state->cursor.stree->right = stree;
 	else

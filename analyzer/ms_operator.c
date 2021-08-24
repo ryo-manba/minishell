@@ -1,7 +1,7 @@
 #include "ms_analyzer.h"
 
 // 演算子文字列(長さ降順)
-const char	*g_op_label[] = {
+const char			*g_op_label[] = {
 	"<<-",
 	"<<",
 	">>",
@@ -39,7 +39,7 @@ const t_token_id	g_op_token_id[] = {
 	0};
 
 // 演算子 長さ
-const size_t	g_op_len[] = {
+const size_t		g_op_len[] = {
 	3,
 	2,
 	2,
@@ -87,7 +87,7 @@ const t_token_id	g_all_token_id[] = {
 	0};
 
 // 全 token_idラベル
-const char	*g_all_token_label[] = {
+const char			*g_all_token_label[] = {
 	"WORD",
 	"IO_NUMBER",
 	"NAME",
@@ -130,8 +130,8 @@ int	ms_is_an_operator(t_lex_cursor *cursor)
 	while (g_op_label[++i])
 	{
 		d = cursor->i - cursor->tail->i;
-		if (d == g_op_len[i] &&
-			!ft_strncmp(strhead, g_op_label[i], g_op_len[i]))
+		if (d == g_op_len[i]
+			&& !ft_strncmp(strhead, g_op_label[i], g_op_len[i]))
 			return (1);
 	}
 	return (0);
