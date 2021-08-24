@@ -136,10 +136,12 @@ t_stree	*ms_parse_add_stree(t_parse_state *state, t_stree *stree);
 t_redir	*ms_parse_add_redir(t_parse_state *state, t_redir *redir);
 t_clause	*ms_parse_add_new_clause(t_parse_state *state);
 t_pipeline	*ms_parse_add_new_pipeline(t_parse_state *state);
+int	ms_subparse_enter_subshell(t_parse_state *state, t_wdlist *word);
+int	ms_subparse_leave_subshell(t_parse_state *state, t_wdlist *word);
 int	ms_subparse_redir(t_parse_state *state, t_wdlist *word, t_stree *ion_st);
-int	ms_subparse_subshell(t_parse_state *state, t_wdlist *word);
 int ms_subparse_term_pipeline(t_parse_state *state, t_wdlist *word);
 int ms_subparse_term_clause(t_parse_state *state, t_wdlist *word);
+char	*ms_syntax_final(t_parse_state *state);
 int	ms_syntax_term_clause(t_parse_state *state, int by_newline);
 int	ms_syntax_term_pipeline(t_parse_state *state, int by_newline);
 

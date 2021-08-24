@@ -65,6 +65,7 @@ int main()
 		print_parse_state(&ps);
 		printf("%s\n", g_commands_ok[i]);
 		print_pipeline(&ps, ps.pipeline, 0);
+		printf("\n");
 		if (ps.error_message)
 			printf("[Parse Error] %s\n", ps.error_message);
 	}

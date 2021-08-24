@@ -1,6 +1,7 @@
 #include "ms_analyzer.h"
 
-int	ms_subparse_subshell(t_parse_state *state, t_wdlist *word)
+// サブシェルのパース開始
+int	ms_subparse_enter_subshell(t_parse_state *state, t_wdlist *word)
 {
 	t_parse_state	substate;
 	t_stree			*st;
@@ -23,13 +24,27 @@ int	ms_subparse_subshell(t_parse_state *state, t_wdlist *word)
 	st->token_id = TI_SUBSHELL;
 	st->subshell = substate.pipeline;
 	if (!ms_parse_add_stree(state, st))
-	{
-		free(st);
 		return (ms_return_with_error(state, word, "ALLOCATION FAILED"));
-	}
 	return (MS_AZ_SUCC);
 }
 
+// サブシェルのパース終了
+int	ms_subparse_leave_subshell(t_parse_state *state, t_wdlist *word)
+{
+	char		*final_error;
+
+	if (!state->for_subshell)
+		return (ms_return_with_error(state, word, "UNEXPECTED_SUBSHELL_CLOSER"));
+	if (!state->cursor.redir && !state->cursor.stree)
+		return (ms_return_with_error(state, word, "UNEXPECTED_SUBSHELL_CLOSER"));
+	final_error = ms_syntax_final(state);
+	if (final_error)
+		return (ms_return_with_error(state, word, final_error));
+	state->finished = 1;
+	return (MS_AZ_SUCC);
+}
+
+// パイプライン終端トークン(; & || &&)
 int ms_subparse_term_pipeline(t_parse_state *state, t_wdlist *word)
 {
 	t_token_id	joint;
@@ -44,6 +59,7 @@ int ms_subparse_term_pipeline(t_parse_state *state, t_wdlist *word)
 	return (MS_AZ_SUCC);
 }
 
+// 節終端トークン(|)
 int ms_subparse_term_clause(t_parse_state *state, t_wdlist *word)
 {
 	t_token_id	term;

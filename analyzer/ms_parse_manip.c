@@ -75,7 +75,10 @@ t_stree	*ms_parse_add_stree(t_parse_state *state, t_stree *stree)
 	// clauseがなければ空のclauseを作成
 	if (!state->cursor.clause)
 		if (!ms_parse_add_new_clause(state))
+		{
+			free(stree);
 			return (NULL);
+		}
 	if (state->cursor.stree)
 		state->cursor.stree->right = stree;
 	else

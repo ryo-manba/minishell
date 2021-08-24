@@ -1,5 +1,13 @@
 #include "ms_analyzer.h"
 
+char *ms_syntax_final(t_parse_state *state)
+{
+	if (!state->cursor.clause->stree)
+		if (state->cursor.expecting_continuation)
+			return ("EXPECTED_CONTINUATION");
+	return (NULL);
+}
+
 int	ms_syntax_term_clause(t_parse_state *state, int by_newline)
 {
 	t_clause	*clause;
