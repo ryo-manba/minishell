@@ -4,16 +4,15 @@
 #include <string.h>
 
 const char	*g_commands_ok[] = {
-	//"echo \"$VAR\" && echo * > *.md | > README* echo a${VAR}\"$VAR\"'$VAR'\n",
+	// "echo \"$VAR\" && echo * > *.md | > README* echo a${VAR}\"$VAR\"'$VAR'\n",
 	// "(VAR=\"Hello\" echo a; echo b) | cat > file\n",
 	// "(a && (b || (c && (d || e))))\n",
 	// "echo \"\" a bb ccc\"\"\n",
 	// "a 1>&2\n",
-	"<<- EOT <> x echo a >> y << z && var=phi cat x <<x 1>&y 2>&z && ls -l\n",
+	"<<-EOT<>x echo a>>y<< z&&var=phi cat x<<x 1>&y 2>&z&&ls -l\n",
 	// "echo hello\n",
 	// "echo hello > out.txt\n",
 	// "echo hello 0> out.txt\n",
-	// "echo hello >> out.txt\n",
 	NULL};
 
 void	print_words(t_wdlist *words)
@@ -65,7 +64,7 @@ int main()
 		ms_parse(&ps);
 		print_parse_state(&ps);
 		printf("%s\n", g_commands_ok[i]);
-		print_pipeline(&ps, ps.pipelinelist->pipeline, 0);
+		print_pipeline(&ps, ps.pipeline, 0);
 		if (ps.error_message)
 			printf("[Parse Error] %s\n", ps.error_message);
 	}

@@ -12,7 +12,7 @@ t_pipeline	*ms_parse_add_new_pipeline(t_parse_state *state)
 		if (state->cursor.pipeline)
 			state->cursor.pipeline->next = pipeline;
 		else
-			state->pipelinelist->pipeline = pipeline;
+			state->pipeline = pipeline;
 		state->cursor.pipeline = pipeline;
 		state->cursor.clause = NULL;
 		state->cursor.redir = NULL;

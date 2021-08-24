@@ -1,35 +1,6 @@
 #include "ms_analyzer.h"
 
-int	is_a_operator(t_lex_cursor *cursor)
-{
-	char	*strhead;
-
-	if (!cursor || !cursor->tail)
-		return (0);
-	strhead = (char *)(cursor->line + cursor->tail->i);
-	if (cursor->i - cursor->tail->i == 1)
-	{
-		if (!ft_strncmp(strhead, "<", 1) || !ft_strncmp(strhead, ">", 1) ||
-			!ft_strncmp(strhead, "&", 1) || !ft_strncmp(strhead, ";", 1) ||
-			!ft_strncmp(strhead, "(", 1) || !ft_strncmp(strhead, ")", 1) ||
-			!ft_strncmp(strhead, "|", 1))
-				return (1);
-	}
-	if (cursor->i - cursor->tail->i == 2)
-	{
-		if (!ft_strncmp(strhead, "&&", 2) || !ft_strncmp(strhead, "||", 2) ||
-			!ft_strncmp(strhead, "<<", 2) || !ft_strncmp(strhead, ">>", 2) ||
-			!ft_strncmp(strhead, "<&", 2) || !ft_strncmp(strhead, ">&", 2) ||
-			!ft_strncmp(strhead, "<>", 2))
-				return (1);
-	}
-	if (cursor->i - cursor->tail->i == 3)
-		if (!ft_strncmp(strhead, "<<-", 3))
-			return (1);
-	return (0);
-}
-
-t_wdlist	*ms_new_lexer_token(int i, char starting_char)
+static t_wdlist	*new_lexer_token(int i, char starting_char)
 {
 	t_wdlist	*new;
 	
@@ -43,44 +14,50 @@ t_wdlist	*ms_new_lexer_token(int i, char starting_char)
 	return (new);
 }
 
-void	ms_add_lexer_token(t_lex_cursor *cursor, char starting_char)
+// 追加できる状態なら追加。そうでなければなにもしない。
+// returns 1 if it failed
+int	ms_lexer_add_token(t_lex_cursor *cursor, char ct)
 {
 	t_wdlist	*new;
 
-	if (!cursor || (cursor->tail && !(cursor->tail->concluded)))
-		return ;
-	new = ms_new_lexer_token(cursor->i, starting_char);
-	// error
+	if (cursor->tail && !(cursor->tail->concluded))
+		return (MS_AZ_SUCC);
+	new = new_lexer_token(cursor->i, ct);
 	if (!new)
-		return ;
+	{
+		cursor->failed = 1;
+		return (MS_AZ_FAIL);
+	}
 	if (cursor->tail)
 		cursor->tail->next = new;
 	cursor->tail = new;
 	if (!cursor->head)
 		cursor->head = cursor->tail;
-	cursor->tail->word = (char *)cursor->line + cursor->tail->i;
-	printf("added %p at %d: starts with '%c'\n", cursor->head, cursor->i, starting_char);
+	cursor->tail->word = cursor->line + cursor->tail->i;
+	printf("added %p at %d: starts with '%c'\n", cursor->head, cursor->i, ct);
+	return (MS_AZ_SUCC);
 }
 
 // Lexerトークンを閉じる
-void	ms_conclude_lexer_token(t_lex_cursor *cursor)
+// always succeeds
+void	ms_lexer_conclude_token(t_lex_cursor *cursor)
 {
-	if (!cursor->tail || cursor->tail->concluded)
+	t_wdlist	*tail;
+	char		delimiter;
+
+	tail = cursor->tail;
+	if (!tail || tail->concluded)
 		return ;
-	cursor->tail->concluded = 1;
-	cursor->tail->len = cursor->i - cursor->tail->i;
-	printf("(%d, %d) -> \"%.*s\"\n", cursor->tail->i, cursor->i, cursor->tail->len, cursor->tail->word);
-	// 区切り文字をセット
-	if (cursor->line[cursor->i])
-		cursor->tail->right_delimiter = cursor->line[cursor->i];
-	// lex_typeの設定
-	// 初期値はTOKEN
-	if (cursor->tail->starting_chartype == LC_NEWLINE)
-		cursor->tail->lex_type = LT_NEWLINE; // 改行はトークン識別子NEWLINEになる。
-	else if (is_a_operator(cursor))
-		cursor->tail->lex_type = LT_OPERATOR; // 演算子トークンは、その演算子トークンに対応するトークン識別子になる。
-	else if (ft_strchr("<>", cursor->tail->right_delimiter) &&
-		ms_is_digital_str(cursor->tail->word, cursor->tail->len))
-		cursor->tail->lex_type = LT_IO_NUMBER; // 区切り文字が<>である数字のみのトークンは トークン識別子IO_NUMBER となる。
-	printf("concluded %p at %d: type is %d\n", cursor->tail, cursor->i, cursor->tail->lex_type);
+	delimiter = cursor->line[cursor->i];
+	tail->delimiter = delimiter;
+	tail->len = cursor->i - tail->i;
+	tail->concluded = 1;
+	if (tail->starting_chartype == LC_NEWLINE)
+		tail->lex_type = LT_NEWLINE;
+	else if (ms_is_an_operator(cursor))
+		tail->lex_type = LT_OPERATOR;
+	else if (ft_strchr("<>", tail->delimiter) &&
+		ms_is_digital_str(tail->word, tail->len))
+		cursor->tail->lex_type = LT_IO_NUMBER;
+	printf("concluded %p at %d: type is %d\n", tail, cursor->i, tail->lex_type);
 }

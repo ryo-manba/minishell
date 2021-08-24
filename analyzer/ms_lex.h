@@ -30,12 +30,12 @@ typedef	enum e_lex_type
 typedef struct s_wdlist
 {
 	struct s_wdlist	*next;
-	char			*word;
+	const char		*word;
 	int				i;
 	int				len;
 	int				concluded;
 	char			starting_chartype;
-	char			right_delimiter;
+	char			delimiter;
 	t_lex_type		lex_type;
 }	t_wdlist;
 
@@ -46,15 +46,13 @@ typedef struct s_lex_cursor
 	const char	*line;
 	char		under_quoted;
 	int			i;
+	int			failed;
 }	t_lex_cursor;
-
-# define UQ_SINGLE 1
-# define UQ_DOUBLE 2
 
 # define CHARS_WORD_INCLUDED "\"'_"
 
-void		ms_add_lexer_token(t_lex_cursor *cursor, char starting_char);
-void		ms_conclude_lexer_token(t_lex_cursor *cursor);
+int			ms_lexer_add_token(t_lex_cursor *cursor, char starting_char);
+void		ms_lexer_conclude_token(t_lex_cursor *cursor);
 int			ms_is_digital_str(const	char *str, size_t len);
 int			ms_is_name(const char *str, size_t len);
 int			ms_is_assignment_word(const char *str, size_t len);

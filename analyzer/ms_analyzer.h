@@ -41,12 +41,12 @@ struct	s_pipelinelist;
 // clause内のトークンのリスト(木)
 typedef struct	s_stree
 {
-    char					*token;
-    t_token_id				token_id;
-    struct s_stree			*left;
-    struct s_stree			*right;
+    char				*token;
+    t_token_id			token_id;
+    struct s_stree		*left;
+    struct s_stree		*right;
 	// 親clauseがサブシェルの場合、これがNULLでなくなる
-    struct s_pipelinelist	*subshell;
+    struct s_pipeline	*subshell;
 }	t_stree;
 
 // clause内のリダイレクションのリスト
@@ -88,14 +88,6 @@ typedef struct	s_pipeline
 	t_token_id			joint;
 }	t_pipeline;
 
-// pipelinelist
-// pipelineを内包する
-// サブシェルによってclause(stree)の直下に所属することがある
-typedef struct	s_pipelinelist
-{
-	t_pipeline	*pipeline;
-}	t_pipelinelist;
-
 typedef struct	s_shellvar
 {
 	char	*key;
@@ -119,7 +111,7 @@ typedef struct	s_parse_cursor
 typedef struct s_parse_state
 {
 	t_wdlist		*words; // こっちは代入後に変更しない
-	t_pipelinelist	*pipelinelist;
+	t_pipeline		*pipeline;
 	t_parse_cursor	cursor;
 	int				for_subshell;
 
@@ -128,6 +120,7 @@ typedef struct s_parse_state
 	t_wdlist		*error_word;
 }	t_parse_state;
 
+int	ms_is_an_operator(t_lex_cursor *cursor);
 size_t	ms_cut_operator(t_lex_cursor *cursor);
 t_token_id	ms_operator_token_id(t_wdlist *word);
 const char	*ms_operator_label(t_token_id ti);

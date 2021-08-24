@@ -21,7 +21,7 @@ int	ms_subparse_subshell(t_parse_state *state, t_wdlist *word)
 		return (ms_return_with_error(state, substate.error_word, substate.error_message));
 	state->cursor.word = substate.cursor.word;
 	st->token_id = TI_SUBSHELL;
-	st->subshell = substate.pipelinelist;
+	st->subshell = substate.pipeline;
 	if (!ms_parse_add_stree(state, st))
 	{
 		free(st);
