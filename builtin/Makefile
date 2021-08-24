@@ -5,6 +5,8 @@ SRCS	=	ms_env.c \
 			ms_export.c \
 			ms_export_utils.c \
 			ms_unset.c \
+			ms_pwd.c \
+			ms_cd.c \
 			main.c \
 
 OBJS	=	$(SRCS:.c=.o)

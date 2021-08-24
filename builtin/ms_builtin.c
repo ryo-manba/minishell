@@ -4,10 +4,10 @@ int	ms_exec_builtin(t_shellvar *env, char *s)
 {
 //	if (ft_strcmp(s, "echo") == 0)
 //		return (ms_echo());
-//	if (ft_strcmp(s, "cd") == 0)
-//		return (ms_cd());
-//	if (ft_strcmp(s, "pwd") == 0)
-//		return (ms_pwd());
+	if (ft_strcmp(s, "cd") == 0)
+		return (ms_cd(env, s));
+	if (ft_strcmp(s, "pwd") == 0)
+		return (ms_pwd());
 	if (ft_strcmp(s, "export") == 0)
 		return (ms_export(env, s));
 	if (ft_strcmp(s, "unset") == 0)

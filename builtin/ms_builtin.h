@@ -59,5 +59,13 @@ int		ms_unset(t_shellvar *env, char *key);
 void	ms_unset_head(t_shellvar *env);
 void	ms_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos);
 
+/* ms_pwd */
+int	ms_pwd(void);
+
+/* ms_cd */
+int	ms_cd(t_shellvar *env, char *arg);
+int	ms_cd_home(t_shellvar *env);
+
+
 
 #endif
