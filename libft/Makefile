@@ -47,6 +47,7 @@ SRCS	=	ft_strlen.c \
 			ft_putstr_fd.c \
 			ft_putendl_fd.c \
 			ft_putnbr_fd.c \
+			ft_starts_with.c \
 			free_strjoin.c \
 			safe_free.c \
 			get_next_line.c \

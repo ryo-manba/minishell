@@ -23,16 +23,29 @@ function push_back_stree(t1: MS.STree, t2: MS.STree | null) {
     return st;
 }
 
-export function expand_shell_param(state: Parser.ParserState) {
-    let pipeline: MS.Pipeline | null = state.pipelinelist.pipeline;
+export function expand_shell_param(state: Parser.ParserState, pipelinelist: MS.PipelineList) {
+    state.finished = false;
+    let pipeline: MS.Pipeline | null = pipelinelist.pipeline;
     while (pipeline) {
         let clause: MS.Clause | null = pipeline.clause;
         while (clause) {
             let redir = clause.redirs;
             while (redir) {
+                const original_token = redir.operand_right.token;
                 const expanded = expand_token_flow(state, redir.operand_right);
+                if (state.parse_error) {
+                    return;
+                }
+                console.log(redir.operand_right, expanded);
+                if (!expanded || expanded && expanded.right) {
+                    state.parse_error = `${original_token}: ambiguous redirect`;
+                    state.error_location_token = null;
+                    console.log(state.parse_error)
+                    return;
+                }
                 if (expanded) {
-                    // TODO: !expanded の時エラー
+                    // TODO: !expanded の時エラー(ambiguous redirect)
+                    // TODO: expanded && expanded.right の時エラー(ambiguous redirect)
                     redir.operand_right = expanded;
                 }
                 redir = redir.next;
@@ -62,6 +75,8 @@ export function expand_shell_param(state: Parser.ParserState) {
         }
         pipeline = pipeline.next;
     }
+    state.finished = true;
+    return pipelinelist;
 }
 
 /**
@@ -69,14 +84,26 @@ export function expand_shell_param(state: Parser.ParserState) {
  * expand shell params in given stree DESTRUCTIVE.
  */
 function expand_token_flow(state: Parser.ParserState, stree: MS.STree) {
+    if (stree.subshell) {
+        // サブシェルを再帰的に展開
+        expand_shell_param(state, stree.subshell);
+        if (!state.finished) {
+            return stree;
+        }
+        return stree;
+    }
     // 変数展開
     let subtokens: Subtoken | null = expand_token_shell_param(state, stree);
+    // console.log(JSON.stringify(subtokens, null, 2));
     // ワードスプリット
     subtokens = expand_token_split(state, subtokens);
+    // console.log(JSON.stringify(subtokens, null, 2));
     // ファイル名展開
     subtokens = expand_token_filename(state, subtokens);
+    // console.log(JSON.stringify(subtokens, null, 2));
     // 連結
     const joined_stree = expand_token_join(state, subtokens);
+    // console.log(JSON.stringify(joined_stree, null, 2));
     return joined_stree;
 }
 
@@ -398,30 +425,32 @@ function expand_token_join(state: Parser.ParserState, stree: Subtoken | null) {
     while (true) {
         if (!stree || stree.token_id === "Divider") {
             if (sublist || !stree) {
-                let subtoken = "";
+                let subtoken: string | null = null;
                 if (subhead) {
                     subhead.next = null;
                 }
                 // console.log("join", JSON.stringify(sublist, null, 2));
                 while (sublist) {
+                    subtoken = subtoken || "";
                     subtoken += sublist.token;
                     sublist = sublist.next;
                 }
-                const st: MS.STree = {
-                    token: subtoken,
-                    token_id: "WORD",
-                    depth: 0,
-                    left: null,
-                    right: null,
-                    subshell: null,
-                };
-                if (joined_head) {
-                    joined_head.right = st;
+                if (typeof subtoken === "string") {
+                    const st: MS.STree = {
+                        token: subtoken,
+                        token_id: "WORD",
+                        left: null,
+                        right: null,
+                        subshell: null,
+                    };
+                    if (joined_head) {
+                        joined_head.right = st;
+                    }
+                    joined_head = st;
+                    joined = joined || joined_head;
+                    sublist = null;
+                    subhead = null;
                 }
-                joined_head = st;
-                joined = joined || joined_head;
-                sublist = null;
-                subhead = null;
             }
         } else {
             if (subhead) {

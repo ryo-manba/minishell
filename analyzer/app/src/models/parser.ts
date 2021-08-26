@@ -1,32 +1,10 @@
 import * as MS from "./minishell";
 import * as EV from "./envvar";
 
-function new_clause(): MS.Clause {
-    return {
-        redirs: null,
-        stree: null,
-        next: null,
-    };
-}
-
-function new_pipeline(): MS.Pipeline {
-    return {
-        clause: new_clause(),
-        next: null,
-        joint: null,
-    };
-}
-
-function new_pipelinelist(): MS.PipelineList {
-    return {
-        pipeline: new_pipeline(),
-    };
-}
-
 export type ParseCursor = {
     pipeline: MS.Pipeline;
     clause: MS.Clause;
-    redir: MS.RedirList | null;
+    redir: MS.SRedir | null;
     stree: MS.STree | null;
 
     lexer_token: MS.WordList | null;
@@ -48,6 +26,28 @@ export type ParserState = {
     error_location_token: MS.WordList | null;
     varmap: EV.ShellVarMap;
 };
+
+function new_clause(): MS.Clause {
+    return {
+        redirs: null,
+        stree: null,
+        next: null,
+    };
+}
+
+function new_pipeline(): MS.Pipeline {
+    return {
+        clause: new_clause(),
+        next: null,
+        joint: null,
+    };
+}
+
+function new_pipelinelist(): MS.PipelineList {
+    return {
+        pipeline: new_pipeline(),
+    };
+}
 
 /**
  * パーサを初期化
@@ -76,6 +76,16 @@ export function init_parser(
         error_location_token: null,
         varmap,
     };
+}
+
+export function parse(state: ParserState) {
+    for(let n = 0; n < 1000; ++n) {
+        if (state.finished) { break; }
+        if (state.parse_error) { break; }
+        const result = parse_unit(state);
+        if (result === "exhausted") { break; }
+    }
+    return state;
 }
 
 /**
@@ -107,7 +117,7 @@ function add_stree(state: ParserState, stree: MS.STree) {
  * cursor redirに要素を追加する。
  * cursor redirがnullの場合もしかるべく処置する。
  */
- function add_redir(state: ParserState, redir: MS.RedirList) {
+ function add_redir(state: ParserState, redir: MS.SRedir) {
     const cursor = state.cursor;
     if (cursor.redir) {
         cursor.redir.next = redir;
@@ -136,7 +146,8 @@ function syntax_check_term_pipeline(state: ParserState, by_newline: boolean) {
 }
 
 function syntax_check_term_clause(state: ParserState, by_newline: boolean) {
-    if (!state.cursor.clause.stree) {
+    const clause_is_blank = !state.cursor.clause.stree && !state.cursor.clause.redirs;
+    if (clause_is_blank) {
         // streeが存在しない
         if (!by_newline) {
             // NEWLINEによる呼び出しでないならシンタックスエラー
@@ -175,7 +186,7 @@ function return_with_error(state: ParserState, lexer_token: MS.WordList, error_t
 /**
  * パース本体
  */
-export function parse_unit(state: ParserState) {
+function parse_unit(state: ParserState) {
     const lexer_token = shift_lexer_token(state);
     if (!lexer_token) { return "exhausted"; }
 
@@ -203,7 +214,6 @@ export function parse_unit(state: ParserState) {
         const st: MS.STree = {
             token: lexer_token.word,
             token_id: lexer_token.lex_type == "TOKEN" ? "WORD" : "IO_NUMBER",
-            depth: 1,
             left: null,
             right: null,
             subshell: null,
@@ -249,6 +259,10 @@ export function parse_unit(state: ParserState) {
             // パースを終了する
             if (!state.for_subshell) {
                 // サブシェル解析中でないのにサブシェル終了演算子に遭遇した場合はエラー
+                return return_with_error(state, lexer_token, "UNEXPECTED_SUBSHELL_CLOSER");
+            }
+            if (!state.cursor.redir && !state.cursor.stree) {
+                // サブシェルの中身のトークンが空の場合はエラーとする。
                 return return_with_error(state, lexer_token, "UNEXPECTED_SUBSHELL_CLOSER");
             }
             const serr = syntax_check_final(state);
@@ -310,23 +324,12 @@ function parse_subshell(state: ParserState, lexer_token: MS.WordList) {
     const st: MS.STree = {
         token: "(subshell)",
         token_id: "SUBSHELL",
-        depth: 1,
         left: null,
         right: null,
         subshell,
     };
     add_stree(state, st);
     return "continue";
-}
-
-export function parse(state: ParserState) {
-    for(let n = 0; n < 1000; ++n) {
-        if (state.finished) { break; }
-        if (state.parse_error) { break; }
-        const result = parse_unit(state);
-        if (result === "exhausted") { break; }
-    }
-    return state;
 }
 
 /**
@@ -405,12 +408,11 @@ function subparse_redirection(
     const st: MS.STree = {
         token: next_token.word,
         token_id: "WORD",
-        depth: 1,
         left: null,
         right: null,
         subshell: null,
     };
-    const redir: MS.RedirList = {
+    const redir: MS.SRedir = {
         next: null,
         operand_left: ion_token,
         operand_right: st,
@@ -422,7 +424,7 @@ function subparse_redirection(
 
 type FlatClause = {
     clause: MS.Clause;
-    redirs: MS.RedirList[];
+    redirs: MS.SRedir[];
     strees: MS.STree[];
 };
 
@@ -462,7 +464,7 @@ export function flatten_pipelinelist(pipelinelist: MS.PipelineList) {
                 redirs: [],
                 strees: [],
             };
-            let cursor_redir: MS.RedirList | null = cursor_clause.redirs;
+            let cursor_redir: MS.SRedir | null = cursor_clause.redirs;
             while (cursor_redir) {
                 flat_cl.redirs.push(cursor_redir);
                 cursor_redir = cursor_redir.next;

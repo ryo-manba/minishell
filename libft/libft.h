@@ -41,6 +41,8 @@ int				ft_tolower(int c);
 int				ft_memcmp(const void *s1, const void *s2, size_t sz);
 char			*ft_strdup(const char *src);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
+char			*ft_substr_range(char const *s,
+		unsigned int start, unsigned int end);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strrchr(const char *s, int c);
 char			*ft_strnstr(const char *s, const char *find, size_t slen);
@@ -78,5 +80,7 @@ t_list			*ft_lstlast(t_list *lst);
 t_list			*ft_lstnew(void *content);
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *), void(*del)(void *));
 bool			ft_lstpush_back(t_list **lst, void *content);
+
+size_t			ft_starts_with(const char *heystack, const char *needle);
 
 #endif

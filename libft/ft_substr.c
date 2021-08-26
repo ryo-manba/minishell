@@ -42,3 +42,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
+
+char	*ft_substr_range(char const *s, unsigned int start, unsigned int end)
+{
+	if (start <= end)
+		return ft_substr(s, start, end - start);
+	return (NULL);
+}

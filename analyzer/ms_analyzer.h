@@ -1,6 +1,10 @@
 #ifndef MS_ANALYZER_H
 # define MS_ANALYZER_H
-# include "../lexer/lexer.h"
+# include "../libft/libft.h"
+# include "ms_lex.h"
+
+# define MS_AZ_SUCC 0
+# define MS_AZ_FAIL 1
 
 typedef enum	e_token_id
 {
@@ -37,12 +41,12 @@ struct	s_pipelinelist;
 // clause内のトークンのリスト(木)
 typedef struct	s_stree
 {
-    char					*token;
-    t_token_id				token_id;
-    struct s_stree			*left;
-    struct s_stree			*right;
+    char				*token;
+    t_token_id			token_id;
+    struct s_stree		*left;
+    struct s_stree		*right;
 	// 親clauseがサブシェルの場合、これがNULLでなくなる
-    struct s_pipelinelist	*subshell;
+    struct s_pipeline	*subshell;
 }	t_stree;
 
 // clause内のリダイレクションのリスト
@@ -52,10 +56,10 @@ typedef struct	s_redir
 	// あるとしたら、必ずIO_NUMBER
 	t_stree			*operand_left;
 	// 存在しないことがあるが、パーサの後では気にしなくていい。
-	t_stree			operand_right;
+	t_stree			*operand_right;
 	// 取りうる値は以下の通り:
 	// TI_LT(<), TI_GT(>), TI_LTLT(<<), TI_GTGT(>>), TI_LTGT(<>), TI_LTAND(<&), TI_GTAND(>&), TI_LTLTHYPHEN(<<-)
-    t_token_id			redir_op;
+    t_token_id		redir_op;
 }	t_redir;
 
 // clause
@@ -65,9 +69,9 @@ typedef struct	s_redir
 typedef struct	s_clause
 {
 	// 存在しないことがある
-	t_redir		*redir;
+	t_redir			*redir;
 	// 存在しないことがある(たとえば、コマンド`> x`はパースエラーにならない。)
-	t_stree		*stree;
+	t_stree			*stree;
 	// なお、redirかstreeの少なくとも一方は存在している。
 
 	struct s_clause	*next;
@@ -84,12 +88,61 @@ typedef struct	s_pipeline
 	t_token_id			joint;
 }	t_pipeline;
 
-// pipelinelist
-// pipelineを内包する
-// サブシェルによってclause(stree)の直下に所属することがある
-typedef struct	s_pipelinelist
+typedef struct	s_shellvar
+{
+	char	*key;
+	char 	*value;
+	int		is_env;
+    int		attr;
+}	t_shellvar;
+
+// parseの状態
+// parseの進行状況に応じて変化させる
+typedef struct	s_parse_cursor
 {
 	t_pipeline	*pipeline;
-}	t_pipelinelist;
+	t_clause	*clause;
+	t_redir		*redir;
+	t_stree		*stree;
+	t_wdlist	*word;
+	int			expecting_continuation;
+}	t_parse_cursor;
+
+typedef struct s_parse_state
+{
+	t_wdlist		*words; // こっちは代入後に変更しない
+	t_pipeline		*pipeline;
+	t_parse_cursor	cursor;
+	int				for_subshell;
+
+	int				finished;
+	char			*error_message;
+	t_wdlist		*error_word;
+}	t_parse_state;
+
+int	ms_is_an_operator(t_lex_cursor *cursor);
+size_t	ms_cut_operator(t_lex_cursor *cursor);
+t_token_id	ms_operator_token_id(t_wdlist *word);
+const char	*ms_operator_label(t_token_id ti);
+const char	*ms_token_label(t_token_id ti);
+int	ms_init_parse_state(t_parse_state *state, t_wdlist *words, int for_subshell);
+int	ms_parse(t_parse_state *state);
+int	ms_parse_unit(t_parse_state *state);
+t_wdlist	*ms_shift_word(t_parse_state *state);
+int	ms_return_with_error(t_parse_state *state, t_wdlist *word, char *message);
+t_stree	*ms_make_stree(t_wdlist *word, int for_subshell);
+t_redir	*ms_make_redir(t_wdlist *op_word, t_stree *target, t_stree *ion);
+t_stree	*ms_parse_add_stree(t_parse_state *state, t_stree *stree);
+t_redir	*ms_parse_add_redir(t_parse_state *state, t_redir *redir);
+t_clause	*ms_parse_add_new_clause(t_parse_state *state);
+t_pipeline	*ms_parse_add_new_pipeline(t_parse_state *state);
+int	ms_subparse_enter_subshell(t_parse_state *state, t_wdlist *word);
+int	ms_subparse_leave_subshell(t_parse_state *state, t_wdlist *word);
+int	ms_subparse_redir(t_parse_state *state, t_wdlist *word, t_stree *ion_st);
+int ms_subparse_term_pipeline(t_parse_state *state, t_wdlist *word);
+int ms_subparse_term_clause(t_parse_state *state, t_wdlist *word);
+char	*ms_syntax_final(t_parse_state *state);
+int	ms_syntax_term_clause(t_parse_state *state, int by_newline);
+int	ms_syntax_term_pipeline(t_parse_state *state, int by_newline);
 
 #endif

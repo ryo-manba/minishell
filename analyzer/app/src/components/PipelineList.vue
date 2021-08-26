@@ -78,7 +78,7 @@ export default defineComponent({
     /**
      * リダイレクション演算子の説明
      */
-    const get_desc_redir_op = (redir: MS.RedirList) => {
+    const get_desc_redir_op = (redir: MS.SRedir) => {
       switch (redir.op) {
         case "<": return "INPUT_FROM_FILE";
         case ">": return "OUTPUT_TO_FILE";
@@ -91,7 +91,7 @@ export default defineComponent({
       }
       return "* UNEXPECTED *"
     }
-    const get_redir_fd = (redir: MS.RedirList) => {
+    const get_redir_fd = (redir: MS.SRedir) => {
       if (redir.operand_left) {
         return {
           fd: redir.operand_left.token,
@@ -116,7 +116,7 @@ export default defineComponent({
       }
     }
 
-    const get_redir_right_tokens = (redir: MS.RedirList) => {
+    const get_redir_right_tokens = (redir: MS.SRedir) => {
       let right = redir.operand_right;
       const targets: string[] = [];
       while (true) {

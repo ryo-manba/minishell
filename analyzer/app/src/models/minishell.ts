@@ -1,59 +1,4 @@
-export const CHARTYPE_NEWLINE = '\n';
-export const CHARTYPE_SINGLE_QUOTE = "'";
-export const CHARTYPE_DOUBLE_QUOTE = '"';
-export const CHARTYPE_SPACE = ' ';
-export const CHARTYPE_TAB = `\t`;
-export const CHARTYPE_PIPE = '|';
-export const CHARTYPE_AND = '&';
-export const CHARTYPE_REDIRECT_INPUT = '<';
-export const CHARTYPE_REDIRECT_OUTPUT = '>';
-export const CHARTYPE_SEMICOLON = ';';
-export const CHARTYPE_PAREN_L = '(';
-export const CHARTYPE_PAREN_R = ')';
-export const CHARTYPE_WORD = '_';
-export const CHAR_SPACELIKE = [CHARTYPE_SPACE, CHARTYPE_TAB];
-
-export const CHARTYPESET = {
-    WORD_INCLUDED: "\"'_",
-};
-
 export type WORD_LEX_TYPE = "TOKEN" | "IO_NUMBER" | "OPERATOR" | "NEWLINE";
-
-export const RedirectionOperators = ["<", ">", "<<", ">>", "<>", "<&", ">&", "<<-" ] as const;
-type TokenRedirectionOperator = typeof RedirectionOperators[number];
-
-export const ClauseTerminateOperators = ["|"] as const;
-type ClauseTerminateOperator = typeof ClauseTerminateOperators[number];
-
-export const PipelineTerminateOperators = ["&&", "||",  "&", ";"] as const;
-type PipelineTerminateOperator = typeof PipelineTerminateOperators[number];
-
-export const SubshellOpenOperators = ["("] as const;
-type SubshellOpenOperator = typeof SubshellOpenOperators[number];
-
-export const SubshellCloseOperators = [")"] as const;
-type SubshellCloseOperator = typeof SubshellCloseOperators[number];
-
-type TokenOperator = SubshellOpenOperator | SubshellCloseOperator | ClauseTerminateOperator | PipelineTerminateOperator | TokenRedirectionOperator;
-type TokenIdentifier = "WORD" | "IO_NUMBER" | "NAME" | "ASSIGNMENT_WORD" | "SUBSHELL" | TokenOperator;
-
-export const OP = {
-    REDIR_INPUT: 1,
-    REDIR_OUTPUT: 2,
-    REDIR_APPEND: 3,
-    REDIR_INANDOUT: 4,
-    REDIR_HEREDOC: 5,
-    REDIR_HEREDOC_DETAB: 6,
-    PIPE: 11,
-    AND_IF: 21,
-    OR_IF: 22,
-    BACKGROUND: 31,
-    SEMICOLON: 51,
-    DUPFD_IN: 61,
-    DUPFD_OUT: 62,
-    PAREN_L: 81,
-    PAREN_R: 82,
-};
 
 export type WordList = {
     /**
@@ -86,6 +31,61 @@ export type WordList = {
     lex_type: WORD_LEX_TYPE;
 };
 
+export const CHARTYPE_NEWLINE = '\n';
+export const CHARTYPE_SINGLE_QUOTE = "'";
+export const CHARTYPE_DOUBLE_QUOTE = '"';
+export const CHARTYPE_SPACE = ' ';
+export const CHARTYPE_TAB = `\t`;
+export const CHARTYPE_PIPE = '|';
+export const CHARTYPE_AND = '&';
+export const CHARTYPE_REDIRECT_INPUT = '<';
+export const CHARTYPE_REDIRECT_OUTPUT = '>';
+export const CHARTYPE_SEMICOLON = ';';
+export const CHARTYPE_PAREN_L = '(';
+export const CHARTYPE_PAREN_R = ')';
+export const CHARTYPE_WORD = '_';
+
+export const CHARTYPESET = {
+    WORD_INCLUDED: "\"'_" as const,
+};
+
+export const RedirectionOperators = ["<", ">", "<<", ">>", "<>", "<&", ">&", "<<-" ] as const;
+type TokenRedirectionOperator = typeof RedirectionOperators[number];
+
+export const ClauseTerminateOperators = ["|"] as const;
+type ClauseTerminateOperator = typeof ClauseTerminateOperators[number];
+
+export const PipelineTerminateOperators = ["&&", "||",  "&", ";"] as const;
+type PipelineTerminateOperator = typeof PipelineTerminateOperators[number];
+
+export const SubshellOpenOperators = ["("] as const;
+type SubshellOpenOperator = typeof SubshellOpenOperators[number];
+
+export const SubshellCloseOperators = [")"] as const;
+type SubshellCloseOperator = typeof SubshellCloseOperators[number];
+
+type TokenOperator = SubshellOpenOperator | SubshellCloseOperator | ClauseTerminateOperator | PipelineTerminateOperator | TokenRedirectionOperator;
+type TokenIdentifier =
+    "WORD" | "IO_NUMBER" | "NAME" | "ASSIGNMENT_WORD" | "SUBSHELL" | TokenOperator;
+
+export const OP = {
+    REDIR_INPUT: 1,
+    REDIR_OUTPUT: 2,
+    REDIR_APPEND: 3,
+    REDIR_INANDOUT: 4,
+    REDIR_HEREDOC: 5,
+    REDIR_HEREDOC_DETAB: 6,
+    PIPE: 11,
+    AND_IF: 21,
+    OR_IF: 22,
+    BACKGROUND: 31,
+    SEMICOLON: 51,
+    DUPFD_IN: 61,
+    DUPFD_OUT: 62,
+    PAREN_L: 81,
+    PAREN_R: 82,
+};
+
 export type STree = {
     /**
      * トークン文字列
@@ -95,10 +95,6 @@ export type STree = {
      * トークン識別子
      */
     token_id: TokenIdentifier;
-    /**
-     * このノードまでのツリー深度
-     */
-    depth: number;
     /**
      * 左ノード
      */
@@ -116,11 +112,11 @@ export type STree = {
 /**
  * リダイレクション演算子
  */
-export type RedirList = {
+export type SRedir = {
     /**
      * 次の要素
      */
-    next: RedirList | null;
+    next: SRedir | null;
     /**
      * 左オペランド
      */
@@ -137,7 +133,7 @@ export type RedirList = {
 
 
 export type Clause = {
-    redirs: RedirList | null;
+    redirs: SRedir | null;
     stree: STree | null;
     next: Clause | null;
 };
