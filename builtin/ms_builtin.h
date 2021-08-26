@@ -35,18 +35,26 @@ t_shellvar	*ms_envlast(t_shellvar *env);
 void		ms_env_add_back(t_shellvar **env, t_shellvar *new);
 int			ms_env(t_shellvar *env);
 
-/* ms_export */
-int			ms_export(t_shellvar *env, char *s);
-int			ms_print_export(t_shellvar *env);
-void		ms_env_clear(t_shellvar *env);
-void		ms_print_sort_env(t_shellvar *env);
-t_shellvar *ms_copy_env(t_shellvar *env);
-
 /* ms_env_sort */
 void		ms_quick_sort(t_shellvar *first, t_shellvar *last);
 void		ms_swap_env(t_shellvar *env1, t_shellvar *env2);
 t_shellvar *ms_partition(t_shellvar *first, t_shellvar *last);
 
+/* ms_export */
+void		ms_join_env(t_shellvar *key_pos, char *key_value[2]);
+void		ms_append_or_join_env(t_shellvar *env, char* key_value[2]);
+void	 	ms_export_env(t_shellvar *env, t_token *tok);
+int			ms_export(t_shellvar *env, char *s);
+
+/* ms_export_check */
+bool	ms_check_export_key(char *s, char *key_value[2], int32_t equal_pos);
+bool	ms_check_and_separate_export(char *s, char *key_value[2]);
+
+/* ms_export_print */
+int			ms_print_export(t_shellvar *env);
+void		ms_env_clear(t_shellvar *env);
+t_shellvar	*ms_copy_env(t_shellvar *env);
+void		ms_print_sort_env(t_shellvar *env);
 
 /* ms_export_utils */
 t_shellvar	*ms_search_key(t_shellvar *env, char *key);
@@ -70,5 +78,6 @@ int	ms_cd_home(t_shellvar *env);
 /* ms_exit */
 int	ms_exit(char *arg);
 
+/* ms_echo */
 
 #endif

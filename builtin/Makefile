@@ -1,8 +1,10 @@
 NAME	=	a.out
-SRCS	=	ms_env.c \
+SRCS 	=	ms_builtin.c \
+			ms_env.c \
 			ms_env_sort.c \
-			ms_builtin.c \
 			ms_export.c \
+			ms_export_check.c \
+			ms_export_print.c \
 			ms_export_utils.c \
 			ms_unset.c \
 			ms_pwd.c \
