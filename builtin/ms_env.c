@@ -16,7 +16,7 @@ t_shellvar *ms_create_env(void)
 	{
 		j = ft_strchr_i(environ[i], '='); // '='までの距離を図る
 		key = ft_substr(environ[i], 0, j);
-		value = ft_substr(environ[i], j + 1, strlen(environ[i]));
+		value = ft_substr(environ[i], j + 1, ft_strlen(environ[i]));
 		ms_env_add_back(&env, ms_new_env(key, value, 1));
 		free(key);
 		free(value);
