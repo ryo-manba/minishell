@@ -2,7 +2,7 @@
 
 // factory funcs for parser.
 
-t_stree	*ms_make_stree(t_wdlist *word, int for_subshell)
+t_stree	*pa_make_stree(t_wdlist *word, int for_subshell)
 {
 	t_stree	*st;
 
@@ -25,17 +25,19 @@ t_stree	*ms_make_stree(t_wdlist *word, int for_subshell)
 	return (st);
 }
 
-t_redir	*ms_make_redir(t_wdlist *op_word, t_stree *target, t_stree *ion)
+t_redir	*pa_make_redir(t_wdlist *op_word, t_stree *target, t_stree *ion)
 {
-	t_redir	*redir;
+	t_redir		*redir;
+	t_token_id	ti;
 
+	ti = pa_operator_token_id(op_word);
+	if (ti == TI_NONE)
+		return (NULL);
 	redir = (t_redir *)ft_calloc(1, sizeof(t_redir));
 	if (!redir)
 		return (NULL);
 	redir->operand_left = ion;
 	redir->operand_right = target;
-	redir->redir_op = ms_operator_token_id(op_word);
-	if (redir->redir_op == TI_NONE)
-		return (NULL);
+	redir->redir_op = ti;
 	return (redir);
 }

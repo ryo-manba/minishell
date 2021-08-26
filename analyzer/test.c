@@ -9,7 +9,10 @@ const char	*g_commands_ok[] = {
 	// "(a && (b || (c && (d || e))))\n",
 	// "echo \"\" a bb ccc\"\"\n",
 	// "a 1>&2\n",
-	"cmd << HEREDOC arg1 arg2\n",
+	// "()",
+	// "(echo x)",
+	"export TEST=test aaa\n",
+	// "cmd << HEREDOC arg1 arg2\n",
 	// "<<-EOT<>x echo a>>y<< z&&var=phi cat x<<x 1>&y 2>&z&&ls -l\n",
 	// "echo hello\n",
 	// "echo hello > out.txt\n",
@@ -60,10 +63,7 @@ int main()
 		printf("%s\n", g_commands_ok[i]);
 		words = ms_lexer(g_commands_ok[i]);
 		print_words(words);
-		ms_init_parse_state(&ps, words, 0);
-		print_parse_state(&ps);
-		ms_parse(&ps);
-		print_parse_state(&ps);
+		ms_parse(&ps, words, 0);
 		printf("%s\n", g_commands_ok[i]);
 		print_pipeline(&ps, ps.pipeline, 0);
 		printf("\n");

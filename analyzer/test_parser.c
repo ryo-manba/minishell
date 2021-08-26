@@ -8,7 +8,7 @@ void	print_stree(t_parse_state *state, t_stree *stree, int depth)
 	(void)state;
 	if (!stree)
 		return ;
-	printf("%*s[%s: ", depth*SW, "", ms_token_label(stree->token_id));
+	printf("%*s[%s: ", depth*SW, "", pa_token_label(stree->token_id));
 	if (stree->subshell)
 	{
 		printf("%.*s", !!SW, "\n");
@@ -28,7 +28,7 @@ void	print_redir(t_parse_state *state, t_redir *redir, int depth)
 	(void)state;
 	if (!redir)
 		return ;
-	str = ms_token_label(redir->redir_op);
+	str = pa_token_label(redir->redir_op);
 	printf("%*s(%s%s ",
 		depth*SW, "",
 		redir->operand_left ? redir->operand_left->token : "",
@@ -68,7 +68,7 @@ void	print_pipeline(t_parse_state *state, t_pipeline *pipeline, int depth)
 	if (!pipeline)
 		return ;
 	printf("%*s{Pipeline:%.*s", depth*SW, "", !!SW, "\n");
-	str = ms_operator_label(pipeline->joint);
+	str = pa_operator_label(pipeline->joint);
 	print_clause(state, pipeline->clause, depth + 1);
 	printf("%*s%s }%.*s", depth*SW, "", str ? str : "", !!SW, "\n");
 	if (pipeline->next)

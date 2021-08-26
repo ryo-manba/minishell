@@ -117,7 +117,7 @@ const char			*g_all_token_label[] = {
 
 // アクティブなLexerトークンがなんらかの演算子なら1を返す
 // returns 1 if active t_wdlist is an operator.
-int	ms_is_an_operator(t_lex_cursor *cursor)
+int	lx_is_an_operator(t_lex_cursor *cursor)
 {
 	const char	*strhead;
 	int			i;
@@ -138,7 +138,7 @@ int	ms_is_an_operator(t_lex_cursor *cursor)
 }
 
 // `line[i]`から最も長い演算子が取れるまで`i`を進める
-size_t	ms_cut_operator(t_lex_cursor *cursor)
+size_t	lx_cut_operator(t_lex_cursor *cursor)
 {
 	size_t	k;
 	size_t	n;
@@ -156,7 +156,7 @@ size_t	ms_cut_operator(t_lex_cursor *cursor)
 
 // Lexer演算子トークンに対応するParserトークンIDを得る
 // returns a t_token_id for given t_wdlist(only for operator)
-t_token_id	ms_operator_token_id(t_wdlist *word)
+t_token_id	pa_operator_token_id(t_wdlist *word)
 {
 	int	i;
 
@@ -171,7 +171,7 @@ t_token_id	ms_operator_token_id(t_wdlist *word)
 
 // Parser演算子トークンIDのラベル文字列を得る
 // returns a label string for given t_token_id(only for operator)
-const char	*ms_operator_label(t_token_id ti)
+const char	*pa_operator_label(t_token_id ti)
 {
 	int	i;
 
@@ -186,7 +186,7 @@ const char	*ms_operator_label(t_token_id ti)
 
 // ParserトークンIDのラベル文字列を得る
 // returns a label string for given t_token_id
-const char	*ms_token_label(t_token_id ti)
+const char	*pa_token_label(t_token_id ti)
 {
 	int	i;
 
