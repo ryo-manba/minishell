@@ -11,6 +11,7 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <sys/errno.h>
+#include <limits.h>
 #include "../libft/libft.h"
 #include "../lexer/ms_lexer.h"
 #include "../analyzer/ms_analyzer.h"
@@ -66,6 +67,8 @@ int	ms_pwd(void);
 int	ms_cd(t_shellvar *env, char *arg);
 int	ms_cd_home(t_shellvar *env);
 
+/* ms_exit */
+int	ms_exit(char *arg);
 
 
 #endif
