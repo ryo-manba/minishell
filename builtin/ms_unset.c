@@ -17,38 +17,40 @@ void	ms_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos)
 	t_shellvar	*tmp;
 
 	head = env;
-	while (head)
+	while (head->next != key_pos) // 削除するkeyが見つかるまで進める
 	{
-		if (head->next == key_pos) // 削除するkeyが見つかったらnextをつなぎ替える
-		{
-			tmp = head->next;
-			head->next = head->next->next;
-			ms_env_free(tmp);
-			return ;
-		}
 		head = head->next;
 	}
+	tmp = head->next;
+	head->next = head->next->next;
+	ms_env_free(tmp);
 }
 
+/**
+ * $ unset PWD USER
+ * tree->token = PWD
+ * tree->right->token = USER
+ */
 // keyを探して見つかったらリストから外す
-int	ms_unset(t_shellvar *env, char *key)
+int	ms_unset(t_shellvar *env, t_stree *tree)
 {
 	t_shellvar	*key_pos;
-	t_shellvar	*head;
-	t_shellvar	*tmp;
 
-	key_pos	= ms_search_key(env, key);
-	if (key_pos != NULL) // 存在しなかったら何もしない
+	while (tree != NULL) // unset 単体の場合は何もしない
 	{
-
-		if (env == key_pos) //先頭だった場合
+		key_pos	= ms_search_key(env, tree->token);
+		if (key_pos != NULL) // 存在しなかったら何もしない
 		{
-			ms_unset_head(env);
+			if (env == key_pos) //先頭だった場合
+			{
+				ms_unset_head(env);
+			}
+			else // 2番目以降
+			{
+				ms_unset_second_and_subsequent(env, key_pos);
+			}
 		}
-		else // 2番目以降
-		{
-			ms_unset_second_and_subsequent(env, key_pos);
-		}
+		tree = tree->right;
 	}
 	return (0);
 }

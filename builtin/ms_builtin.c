@@ -12,7 +12,7 @@ int	ms_exec_builtin(t_shellvar *env, t_stree *tree)
 	if (ft_strcmp(tree->token, "echo") == 0)
 		return (ms_echo(tree->right));
 	if (ft_strcmp(tree->token, "cd") == 0)
-		return (ms_cd(env, tree->token));
+		return (ms_cd(env, tree->right));
 	if (ft_strcmp(tree->token, "pwd") == 0)
 		return (ms_pwd());
 	if (ft_strcmp(tree->token, "export") == 0)

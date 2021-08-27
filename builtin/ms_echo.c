@@ -1,10 +1,10 @@
 #include "ms_builtin.h"
 
 /**
- * echo -n hello world
- * t_tree->token = -n
- * t_tree->right->token = hello
- * t_tree->right->right->token = world
+ * $ echo -n hello world
+ * tree->token = -n
+ * tree->right->token = hello
+ * tree->right->right->token = world
  */
 int	ms_echo(t_stree *tree)
 {

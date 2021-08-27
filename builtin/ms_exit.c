@@ -1,72 +1,81 @@
 #include "ms_builtin.h"
 
-#define TOO_MANY_ARGS 1
-#define NOT_A_NUMBER 2
-#define OVERFLOW 3
-
-// -2147483648->0
-// 2147483647->255
-
-static int64_t	ms_argument_error(int flag, char *error_args)
+void	ms_exit_argument_error(int flag, char *error_args)
 {
-	if (flag == NOT_A_NUMBER || flag == OVERFLOW) // 数字以外, またはLONGでオーバーフローする場合
+	printf("exit\n");
+	if (flag == 1) // 数字以外, またはLONGでオーバーフローする場合
 	{
 		printf("minishell: exit: %s: numeric argument required\n", error_args);
-		exit(2);
 	}
-	if (flag == TOO_MANY_ARGS) // 数字が続いた場合 exitしない
+	if (flag == 2) // 数字が続いた場合 exitしない
 	{
 		printf("minishell: exit: too many artuments\n");
 	}
-	return (1);
+}
+
+int	ms_is_args_digit(char *args)
+{
+	size_t	i;
+
+	i = 0;
+	while (args[i])
+	{
+		if (ft_isdigit(args[i]) == 0) // 数字じゃなかったら
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 // statusが LONG_MAX or LONG_MIN を超える場合
-static int64_t	ms_create_and_check_status(char *status)
+int	ms_check_long_overflow(char *status)
 {
+	int			i;
+	int			sign;
 	uint64_t	unum;
-	int64_t		ret;
-	int	i;
-	int	sign;
 
+	i = 0;
 	sign = 1;
 	unum = 0;
-	i = 0;
 	if (status[i] == '-' || status[i] == '+')
 	{
 		if (status[i++] == '-')
 			sign = -1;
 	}
-	while ('0' <= status[i] && status[i] <= '9')
+	while (ft_isdigit(status[i]))
 	{
 		unum = unum * 10 + status[i] - '0';
 		i++;
-		if (unum != 0 && (sign == 1 && unum > LONG_MAX) || (sign == -1 && unum - 1 > LONG_MAX))
-			return (OVERFLOW); // 上限を超えた場合
+		if (unum != 0 && (sign == 1 && unum > LONG_MAX)
+			|| (sign == -1 && unum - 1 > LONG_MAX))
+			return (1); // 上限を超えた場合
 	}
-	if (ft_strlen(status) != i) // 数字以外の文字が入っている場合
-		return (NOT_A_NUMBER);
-	if (false) // 第一引数が正しい値で第二引数以上含まれている場合 [後で足す]
-		return (TOO_MANY_ARGS);
 	return (0);
 }
 
-// exit -- 42
-// exitの後の -- は無視される
-int	ms_exit(char *arg)
+/**
+ * $ exit 1 2
+ * tree->token = 1
+ * tree->token->right = 2
+ */
+int	ms_exit(t_stree *tree)
 {
 	int flag;
 	int64_t	status;
 
-	flag = ms_create_and_check_status(arg);
-	printf("%d\n", flag);
-	if (flag != 0)
-		ms_argument_error(flag, arg);
-	else
+	if (tree == NULL) // 引数なしはそのままexit
+		exit(0);
+	if (ms_is_args_digit(tree->token) == 1 || ms_check_long_overflow(tree->token) == 1) // 数字以外、またはオーバーフローする
 	{
-		status = ft_atoi(arg);
-		printf("exit\n");
-		exit(status);
+		ms_exit_argument_error(1, tree->token); // 第一引数エラーはエラーメッセージ出してexitする
+		exit(2);
 	}
-	return (0);
+	if (tree->right != NULL) // 引数が2つ以上ある場合、エラーメッセージ出してexitしない
+	{
+		ms_exit_argument_error(2, tree->token);
+		return (1);
+	}
+	status = ft_atoi(tree->token);
+	printf("exit\n");
+	exit(status);
 }
