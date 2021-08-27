@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <stdbool.h>
 #include <dirent.h>
 #include <fcntl.h>
 #include <sys/errno.h>
@@ -26,7 +25,7 @@ typedef struct s_shellvar
 }	t_shellvar;
 
 /* ms_builtin */
-int	ms_exec_builtin(t_shellvar *env, char *s);
+int	ms_exec_builtin(t_shellvar *env, t_stree *tree);
 
 /* ms_env */
 t_shellvar	*ms_create_env(void);
@@ -72,8 +71,11 @@ void	ms_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos);
 int	ms_pwd(void);
 
 /* ms_cd */
-int	ms_cd(t_shellvar *env, char *arg);
-int	ms_cd_home(t_shellvar *env);
+int		ms_cd(t_shellvar *env, t_stree *tree);
+int		ms_change_directory(t_shellvar *env, t_stree *tree);
+int		ms_cd_home(t_shellvar *env);
+int		ms_update_pwd(t_shellvar *env, char *old_pwd);
+void	ms_search_and_update_env(t_shellvar *env, char *key, char *new_value);
 
 /* ms_exit */
 int	ms_exit(char *arg);
