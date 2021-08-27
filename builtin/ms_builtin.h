@@ -46,11 +46,11 @@ void	 	ms_export_env(t_shellvar *env, t_stree *tok);
 int			ms_export(t_shellvar *env, t_stree *tree);
 
 /* ms_export_check */
-bool	ms_check_export_key(char *s, char *key_value[2], int32_t equal_pos);
-bool	ms_check_and_separate_export(char *s, char *key_value[2]);
+int	ms_check_export_key(char *token, char *key_value[2], int32_t equal_pos);
+int	ms_check_and_separate_export(char *token, char *key_value[2]);
 
 /* ms_export_print */
-int			ms_print_export(t_shellvar *env);
+void		ms_print_export(t_shellvar *env);
 void		ms_env_clear(t_shellvar *env);
 t_shellvar	*ms_copy_env(t_shellvar *env);
 void		ms_print_sort_env(t_shellvar *env);

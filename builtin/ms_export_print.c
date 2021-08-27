@@ -1,7 +1,7 @@
 #include "ms_builtin.h"
 
 // sort済みの環境変数を出力する
-int	ms_print_export(t_shellvar *env)
+void	ms_print_export(t_shellvar *env)
 {
 	t_shellvar *tmp;
 
@@ -14,7 +14,6 @@ int	ms_print_export(t_shellvar *env)
 			printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
-	return (0);
 }
 
 // 環境変数をクリアする

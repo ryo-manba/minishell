@@ -33,7 +33,7 @@ void	ms_append_or_join_env(t_shellvar *env, char* key_value[2])
 	{
 		ms_append_env(env, key_value[KEY], key_value[VALUE]);
 	}
-	else if (key_value[VALUE] != NULL)
+	else if (key_value[VALUE] != NULL) // keyが存在して新しい value が NULL じゃなかった場合結合する
 	{
 		ms_join_env(key_pos, key_value);
 	}
@@ -48,12 +48,12 @@ void ms_export_env(t_shellvar *env, t_stree *tree)
 	equal_pos = 0;
 	while (tree != NULL)
 	{
-		if (ms_check_and_separate_export(tree->right->token, key_value) == false) // 不正な値の場合はその都度エラー表示する。
-			printf("minishell: export: `%s': not a valid identifier\n", tree->right->token);
+		if (ms_check_and_separate_export(tree->token, key_value) == 1) // 不正な値の場合はその都度エラー表示する。
+			printf("minishell: export: `%s': not a valid identifier\n", tree->token);
 		else
 		{
-			equal_pos = ft_strchr_i(tree->right->token, '=');
-			if (equal_pos != 0 && tree->right->token[equal_pos - 1] == '+') // "+="だったら文字を結合する
+			equal_pos = ft_strchr_i(tree->token, '=');
+			if (equal_pos != 0 && tree->token[equal_pos - 1] == '+') // "+="だったら文字を結合する
 				ms_append_or_join_env(env, key_value);
 			else
 				ms_append_or_update_env(env, key_value[KEY], key_value[VALUE]);
@@ -64,14 +64,13 @@ void ms_export_env(t_shellvar *env, t_stree *tree)
 
 /*
 ** $ export TEST=test aaa
-** t_stree->token = "export"
-** t_stree->right->token = "TEST=test"
-** t_stree->right->right->token = "aaa"
+** tree->token = "TEST=test"
+** tree->right->token = "aaa"
 */
 // t_stree->right("TEST=test")が渡される
 int	ms_export(t_shellvar *env, t_stree *tree)
 {
-	if (tree->right == NULL) // export 単体の場合は環境変数をソートして'declare -x hoge="huga"'の形式で出力する
+	if (tree == NULL) // 'export' 単体の場合は環境変数をソートして'declare -x hoge="huga"'の形式で出力する
 	{
 		ms_print_sort_env(env);
 	}
