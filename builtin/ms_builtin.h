@@ -43,8 +43,8 @@ t_shellvar *ms_partition(t_shellvar *first, t_shellvar *last);
 /* ms_export */
 void		ms_join_env(t_shellvar *key_pos, char *key_value[2]);
 void		ms_append_or_join_env(t_shellvar *env, char* key_value[2]);
-void	 	ms_export_env(t_shellvar *env, t_token *tok);
-int			ms_export(t_shellvar *env, char *s);
+void	 	ms_export_env(t_shellvar *env, t_stree *tok);
+int			ms_export(t_shellvar *env, t_stree *tree);
 
 /* ms_export_check */
 bool	ms_check_export_key(char *s, char *key_value[2], int32_t equal_pos);
@@ -79,5 +79,5 @@ int	ms_cd_home(t_shellvar *env);
 int	ms_exit(char *arg);
 
 /* ms_echo */
-
+int	ms_echo(t_stree *tree);
 #endif
