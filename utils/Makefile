@@ -1,11 +1,18 @@
-NAME	=	pipe
-SRCS	=	ms_pipe.c ms_redirect.c main.c
+NAME	=	a.out
+SRCS	=	main.c \
+			ms_execute_command.c \
+			ms_get_execution_path.c \
+			ms_pipe.c \
+			ms_redirect.c \
+			ms_redirect_heredoc.c \
+
 OBJS	=	$(SRCS:.c=.o)
 RM		=	rm -f
 CC		= 	gcc -g #-fsanitize=address
 #CFLAGS	=	-Wall -Wextra -Werror
 CFLAGS	= 	-I/usr/local/opt/readline/include/
 LIBFT	=	../libft/libft.a
+
 all: $(NAME)
 
 $(NAME): $(OBJS)
@@ -20,6 +27,6 @@ fclean: clean
 re: fclean all
 
 test: all
-	./pipe
+	./a.out
 
 .PHONY: all clean fclean re
