@@ -2,10 +2,14 @@ LEXER_SRCS	:=	ms_lexer.c ms_wordutils.c ms_string_class.c ms_operator.c
 
 PARSER_SRCS	:=	ms_parser.c ms_parse_unit.c ms_parse_error.c ms_parse_factory.c\
 				ms_parse_redir.c ms_parse_manip.c ms_parse_unit_operator.c\
-				ms_parse_syntax_term.c
+				ms_parse_syntax_term.c ms_parse_cleaner.c
+
+EXPANDER_SRCS	:=	ms_expander.c ex_error.c ex_shell_param.c ex_lstcat.c\
+					ex_vars.c ex_sp_opener.c ex_sp_closer.c
 
 SRCS		:=	$(LEXER_SRCS)\
-				$(PARSER_SRCS)
+				$(PARSER_SRCS)\
+				$(EXPANDER_SRCS)
 
 CC			:= gcc
 CFLAGS		:= -fsanitize=address -Wall -Wextra -Werror

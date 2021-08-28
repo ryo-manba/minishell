@@ -55,7 +55,9 @@ t_wdlist	*ms_lexer(const char *line);
 int			lx_add_token(t_lex_cursor *cursor, char starting_char);
 void		lx_conclude_token(t_lex_cursor *cursor);
 int			lx_is_digital_str(const	char *str, size_t len);
+int			lx_is_char_for_name(char c, size_t pos);
 int			lx_is_name(const char *str, size_t len);
+int			lx_is_char_for_bare(char c);
 int			lx_is_assignment_word(const char *str, size_t len);
 
 #endif

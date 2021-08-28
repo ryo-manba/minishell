@@ -12,6 +12,16 @@ int	lx_is_digital_str(const	char *str, size_t len)
 	return (n > 0);
 }
 
+
+int	lx_is_char_for_name(char c, size_t pos)
+{
+	if (pos == 0 && !ft_isalpha(c) && c != '_')
+		return (0);
+	else if (pos > 0 && !ft_isalnum(c) && c != '_')
+		return (0);
+	return (1);
+}
+
 // strがNAMEとして適当かどうか?
 // 1. 長さが1以上
 // 2. 先頭の文字が[A-Za-z_]のいずれか
@@ -30,6 +40,13 @@ int	lx_is_name(const char *str, size_t len)
 		n += 1;
 	}
 	return (n > 0);
+}
+
+int lx_is_char_for_bare(char c)
+{
+	if (!c)
+		return (0);
+	return (!!ft_strchr("'\"$", c));
 }
 
 // strがASSIGNMENT WORDとして適当かどうか?

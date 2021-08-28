@@ -11,7 +11,7 @@ const char	*g_commands_ok[] = {
 	// "a 1>&2\n",
 	// "()",
 	// "(echo x)",
-	"export TEST=test aaa\n",
+	"export \"'$VAR'\"\n",
 	// "cmd << HEREDOC arg1 arg2\n",
 	// "<<-EOT<>x echo a>>y<< z&&var=phi cat x<<x 1>&y 2>&z&&ls -l\n",
 	// "echo hello\n",

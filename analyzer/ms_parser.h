@@ -85,14 +85,6 @@ typedef struct	s_pipeline
 	t_token_id			joint;
 }	t_pipeline;
 
-typedef struct	s_shellvar
-{
-	char	*key;
-	char 	*value;
-	int		is_env;
-    int		attr;
-}	t_shellvar;
-
 // parseの状態
 // parseの進行状況に応じて変化させる
 // cursor自身は自前でオブジェクトを所有しない。すべて借り物。
@@ -129,6 +121,10 @@ int			pa_unit(t_parse_state *state);
 t_wdlist	*pa_shift_word(t_parse_state *state);
 t_stree		*pa_make_stree(t_wdlist *word, int for_subshell);
 t_redir		*pa_make_redir(t_wdlist *op_word, t_stree *target, t_stree *ion);
+void		pa_destroy_stree(t_stree *stree);
+void		pa_destroy_redir(t_redir *redir);
+void		pa_destroy_clause(t_clause *clause);
+void		pa_destroy_pipeline(t_pipeline *pipeline);
 t_stree		*pa_add_stree(t_parse_state *state, t_stree *stree);
 t_redir		*pa_add_redir(t_parse_state *state, t_redir *redir);
 t_clause	*pa_add_new_clause(t_parse_state *state);

@@ -34,7 +34,6 @@ int	lx_add_token(t_lex_cursor *cursor, char ct)
 	if (!cursor->head)
 		cursor->head = cursor->tail;
 	cursor->tail->word = cursor->line + cursor->tail->i;
-	printf("added %p at %d: starts with '%c'\n", cursor->head, cursor->i, ct);
 	return (MS_AZ_SUCC);
 }
 
@@ -59,5 +58,4 @@ void	lx_conclude_token(t_lex_cursor *cursor)
 	else if (ft_strchr("<>", tail->delimiter)
 		&& lx_is_digital_str(tail->word, tail->len))
 		cursor->tail->lex_type = LT_IO_NUMBER;
-	printf("concluded %p at %d: type is %d\n", tail, cursor->i, tail->lex_type);
 }
