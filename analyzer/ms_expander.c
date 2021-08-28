@@ -2,9 +2,9 @@
 
 t_redir	*ms_expand_redir(t_ex_state *state, t_redir *redir)
 {
-	t_redir *tail;
-	t_stree *original;
-	t_stree *expanded;
+	t_redir	*tail;
+	t_stree	*original;
+	t_stree	*expanded;
 
 	tail = redir;
 	while (tail)
@@ -30,13 +30,9 @@ t_stree	*ms_expand_stree(t_ex_state *state, t_stree *stree)
 		// TODO: エグゼキュータに渡す
 		return (NULL);
 	}
-	// 変数展開
 	ext = ex_shell_param(state, stree);
-	// ワードスプリット
 	if (!state->no_split)
 		ext = ex_split_word(state, ext);
-	// ファイル名展開
 	ext = ex_filename(state, ext);
-	// 連結
 	return (ex_join_words(state, ext));
 }

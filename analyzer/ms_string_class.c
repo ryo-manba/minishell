@@ -12,7 +12,6 @@ int	lx_is_digital_str(const	char *str, size_t len)
 	return (n > 0);
 }
 
-
 int	lx_is_char_for_name(char c, size_t pos)
 {
 	if (pos == 0 && !ft_isalpha(c) && c != '_')
@@ -42,7 +41,7 @@ int	lx_is_name(const char *str, size_t len)
 	return (n > 0);
 }
 
-int lx_is_char_for_bare(char c)
+int	lx_is_char_for_bare(char c)
 {
 	if (!c)
 		return (0);

@@ -55,10 +55,10 @@ t_ex_token	*ex_shell_param_unit(t_ex_state *state, t_token_id tid,
 	ex_init_cursor(&csr, tid, token);
 	while (csr.i <= csr.n)
 	{
-		if ((!ex_sp_close_quote(state, &csr) &&
-				ex_sp_open_bvar(&csr)) ||
-				(!ex_sp_close_var(state, &csr) &&
-				!ex_sp_close_bare(state, &csr)))
+		if ((!ex_sp_close_quote(state, &csr)
+				&& ex_sp_open_bvar(&csr))
+			|| (!ex_sp_close_var(state, &csr)
+				&& !ex_sp_close_bare(state, &csr)))
 		{
 			if (state->failed)
 				break ;

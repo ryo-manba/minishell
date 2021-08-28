@@ -1,5 +1,5 @@
-#ifndef MS_LEX_H
-# define MS_LEX_H
+#ifndef MS_LEXER_H
+# define MS_LEXER_H
 
 # include "../libft/libft.h"
 #include <stdio.h>
@@ -18,7 +18,7 @@
 # define LC_PAREN_R	')'
 # define LC_WORD	'_'
 
-typedef	enum e_lex_type
+typedef enum e_lex_type
 {
 	LT_DUMMY,
 	LT_TOKEN,

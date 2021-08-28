@@ -70,5 +70,3 @@ int	ex_replace_var(t_ex_state *state, t_ex_cursor *cursor)
 		return (MS_AZ_FAIL);
 	return (MS_AZ_SUCC);
 }
-
-

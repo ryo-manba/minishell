@@ -65,8 +65,8 @@ int	ex_sp_close_var(t_ex_state *state, t_ex_cursor *cursor)
 		dec = 1;
 		inc = 2;
 	}
-	else if (cursor->running == XI_VAR &&
-		!lx_is_char_for_name(c, cursor->i - cursor->vs - 1))
+	else if (cursor->running == XI_VAR
+		&& !lx_is_char_for_name(c, cursor->i - cursor->vs - 1))
 	{
 		dec = 0;
 		inc = 0;

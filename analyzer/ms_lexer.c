@@ -22,8 +22,8 @@ static int	treat_quote(t_lex_cursor *cursor, char c, char ct)
 {
 	if (c == cursor->under_quoted)
 		cursor->under_quoted = '\0';
-	else if (!cursor->under_quoted &&
-		(ct == LC_SINGLE_QUOTE || ct == LC_DOUBLE_QUOTE))
+	else if (!cursor->under_quoted
+		&& (ct == LC_SINGLE_QUOTE || ct == LC_DOUBLE_QUOTE))
 	{
 		cursor->under_quoted = ct;
 		if (lx_add_token(cursor, ct))

@@ -38,5 +38,5 @@ char	*ex_lstcat(t_ex_token *ext)
 		temp = temp->right;
 	}
 	joined[n] = '\0';
-	return joined;
+	return (joined);
 }
