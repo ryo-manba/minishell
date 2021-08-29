@@ -1,5 +1,5 @@
-#ifndef blt_UTILS_H
-# define blt_UTILS_H
+#ifndef MS_UTILS_H
+# define MS_UTILS_H
 
 #include <stdio.h>
 #include <string.h>
@@ -11,18 +11,7 @@
 #include <fcntl.h>
 #include <sys/errno.h>
 #include <limits.h>
-#include "../libft/libft.h"
-#include "../lexer/blt_lexer.h"
-#include "../analyzer/blt_analyzer.h"
-
-typedef struct s_shellvar
-{
-	char	*key;
-	char	*value;
-	int		is_env;
-	int		attr;
-	struct s_shellvar *next;
-}	t_shellvar;
+#include "../analyzer/ms_analyzer.h"
 
 /* ms_builtin */
 int	ms_exec_builtin(t_shellvar *env, t_stree *tree);
