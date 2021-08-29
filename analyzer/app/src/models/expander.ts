@@ -36,6 +36,7 @@ export function expand_shell_param(state: Parser.ParserState, pipelinelist: MS.P
                 if (state.parse_error) {
                     return;
                 }
+                
                 console.log(redir.operand_right, expanded);
                 if (!expanded || expanded && expanded.right) {
                     state.parse_error = `${original_token}: ambiguous redirect`;
@@ -121,7 +122,11 @@ function push_back_subtoken(token: string, token_id: SubtokenId, subhead: Subtok
  * expand shell params in given stree DESTRUCTIVE.
  */
 function expand_token_shell_param(state: Parser.ParserState, stree: MS.STree) {
-    function inner_expansion(state: Parser.ParserState, token_str: string) {
+    function inner_expansion(
+        state: Parser.ParserState,
+        token_str: string,
+        exquoted = false
+    ) {
         /**
          * 現在位置
          */
@@ -147,7 +152,7 @@ function expand_token_shell_param(state: Parser.ParserState, stree: MS.STree) {
                 // (クオートされていない)"に遭遇すること。
                 // TODO: Parameter Expansion
                 const quoted_text = token_str.substring(var_start, i);
-                let subtree = inner_expansion(state, quoted_text);
+                let subtree = inner_expansion(state, quoted_text, true);
                 let sub_text = "";
                 while (subtree) {
                     sub_text += subtree.token;
@@ -196,12 +201,12 @@ function expand_token_shell_param(state: Parser.ParserState, stree: MS.STree) {
                 finished_expectedly = true;
                 break;
             }
-            if (token_str[i] === "'") {
+            if (!exquoted && token_str[i] === "'") {
                 // SQuoted
                 // (クオートされていない)'に遭遇すること。
                 var_start = i + 1;
                 stat = "SQuoted"
-            } else if (token_str[i] === "\"") {
+            } else if (!exquoted && token_str[i] === "\"") {
                 // DQuoted
                 // (クオートされていない)"に遭遇すること。
                 var_start = i + 1;
@@ -261,7 +266,7 @@ function expand_token_split(state: Parser.ParserState, stree: Subtoken | null) {
     if (typeof ifsv === "string" && ifsv.length === 0) {
         return stree;
     }
-    const ifs = ifsv || ` \t\n`;
+    const ifs = ` \t\n`; // ifsv
     const ifs_ws = ifs.split("").filter(c => ` \t\n\v\f\r`.includes(c)).join("");
     const ifs_ns = ifs.split("").filter(c => !` \t\n\v\f\r`.includes(c)).join("");
     // console.log({ ifs, ifs_ws, ifs_ns });
@@ -334,47 +339,47 @@ function expand_token_split(state: Parser.ParserState, stree: Subtoken | null) {
     }
     // console.log("WS(1)", JSON.stringify(xht, null, 2));
     // 2. NS*WSNS* の並びでDividerを入れる
-    let ns_eating_ws = false;
-    st = xht;
-    xt = null;
-    xht = null;
-    while (st) {
-        if (st.token_id === "WS") {
-            if (ns_eating_ws) {
-                st = st.next;
-                continue;
-            }
-            if (st.next && (st.next.token_id === "WS" || st.next.token_id === "NS")) {
-                st = st.next;
-                continue;
-            }
-        }
-        if (st.token_id === "NS") {
-            const nst: Subtoken = {
-                token_id: "Divider",
-                token: "",
-                next: null,
-            };
-            if (xt) {
-                xt.next = nst;
-            }
-            xt = nst;
-            xht = xht || xt;
-            ns_eating_ws = true;
-            st = st.next;
-            continue;
-        }
-        if (xt) {
-            xt.next = st;
-        }
-        xt = st;
-        xht = xht || xt;
-        ns_eating_ws = false;
-        st = st.next;
-    }
-    if (xt) {
-        xt.next = null;
-    }
+    // let ns_eating_ws = false;
+    // st = xht;
+    // xt = null;
+    // xht = null;
+    // while (st) {
+    //     if (st.token_id === "WS") {
+    //         if (ns_eating_ws) {
+    //             st = st.next;
+    //             continue;
+    //         }
+    //         if (st.next && (st.next.token_id === "WS" || st.next.token_id === "NS")) {
+    //             st = st.next;
+    //             continue;
+    //         }
+    //     }
+    //     if (st.token_id === "NS") {
+    //         const nst: Subtoken = {
+    //             token_id: "Divider",
+    //             token: "",
+    //             next: null,
+    //         };
+    //         if (xt) {
+    //             xt.next = nst;
+    //         }
+    //         xt = nst;
+    //         xht = xht || xt;
+    //         ns_eating_ws = true;
+    //         st = st.next;
+    //         continue;
+    //     }
+    //     if (xt) {
+    //         xt.next = st;
+    //     }
+    //     xt = st;
+    //     xht = xht || xt;
+    //     ns_eating_ws = false;
+    //     st = st.next;
+    // }
+    // if (xt) {
+    //     xt.next = null;
+    // }
     // console.log("WS(2)", JSON.stringify(xht, null, 2));
     // 3. WS+の並びでDividerを入れる
     st = xht;

@@ -99,6 +99,7 @@ int			lx_is_an_operator(t_lex_cursor *cursor);
 size_t		lx_cut_operator(t_lex_cursor *cursor);
 
 int			ms_parse(t_parse_state *state, t_wdlist *words, int for_subshell);
+
 t_token_id	pa_operator_token_id(t_wdlist *word);
 const char	*pa_operator_label(t_token_id ti);
 const char	*pa_token_label(t_token_id ti);

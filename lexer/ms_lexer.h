@@ -19,7 +19,7 @@ typedef struct s_word_list
 	int		start;
 }	t_word_list;
 
-typedef	enum s_status
+typedef enum s_status
 {
 	TYPE_NORMAL,
 	TYPE_SPACE,
@@ -36,7 +36,7 @@ typedef	enum s_status
 	REDIRECT_APPEND,
 }	t_status;
 
-typedef	enum s_token_type
+typedef enum s_token_type
 {
 	RESERVED, // 予約語いらない
 	WORD,
