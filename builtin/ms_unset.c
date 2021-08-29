@@ -1,17 +1,19 @@
 #include "ms_builtin.h"
 
+// ビルトインのみで使う関数は `blt_` にする
+
 // unsetで指定された要素が先頭だった場合
-void	ms_unset_head(t_shellvar *env)
+void	blt_unset_head(t_shellvar *env)
 {
 	t_shellvar	*tmp;
 
 	tmp = env;
 	env = env->next;
-	ms_env_free(tmp);
+	blt_env_free(tmp);
 }
 
 // "unset b"  a->b->c を a->c free(b)
-void	ms_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos)
+void	blt_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos)
 {
 	t_shellvar	*head;
 	t_shellvar	*tmp;
@@ -23,7 +25,7 @@ void	ms_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos)
 	}
 	tmp = head->next;
 	head->next = head->next->next;
-	ms_env_free(tmp);
+	blt_env_free(tmp);
 }
 
 /**
@@ -32,25 +34,26 @@ void	ms_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos)
  * tree->right->token = USER
  */
 // keyを探して見つかったらリストから外す
-int	ms_unset(t_shellvar *env, t_stree *tree)
+int	blt_unset(t_shellvar *env, t_stree *tree)
 {
 	t_shellvar	*key_pos;
 
 	while (tree != NULL) // unset 単体の場合は何もしない
 	{
-		key_pos	= ms_search_key(env, tree->token);
+		key_pos	= blt_search_key(env, tree->token);
 		if (key_pos != NULL) // 存在しなかったら何もしない
 		{
 			if (env == key_pos) //先頭だった場合
 			{
-				ms_unset_head(env);
+				blt_unset_head(env);
 			}
 			else // 2番目以降
 			{
-				ms_unset_second_and_subsequent(env, key_pos);
+				blt_unset_second_and_subsequent(env, key_pos);
 			}
 		}
 		tree = tree->right;
 	}
 	return (0);
 }
+

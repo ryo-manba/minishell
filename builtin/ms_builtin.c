@@ -10,18 +10,18 @@
 int	ms_exec_builtin(t_shellvar *env, t_stree *tree)
 {
 	if (ft_strcmp(tree->token, "echo") == 0)
-		return (ms_echo(tree->right));
+		return (blt_echo(tree->right));
 	if (ft_strcmp(tree->token, "cd") == 0)
-		return (ms_cd(env, tree->right));
+		return (blt_cd(env, tree->right));
 	if (ft_strcmp(tree->token, "pwd") == 0)
-		return (ms_pwd());
+		return (blt_pwd());
 	if (ft_strcmp(tree->token, "export") == 0)
-		return (ms_export(env, tree->right));
+		return (blt_export(env, tree->right));
 	if (ft_strcmp(tree->token, "unset") == 0)
-		return (ms_unset(env, tree->right));
+		return (blt_unset(env, tree->right));
 	if (ft_strcmp(tree->token, "env") == 0)
-		return (ms_env(env));
+		return (blt_env(env));
 	if (ft_strcmp(tree->token, "exit") == 0)
-		return (ms_exit(tree->right));
+		return (blt_exit(tree->right));
 	return (0);
 }

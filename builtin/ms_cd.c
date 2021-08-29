@@ -1,19 +1,19 @@
 #include "ms_builtin.h"
 
 // keyがある場合更新する
-void	ms_search_and_update_env(t_shellvar *env, char *key, char *new_value)
+void	blt_search_and_update_env(t_shellvar *env, char *key, char *new_value)
 {
 	t_shellvar	*key_pos;
 
-	key_pos = ms_search_key(env, key);
+	key_pos = blt_search_key(env, key);
 	if (key_pos != NULL)
 	{
-		ms_update_env(key_pos, new_value);
+		blt_update_env(key_pos, new_value);
 	}
 }
 
 // PWD, OLDPWDが unsetされている場合は新しく作らない
-int	ms_update_pwd(t_shellvar *env, char *old_pwd)
+int	blt_update_pwd(t_shellvar *env, char *old_pwd)
 {
 	char	*pwd;
 
@@ -24,16 +24,16 @@ int	ms_update_pwd(t_shellvar *env, char *old_pwd)
 		perror("getcwd");
 		return (1);
 	}
-	ms_search_and_update_env(env, "OLDPWD", old_pwd);
-	ms_search_and_update_env(env, "PWD", pwd);
+	blt_search_and_update_env(env, "OLDPWD", old_pwd);
+	blt_search_and_update_env(env, "PWD", pwd);
 	return (0);
 }
 
-int	ms_cd_home(t_shellvar *env)
+int	blt_cd_home(t_shellvar *env)
 {
 	t_shellvar *home_pos;
 
-	home_pos = ms_search_key(env, "HOME");
+	home_pos = blt_search_key(env, "HOME");
 	if (home_pos == NULL)
 	{
 		printf("minishell: cd: HOME not set\n");
@@ -47,11 +47,11 @@ int	ms_cd_home(t_shellvar *env)
 	return (0);
 }
 
-int	ms_change_directory(t_shellvar *env, t_stree *tree)
+int	blt_change_directory(t_shellvar *env, t_stree *tree)
 {
 	if (tree == NULL) // home
 	{
-		if (ms_cd_home(env) == 1)
+		if (blt_cd_home(env) == 1)
 			return (1);
 	}
 	else
@@ -66,7 +66,7 @@ int	ms_change_directory(t_shellvar *env, t_stree *tree)
 
 // PWD がunsetされてたら参照できないので、移動前にgetcwdで保持しておく
 // 第一引数のみ適用される、それ以降は無視される
-int	ms_cd(t_shellvar *env, t_stree *tree)
+int	blt_cd(t_shellvar *env, t_stree *tree)
 {
 	char	*old_pwd;
 
@@ -77,9 +77,9 @@ int	ms_cd(t_shellvar *env, t_stree *tree)
 		perror("getcwd");
 		return (1);
 	}
-	if (ms_change_directory(env, tree) == 0)
+	if (blt_change_directory(env, tree) == 0)
 	{
-		if (ms_update_pwd(env, old_pwd) == 1)
+		if (blt_update_pwd(env, old_pwd) == 1)
 			return (1);
 	}
 	free(old_pwd);

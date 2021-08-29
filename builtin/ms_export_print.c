@@ -1,7 +1,7 @@
 #include "ms_builtin.h"
 
 // sort済みの環境変数を出力する
-void	ms_print_export(t_shellvar *env)
+void	blt_print_export(t_shellvar *env)
 {
 	t_shellvar *tmp;
 
@@ -17,7 +17,7 @@ void	ms_print_export(t_shellvar *env)
 }
 
 // 環境変数をクリアする
-void	ms_env_clear(t_shellvar *env)
+void	blt_env_clear(t_shellvar *env)
 {
 	t_shellvar	*tmp;
 
@@ -26,12 +26,12 @@ void	ms_env_clear(t_shellvar *env)
 	{
 		tmp = env;
 		env = env->next;
-		ms_env_free(tmp);
+		blt_env_free(tmp);
 	}
 }
 
 // ソートするため環境変数のコピーを作る
-t_shellvar *ms_copy_env(t_shellvar *env)
+t_shellvar *blt_copy_env(t_shellvar *env)
 {
 	t_shellvar *tmp;
 	t_shellvar *copy;
@@ -40,18 +40,18 @@ t_shellvar *ms_copy_env(t_shellvar *env)
 	copy = NULL;
 	while (tmp)
 	{
-		ms_env_add_back(&copy, ms_new_env(tmp->key, tmp->value, 1));
+		blt_env_add_back(&copy, blt_new_env(tmp->key, tmp->value, 1));
 		tmp = tmp->next;
 	}
 	return (copy);
 }
 
-void	ms_print_sort_env(t_shellvar *env)
+void	blt_print_sort_env(t_shellvar *env)
 {
 	t_shellvar *copy;
 
-	copy = ms_copy_env(env); // 本体をsortしないようにコピーを作る。
-	ms_quick_sort(copy, ms_envlast(copy));
-	ms_print_export(copy);
-	ms_env_clear(copy); // copyをfreeする
+	copy = blt_copy_env(env); // 本体をsortしないようにコピーを作る。
+	blt_quick_sort(copy, blt_envlast(copy));
+	blt_print_export(copy);
+	blt_env_clear(copy); // copyをfreeする
 }

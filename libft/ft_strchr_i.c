@@ -6,15 +6,15 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/20 20:48:44 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/08/20 20:57:15 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/08/28 20:01:24 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strchr_i(const char *s, int c)
+ssize_t	ft_strchr_i(const char *s, int c)
 {
-	size_t	i;
+	ssize_t	i;
 
 	i = 0;
 	while (s[i])
