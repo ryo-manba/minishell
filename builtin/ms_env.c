@@ -18,7 +18,7 @@ t_shellvar *ms_create_env(void)
 		j = ft_strchr_i(environ[i], '='); // '='までの距離を図る
 		key_value[KEY] = ft_substr(environ[i], 0, j);
 		key_value[VALUE] = ft_substr(environ[i], j + 1, ft_strlen(environ[i]));
-		ms_env_add_back(&env, ms_new_env(key_value[KEY], key_value[VALUE], 1));
+		blt_env_add_back(&env, blt_new_env(key_value[KEY], key_value[VALUE], 1));
 		free(key_value[KEY]);
 		free(key_value[VALUE]);
 		i++;
@@ -26,7 +26,7 @@ t_shellvar *ms_create_env(void)
 	return (env);
 }
 
-t_shellvar	*ms_new_env(char *key, char *value, int is_env)
+t_shellvar	*blt_new_env(char *key, char *value, int is_env)
 {
 	t_shellvar *new_env;
 
@@ -44,7 +44,7 @@ t_shellvar	*ms_new_env(char *key, char *value, int is_env)
 	return (new_env);
 }
 
-t_shellvar	*ms_envlast(t_shellvar *env)
+t_shellvar	*blt_envlast(t_shellvar *env)
 {
 	t_shellvar	*last;
 
@@ -59,7 +59,7 @@ t_shellvar	*ms_envlast(t_shellvar *env)
 	return (last);
 }
 
-void	ms_env_add_back(t_shellvar **env, t_shellvar *new)
+void	blt_env_add_back(t_shellvar **env, t_shellvar *new)
 {
 	t_shellvar *last;
 
@@ -67,12 +67,12 @@ void	ms_env_add_back(t_shellvar **env, t_shellvar *new)
 		*env = new;
 	else
 	{
-		last = ms_envlast(*env);
+		last = blt_envlast(*env);
 		last->next = new;
 	}
 }
 
-int	ms_env(t_shellvar *env)
+int	blt_env(t_shellvar *env)
 {
 	t_shellvar	*tmp;
 

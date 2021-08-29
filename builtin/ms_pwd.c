@@ -1,6 +1,6 @@
 #include "ms_builtin.h"
 
-int	ms_pwd(void)
+int	blt_pwd(void)
 {
 	char	*path;
 

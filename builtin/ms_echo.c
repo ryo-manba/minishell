@@ -6,7 +6,7 @@
  * tree->right->token = hello
  * tree->right->right->token = world
  */
-int	ms_echo(t_stree *tree)
+int	blt_echo(t_stree *tree)
 {
 	int	has_op;
 
