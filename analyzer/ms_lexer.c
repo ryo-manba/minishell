@@ -22,18 +22,19 @@ static int	treat_quote(t_lex_cursor *cursor, char c, char ct)
 {
 	if (c == cursor->under_quoted)
 		cursor->under_quoted = '\0';
-	else if (ct == LC_SINGLE_QUOTE || ct == LC_DOUBLE_QUOTE)
+	else if (!cursor->under_quoted
+		&& (ct == LC_SINGLE_QUOTE || ct == LC_DOUBLE_QUOTE))
 	{
 		cursor->under_quoted = ct;
-		if (ms_lexer_add_token(cursor, ct))
+		if (lx_add_token(cursor, ct))
 			return (1);
 	}
 	else if (cursor->under_quoted || ct == LC_WORD)
 	{
-		if (cursor->tail &&
-			!ft_strchr(CHARS_WORD_INCLUDED, cursor->tail->starting_chartype))
-			ms_lexer_conclude_token(cursor);
-		if (ms_lexer_add_token(cursor, ct))
+		if (cursor->tail
+			&& !ft_strchr(CHARS_WORD_INCLUDED, cursor->tail->starting_chartype))
+			lx_conclude_token(cursor);
+		if (lx_add_token(cursor, ct))
 			return (1);
 		cursor->i += 1;
 		return (1);
@@ -51,8 +52,8 @@ static int	treat_nl(t_lex_cursor *cursor, char c, char ct)
 	(void)c;
 	if (ct != LC_NEWLINE)
 		return (0);
-	ms_lexer_conclude_token(cursor);
-	if (ms_lexer_add_token(cursor, ct))
+	lx_conclude_token(cursor);
+	if (lx_add_token(cursor, ct))
 		return (1);
 	cursor->i += 1;
 	return (1);
@@ -65,7 +66,7 @@ static int	treat_space(t_lex_cursor *cursor, char c, char ct)
 	(void)c;
 	if (ct != LC_SPACE)
 		return (0);
-	ms_lexer_conclude_token(cursor);
+	lx_conclude_token(cursor);
 	cursor->i += 1;
 	return (1);
 }
@@ -77,16 +78,16 @@ static int	treat_operator(t_lex_cursor *cursor, char c, char ct)
 	if (!ft_strchr("|&<>;()", c))
 		return (0);
 	if (!cursor->tail || cursor->tail->concluded)
-		if (ms_lexer_add_token(cursor, ct))
+		if (lx_add_token(cursor, ct))
 			return (1);
 	if (!ft_strchr("|&<>;()", cursor->line[cursor->tail->i]))
 	{
-		ms_lexer_conclude_token(cursor);
-		if (ms_lexer_add_token(cursor, ct))
+		lx_conclude_token(cursor);
+		if (lx_add_token(cursor, ct))
 			return (1);
 	}
-	cursor->i += ms_cut_operator(cursor);
-	ms_lexer_conclude_token(cursor);
+	cursor->i += lx_cut_operator(cursor);
+	lx_conclude_token(cursor);
 	return (1);
 }
 
@@ -115,6 +116,6 @@ t_wdlist	*ms_lexer(const char *line)
 		cursor.i += 1;
 	}
 	if (!cursor.failed)
-		ms_lexer_conclude_token(&cursor);
+		lx_conclude_token(&cursor);
 	return (cursor.head);
 }

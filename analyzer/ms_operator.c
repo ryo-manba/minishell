@@ -1,7 +1,7 @@
 #include "ms_analyzer.h"
 
 // 演算子文字列(長さ降順)
-const char	*g_op_label[] = {
+const char			*g_op_label[] = {
 	"<<-",
 	"<<",
 	">>",
@@ -39,7 +39,7 @@ const t_token_id	g_op_token_id[] = {
 	0};
 
 // 演算子 長さ
-const size_t	g_op_len[] = {
+const size_t		g_op_len[] = {
 	3,
 	2,
 	2,
@@ -87,7 +87,7 @@ const t_token_id	g_all_token_id[] = {
 	0};
 
 // 全 token_idラベル
-const char	*g_all_token_label[] = {
+const char			*g_all_token_label[] = {
 	"WORD",
 	"IO_NUMBER",
 	"NAME",
@@ -117,7 +117,7 @@ const char	*g_all_token_label[] = {
 
 // アクティブなLexerトークンがなんらかの演算子なら1を返す
 // returns 1 if active t_wdlist is an operator.
-int	ms_is_an_operator(t_lex_cursor *cursor)
+int	lx_is_an_operator(t_lex_cursor *cursor)
 {
 	const char	*strhead;
 	int			i;
@@ -130,15 +130,15 @@ int	ms_is_an_operator(t_lex_cursor *cursor)
 	while (g_op_label[++i])
 	{
 		d = cursor->i - cursor->tail->i;
-		if (d == g_op_len[i] &&
-			!ft_strncmp(strhead, g_op_label[i], g_op_len[i]))
+		if (d == g_op_len[i]
+			&& !ft_strncmp(strhead, g_op_label[i], g_op_len[i]))
 			return (1);
 	}
 	return (0);
 }
 
 // `line[i]`から最も長い演算子が取れるまで`i`を進める
-size_t	ms_cut_operator(t_lex_cursor *cursor)
+size_t	lx_cut_operator(t_lex_cursor *cursor)
 {
 	size_t	k;
 	size_t	n;
@@ -156,7 +156,7 @@ size_t	ms_cut_operator(t_lex_cursor *cursor)
 
 // Lexer演算子トークンに対応するParserトークンIDを得る
 // returns a t_token_id for given t_wdlist(only for operator)
-t_token_id	ms_operator_token_id(t_wdlist *word)
+t_token_id	pa_operator_token_id(t_wdlist *word)
 {
 	int	i;
 
@@ -171,7 +171,7 @@ t_token_id	ms_operator_token_id(t_wdlist *word)
 
 // Parser演算子トークンIDのラベル文字列を得る
 // returns a label string for given t_token_id(only for operator)
-const char	*ms_operator_label(t_token_id ti)
+const char	*pa_operator_label(t_token_id ti)
 {
 	int	i;
 
@@ -186,7 +186,7 @@ const char	*ms_operator_label(t_token_id ti)
 
 // ParserトークンIDのラベル文字列を得る
 // returns a label string for given t_token_id
-const char	*ms_token_label(t_token_id ti)
+const char	*pa_token_label(t_token_id ti)
 {
 	int	i;
 

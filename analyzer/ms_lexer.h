@@ -1,8 +1,8 @@
-#ifndef MS_LEX_H
-# define MS_LEX_H
+#ifndef MS_LEXER_H
+# define MS_LEXER_H
 
 # include "../libft/libft.h"
-# include <stdio.h>
+#include <stdio.h>
 
 # define LC_NEWLINE	'N'
 # define LC_SINGLE_QUOTE	'\''
@@ -18,7 +18,7 @@
 # define LC_PAREN_R	')'
 # define LC_WORD	'_'
 
-typedef	enum e_lex_type
+typedef enum e_lex_type
 {
 	LT_DUMMY,
 	LT_TOKEN,
@@ -51,11 +51,13 @@ typedef struct s_lex_cursor
 
 # define CHARS_WORD_INCLUDED "\"'_"
 
-int			ms_lexer_add_token(t_lex_cursor *cursor, char starting_char);
-void		ms_lexer_conclude_token(t_lex_cursor *cursor);
-int			ms_is_digital_str(const	char *str, size_t len);
-int			ms_is_name(const char *str, size_t len);
-int			ms_is_assignment_word(const char *str, size_t len);
 t_wdlist	*ms_lexer(const char *line);
+int			lx_add_token(t_lex_cursor *cursor, char starting_char);
+void		lx_conclude_token(t_lex_cursor *cursor);
+int			lx_is_digital_str(const	char *str, size_t len);
+int			lx_is_char_for_name(char c, size_t pos);
+int			lx_is_name(const char *str, size_t len);
+int			lx_is_char_for_bare(char c);
+int			lx_is_assignment_word(const char *str, size_t len);
 
 #endif
