@@ -23,40 +23,61 @@ int ms_open_at(int fd, const char *path, int oflag, int mode)
 // [abstract functions for redirection]
 // open file for input-redirection [io_number]< path
 // if io_number is not specified, STDIN_FILENO will be used for default value.
-int ms_open_redirect_input(int io_number, const char *path)
+int ms_open_redirect_input(t_redir *redir)
 {
+	const char *path = redir->operand_right->token;
+	int			io_number;
+
+	if (redir->operand_left == NULL)
+		io_number = STDIN_FILENO;
+	else
+		io_number = ft_atoi(redir->operand_left->token);
 	return (ms_open_at(io_number, path, O_RDONLY, -1));
 }
 
-int ms_open_redirect_output(int io_number, const char *path)
+int ms_open_redirect_output(t_redir *redir)
 {
+	const char *path = redir->operand_right->token;
+	int			io_number;
+
+	if (redir->operand_left == NULL)
+		io_number = STDOUT_FILENO;
+	else
+		io_number = ft_atoi(redir->operand_left->token);
 	return (ms_open_at(io_number, path, O_WRONLY | O_CREAT | O_TRUNC, 0666));
 }
 
-int	ms_open_redirect_append(int io_number, const char *path)
+int	ms_open_redirect_append(t_redir *redir)
 {
+	const char *path = redir->operand_right->token;
+	int			io_number;
+
+	if (redir->operand_left == NULL)
+		io_number = STDOUT_FILENO;
+	else
+		io_number = ft_atoi(redir->operand_left->token);
 	return (ms_open_at(io_number, path, O_WRONLY | O_CREAT | O_APPEND, 0666));
 }
 
-int	ms_redirect(int io_number, const char *path, int  detail_type)
+int	ms_redirect(t_redir *redir)
 {
-	if (detail_type == TI_LT) // <
+	if (redir->redir_op == TI_LT) // <
 	{
-		return (ms_open_redirect_input(io_number, path));
+		return (ms_open_redirect_input(redir));
 	}
-	else if (detail_type == TI_GT) // >
+	else if (redir->redir_op == TI_GT) // >
 	{
-		return (ms_open_redirect_output(io_number, path));
+		return (ms_open_redirect_output(redir));
 	}
-	else if (detail_type == TI_GTGT) // >>
+	else if (redir->redir_op == TI_GTGT) // >>
 	{
-		return (ms_open_redirect_append(io_number, path));
+		return (ms_open_redirect_append(redir));
 	}
-	else if (detail_type == TI_LTLT) // <<
+	else if (redir->redir_op == TI_LTLT) // <<
 	{
-		return (ms_redirect_heredoc(io_number));
+		return (ms_redirect_heredoc(redir));
 	}
-	return (-1);
+	return (1);
 }
 
 // duplicates fd_from into fd_into, or closes fd_into.

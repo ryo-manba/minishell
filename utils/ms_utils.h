@@ -26,9 +26,9 @@ typedef struct s_test
 }	t_test;
 
 /* ms_pipe.c */
-void 	ms_first_pipe(int pipe_fd[2]);
-void 	ms_last_pipe(int before_pipe[2]);
-void 	ms_middle_pipe(int pipe_fd[2], int before_pipe[2]);
+int 	ms_first_pipe(int pipe_fd[2]);
+int 	ms_last_pipe(int before_pipe[2]);
+int 	ms_middle_pipe(int pipe_fd[2], int before_pipe[2]);
 void 	ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2]);
 int		ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2]);
 
@@ -42,10 +42,10 @@ char *ms_get_path(char *cmd);
 
 /* ms_redirect */
 int ms_open_at(int fd, const char *path, int oflag, int mode);
-int ms_open_redirect_input(int io_number, const char *path);
-int ms_open_redirect_output(int io_number, const char *path);
-int	ms_open_redirect_append(int io_number, const char *path);
-int	ms_redirect(int io_number, const char *path, int  detail_type);
+int ms_open_redirect_input(t_redir *redir);
+int ms_open_redirect_output(t_redir *redir);
+int	ms_open_redirect_append(t_redir *redir);
+int	ms_redirect(t_redir *redir);
 
 // 必要なし
 int ms_duplicate_fd(int fd_from, int fd_into);
@@ -55,7 +55,5 @@ int		ms_heredoc_signal_set(void);
 t_list	*ms_read_heredoc(int fd, int pipe_fd, char *delimiter);
 int		ms_redirect_heredoc(int io_number);
 void	ms_heredoc_sigint_handler(int sig);
-
-
 
 #endif
