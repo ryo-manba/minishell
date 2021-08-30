@@ -13,7 +13,10 @@ int	blt_echo(t_stree *tree)
 	errno = 0;
 	has_op = 0;
 	if (tree != NULL && ft_strcmp(tree->token, "-n") == 0) // treeがNULLの場合は引数なし、改行だけ出力する
+	{
 		has_op = 1;
+		tree = tree->right;
+	}
 	while (tree != NULL)
 	{
 		printf("%s", tree->token);
