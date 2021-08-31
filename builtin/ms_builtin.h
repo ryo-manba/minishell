@@ -39,7 +39,7 @@ void		blt_swap_env(t_shellvar *env1, t_shellvar *env2);
 t_shellvar	*blt_partition(t_shellvar *first, t_shellvar *last);
 
 /* blt_exit */
-void		blt_exit_argument_error(int flag, char *error_args);
+void		blt_exit_print_error(int flag, char *error_args);
 int			blt_is_args_digit(char *args);
 int			blt_check_long_overflow(char *status);
 int			blt_exit(t_stree *tree);
@@ -75,4 +75,6 @@ int			blt_unset(t_shellvar *env, t_stree *tree);
 void		blt_unset_head(t_shellvar *env);
 void		blt_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos);
 
+/* blt_builtin_error */
+void		blt_cd_print_error(char *dirname, char *message);
 #endif

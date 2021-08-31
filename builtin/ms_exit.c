@@ -1,15 +1,17 @@
 #include "ms_builtin.h"
 
-void	blt_exit_argument_error(int flag, char *error_args)
+void	blt_exit_print_error(int flag, char *error_args)
 {
-	printf("exit\n");
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
+	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	if (flag == 1) // 数字以外, またはLONGでオーバーフローする場合
 	{
-		printf("minishell: exit: %s: numeric argument required\n", error_args);
+		ft_putstr_fd(error_args, STDERR_FILENO);
+		ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 	}
 	if (flag == 2) // 数字が続いた場合 exitしない
 	{
-		printf("minishell: exit: too many artuments\n");
+		ft_putstr_fd("too many artuments\n", STDERR_FILENO);
 	}
 }
 
@@ -65,17 +67,18 @@ int	blt_exit(t_stree *tree)
 
 	if (tree == NULL) // 引数なしはそのままexit
 		exit(0);
-	if (blt_is_args_digit(tree->token) == 1 || blt_check_long_overflow(tree->token) == 1) // 数字以外、またはオーバーフローする
+	if (blt_is_args_digit(tree->token) == 1
+		|| blt_check_long_overflow(tree->token) == 1) // 数字以外、またはオーバーフロー
 	{
-		blt_exit_argument_error(1, tree->token); // 第一引数エラーはエラーメッセージ出してexitする
+		blt_exit_print_error(1, tree->token); // 第一引数エラーはエラーメッセージを出してexitする
 		exit(2);
 	}
 	if (tree->right != NULL) // 引数が2つ以上ある場合、エラーメッセージ出してexitしない
 	{
-		blt_exit_argument_error(2, tree->token);
+		blt_exit_print_error(2, tree->token);
 		return (1);
 	}
 	status = ft_atoi(tree->token);
-	printf("exit\n");
+	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	exit(status);
 }

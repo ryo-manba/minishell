@@ -21,7 +21,7 @@ int	blt_update_pwd(t_shellvar *env, char *old_pwd)
 	pwd = getcwd(NULL, 0);
 	if (errno != 0)
 	{
-		perror("getcwd");
+		blt_cd_print_error(NULL , NULL);
 		return (1);
 	}
 	blt_search_and_update_env(env, "OLDPWD", old_pwd);
@@ -36,12 +36,12 @@ int	blt_cd_home(t_shellvar *env)
 	home_pos = blt_search_key(env, "HOME");
 	if (home_pos == NULL)
 	{
-		printf("minishell: cd: HOME not set\n");
+		blt_cd_print_error("HOME", "not set");
 		return (1);
 	}
 	else if (chdir(home_pos->value) == -1)
 	{
-		perror(home_pos->value);
+		blt_cd_print_error(home_pos->value, "No such file or directory");
 		return (1);
 	}
 	return (0);
@@ -70,11 +70,16 @@ int	blt_cd(t_shellvar *env, t_stree *tree)
 {
 	char	*old_pwd;
 
-	errno = 0; // 初期化しないと正しくエラー判定できない
+	if (tree != NULL && ft_strlen(tree->token) > 255)
+	{
+		blt_cd_print_error(tree->token, "File name too long");
+		return (1);
+	}
+	errno = 0;
 	old_pwd = getcwd(NULL, 0);
 	if (errno != 0)
 	{
-		perror("getcwd");
+		blt_cd_print_error(NULL, NULL);
 		return (1);
 	}
 	if (blt_change_directory(env, tree) == 0)

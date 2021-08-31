@@ -49,7 +49,11 @@ void blt_export_env(t_shellvar *env, t_stree *tree)
 	while (tree != NULL)
 	{
 		if (blt_check_and_separate_export(tree->token, key_value) == 1) // 不正な値の場合はその都度エラー表示する。
-			printf("minishell: export: `%s': not a valid identifier\n", tree->token);
+		{
+			ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+			ft_putstr_fd(tree->token, STDERR_FILENO);
+			ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+		}
 		else
 		{
 			equal_pos = ft_strchr_i(tree->token, '=');

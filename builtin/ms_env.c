@@ -30,9 +30,12 @@ t_shellvar	*blt_new_env(char *key, char *value, int is_env)
 {
 	t_shellvar *new_env;
 
-	new_env = malloc(sizeof(t_shellvar));
+	new_env = (t_shellvar *)malloc(sizeof(t_shellvar));
 	if (new_env == NULL)
+	{
 		perror("malloc");
+		return (NULL);
+	}
 	new_env->key = ft_strdup(key);
 	if (value == NULL) // export VAR  =がつながってない場合
 		new_env->value = NULL;
@@ -80,8 +83,12 @@ int	blt_env(t_shellvar *env)
 	while (tmp)
 	{
 		if (tmp->value != NULL) // valueが設定されていなかったら出力しない
-			printf("%s=%s\n", tmp->key, tmp->value);
+		{
+			ft_putstr_fd(tmp->key, STDOUT_FILENO);
+			ft_putchar_ft('=', STDOUT_FILENO);
+			ft_putstr_fd(tmp->value, STDOUT_FILENO);
+			ft_putchar_ft('\n', STDOUT_FILENO);
+		}
 		tmp = tmp->next;
-	}
 	return (0);
 }

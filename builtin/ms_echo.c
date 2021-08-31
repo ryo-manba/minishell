@@ -19,13 +19,13 @@ int	blt_echo(t_stree *tree)
 	}
 	while (tree != NULL)
 	{
-		printf("%s", tree->token);
+		ft_putstr_fd(tree->token, STDOUT_FILENO);
 		if (tree->right != NULL)
-			printf(" ");
+			ft_putchar_fd(' ', STDOUT_FILENO);
 		tree = tree->right;
 	}
 	if (has_op == 0)
-		printf("\n");
+		ft_putchar_fd('\n', STDOUT_FILENO);
 	if (errno != 0) // なんらかで文字表示に失敗した場合
 		return (1);
 	return (0);
