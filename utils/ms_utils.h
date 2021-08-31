@@ -32,6 +32,10 @@ int 	ms_middle_pipe(int pipe_fd[2], int before_pipe[2]);
 void 	ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2]);
 int		ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2]);
 
+/* ms_executer */
+int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
+int	ms_simple_command(t_shellvar *var, t_clause *clause);
+
 /* ms_execute_command */
 void	ms_execute_child(t_clause *test, int pipe_fd[2], int before_pipe[2], char **envp);
 void	ms_execute_command(t_clause *test, char **envp);

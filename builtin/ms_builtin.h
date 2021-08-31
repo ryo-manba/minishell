@@ -15,6 +15,7 @@
 
 /* ms_builtin */
 int	ms_exec_builtin(t_shellvar *env, t_stree *tree);
+int	ms_is_builtin(t_stree *tree);
 
 /* blt_cd */
 int			blt_cd(t_shellvar *env, t_stree *tree);
