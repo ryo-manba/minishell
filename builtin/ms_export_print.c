@@ -17,6 +17,8 @@ void	blt_print_export(t_shellvar *env)
 		{
 			ft_putstr_fd(tmp->key, STDOUT_FILENO);
 			ft_putstr_fd('=\"', STDOUT_FILENO);
+			if (ft_strncmp(tmp->value, "\\", 1) == 0) // export a="\n"　declare -x a="\\n"にする
+				ft_putchar_fd('\\', STDOUT_FILENO);
 			ft_putstr_fd(tmp->value, STDOUT_FILENO);
 			ft_putchar_fd('\"', STDOUT_FILENO);
 		}
