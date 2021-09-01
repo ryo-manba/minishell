@@ -64,7 +64,7 @@ int	ms_execute_child(t_clause *clause)
 // パイプなしのシンプルなコマンド
 // ビルトインならそのまま実行する。
 // 外部コマンドならforkして実行する。
-int	ms_simple_command(t_shellvar *var, t_clause *clause)
+int	ms_simple_command(t_clause *clause, t_shellvar *var)
 {
 	int		status;
 	int		backup_fd[3];

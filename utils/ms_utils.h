@@ -14,16 +14,11 @@
 #include "../lexer/ms_lexer.h"
 #include "../analyzer/ms_analyzer.h"
 
-typedef struct s_test
+typedef struct	s_dpipe
 {
-	char	*cmd;
-	bool	has_redirect;
-	bool	is_builtin;
-	int		io_number;
-	int		detail_type;
-	char	*file_path;
-	struct s_test *next;
-}	t_test;
+	int	new[2];
+	int	before[2];
+}	t_dpipe;
 
 /* ms_pipe.c */
 int 	ms_first_pipe(int pipe_fd[2]);
@@ -33,7 +28,14 @@ void 	ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2]);
 int		ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2]);
 
 /* ms_executer */
-int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
+void	ms_expand_and_redirect(t_clause *clause);
+int		ms_execute_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pid_t pid);
+int		ms_execute_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
+void	ms_wait_child(int sz);
+void	ms_update_exitstatus(t_ex_state *state, pid_t pid);
+int		ms_execute_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
+int		ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
+
 
 /* ms_execute_command */
 void	ms_execute_command(t_clause *test, char **envp);
@@ -43,7 +45,8 @@ void	ms_print_exec_error(t_clause *clause);
 int		ms_duplicate_backup_fd(int backup_fd[3]);
 int		ms_create_backup_fd(int backup_fd[3]);
 int		ms_execute_child(t_clause *clause);
-int		ms_simple_command(t_shellvar *var, t_clause *clause);
+int		ms_simple_command(t_clause *clause, t_shellvar *var);
+
 
 
 /* ms_get_execution_path */

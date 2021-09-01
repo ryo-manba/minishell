@@ -28,6 +28,8 @@ char	**ms_create_execute_command(t_stree *tree)
 
 	sz = ms_get_cmd_size(tree);
 	new_cmd = (char **)malloc(sizeof(char *) * sz + 1);
+	if (new_cmd == NULL)
+		return (NULL);
 	tmp = tree;
 	i = 0;
 	while (tmp != NULL)
@@ -38,57 +40,4 @@ char	**ms_create_execute_command(t_stree *tree)
 	}
 	new_cmd[i] = NULL;
 	return (new_cmd);
-}
-
-// 子プロセスでの処理
-// pipeをつなぐ->リダイレクト
-// ビルトインなら実行してexit(), 通常コマンドならexecve()で実行する
-void	ms_execute_child(t_clause *clause, int pipe_fd[2], int before_pipe[2], char **envp)
-{
-	if (ms_is_builtin(clause->stree) == 1) // builtinならそのまま実行してexitする
-	{
-		exit(ms_exec_builtin(clause->stree));
-	}
-	else
-	{
-		execve(ms_get_path(clause->stree->token),
-			ms_create_execute_command(clause->stree), envp); // builtin以外
-	}
-}
-
-/**
- * Execute a simple command that is hopefully defined in a disk file somewhere.
- *
- * 1) fork ()
- * 2) connect pipes
- * 3) look up the command
- * 4) do redirections
- * 5) execve ()
- * 6) If the execve failed, see if the file has executable mode set.
- */
-// clauseはシンプルコマンド
-// || && ; ではない
-void	ms_execute_command(t_clause *clause, t_shellvar *env)
-{
-	static int	before_pipe[2] = {-1, -1};
-	int	pipe_fd[2];
-	pid_t pid;
-	if (clause->next != NULL) // 最後以外pipeを作る
-	{
-		pipe(pipe_fd);
-	}
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork");
-		return ;
-	}
-	if (pid == 0)
-	{
-		ms_execute_child(clause, pipe_fd, before_pipe, env);
-	}
-	else
-	{
-		ms_close_and_update_pipe(pipe_fd, before_pipe); // 親でpipeを閉じる
-	}
 }
