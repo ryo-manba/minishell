@@ -34,11 +34,17 @@ int		ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2]);
 
 /* ms_executer */
 int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
-int	ms_simple_command(t_shellvar *var, t_clause *clause);
 
 /* ms_execute_command */
-void	ms_execute_child(t_clause *test, int pipe_fd[2], int before_pipe[2], char **envp);
 void	ms_execute_command(t_clause *test, char **envp);
+
+/* ms_execute_simple_command */
+void	ms_print_exec_error(t_clause *clause);
+int		ms_duplicate_backup_fd(int backup_fd[3]);
+int		ms_create_backup_fd(int backup_fd[3]);
+int		ms_execute_child(t_clause *clause);
+int		ms_simple_command(t_shellvar *var, t_clause *clause);
+
 
 /* ms_get_execution_path */
 char *ms_search_execution_path(DIR *dir, char *cmd, char *path);
