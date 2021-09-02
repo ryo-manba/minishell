@@ -62,9 +62,10 @@ int	ms_redirect(t_redir *redir);
 int ms_duplicate_fd(int fd_from, int fd_into);
 
 /* ms_redirect_heredoc */
-int		ms_heredoc_signal_set(void);
-t_list	*ms_read_heredoc(int fd, int pipe_fd, char *delimiter);
-int		ms_redirect_heredoc(int io_number);
 void	ms_heredoc_sigint_handler(int sig);
+int		ms_heredoc_signal_set(void);
+void 	ms_heredoc_read(t_list **lst, char *delimiter);
+int		ms_heredoc_write(t_list *lst, int quoted, int fd);
+int		ms_redirect_heredoc(t_redir *redir, int quoted);
 
 #endif
