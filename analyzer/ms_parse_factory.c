@@ -34,7 +34,7 @@ t_stree	*ex_make_stree(char *token, t_token_id tid)
 		return (NULL);
 	st->token = token;
 	st->token_id = tid;
-	return (NULL);
+	return (st);
 }
 
 t_redir	*pa_make_redir(t_wdlist *op_word, t_stree *target, t_stree *ion)

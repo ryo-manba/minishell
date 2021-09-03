@@ -7,7 +7,8 @@ const char	*g_commands_ok[] = {
 	// "echo he$VAR w*d wi\"'d'${VAR}e\" '\"$BAR\"'\n",
 	// "$VAR@$1VAR_'${VAR\n",
 	// "ab\"cd$VAR@@\"ef\n",
-	"$VAR\"a$VAR@\"$var\n",
+	// "$VAR\"a$VAR@\"$var\n",
+	"$VAR\"\"\"${VAR}$~\"${?}\n",
 	NULL};
 
 void	print_words(t_wdlist *words)
@@ -64,6 +65,9 @@ int main()
 		if (ps.err_message)
 			printf("[Parse Error] %s\n", ps.err_message);
 		ms_init_expander_state(&es, env, 0);
-		ms_expand_stree(&es, ps.pipeline->clause->stree);
+		t_stree *expd = ms_expand_stree(&es, ps.pipeline->clause->stree);
+		printf("%p\n", expd);
+		print_stree(&ps, expd, 0);
+		printf("\n");
 	}
 }

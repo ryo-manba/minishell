@@ -1,63 +1,56 @@
 #include "ms_analyzer.h"
 
-t_stree	*ex_join_words(t_ex_state *state, t_ex_token *ext)
+
+t_stree	*ex_join(t_ex_state *state, t_ex_token *ext)
 {
 	t_ex_unit_cursor	csr;
+	t_ex_token			*temp;
+	t_stree				*st;
+	char				*joined;
 
 	ex_init_cursor_mid(&csr, ext);
+	temp = NULL;
 	while (1)
 	{
-		if (!csr.s.tail || csr.s.tail->token_id == XI_DIVIDER)
+		printf("csr.s.tail: %p\n", csr.s.tail);
+		// exTokenがNULLでもDIVIDERでもない場合
+		if (csr.s.tail && csr.s.tail->token_id != XI_DIVIDER)
 		{
-			if (csr.p.head || !csr.s.tail)
+			if (!temp)
+				temp = csr.s.tail;
+			printf("temp: %p \"%s\" - \"%s\"\n", temp, temp->token, csr.s.tail->token);
+			csr.s.tail = csr.s.tail->right;
+		}
+		else if (temp)
+		{
+			joined = ex_strcat_exlist(temp, 0);
+			if (!joined)
 			{
-				char		*subtoken;
-				t_token_id	tid;
-				t_stree		*st;
-
-				subtoken = NULL;
-				tid = TI_DUMMY;
-				// if (csr.p.tail)
-				// 	csr.p.tail->right = NULL;
-				while (csr.p.head)
-				{
-					if (subtoken)
-						subtoken = free_strjoin(subtoken, csr.p.head->token);
-					else
-						subtoken = ft_strdup(csr.p.head->token);
-					if (tid == TI_DUMMY)
-						tid = csr.p.head->pa_token_id;
-					// TODO: Error
-					if (csr.p.head == csr.p.tail)
-						break ;
-					csr.p.head = csr.p.head->right;
-				}
-				if (subtoken)
-				{
-					st = ex_make_stree(subtoken, tid);
-					// TODO: Error
-					if (csr.t.tail)
-						csr.t.tail->right = st;
-					csr.t.tail = st;
-					if (!csr.t.head)
-						csr.t.head = st;
-					if (!csr.t.head)
-						csr.t.head = csr.t.tail;
-					csr.p.tail = NULL;
-					csr.p.head = NULL; // TODO: destroy
-				}
+				state->failed = 1;
+				break ;
 			}
+			st = ex_make_stree(joined, temp->pa_token_id);
+			printf("st: %p\n", st);
+			if (!st)
+			{
+				free(joined);
+				state->failed = 1;
+				break ;
+			}
+			if (csr.t.tail)
+				csr.t.tail->right = st;
+			csr.t.tail = st;
+			if (!csr.t.head)
+				csr.t.head = csr.t.tail;
+			if (!csr.s.tail)
+				break ;
 		}
-		else
-		{
-			if (csr.p.tail)
-				csr.p.tail = csr.s.tail;
-			csr.p.tail = csr.s.tail;
-			if (!csr.p.head)
-				csr.p.head = csr.p.tail;
-		}
-		if (!csr.s.tail)
-			break ;
-		csr.s.tail = csr.s.tail->right;
 	}
+	ex_destroy_token(ext);
+	if (state->failed)
+	{
+		pa_destroy_stree(csr.t.head);
+		return (NULL);
+	}
+	return (csr.t.head);
 }

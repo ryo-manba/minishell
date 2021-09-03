@@ -6,19 +6,19 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 21:31:49 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/03 21:31:51 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/04 00:28:58 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_analyzer.h"
 
 // concatenate all strings in given ex_token list.
-static char	*ex_strcat_exlist(t_ex_token *head, size_t s)
+char	*ex_strcat_exlist(t_ex_token *head, size_t s)
 {
 	size_t		n;
 	char		*joined;
 
-	if (!head)
+	if (!head || !head->token)
 	{
 		joined = (char *)malloc((s + 1) * sizeof(char));
 		if (!joined)

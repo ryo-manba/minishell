@@ -52,13 +52,15 @@ t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
 {
 	t_ex_cursor	cursor;
 	t_ex_token	*res;
-	// t_stree		*result_stree;
+	t_stree		*st;
 
 	init_ex_cursor(&cursor, src);
 	while (cursor.src.tail)
 	{
 		res = ex_shell_param(state, cursor.src.tail);
 		ex_stringify_extoken(res);
+		st = ex_join(state, res);
+		return (st);
 		// if (!state->no_split)
 		// 	res = ex_split_word(state, res);
 		// ex_stringify_extoken(res);

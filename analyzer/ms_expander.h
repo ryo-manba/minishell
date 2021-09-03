@@ -113,9 +113,11 @@ int			ex_ll_trap_var(t_ex_state *state, t_ex_unit_cursor *csr);
 int			ex_ll_trap_braced_var(t_ex_state *state, t_ex_unit_cursor *csr);
 int			ex_ll_trap_bare(t_ex_state *state, t_ex_unit_cursor *csr);
 int			ex_ll_replace_var(t_ex_state *state, t_ex_unit_cursor *csr);
+char		*ex_strcat_exlist(t_ex_token *head, size_t s);
 void		ex_ll_init_cursor(t_ex_unit_cursor *cursor, t_token_id tid,
 				const char *str, char quote);
 void		ex_init_cursor_mid(t_ex_unit_cursor *cursor, t_ex_token *ext);
+t_stree		*ex_join(t_ex_state *state, t_ex_token *ext);
 
 void		*ex_error(t_ex_state *state, t_stree *stree, char *message);
 void		*ex_fatal(t_ex_state *state, char *message);
