@@ -1,5 +1,11 @@
 #include "ms_builtin.h"
 
+void	blt_echo_print_error(char *message)
+{
+	ft_putstr_fd("minishell: echo: write error: ", STDERR_FILENO);
+	ft_putendl_fd(message, STDERR_FILENO);
+}
+
 /**
  * $ echo -n hello world
  * tree->token = -n
@@ -26,7 +32,10 @@ int	blt_echo(t_stree *tree)
 	}
 	if (has_op == 0)
 		ft_putchar_fd('\n', STDOUT_FILENO);
-	if (errno != 0) // なんらかで文字表示に失敗した場合
-		return (1);
-	return (0);
+	if (errno != 0) // なんらかで文字表示に失敗した場合(fdが存在しないとか)
+	{
+		blt_echo_print_error(strerror(errno));
+		return (MS_BLT_FAIL);
+	}
+	return (MS_BLT_SUCC);
 }
