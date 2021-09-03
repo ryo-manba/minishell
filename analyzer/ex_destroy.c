@@ -7,7 +7,7 @@ void	ex_destroy_token(t_ex_token *ext)
 
 	left = ext->left;
 	right = ext->right;
-	free(ext->token);
+	free((void *)ext->token);
 	free(ext);
 	if (left)
 		ex_destroy_token(left);

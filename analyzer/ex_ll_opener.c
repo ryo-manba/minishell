@@ -1,6 +1,6 @@
 #include "ms_analyzer.h"
 
-void	ex_sp_open_any(t_ex_cursor *cursor)
+void	ex_ll_open_any(t_ex_cursor *cursor)
 {
 	int	pos;
 
@@ -18,7 +18,7 @@ void	ex_sp_open_any(t_ex_cursor *cursor)
 	}
 }
 
-int	ex_sp_open_bvar(t_ex_cursor *cursor)
+int	ex_ll_open_bvar(t_ex_cursor *cursor)
 {
 	char	c;
 

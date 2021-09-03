@@ -28,6 +28,9 @@ t_stree	*ms_expand_stree(t_ex_state *state, t_stree *stree)
 	if (stree->subshell)
 	{
 		// TODO: エグゼキュータに渡す
+		// t_pipeline *pipeline
+		// t_shellvar *var
+		// int        last_exit_status
 		return (NULL);
 	}
 	ext = ex_shell_param(state, stree);

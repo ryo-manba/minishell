@@ -120,12 +120,12 @@ export function lexer(line: string): MS.WordList {
         if (under_quote && under_quote == char_type) {
             // [クオート解除]
             under_quote = "";
-        } else if (char_type == MS.CHARTYPE_SINGLE_QUOTE) {
+        } else if (!under_quote && char_type == MS.CHARTYPE_SINGLE_QUOTE) {
             // [シングルクオート]
             under_quote = char_type;
             // トークンが開始していない場合は開始
             current_token = add_lexer_token(current_token, i, char_type);
-        } else if (char_type == MS.CHARTYPE_DOUBLE_QUOTE) {
+        } else if (!under_quote && char_type == MS.CHARTYPE_DOUBLE_QUOTE) {
             // [ダブルクオート]
             under_quote = char_type;
             // トークンが開始していない場合は開始

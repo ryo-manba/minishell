@@ -1,6 +1,6 @@
 #include "ms_analyzer.h"
 
-int	ex_sp_close_d_quote(t_ex_state *state, t_ex_cursor *cursor)
+int	ex_ll_close_d_quote(t_ex_state *state, t_ex_cursor *cursor)
 {
 	char		*quoted_str;
 	t_ex_token	*inner_ext;
@@ -28,7 +28,7 @@ int	ex_sp_close_d_quote(t_ex_state *state, t_ex_cursor *cursor)
 // trapped: returns 1;
 // untrapped: returns 0;
 // failed: returns 1 with state.failed = 1;
-int	ex_sp_close_quote(t_ex_state *state, t_ex_cursor *cursor)
+int	ex_ll_close_quote(t_ex_state *state, t_ex_cursor *cursor)
 {
 	char	c;
 
@@ -40,7 +40,7 @@ int	ex_sp_close_quote(t_ex_state *state, t_ex_cursor *cursor)
 	}
 	else if (cursor->running == XI_DQUOTED && c == '"')
 	{
-		if (ex_sp_close_d_quote(state, cursor))
+		if (ex_ll_close_d_quote(state, cursor))
 			state->failed = 1;
 	}
 	else
@@ -53,7 +53,7 @@ int	ex_sp_close_quote(t_ex_state *state, t_ex_cursor *cursor)
 // trapped: returns 1;
 // untrapped: returns 0;
 // failed: returns 1 with state.failed = 1;
-int	ex_sp_close_var(t_ex_state *state, t_ex_cursor *cursor)
+int	ex_ll_close_var(t_ex_state *state, t_ex_cursor *cursor)
 {
 	char	c;
 	int		dec;
@@ -84,7 +84,7 @@ int	ex_sp_close_var(t_ex_state *state, t_ex_cursor *cursor)
 // trapped: returns 1;
 // untrapped: returns 0;
 // failed: returns 1 with state.failed = 1;
-int	ex_sp_close_bare(t_ex_state *state, t_ex_cursor *cursor)
+int	ex_ll_close_bare(t_ex_state *state, t_ex_cursor *cursor)
 {
 	char	c;
 
