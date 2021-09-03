@@ -28,14 +28,13 @@ t_ex_token	*ex_push_back_token(t_ex_state *state,
 		ext->token = given_str;
 		if (!ext->token)
 			ext->token = ft_substr(cursor->str, cursor->substr_s,
-				cursor->substr_e - cursor->substr_s);
+					cursor->substr_e - cursor->substr_s);
 		if (!ext->token)
 		{
 			free(ext);
 			state->failed = 1;
 			return (NULL);
 		}
-		printf("\"%s\" %zu:%zu\n", ext->token, cursor->substr_s, cursor->substr_e - cursor->substr_s);
 	}
 	return (ext);
 }
@@ -44,8 +43,6 @@ t_ex_token	*ex_push_back_token(t_ex_state *state,
 int	ex_ll_trap_neutral(t_ex_state *state, t_ex_unit_cursor *csr)
 {
 	(void)state;
-	if (csr->running != XI_NEUTRAL)
-		return (0);
 	if (csr->str[csr->i] == '\'' && !csr->quote)
 	{
 		csr->vs = csr->i++;
@@ -76,15 +73,15 @@ void	ex_ll_unit(t_ex_state *state, t_ex_unit_cursor *csr)
 	{
 		if (csr->running == XI_NEUTRAL && csr->str[csr->i] == csr->quote)
 			break ;
-		if (ex_ll_trap_neutral(state, csr))
+		if (csr->running == XI_NEUTRAL && ex_ll_trap_neutral(state, csr))
 			continue ;
-		if (ex_ll_trap_squoted(state, csr))
+		if (csr->running == XI_SQUOTED && ex_ll_trap_squoted(state, csr))
 			continue ;
 		if (csr->running == XI_VAR && ex_ll_trap_var(state, csr))
 			continue ;
-		if (ex_ll_trap_braced_var(state, csr))
+		if (csr->running == XI_BRACED_VAR && ex_ll_trap_braced_var(state, csr))
 			continue ;
-		if (ex_ll_trap_bare(state, csr))
+		if (csr->running == XI_BARE && ex_ll_trap_bare(state, csr))
 			continue ;
 	}
 	if (state->failed)
