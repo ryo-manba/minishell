@@ -7,7 +7,7 @@ const char	*g_commands_ok[] = {
 	// "echo he$VAR w*d wi\"'d'${VAR}e\" '\"$BAR\"'\n",
 	// "$VAR@$1VAR_'${VAR\n",
 	// "ab\"cd$VAR@@\"ef\n",
-	"$VAR$BAR$var\n",
+	"$VAR\"a$VAR@\"$var\n",
 	NULL};
 
 void	print_words(t_wdlist *words)

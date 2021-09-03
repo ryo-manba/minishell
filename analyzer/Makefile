@@ -8,7 +8,7 @@ EXPANDER_SRCS	:=	ms_expander.c ex_error.c ex_ll.c ex_lstcat.c\
 					ex_vars.c ex_destroy.c ex_cursor.c ex_ll_opener.c ex_ll_closer.c ex_split_word.c\
 					ex_print.c
 
-EXT_SRCS		:= ../builtin/ms_env.c
+EXT_SRCS		:= ../builtin/ms_env.c ../builtin/ms_env_utils.c
 
 SRCS		:=	$(LEXER_SRCS)\
 				$(PARSER_SRCS)\

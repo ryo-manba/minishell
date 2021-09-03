@@ -41,6 +41,8 @@ typedef struct s_stree
 	struct s_stree		*left;
 	struct s_stree		*right;
 	struct s_pipeline	*subshell;
+	// expanderのjoiningにおいて、クオートされたextokenが1つでも含まれていれば1, そうでなければ0
+	int					quote_involved;
 }	t_stree;
 
 // clause内のリダイレクションのリスト

@@ -243,8 +243,10 @@ int	ex_ll_trap_dquote(t_ex_state *state, t_ex_unit_cursor *csr)
 	joined = ex_strcat_exlist(cursor.p.head, 0);
 	if (!joined)
 		return (MS_AZ_FAIL);
+	csr->running = XI_DQUOTED;
 	if (!ex_push_back_token(state, csr, joined))
 		return (MS_AZ_FAIL);
+	csr->running = XI_NEUTRAL;
 	csr->i += cursor.i + 1;
 	return (MS_AZ_SUCC);
 }
