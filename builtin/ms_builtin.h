@@ -1,5 +1,5 @@
-#ifndef MS_UTILS_H
-# define MS_UTILS_H
+#ifndef MS_BUILTIN_H
+# define MS_BUILTIN_H
 
 #include <stdio.h>
 #include <string.h>
@@ -12,6 +12,13 @@
 #include <sys/errno.h>
 #include <limits.h>
 #include "../analyzer/ms_analyzer.h"
+
+# define MS_BLT_SUCC 0
+# define MS_BLT_FAIL 1
+
+# define KEY 0
+# define VALUE 1
+
 
 /* ms_builtin */
 int	ms_exec_builtin(t_shellvar *env, t_stree *tree);
@@ -26,13 +33,19 @@ void		blt_search_and_update_env(t_shellvar *env, char *key, char *new_value);
 
 /* blt_echo */
 int			blt_echo(t_stree *tree);
+void		blt_echo_print_error(char *message);
 
 /* blt_env */
-t_shellvar	*ms_create_env(void);
+int	ms_create_key_value(char *env, char *key_value[2]);
+t_shellvar *ms_create_env(void);
+int	blt_env(t_shellvar *var);
+
+/* blt_env_utils */
+void		ms_env_all_free(t_shellvar *var);
+int			blt_check_malloc_key_value(t_shellvar *var, char *s, int key_or_value);
 t_shellvar	*blt_new_env(char *key, char *value, int is_env);
 t_shellvar	*blt_envlast(t_shellvar *env);
 void		blt_env_add_back(t_shellvar **env, t_shellvar *new);
-int			blt_env(t_shellvar *env);
 
 /* blt_env_sort */
 void		blt_quick_sort(t_shellvar *first, t_shellvar *last);
