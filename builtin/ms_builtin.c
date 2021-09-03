@@ -1,6 +1,25 @@
 #include "ms_builtin.h"
 
-/**
+int	ms_is_builtin(t_stree *tree)
+{
+	if (ft_strcmp(tree->token, "echo") == 0)
+		return (1);
+	if (ft_strcmp(tree->token, "cd") == 0)
+		return (1);
+	if (ft_strcmp(tree->token, "pwd") == 0)
+		return (1);
+	if (ft_strcmp(tree->token, "export") == 0)
+		return (1);
+	if (ft_strcmp(tree->token, "unset") == 0)
+		return (1);
+	if (ft_strcmp(tree->token, "env") == 0)
+		return (1);
+	if (ft_strcmp(tree->token, "exit") == 0)
+		return (1);
+	return (0);
+}
+
+/*
  * echo -n hello 42
  * tree->token = echo
  * tree->right->token = -n

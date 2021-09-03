@@ -1,7 +1,5 @@
 #include "ms_builtin.h"
 
-// ビルトインのみで使う関数は `blt_` にする
-
 // unsetで指定された要素が先頭だった場合
 void	blt_unset_head(t_shellvar *env)
 {

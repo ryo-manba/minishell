@@ -14,27 +14,38 @@
 #include "../lexer/ms_lexer.h"
 #include "../analyzer/ms_analyzer.h"
 
-typedef struct s_test
+typedef struct	s_dpipe
 {
-	char	*cmd;
-	bool	has_redirect;
-	bool	is_builtin;
-	int		io_number;
-	int		detail_type;
-	char	*file_path;
-	struct s_test *next;
-}	t_test;
+	int	new[2];
+	int	before[2];
+}	t_dpipe;
 
 /* ms_pipe.c */
-void 	ms_first_pipe(int pipe_fd[2]);
-void 	ms_last_pipe(int before_pipe[2]);
-void 	ms_middle_pipe(int pipe_fd[2], int before_pipe[2]);
+int 	ms_first_pipe(int pipe_fd[2]);
+int 	ms_last_pipe(int before_pipe[2]);
+int 	ms_middle_pipe(int pipe_fd[2], int before_pipe[2]);
 void 	ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2]);
 int		ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2]);
 
-/* ms_execute_command */
-void	ms_execute_child(t_clause *test, int pipe_fd[2], int before_pipe[2], char **envp);
-void	ms_execute_command(t_clause *test, char **envp);
+/* ms_executer */
+size_t	ms_get_cmd_size(t_stree *tree);
+char	**ms_create_execute_command(t_stree *tree);
+void	ms_expand_and_redirect(t_clause *clause);
+void	ms_update_exitstatus(t_ex_state *state, pid_t pid);
+int		ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
+
+/* ms_execute_pipe_command */
+int		ms_execute_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pid_t pid);
+int		ms_execute_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
+int		ms_execute_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
+void	ms_wait_child(int sz);
+
+/* ms_execute_simple_command */
+void	ms_print_exec_error(t_clause *clause);
+int		ms_duplicate_backup_fd(int backup_fd[3]);
+int		ms_create_backup_fd(int backup_fd[3]);
+int		ms_execute_child(t_clause *clause);
+int		ms_simple_command(t_clause *clause, t_shellvar *var);
 
 /* ms_get_execution_path */
 char *ms_search_execution_path(DIR *dir, char *cmd, char *path);
@@ -42,20 +53,19 @@ char *ms_get_path(char *cmd);
 
 /* ms_redirect */
 int ms_open_at(int fd, const char *path, int oflag, int mode);
-int ms_open_redirect_input(int io_number, const char *path);
-int ms_open_redirect_output(int io_number, const char *path);
-int	ms_open_redirect_append(int io_number, const char *path);
-int	ms_redirect(int io_number, const char *path, int  detail_type);
+int ms_open_redirect_input(t_redir *redir);
+int ms_open_redirect_output(t_redir *redir);
+int	ms_open_redirect_append(t_redir *redir);
+int	ms_redirect(t_redir *redir);
 
 // 必要なし
 int ms_duplicate_fd(int fd_from, int fd_into);
 
 /* ms_redirect_heredoc */
-int		ms_heredoc_signal_set(void);
-t_list	*ms_read_heredoc(int fd, int pipe_fd, char *delimiter);
-int		ms_redirect_heredoc(int io_number);
 void	ms_heredoc_sigint_handler(int sig);
-
-
+int		ms_heredoc_signal_set(void);
+void 	ms_heredoc_read(t_list **lst, char *delimiter);
+int		ms_heredoc_write(t_list *lst, int quoted, int fd);
+int		ms_redirect_heredoc(t_redir *redir, int quoted);
 
 #endif

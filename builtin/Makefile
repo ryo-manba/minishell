@@ -1,5 +1,6 @@
 NAME	=	a.out
 SRCS 	=	ms_builtin.c \
+			ms_buitin_error.c \
 			ms_cd.c \
 			ms_echo.c \
 			ms_env.c \

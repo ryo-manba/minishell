@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:08:43 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/08/28 20:01:35 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/03 13:45:52 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
+# include <limits.h>
 
 # define MAX_FD 256
 # ifndef BUFFER_SIZE
@@ -36,6 +37,7 @@ int				ft_isdigit(int c);
 int				ft_isalnum(int c);
 int				ft_isascii(int c);
 int				ft_isprint(int c);
+int				ft_isspace(char c);
 int				ft_toupper(int c);
 int				ft_tolower(int c);
 int				ft_memcmp(const void *s1, const void *s2, size_t sz);

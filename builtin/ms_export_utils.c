@@ -22,19 +22,31 @@ t_shellvar	*blt_search_key(t_shellvar *env, char *key)
 }
 
 // 環境変数を追加する
-void	blt_append_env(t_shellvar *env, char *key, char *value)
+int	blt_append_env(t_shellvar *env, char *key, char *value)
 {
 	t_shellvar	*append;
 
 	append = blt_new_env(key, value, 1);
+	if (append == NULL)
+	{
+		perrro("malloc");
+		return (MS_BLT_FAIL);
+	}
 	blt_env_add_back(&env, append);
+	return (MS_BLT_SUCC);
 }
 
 // 環境変数のvalueを更新する
-void	blt_update_env(t_shellvar *update_pos, char *value)
+int	blt_update_env(t_shellvar *update_pos, char *value)
 {
 	free(update_pos->value);
 	update_pos->value = ft_strdup(value);
+	if (update_pos->value == NULL)
+	{
+		perror("malloc");
+		return (MS_BLT_FAIL);
+	}
+	return (MS_BLT_SUCC);
 }
 
 // もしkeyが含まれていたら更新する、なかったら新しく作る
@@ -46,11 +58,13 @@ int	blt_append_or_update_env(t_shellvar *env, char *key, char *value)
 	key_pos	= blt_search_key(env, key);
 	if (key_pos == NULL) // keyがなかった場合
 	{
-		blt_append_env(env, key, value);
+		if (blt_append_env(env, key, value) == MS_BLT_FAIL)
+			return (MS_BLT_FAIL);
 	}
 	else if (value != NULL)// keyだけの場合は更新しない
 	{
-		blt_update_env(key_pos, value);
+		if (blt_update_env(key_pos, value) == MS_BLT_FAIL)
+			return (MS_BLT_FAIL);
 	}
-	return (0);
+	return (MS_BLT_SUCC);
 }

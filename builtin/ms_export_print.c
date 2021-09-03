@@ -8,10 +8,20 @@ void	blt_print_export(t_shellvar *env)
 	tmp = env;
 	while (tmp)
 	{
+		ft_putstr_fd("declare -x ", STDOUT_FILENO);
 		if (tmp->value == NULL)
-			printf("declare -x %s\n", tmp->key);
+		{
+			ft_putendl_fd(tmp->key, STDOUT_FILENO);
+		}
 		else
-			printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
+		{
+			ft_putstr_fd(tmp->key, STDOUT_FILENO);
+			ft_putstr_fd('=\"', STDOUT_FILENO);
+			if (ft_strncmp(tmp->value, "\\", 1) == 0) // export a="\n"　declare -x a="\\n"にする
+				ft_putchar_fd('\\', STDOUT_FILENO);
+			ft_putstr_fd(tmp->value, STDOUT_FILENO);
+			ft_putendl_fd("\"", STDOUT_FILENO);
+		}
 		tmp = tmp->next;
 	}
 }

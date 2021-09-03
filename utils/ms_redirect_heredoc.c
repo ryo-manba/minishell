@@ -9,7 +9,7 @@ void	ms_heredoc_sigint_handler(int sig)
 	close(STDIN_FILENO);
 }
 
-int	ms_heredoc_signal_set()
+int	ms_heredoc_signal_set(void)
 {
 	if (signal(SIGINT, ms_heredoc_sigint_handler) == SIG_ERR)
 		return (1);
@@ -21,50 +21,76 @@ int	ms_heredoc_signal_set()
 // ctrl+C    -> 改行を出力して終了
 // ctrl+D    -> 終了
 // delemiter -> 終了
-t_list	*ms_read_heredoc(int fd, int pipe_fd, char *delimiter)
+void ms_heredoc_read(t_list **lst, char *delimiter)
 {
 	char *line;
-	int	backup;
-	t_list	*lst;
-	t_list	*tmp;
+	int	backup_fd;
 
-	backup = dup(STDIN_FILENO);
+	backup_fd = dup(STDIN_FILENO);
 	ms_heredoc_signal_set();
-	lst = ft_lstnew(NULL); // ダミーノード
 	while (g_flag == 0)
 	{
 		line = readline("> ");
 		if (line == NULL || ft_strcmp(line, delimiter) == 0)
 			break ;
-		ft_lstpush_back(&lst, line);
+		ft_lstpush_back(lst, line);
 	}
 	if (g_flag == 1)
 	{
-		dup2(backup, STDIN_FILENO);
-		close(backup);
-		ft_lstclear(&lst, free);
+		dup2(backup_fd, STDIN_FILENO);
+		close(backup_fd);
+		ft_lstclear(lst, free);
 		return (NULL);
 	}
-	tmp = lst;
-	lst = lst->next;
-	free(tmp);
-	close(backup);
+	close(backup_fd);
 	return (lst);
 }
 
-// heredocの場合
-// < の特殊ケース
-int	ms_redirect_heredoc(int io_number)
+// 変数展開して出力する
+int	ms_heredoc_write(t_list *lst, int quoted, int fd)
 {
-	int pipe_fd[2];
+	t_list *tmp;
 
-	pipe(pipe_fd);
-	ms_read_heredoc(); // heredoc読み込み
-	ms_expandable(); // 環境変数展開
-	dup2(pipe_fd[1], 1);
-	close(pipe_fd[1]);
-	ms_write_heredoc(); // 展開したやつを改行区切りでパイプに書き込む
-	dup2(pipe_fd[0], io_number);
-	close(pipe_fd[0]);
+	tmp = lst;
+	if (quoted == 0) // クオートで囲まれていなかったら変数展開する
+	{
+		while (tmp != NULL)
+		{
+			ms_expander((char *)lst->content);
+			tmp = tmp->next;
+		}
+		tmp = lst;
+	}
+	while (tmp)
+	{
+		ft_putendl_fd(lst->content, fd);
+		tmp = tmp->next;
+	}
+	close(fd);
+	return (0);
+}
+
+// << EOT << 'EOT' << "EOT" この判定どうするか
+int	ms_redirect_heredoc(t_redir *redir, int quoted)
+{
+	t_list	**lst;
+	int		pipefd[2];
+
+	lst = (t_list **)malloc(sizeof(t_list *));
+	if (lst == NULL)
+	{
+		perror("malloc");
+	}
+	ms_heredoc_read(lst, redir->operand_right->token); // 標準入力から読み取る
+	if (lst == NULL) // Ctrl+Cで終了した場合は何もしない
+	{
+		close(STDIN_FILENO);
+		return (1);
+	}
+	if (pipe(pipefd) == -1);
+		return (1);
+	dup2(pipefd[0], STDIN_FILENO); // この時点でstdinはパイプになる
+	close(pipefd[0]);
+	ms_heredoc_write(lst, quoted, pipefd[1]); // 展開したやつを改行区切りでパイプに書き込む
 	return (0);
 }

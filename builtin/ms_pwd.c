@@ -11,7 +11,7 @@ int	blt_pwd(void)
 		perror("pwd");
 		return (1);
 	}
-	printf("%s\n", path);
+	ft_putstr_fd(path, STDOUT_FILENO);
 	free(path);
 	return (0);
 }
