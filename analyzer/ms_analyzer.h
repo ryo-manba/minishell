@@ -4,6 +4,7 @@
 # include "ms_lexer.h"
 # include "ms_parser.h"
 # include "ms_expander.h"
+# include "../builtin/ms_builtin.h"
 
 # define MS_AZ_SUCC 0
 # define MS_AZ_FAIL 1

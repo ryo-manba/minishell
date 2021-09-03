@@ -25,6 +25,18 @@ t_stree	*pa_make_stree(t_wdlist *word, int for_subshell)
 	return (st);
 }
 
+t_stree	*ex_make_stree(char *token, t_token_id tid)
+{
+	t_stree	*st;
+
+	st = (t_stree *)ft_calloc(1, sizeof(t_stree));
+	if (!st)
+		return (NULL);
+	st->token = token;
+	st->token_id = tid;
+	return (NULL);
+}
+
 t_redir	*pa_make_redir(t_wdlist *op_word, t_stree *target, t_stree *ion)
 {
 	t_redir		*redir;

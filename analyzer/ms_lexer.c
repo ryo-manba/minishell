@@ -36,8 +36,6 @@ static int	treat_quote(t_lex_cursor *cursor, char c, char ct)
 			lx_conclude_token(cursor);
 		if (lx_add_token(cursor, ct))
 			return (1);
-		cursor->i += 1;
-		return (1);
 	}
 	else
 		return (0);
@@ -115,6 +113,7 @@ t_wdlist	*ms_lexer(const char *line)
 			continue ;
 		cursor.i += 1;
 	}
+	// TODO: 末尾にNLトークンがない場合はParseエラーとする
 	if (!cursor.failed)
 		lx_conclude_token(&cursor);
 	return (cursor.head);

@@ -1,24 +1,58 @@
 #include "ms_analyzer.h"
 
-void	ex_ll_open_any(t_ex_cursor *cursor)
+void	ex_ll_open_any(t_ex_state *state, t_ex_unit_cursor *cursor)
 {
-	int	pos;
+	int		pos;
+	char	c;
 
-	pos = ft_strchr_i("'\"$", cursor->str[cursor->i]);
+	// printf("i = %zu, c = '%c'\n", cursor->i, cursor->str[cursor->i]);
+	c = cursor->str[cursor->i];
+	pos = ft_strchr_i("'\"$", c);
 	if (pos >= 0)
 	{
-		cursor->vs = cursor->i + 1;
-		cursor->running = (t_ex_token_id[3]){
-			XI_SQUOTED, XI_DQUOTED, XI_VAR}[pos];
+		if (c == '\'') 
+		{
+			// シングルクオート内処理
+			cursor->vs = cursor->i + 1;
+			cursor->running = XI_SQUOTED;
+			cursor->i += 1;
+			while (cursor->str[cursor->i] && cursor->str[cursor->i] != c)
+				cursor->i += 1;
+			if (!ex_push_back_token(state, cursor, NULL))
+				state->failed = 1;
+			cursor->i += 1;
+			return ;
+		}
+		else if (c == '"')
+		{
+			// ダブルクオート内処理
+			t_ex_unit_cursor	csr;
+
+			printf("[in deep]\n");
+			cursor->i += 1;
+			ex_ll_init_cursor(&csr, cursor->pa_token_id,
+				cursor->str + cursor->i, '"');
+			ex_ll_unit(state, &csr);
+			printf("[out deep] err?: %d\n", state->failed);
+			ex_stringify_extoken(csr.p.head);
+			printf("i -> %zu + %zu\n", cursor->i, csr.i);
+			cursor->i += csr.i;
+			return ;
+		}
+		else
+		{
+			cursor->i += 1;
+			cursor->vs = cursor->i;
+			cursor->running = XI_VAR;
+			return ;
+		}
 	}
-	else
-	{
-		cursor->vs = cursor->i;
-		cursor->running = XI_BARE;
-	}
+	cursor->vs = cursor->i;
+	cursor->running = XI_BARE;
+	cursor->i += 1;
 }
 
-int	ex_ll_open_bvar(t_ex_cursor *cursor)
+int	ex_ll_open_bvar(t_ex_unit_cursor *cursor)
 {
 	char	c;
 
@@ -28,5 +62,6 @@ int	ex_ll_open_bvar(t_ex_cursor *cursor)
 	cursor->vs = cursor->i + 1;
 	cursor->running = XI_BRACED_VAR;
 	cursor->i += 1;
+	// printf("trapped: open bvar\n");
 	return (1);
 }

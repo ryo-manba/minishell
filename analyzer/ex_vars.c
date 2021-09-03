@@ -54,7 +54,7 @@ char	*ex_get_var_val(t_ex_state *state, const char *key)
 }
 
 // 変数置き換え
-int	ex_replace_var(t_ex_state *state, t_ex_cursor *cursor)
+int	ex_replace_var(t_ex_state *state, t_ex_unit_cursor *cursor)
 {
 	char		*name;
 	const char	*val;

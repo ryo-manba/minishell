@@ -1,5 +1,24 @@
 #include "ms_analyzer.h"
 
+static void	init_ex_cursor(t_ex_cursor *cursor, t_stree *src)
+{
+	ft_bzero(cursor, sizeof(t_ex_cursor));
+	cursor->src.head = src;
+	cursor->src.tail = src;
+}
+
+void concat_stree_cursor(t_ex_cursor *cursor, t_stree *res)
+{
+	if (!cursor->res.head)
+		cursor->res.head = res;
+	if (!cursor->res.tail)
+		cursor->res.tail = res;
+	else
+		cursor->res.tail->right = res;
+	while (cursor->res.tail->right)
+		cursor->res.tail = cursor->res.tail->right;
+}
+
 t_redir	*ms_expand_redir(t_ex_state *state, t_redir *redir)
 {
 	t_redir	*tail;
@@ -21,21 +40,32 @@ t_redir	*ms_expand_redir(t_ex_state *state, t_redir *redir)
 	return (redir);
 }
 
-t_stree	*ms_expand_stree(t_ex_state *state, t_stree *stree)
-{
-	t_ex_token	*ext;
 
-	if (stree->subshell)
+void	ms_init_expander_state(t_ex_state *state, t_shellvar *env, int last_exit_status)
+{
+	ft_bzero(state, sizeof(t_ex_state));
+	state->var = env;
+	state->last_exit_status = last_exit_status;
+}
+
+t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
+{
+	t_ex_cursor	cursor;
+	t_ex_token	*res;
+	// t_stree		*result_stree;
+
+	init_ex_cursor(&cursor, src);
+	while (cursor.src.tail)
 	{
-		// TODO: エグゼキュータに渡す
-		// t_pipeline *pipeline
-		// t_shellvar *var
-		// int        last_exit_status
-		return (NULL);
+		res = ex_shell_param(state, cursor.src.tail);
+		ex_stringify_extoken(res);
+		// if (!state->no_split)
+		// 	res = ex_split_word(state, res);
+		// ex_stringify_extoken(res);
+		// res = ex_filename(state, res);
+		// result_stree = ex_join_words(state, res);
+		// concat_stree_cursor(&cursor, result_stree);
+		cursor.src.tail = cursor.src.tail->right;
 	}
-	ext = ex_shell_param(state, stree);
-	if (!state->no_split)
-		ext = ex_split_word(state, ext);
-	ext = ex_filename(state, ext);
-	return (ex_join_words(state, ext));
+	return (cursor.res.head);
 }

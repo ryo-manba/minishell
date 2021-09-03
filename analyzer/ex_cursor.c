@@ -16,19 +16,26 @@ t_ex_token	*ex_pop_src_token_csr(t_ex_part_cursor *cursor)
 	return (cursor->tail);
 }
 
-void	ex_init_sp_cursor(t_ex_cursor *cursor, t_token_id tid, const char *str)
+void	ex_ll_init_cursor(t_ex_unit_cursor *cursor, t_token_id tid,
+	const char *str, char quote)
 {
-	ft_bzero(cursor, sizeof(t_ex_cursor));
+	ssize_t	n;
+
+	ft_bzero(cursor, sizeof(t_ex_unit_cursor));
 	cursor->str = str;
-	cursor->n = ft_strlen(str);
-	cursor->running = XI_BARE;
+	cursor->quote = quote;
+	n = ft_strchr_i(str, quote);
+	// TODO: n < 0 -> ERROR
+	cursor->n = n;
+	cursor->running = XI_NEUTRAL;
 	cursor->pa_token_id = tid;
+	cursor->vs = 0;
+	printf("i = %zu, n = %zu: \"%s\"\n", cursor->i, cursor->n, cursor->str);
 }
 
-void	ex_init_sw_cursor(t_ex_cursor *cursor, t_ex_token *ext)
+void	ex_init_cursor_mid(t_ex_unit_cursor *cursor, t_ex_token *ext)
 {
-	ft_bzero(cursor, sizeof(t_ex_cursor));
-	cursor->p.src_head = ext;
-	cursor->p.src_tail = ext;
+	ft_bzero(cursor, sizeof(t_ex_unit_cursor));
+	cursor->s.head = ext;
+	cursor->s.tail = ext;
 }
-

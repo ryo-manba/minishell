@@ -11,10 +11,12 @@ typedef enum e_token_id
 	TI_NAME,
 	TI_ASSIGNMENT_WORD,
 	TI_SUBSHELL,
+
 	TI_LT,
 	TI_GT,
 	TI_LTLT,
 	TI_GTGT,
+
 	TI_LTGT,
 	TI_LTAND,
 	TI_GTAND,
@@ -107,6 +109,7 @@ int			pa_unit(t_parse_state *state);
 t_wdlist	*pa_shift_word(t_parse_state *state);
 t_stree		*pa_make_stree(t_wdlist *word, int for_subshell);
 t_redir		*pa_make_redir(t_wdlist *op_word, t_stree *target, t_stree *ion);
+t_stree		*ex_make_stree(char *token, t_token_id tid);
 void		pa_destroy_stree(t_stree *stree);
 void		pa_destroy_redir(t_redir *redir);
 void		pa_destroy_clause(t_clause *clause);
