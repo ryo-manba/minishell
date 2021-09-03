@@ -11,7 +11,7 @@ void	blt_print_export(t_shellvar *env)
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
 		if (tmp->value == NULL)
 		{
-			ft_putstr_fd(tmp->key, STDOUT_FILENO);
+			ft_putendl_fd(tmp->key, STDOUT_FILENO);
 		}
 		else
 		{
@@ -20,9 +20,8 @@ void	blt_print_export(t_shellvar *env)
 			if (ft_strncmp(tmp->value, "\\", 1) == 0) // export a="\n"　declare -x a="\\n"にする
 				ft_putchar_fd('\\', STDOUT_FILENO);
 			ft_putstr_fd(tmp->value, STDOUT_FILENO);
-			ft_putchar_fd('\"', STDOUT_FILENO);
+			ft_putendl_fd("\"", STDOUT_FILENO);
 		}
-		ft_putchar_fd('\n', STDOUT_FILENO);
 		tmp = tmp->next;
 	}
 }
