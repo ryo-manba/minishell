@@ -53,9 +53,10 @@ int	blt_env(t_shellvar *var)
 		if (tmp->value != NULL) // valueが設定されていなかったら出力しない
 		{
 			ft_putstr_fd(tmp->key, STDOUT_FILENO);
-			ft_putchar_ft('=', STDOUT_FILENO);
+			ft_putchar_fd('=', STDOUT_FILENO);
 			ft_putendl_fd(tmp->value, STDOUT_FILENO);
 		}
 		tmp = tmp->next;
+	}
 	return (0);
 }
