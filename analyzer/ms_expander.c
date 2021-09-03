@@ -67,5 +67,6 @@ t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
 		// concat_stree_cursor(&cursor, result_stree);
 		cursor.src.tail = cursor.src.tail->right;
 	}
+	pa_destroy_stree(cursor.src.head);
 	return (cursor.res.head);
 }

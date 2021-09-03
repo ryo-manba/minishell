@@ -13,6 +13,7 @@ static size_t	ex_strcpy_n(char *dst, const char *src)
 	return (n);
 }
 
+// たぶんいらない
 char	*ex_lstcat(t_ex_token *ext)
 {
 	size_t		i;

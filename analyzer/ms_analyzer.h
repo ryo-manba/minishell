@@ -8,5 +8,6 @@
 
 # define MS_AZ_SUCC 0
 # define MS_AZ_FAIL 1
+# define MS_AZ_PROGNAME "minishell"
 
 #endif

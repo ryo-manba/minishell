@@ -3,6 +3,7 @@
 # include "../libft/libft.h"
 # include "ms_parser.h"
 # define EX_IFS	" \t\n"
+# define EX_SPECIAL_VAR "?"
 
 typedef enum e_ex_token_id
 {
@@ -97,7 +98,6 @@ void		ex_add_token_csr(t_ex_part_cursor *cursor, t_ex_token *ext);
 t_ex_token	*ex_pop_src_token_csr(t_ex_part_cursor *cursor);
 
 t_ex_token	*ex_shell_param(t_ex_state *state, t_stree *stree);
-void		ex_ll_unit(t_ex_state *state, t_ex_unit_cursor *csr);
 t_ex_token	*ex_split_word(t_ex_state *state, t_ex_token *ext);
 t_ex_token	*ex_filename(t_ex_state *state, t_ex_token *ext);
 t_stree		*ex_join_words(t_ex_state *state, t_ex_token *ext);
@@ -105,16 +105,18 @@ t_ex_token	*ex_push_back_token(t_ex_state *state,
 				t_ex_unit_cursor *cursor, const char *given_str);
 
 char		*ex_lstcat(t_ex_token *ext);
-int			ex_replace_var(t_ex_state *state, t_ex_unit_cursor *cursor);
-void		ex_ll_open_any(t_ex_state *state, t_ex_unit_cursor *cursor);
-int			ex_ll_open_bvar(t_ex_unit_cursor *cursor);
-int			ex_ll_close_quote(t_ex_state *state, t_ex_unit_cursor *cursor);
-int			ex_ll_close_var(t_ex_state *state, t_ex_unit_cursor *cursor);
-int			ex_ll_close_bare(t_ex_state *state, t_ex_unit_cursor *cursor);
 
+void		ex_ll_unit(t_ex_state *state, t_ex_unit_cursor *csr);
+int			ex_ll_trap_squoted(t_ex_state *state, t_ex_unit_cursor *csr);
+int			ex_ll_trap_dquote(t_ex_state *state, t_ex_unit_cursor *csr);
+int			ex_ll_trap_var(t_ex_state *state, t_ex_unit_cursor *csr);
+int			ex_ll_trap_braced_var(t_ex_state *state, t_ex_unit_cursor *csr);
+int			ex_ll_trap_bare(t_ex_state *state, t_ex_unit_cursor *csr);
+int			ex_ll_replace_var(t_ex_state *state, t_ex_unit_cursor *csr);
 void		ex_ll_init_cursor(t_ex_unit_cursor *cursor, t_token_id tid,
 				const char *str, char quote);
 void		ex_init_cursor_mid(t_ex_unit_cursor *cursor, t_ex_token *ext);
+
 void		*ex_error(t_ex_state *state, t_stree *stree, char *message);
 void		*ex_fatal(t_ex_state *state, char *message);
 void		ex_destroy_token(t_ex_token *ext);

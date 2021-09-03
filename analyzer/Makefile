@@ -5,7 +5,8 @@ PARSER_SRCS	:=	ms_parser.c ms_parse_unit.c ms_parse_error.c ms_parse_factory.c\
 				ms_parse_syntax_term.c ms_parse_cleaner.c
 
 EXPANDER_SRCS	:=	ms_expander.c ex_error.c ex_ll.c ex_lstcat.c\
-					ex_vars.c ex_destroy.c ex_cursor.c ex_ll_opener.c ex_ll_closer.c ex_split_word.c\
+					ex_ll_trap.c ex_ll_dquote.c\
+					ex_destroy.c ex_cursor.c ex_ll_var.c ex_split_word.c\
 					ex_print.c
 
 EXT_SRCS		:= ../builtin/ms_env.c ../builtin/ms_env_utils.c
