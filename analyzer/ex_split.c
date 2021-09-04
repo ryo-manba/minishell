@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ex_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/04 13:23:15 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/04 15:19:24 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
-int	ex_push_back_divider(t_ex_state *state, t_ex_unit_cursor *csr,
+int	ex_push_back_divider_if_needed(t_ex_state *state, t_ex_unit_cursor *csr,
 		t_ex_token *token)
 {
 	t_ex_token	*divider;
@@ -20,8 +32,8 @@ int	ex_push_back_divider(t_ex_state *state, t_ex_unit_cursor *csr,
 	return (MS_AZ_SUCC);
 }
 
-int	ex_clone_and_push_back_token(t_ex_state *state, t_ex_unit_cursor *csr,
-		t_ex_token *token)
+t_ex_token	*ex_clone_and_push_back_token(t_ex_state *state,
+		t_ex_unit_cursor *csr, t_ex_token *token)
 {
 	t_ex_token	*cloned_ext;
 	char		*cloned_str;
@@ -33,7 +45,7 @@ int	ex_clone_and_push_back_token(t_ex_state *state, t_ex_unit_cursor *csr,
 		free(cloned_ext);
 		free(cloned_str);
 		state->failed = 1;
-		return (MS_AZ_FAIL);
+		return (NULL);
 	}
 	ft_memcpy(cloned_ext, token, sizeof(t_ex_token));
 	cloned_ext->token = cloned_str;
@@ -43,7 +55,33 @@ int	ex_clone_and_push_back_token(t_ex_state *state, t_ex_unit_cursor *csr,
 	csr->p.tail = cloned_ext;
 	if (!csr->p.head)
 		csr->p.head = csr->p.tail;
-	return (MS_AZ_SUCC);
+	return (cloned_ext);
+}
+
+int	ex_split_var_token(t_ex_state *state, t_ex_unit_cursor *csr,
+	t_ex_token *temp)
+{
+	csr->vs = 0;
+	csr->i = 0;
+	while (!state->failed && temp->token[csr->i])
+	{
+		if (ft_strchr(EX_IFS, temp->token[csr->i]))
+		{
+			while (temp->token[csr->i]
+				&& ft_strchr(EX_IFS, temp->token[csr->i]))
+				csr->i += 1;
+			ex_push_back_divider_if_needed(state, csr, temp);
+		}
+		else
+		{
+			csr->vs = csr->i;
+			while (temp->token[csr->i]
+				&& !ft_strchr(EX_IFS, temp->token[csr->i]))
+				csr->i += 1;
+			ex_clone_and_push_back_token(state, csr, temp);
+		}
+	}
+	return (!!state->failed);
 }
 
 t_ex_token	*ex_split(t_ex_state *state, t_ex_token *token)
@@ -52,52 +90,18 @@ t_ex_token	*ex_split(t_ex_state *state, t_ex_token *token)
 	t_ex_token			*temp;
 
 	ex_init_cursor_mid(&csr, token);
-	while (!state->failed)
+	while (csr.s.tail)
 	{
 		temp = csr.s.tail;
-		if (!temp)
-			break ;
 		if (temp->token_id != XI_VAR)
 		{
-			// exTokenがVARでない場合は、exトークンをコピーする。
 			csr.vs = 0;
 			csr.i = ft_strlen(temp->token);
-			if (ex_clone_and_push_back_token(state, &csr, temp))
-			{
-				state->failed = 1;
+			if (!ex_clone_and_push_back_token(state, &csr, temp))
 				break ;
-			}
 		}
-		else
-		{
-			// トークン文字列を先頭から見ていく。
-			csr.vs = 0;
-			csr.i = 0;
-			while (!state->failed)
-			{
-				if (!temp->token[csr.i]) // 処理を終了する。
-					break ;
-				else if (ft_strchr(EX_IFS, temp->token[csr.i]))
-				{
-					// 空白文字でなくなるまでiを進める。
-					while (temp->token[csr.i] && ft_strchr(EX_IFS, temp->token[csr.i]))
-						csr.i += 1;
-					// 一時変数t_tailがNULLでないなら、DIVIDERトークンを追加する。
-					if (ex_push_back_divider(state, &csr, temp))
-						break; 
-				}
-				else
-				{
-					// 現在位置の文字が空白文字またはNULになるまでiを進める。
-					csr.vs = csr.i;
-					while (temp->token[csr.i] && !ft_strchr(EX_IFS, temp->token[csr.i]))
-						csr.i += 1;
-					// vsからi-1までを新しいexTokenとして切り出す。
-					if (ex_clone_and_push_back_token(state, &csr, temp))
-						break ;
-				}
-			}
-		}
+		else if (ex_split_var_token(state, &csr, temp))
+			break ;
 		csr.s.tail = temp->right;
 	}
 	ex_destroy_token(csr.s.head);
