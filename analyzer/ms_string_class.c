@@ -45,7 +45,7 @@ int	lx_is_char_for_bare(char c)
 {
 	if (!c)
 		return (0);
-	return (!!ft_strchr("'\"$", c));
+	return (!ft_strchr("'\"$", c));
 }
 
 // strがASSIGNMENT WORDとして適当かどうか?
