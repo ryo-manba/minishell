@@ -40,8 +40,9 @@ void	ms_update_exitstatus(t_ex_state *state, pid_t pid);
 int		ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 
 /* ms_execute_pipe_command */
+void	ms_print_error_exit(int ex_status, char *path);
 int		ms_execute_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pid_t pid);
-int		ms_execute_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
+void	ms_execute_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
 int		ms_execute_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 void	ms_wait_child(int sz);
 
