@@ -30,10 +30,12 @@ char *ms_create_split_path(t_shellvar *var, char **split_path)
 char	*ms_check_and_create_path(char *cmd, char **split_path, t_ex_state *state)
 {
 	char		*path;
+	char		*err_path; // 存在するが失敗した場合ようにとっておく
 	struct stat	sb;
 	int			i;
 
 	i = -1;
+	err_path = NULL;
 	while (split_path[++i])
 	{
 		path = ft_strjoin(split_path[i], cmd);
@@ -47,10 +49,14 @@ char	*ms_check_and_create_path(char *cmd, char **split_path, t_ex_state *state)
 				state->last_exit_status = 0;
 				return (path);
 			}
+			if (err_path != NULL)
+				free(err_path);
+			err_path = path;
 		}
-		free(path);
+		else
+			free(path);
 	}
-	return (NULL);
+	return (err_path);
 }
 
 char	*ms_get_path(char *cmd, t_shellvar *var, t_ex_state *state)

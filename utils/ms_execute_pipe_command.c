@@ -1,5 +1,25 @@
 #include "ms_utils.h"
 
+void	print_error_exit(int ex_status, char *path)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(path, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	if (ex_status == IS_A_DIR || ex_status == PERMISSION)
+	{
+		if (ex_status == IS_A_DIR)
+			ft_putendl_fd("is a directory", STDERR_FILENO);
+		if (ex_status == PERMISSION)
+			ft_putendl_fd("Permission denied", STDERR_FILENO);
+		exit(126);
+	}
+	else
+	{
+		ft_putendl_fd("command not found", STDERR_FILENO);
+		exit(127);
+	}
+}
+
 // エラーチェックとパイプを閉じる
 int	ms_execute_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pid_t pid)
 {
@@ -12,8 +32,10 @@ int	ms_execute_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pi
 
 // コマンド実行の核
 // エクスパンダーの部分修正する
-int	ms_execute_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe)
+void	ms_execute_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe)
 {
+	char *path;
+
 	ms_do_piping(pl->clause, dpipe->new, dpipe->before); // パイプをつなげる
 	ms_expand_and_redirect(pl->clause); 		// 変数展開してリダイレクト
 	if (pl->clause->stree->subshell != NULL) 	// subshellの場合、再帰的にエグゼキューターに渡す
@@ -28,8 +50,18 @@ int	ms_execute_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_
 	else
 	{
 		errno = 0;
-		execve(ms_get_path(pl->clause->stree->token),
-			ms_create_execute_command(pl->clause->stree), NULL); // builtin以外
+		path = ms_get_path(pl->clause->stree->right->token,var, state);
+		if (state->last_exit_status == PERMISSION || state->last_exit_status == IS_A_DIR)
+		{
+			ms_print_error_exit(state->last_exit_status, path);
+		}
+		else if (path == NULL)
+			ms_print_error_exit(state->last_exit_status, pl->clause->stree->right->token);
+		else
+		{
+			execve(path,ms_create_execute_command(pl->clause->stree), NULL);
+		}
+		exit(errno);
 	}
 }
 

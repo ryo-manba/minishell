@@ -13,7 +13,6 @@ int ms_open_at(int fd, const char *path, int oflag, int mode)
 		open_fd = open(path, oflag, mode);
 	if (open_fd < 0)
 		return (-1);
-	close(fd);	// openの前にすると読み込みに失敗する
 	if (dup2(open_fd, fd) == -1)
 		return (-1);
 	close(open_fd);
@@ -87,8 +86,8 @@ int ms_duplicate_fd(int fd_from, int fd_into)
 {
 	int	rv;
 
-	rv = close(fd_into);
-	if (fd_from >= 0)
-		rv = dup2(fd_from, fd_into);
-	return (rv);
+	if (dup2(fd_from, fd_into) == -1)
+		return (-1);
+	close(fd_from);
+	return (0);
 }

@@ -35,6 +35,13 @@ char	**ms_create_execute_command(t_stree *tree)
 	while (tmp != NULL)
 	{
 		new_cmd[i] = ft_strdup(tmp->token);
+		if (new_cmd[i] == NULL)
+		{
+			while (i--)
+				free(new_cmd[i]);
+			free(new_cmd);
+			return (NULL);
+		}
 		tmp = tmp->right;
 		i++;
 	}
