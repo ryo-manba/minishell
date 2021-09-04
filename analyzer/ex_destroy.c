@@ -1,17 +1,16 @@
 #include "ms_analyzer.h"
 
-void	ex_destroy_token(t_ex_token *ext)
+void	ex_destroy_a_token(t_ex_token *ext)
 {
-	t_ex_token	*temp;
-
-	if (!ext)
-		return ;
-	temp = ext->left;
-	if (temp)
-		ex_destroy_token(temp);
-	temp = ext->right;
-	if (temp)
-		ex_destroy_token(temp);
 	free((void *)ext->token);
 	free(ext);
+}
+
+void	ex_destroy_token(t_ex_token *ext)
+{
+	if (!ext)
+		return ;
+	ex_destroy_token(ext->left);
+	ex_destroy_token(ext->right);
+	ex_destroy_a_token(ext);
 }

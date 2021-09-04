@@ -1,11 +1,12 @@
-LEXER_SRCS	:=	ms_lexer.c ms_wordutils.c ms_string_class.c ms_operator.c
+LEXER_SRCS		:=	ms_lexer.c ms_wordutils.c ms_string_class.c ms_operator.c
 
-PARSER_SRCS	:=	ms_parser.c ms_parse_unit.c ms_parse_error.c ms_parse_factory.c\
-				ms_parse_redir.c ms_parse_manip.c ms_parse_unit_operator.c\
-				ms_parse_syntax_term.c ms_parse_cleaner.c
+PARSER_SRCS		:=	ms_parser.c ms_parse_unit.c ms_parse_error.c ms_parse_factory.c\
+					ms_parse_redir.c ms_parse_manip.c ms_parse_unit_operator.c\
+					ms_parse_syntax_term.c ms_parse_cleaner.c
 
 EXPANDER_SRCS	:=	ms_expander.c ex_error.c ex_ll.c ex_lstcat.c\
 					ex_ll_trap.c ex_ll_dquote.c ex_ll_var.c\
+					ex_split.c\
 					ex_join.c\
 					ex_destroy.c ex_cursor.c ex_split_word.c\
 					ex_print.c

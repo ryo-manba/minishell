@@ -8,7 +8,9 @@ const char	*g_commands_ok[] = {
 	// "$VAR@$1VAR_'${VAR\n",
 	// "ab\"cd$VAR@@\"ef\n",
 	// "$VAR\"a$VAR@\"$var\n",
-	"$VAR\"\"\"${VAR}$~\"${?}\n",
+	// "$VAR\"\"\"${VAR}$~\"${?}\n",
+	// "a${VAR}b\n",
+	"a${VAR}\n",
 	NULL};
 
 void	print_words(t_wdlist *words)

@@ -19,11 +19,12 @@ t_stree	*ex_join(t_ex_state *state, t_ex_token *ext)
 			if (!temp)
 				temp = csr.s.tail;
 			printf("temp: %p \"%s\" - \"%s\"\n", temp, temp->token, csr.s.tail->token);
-			csr.s.tail = csr.s.tail->right;
 		}
 		else if (temp)
 		{
+			printf("str joining...\n");
 			joined = ex_strcat_exlist(temp, 0);
+			printf("joined: \"%s\"\n", joined);
 			if (!joined)
 			{
 				state->failed = 1;
@@ -42,9 +43,11 @@ t_stree	*ex_join(t_ex_state *state, t_ex_token *ext)
 			csr.t.tail = st;
 			if (!csr.t.head)
 				csr.t.head = csr.t.tail;
-			if (!csr.s.tail)
-				break ;
+			temp = NULL;
 		}
+		if (!csr.s.tail)
+			break ;
+		csr.s.tail = csr.s.tail->right;
 	}
 	ex_destroy_token(ext);
 	if (state->failed)

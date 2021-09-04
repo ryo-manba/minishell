@@ -117,11 +117,13 @@ char		*ex_strcat_exlist(t_ex_token *head, size_t s);
 void		ex_ll_init_cursor(t_ex_unit_cursor *cursor, t_token_id tid,
 				const char *str, char quote);
 void		ex_init_cursor_mid(t_ex_unit_cursor *cursor, t_ex_token *ext);
+t_ex_token	*ex_split(t_ex_state *state, t_ex_token *token);
 t_stree		*ex_join(t_ex_state *state, t_ex_token *ext);
 
 void		*ex_error(t_ex_state *state, t_stree *stree, char *message);
 void		*ex_fatal(t_ex_state *state, char *message);
 void		ex_destroy_token(t_ex_token *ext);
+void		ex_destroy_a_token(t_ex_token *ext);
 
 void		ex_stringify_extoken(t_ex_token *ext);
 
