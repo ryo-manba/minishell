@@ -14,6 +14,11 @@
 #include "../lexer/ms_lexer.h"
 #include "../analyzer/ms_analyzer.h"
 
+/* ms_get_execution_path */
+#define IS_A_DIR 1260
+#define PERMISSION 1261
+#define	CMD_NOT_FOUND 127
+
 typedef struct	s_dpipe
 {
 	int	new[2];
@@ -48,8 +53,10 @@ int		ms_execute_child(t_clause *clause);
 int		ms_simple_command(t_clause *clause, t_shellvar *var);
 
 /* ms_get_execution_path */
-char *ms_search_execution_path(DIR *dir, char *cmd, char *path);
-char *ms_get_path(char *cmd);
+void	ms_all_free(char **s);
+char	*ms_create_split_path(t_shellvar *var, char **split_path);
+char	*ms_check_and_create_path(char *cmd, char **split_path, t_ex_state *state);
+char	*ms_get_path(char *cmd, t_shellvar *var, t_ex_state *state);
 
 /* ms_redirect */
 int ms_open_at(int fd, const char *path, int oflag, int mode);
