@@ -28,7 +28,7 @@ int	blt_is_args_correct(char *args)
 	i = 0;
 	while (ft_isspace(args[i]))
 		i++;
-	while (ft_isdigit(args[i])) // 数字じゃなかったら
+	while (ft_isdigit(args[i]))
 		i++;
 	while (ft_isspace(args[i]))
 		i++;
@@ -38,7 +38,7 @@ int	blt_is_args_correct(char *args)
 }
 
 // statusが LONG_MAX or LONG_MIN を超える場合
-int	blt_check_long_overflow(char *status)
+int	blt_check_long_overflow(char *ex_status)
 {
 	int			i;
 	int			sign;
@@ -47,14 +47,14 @@ int	blt_check_long_overflow(char *status)
 	i = 0;
 	sign = 1;
 	unum = 0;
-	if (status[i] == '-' || status[i] == '+')
+	if (ex_status[i] == '-' || ex_status[i] == '+')
 	{
-		if (status[i++] == '-')
+		if (ex_status[i++] == '-')
 			sign = -1;
 	}
-	while (ft_isdigit(status[i]))
+	while (ft_isdigit(ex_status[i]))
 	{
-		unum = unum * 10 + status[i] - '0';
+		unum = unum * 10 + ex_status[i] - '0';
 		i++;
 		if (unum != 0 && ((sign == 1 && unum > LONG_MAX)
 			|| (sign == -1 && unum - 1 > LONG_MAX)))
@@ -71,7 +71,7 @@ int	blt_check_long_overflow(char *status)
 int	blt_exit(t_stree *tree)
 {
 	int		flag;
-	int64_t	status;
+	int64_t	ex_status;
 
 	if (tree == NULL) // 引数なしはそのままexit
 		exit(0);
@@ -86,7 +86,7 @@ int	blt_exit(t_stree *tree)
 		blt_exit_print_error(TOO_MANY_ARGS, tree->token);
 		return (MS_BLT_FAIL);
 	}
-	status = ft_atoi(tree->token);
+	ex_status = ft_atoi(tree->token);
 	ft_putendl_fd("exit", STDOUT_FILENO);
-	exit(status);
+	exit(ex_status);
 }
