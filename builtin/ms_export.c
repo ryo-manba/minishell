@@ -35,13 +35,15 @@ int	blt_append_or_join_env(t_shellvar *var, char* key_value[2])
 	key_pos = blt_search_key(var, key_value[KEY]);
 	if (key_pos == NULL) // keyが存在しなかったら追加するだけ
 	{
-		blt_append_env(var, key_value[KEY], key_value[VALUE]);
+		if (blt_append_env(var, key_value[KEY], key_value[VALUE]))
+			return (MS_BLT_FAIL);
 	}
 	else if (key_value[VALUE] != NULL) // keyが存在して新しい value が NULL じゃなかった場合結合する
 	{
 		if (blt_join_env(key_pos, key_value) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);
 	}
+	return (MS_BLT_SUCC);
 }
 
 int	blt_check_and_export(t_stree *tree, t_shellvar *var, char *key_value[2])
@@ -50,7 +52,10 @@ int	blt_check_and_export(t_stree *tree, t_shellvar *var, char *key_value[2])
 
 	equal_idx = ft_strchr_i(tree->token, '=');
 	if (equal_idx != 0 && tree->token[equal_idx - 1] == '+') // "+="だったら文字を結合する
-		blt_append_or_join_env(var, key_value);
+	{
+		if (blt_append_or_join_env(var, key_value) == MS_BLT_FAIL)
+			return (MS_BLT_FAIL);
+	}
 	else
 	{
 		if (blt_append_or_update_env(var, key_value[KEY], key_value[VALUE]) == MS_BLT_FAIL)
@@ -63,14 +68,15 @@ int	blt_check_and_export(t_stree *tree, t_shellvar *var, char *key_value[2])
 int blt_export_env(t_shellvar *var, t_stree *tree)
 {
 	char	*key_value[2];
-	int32_t	equal_idx;
+	int		ex_status;
 
-	equal_idx = 0;
+	ex_status = MS_BLT_SUCC;
 	while (tree != NULL)
 	{
 		if (blt_check_and_separate_export(tree->token, key_value) == MS_BLT_FAIL) // 不正な値の場合はその都度エラー表示する。
 		{
 			blt_export_print_error(tree->token);
+			ex_status = MS_BLT_FAIL;  // 一つでもエラーが出たら終了ステータスは1
 		}
 		else
 		{
@@ -79,7 +85,7 @@ int blt_export_env(t_shellvar *var, t_stree *tree)
 		}
 		tree = tree->right;
 	}
-	return (MS_BLT_SUCC);
+	return (ex_status);
 }
 
 /*
@@ -87,8 +93,6 @@ int blt_export_env(t_shellvar *var, t_stree *tree)
 ** tree->token = "TEST=test"
 ** tree->right->token = "aaa"
 */
-// t_stree->right("TEST=test")が渡される
-// export hello="\"hello\"" の場合エスケープ
 int	blt_export(t_shellvar *var, t_stree *tree)
 {
 	if (tree == NULL) // 'export' 単体の場合は環境変数をソートして'declare -x hoge="huga"'の形式で出力する

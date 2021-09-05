@@ -29,7 +29,7 @@ int	blt_append_env(t_shellvar *env, char *key, char *value)
 	append = blt_new_env(key, value, 1);
 	if (append == NULL)
 	{
-		perrro("malloc");
+		perror("malloc");
 		return (MS_BLT_FAIL);
 	}
 	blt_env_add_back(&env, append);

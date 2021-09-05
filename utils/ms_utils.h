@@ -14,6 +14,11 @@
 #include "../lexer/ms_lexer.h"
 #include "../analyzer/ms_analyzer.h"
 
+/* ms_get_execution_path */
+#define IS_A_DIR 1260
+#define PERMISSION 1261
+#define	CMD_NOT_FOUND 127
+
 typedef struct	s_dpipe
 {
 	int	new[2];
@@ -28,15 +33,19 @@ void 	ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2]);
 int		ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2]);
 
 /* ms_executer */
-size_t	ms_get_cmd_size(t_stree *tree);
 char	**ms_create_execute_command(t_stree *tree);
 void	ms_expand_and_redirect(t_clause *clause);
 void	ms_update_exitstatus(t_ex_state *state, pid_t pid);
+void	ms_just_open_file(t_redir *redir);
 int		ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 
+/* ms_execute_utils */
+size_t	ms_get_cmd_size(t_stree *tree);
+
 /* ms_execute_pipe_command */
+void	ms_print_error_exit(int ex_status, char *path);
 int		ms_execute_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pid_t pid);
-int		ms_execute_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
+void	ms_execute_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
 int		ms_execute_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 void	ms_wait_child(int sz);
 
@@ -48,8 +57,10 @@ int		ms_execute_child(t_clause *clause);
 int		ms_simple_command(t_clause *clause, t_shellvar *var);
 
 /* ms_get_execution_path */
-char *ms_search_execution_path(DIR *dir, char *cmd, char *path);
-char *ms_get_path(char *cmd);
+void	ms_all_free(char **s);
+char	*ms_create_split_path(t_shellvar *var, char **split_path);
+char	*ms_check_and_create_path(char *cmd, char **split_path, t_ex_state *state);
+char	*ms_get_path(char *cmd, t_shellvar *var, t_ex_state *state);
 
 /* ms_redirect */
 int ms_open_at(int fd, const char *path, int oflag, int mode);

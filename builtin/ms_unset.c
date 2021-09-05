@@ -52,6 +52,6 @@ int	blt_unset(t_shellvar *env, t_stree *tree)
 		}
 		tree = tree->right;
 	}
-	return (0);
+	return (MS_BLT_SUCC);
 }
 
