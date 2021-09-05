@@ -2,8 +2,11 @@
 # define MS_EXPANDER_H
 # include "../libft/libft.h"
 # include "ms_parser.h"
+# include <dirent.h>
 # define EX_IFS	" \t\n"
-# define EX_SPECIAL_VAR "?"
+# define EX_SPECIAL_VAR_CHAR "?"
+
+typedef unsigned char	*t_ucp;
 
 typedef enum e_ex_token_id
 {
@@ -26,6 +29,7 @@ typedef struct s_ex_token
 	t_token_id			pa_token_id;
 	struct s_ex_token	*right;
 	struct s_ex_token	*left;
+	size_t				n;
 }	t_ex_token;
 
 typedef struct s_shellvar
@@ -46,6 +50,7 @@ typedef struct s_ex_state
 
 	int			no_split;
 	int			ex_quoted;
+	t_ex_token	*file_names;
 }	t_ex_state;
 
 typedef struct s_ex_part_cursor
@@ -82,6 +87,15 @@ typedef struct s_ex_cursor
 	t_ex_st_cursor	res;
 }	t_ex_cursor;
 
+typedef struct s_ex_fx_dpcursor
+{
+	t_ucp			dp[2];
+	char			*pattern;
+	size_t			n;
+	int				match_hidden;
+	size_t			mathched;
+}	t_ex_fx_dpcursor;
+
 // エグゼキュータがstateを初期化するための関数
 // 呼び出し前は、stateは一切初期化しなくていい
 // t_ex_state	state;
@@ -99,12 +113,14 @@ t_ex_token	*ex_pop_src_token_csr(t_ex_part_cursor *cursor);
 
 t_ex_token	*ex_shell_param(t_ex_state *state, t_stree *stree);
 t_ex_token	*ex_split(t_ex_state *state, t_ex_token *token);
+t_ex_token	*ex_fx(t_ex_state *state, t_ex_token *token);
 t_ex_token	*ex_filename(t_ex_state *state, t_ex_token *ext);
 t_stree		*ex_join(t_ex_state *state, t_ex_token *ext);
 t_ex_token	*ex_push_back_token(t_ex_state *state,
 				t_ex_unit_cursor *cursor, const char *given_str);
 
 char		*ex_lstcat(t_ex_token *ext);
+void		ex_init_cursor_mid(t_ex_unit_cursor *cursor, t_ex_token *ext);
 
 void		ex_ll_unit(t_ex_state *state, t_ex_unit_cursor *csr);
 int			ex_ll_trap_squoted(t_ex_state *state, t_ex_unit_cursor *csr);
@@ -116,7 +132,13 @@ int			ex_ll_replace_var(t_ex_state *state, t_ex_unit_cursor *csr);
 char		*ex_strcat_exlist(t_ex_token *head, size_t s);
 void		ex_ll_init_cursor(t_ex_unit_cursor *cursor, t_token_id tid,
 				const char *str, char quote);
-void		ex_init_cursor_mid(t_ex_unit_cursor *cursor, t_ex_token *ext);
+int			ex_push_back_divider_if_needed(t_ex_state *state, t_ex_unit_cursor *csr,
+				t_ex_token *token);
+t_ex_token	*ex_fx_dir_ents(t_ex_state *state);
+size_t		ex_fx_expand(t_ex_state *state, t_ex_unit_cursor *cursor,
+				char *pattern, size_t n);
+t_ex_token	*ex_clone_and_push_back_token(t_ex_state *state,
+				t_ex_unit_cursor *csr, t_ex_token *token);
 
 void		*ex_error(t_ex_state *state, t_stree *stree, char *message);
 void		*ex_fatal(t_ex_state *state, char *message);

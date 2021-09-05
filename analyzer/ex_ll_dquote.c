@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 21:31:49 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/04 00:28:58 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/04 18:19:26 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,16 @@ int	ex_ll_trap_dquote(t_ex_state *state, t_ex_unit_cursor *csr)
 	ex_ll_unit(state, &cursor);
 	if (state->failed)
 		return (MS_AZ_FAIL);
-	ex_stringify_extoken(cursor.p.head);
 	joined = ex_strcat_exlist(cursor.p.head, 0);
 	ex_destroy_token(cursor.p.head);
 	if (!joined)
 		return (MS_AZ_FAIL);
 	csr->running = XI_DQUOTED;
 	if (!ex_push_back_token(state, csr, joined))
+	{
+		free(joined);
 		return (MS_AZ_FAIL);
+	}
 	csr->running = XI_NEUTRAL;
 	csr->i += cursor.i + 1;
 	return (MS_AZ_SUCC);

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 22:14:46 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/03 22:21:45 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/04 18:27:00 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	ex_ll_push_back(t_ex_state *state, t_ex_unit_cursor *csr)
 {
-	if (ft_strchr(EX_SPECIAL_VAR, csr->str[csr->i]))
+	if (ft_strchr(EX_SPECIAL_VAR_CHAR, csr->str[csr->i]))
 	{
 		csr->substr_s = csr->vs + 1;
 		csr->substr_e = csr->i + 1;

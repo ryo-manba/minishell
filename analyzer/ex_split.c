@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 13:23:15 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/04 15:19:24 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/05 18:53:16 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ex_push_back_divider_if_needed(t_ex_state *state, t_ex_unit_cursor *csr,
 {
 	t_ex_token	*divider;
 
+	if (state->failed)
+		return (MS_AZ_FAIL);
 	if (!csr->p.tail)
 		return (MS_AZ_SUCC);
 	divider = (t_ex_token *)ft_calloc(1, sizeof(t_ex_token));
@@ -61,25 +63,21 @@ t_ex_token	*ex_clone_and_push_back_token(t_ex_state *state,
 int	ex_split_var_token(t_ex_state *state, t_ex_unit_cursor *csr,
 	t_ex_token *temp)
 {
+	int	white_space;
+
 	csr->vs = 0;
 	csr->i = 0;
 	while (!state->failed && temp->token[csr->i])
 	{
-		if (ft_strchr(EX_IFS, temp->token[csr->i]))
-		{
-			while (temp->token[csr->i]
-				&& ft_strchr(EX_IFS, temp->token[csr->i]))
-				csr->i += 1;
+		csr->vs = csr->i;
+		white_space = !!ft_strchr(EX_IFS, temp->token[csr->i]);
+		while (temp->token[csr->i]
+			&& white_space == !!ft_strchr(EX_IFS, temp->token[csr->i]))
+			csr->i += 1;
+		if (white_space)
 			ex_push_back_divider_if_needed(state, csr, temp);
-		}
 		else
-		{
-			csr->vs = csr->i;
-			while (temp->token[csr->i]
-				&& !ft_strchr(EX_IFS, temp->token[csr->i]))
-				csr->i += 1;
 			ex_clone_and_push_back_token(state, csr, temp);
-		}
 	}
 	return (!!state->failed);
 }
