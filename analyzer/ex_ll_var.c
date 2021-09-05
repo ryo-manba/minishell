@@ -32,11 +32,12 @@ static int	ex_ll_validate_var_key(t_ex_state *state, t_ex_unit_cursor *csr)
 
 	n = csr->substr_e - csr->substr_s;
 	i = csr->substr_s;
+	c = csr->str[i];
 	if (n == 0)
 		return (ex_ll_err_bad_substitution(state, csr));
 	if (n == 1)
 	{
-		if (!ft_strchr(EX_SPECIAL_VAR_CHAR, csr->str[i]))
+		if (!ft_isalpha(c) && c != '_' && !ft_strchr(EX_SPECIAL_VAR_CHAR, c))
 			return (ex_ll_err_bad_substitution(state, csr));
 		return (MS_AZ_SUCC);
 	}
