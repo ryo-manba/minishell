@@ -19,6 +19,11 @@
 #define PERMISSION 1261
 #define	CMD_NOT_FOUND 127
 
+/* ms_execute_utils */
+#define OVER_FD -1
+#define OVER_INT -2
+
+
 typedef struct	s_dpipe
 {
 	int	new[2];
@@ -34,13 +39,14 @@ int		ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2]);
 
 /* ms_executer */
 char	**ms_create_execute_command(t_stree *tree);
-void	ms_expand_and_redirect(t_clause *clause);
+int		ms_expand_and_redirect(t_clause *clause);
 void	ms_update_exitstatus(t_ex_state *state, pid_t pid);
-void	ms_just_open_file(t_redir *redir);
+void	ms_just_open_file(t_clause *clause);
 int		ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 
 /* ms_execute_utils */
 size_t	ms_get_cmd_size(t_stree *tree);
+int	ms_check_fd(char *fd);
 
 /* ms_execute_pipe_command */
 void	ms_print_error_exit(int ex_status, char *path);

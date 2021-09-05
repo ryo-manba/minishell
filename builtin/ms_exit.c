@@ -2,7 +2,7 @@
 
 void	blt_exit_print_error(int flag, char *error_args)
 {
-	ft_putendl_fd("exit", STDOUT_FILENO);
+	ft_putendl_fd("exit", STDERR_FILENO);
 	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 	if (flag == NOT_A_NUMBER) // 数字以外, またはLONGでオーバーフローする場合
 	{
@@ -87,6 +87,6 @@ int	blt_exit(t_stree *tree)
 		return (MS_BLT_FAIL);
 	}
 	ex_status = ft_atoi(tree->token);
-	ft_putendl_fd("exit", STDOUT_FILENO);
+	ft_putendl_fd("exit", STDERR_FILENO); // exitは常にfd2に出力される
 	exit(ex_status);
 }

@@ -6,6 +6,7 @@ volatile sig_atomic_t g_flag = 0;
 void	ms_heredoc_sigint_handler(int sig)
 {
 	g_flag = 1;
+	ft_putchar_fd('\n', STDOUT_FILENO);
 	close(STDIN_FILENO);
 }
 
@@ -28,18 +29,20 @@ void ms_heredoc_read(t_list **lst, char *delimiter)
 
 	backup_fd = dup(STDIN_FILENO);
 	ms_heredoc_signal_set();
-	while (g_flag == 0)
+	while (1)
 	{
 		line = readline("> ");
-		if (line == NULL || ft_strcmp(line, delimiter) == 0)
+		if (line == NULL || ft_strcmp(line, delimiter) == 0 || g_flag == 1)
 			break ;
 		ft_lstpush_back(lst, line);
 	}
-	if (g_flag == 1)
+	if (g_flag == 1) // ctrl-cで終わった場合終了ステータスは1になる
 	{
-		dup2(backup_fd, STDIN_FILENO);
+		if (dup2(backup_fd, STDIN_FILENO) == -1)// dup2失敗した場合、どうするか
+			do_something();
 		close(backup_fd);
 		ft_lstclear(lst, free);
+	//	ex_status = 1;
 		return (NULL);
 	}
 	close(backup_fd);

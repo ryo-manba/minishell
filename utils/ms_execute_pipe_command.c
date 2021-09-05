@@ -45,7 +45,7 @@ void	ms_execute_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t
 	ms_expander(pl->clause->stree); // echo $VAR -> echo var 展開する
 	if (ms_is_builtin(pl->clause->stree) == 1) // builtinならそのまま実行してexitする
 	{
-		exit(ms_exec_builtin(pl->clause->stree));
+		exit(ms_exec_builtin(var, pl->clause->stree));
 	}
 	else
 	{
@@ -85,25 +85,20 @@ int	ms_execute_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 	while (pl->clause != NULL) // すべてのコマンドを実行していく
 	{
 		if (pl->clause->next != NULL)
-		{
 			pipe(dpipe->new);
-		}
 		pid = fork();
 		if (pid < 0)
 		{
 			perror("fork");
+			return (1);
 		}
 		if (pid == 0)
-		{
 			ms_execute_pipe_child(pl, var, state, dpipe);
-		}
 		else
-		{
 			ms_execute_pipe_parent(pl, state, dpipe, pid);
-		}
 		pl->clause = pl->clause->next;
 		sz++;
 	}
-	ms_update_exitstatus(state, pid);
+	ms_update_exitstatus(state, pid); // 最後のコマンドのpidからステータスを取る
 	ms_wait_child(sz);
 }

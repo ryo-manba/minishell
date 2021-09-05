@@ -7,16 +7,17 @@ int ms_open_at(int fd, const char *path, int oflag, int mode)
 {
 	int	open_fd;
 
+	errno = 0;
 	if (mode == -1) // stdin
 		open_fd = open(path, oflag);
 	else
 		open_fd = open(path, oflag, mode);
 	if (open_fd < 0)
-		return (-1);
+		return (errno);
 	if (dup2(open_fd, fd) == -1)
-		return (-1);
+		return (errno);
 	close(open_fd);
-	return (fd);
+	return (errno);
 }
 
 // [abstract functions for redirection]
