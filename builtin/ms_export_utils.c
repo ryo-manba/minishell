@@ -9,16 +9,16 @@ void	blt_env_free(t_shellvar *env)
 
 t_shellvar	*blt_search_key(t_shellvar *env, char *key)
 {
-	t_shellvar	*tmp;
+	t_shellvar	*key_pos;
 
-	tmp = env;
-	while (tmp)
+	key_pos = env;
+	while (key_pos)
 	{
-		if (ft_strcmp(tmp->key, key) == 0)
+		if (ft_strcmp(key_pos->key, key) == 0)
 			break ;
-		tmp = tmp->next;
+		key_pos = key_pos->next;
 	}
-	return (tmp); // keyの場所か,NULLを返す
+	return (key_pos); // keyの場所か,NULLを返す
 }
 
 // 環境変数を追加する

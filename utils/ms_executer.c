@@ -32,17 +32,26 @@ char	**ms_create_execute_command(t_stree *tree)
 	return (new_cmd);
 }
 
-
 // 環境変数を展開しながらリダイレクションを処理する
 // エクスパンダーの部分修正する
-void	ms_expand_and_redirect(t_clause *clause)
+int	ms_expand_and_redirect(t_clause *clause)
 {
-	while (clause->redir != NULL) // 逐次的にエキスパンドとリダイレクトを行う  echo hello > $VAR > b > c | cat
+	t_redir	*rd;
+	int	flag;
+
+	flag = 0;
+	rd = clause->redir;
+	while (rd) // 逐次的にエキスパンドとリダイレクトを行う  echo hello > $VAR > b > c | cat
 	{
-		do_expander(clause->redir); // リダイレクションを展開する (echo a > $VAR　-> echo a > var)
-		ms_redirect(clause->redir); // リダイレクションを処理する
-		clause->redir = clause->redir->next;
+		do_expander(rd); // リダイレクションを展開する (echo a > $VAR　-> echo a > var)
+		flag = ms_redirect(rd);// リダイレクションを処理する
+		if (ms_check_and_print_error(rd, flag) == 1)
+			break ;
+		rd = rd->next;
 	}
+	if (rd != NULL) // リダイレクトが最後まで処理されていない場合
+		return (1);
+	return (0);
 }
 
 void	ms_update_exitstatus(t_ex_state *state, pid_t pid)
@@ -53,19 +62,29 @@ void	ms_update_exitstatus(t_ex_state *state, pid_t pid)
 	state->last_exit_status = WEXITSTATUS(status);
 }
 
-// ">,>>" があったらファイルを作っとく
-void	ms_just_open_file(t_redir *redir)
+// ">,>>" があったらとりあえず先に上書きとファイル作成を行う。
+// 不正なfdでもここではエラー処理はしない
+void	ms_just_open_file(t_clause *clause)
 {
-	t_redir	*tmp;
+	t_clause	*tmp_cl;
+	t_redir		*tmp_re;
 
-	if (redir == NULL)
-		return ;
-	tmp = redir;
-	while (tmp)
+	tmp_cl = clause;
+	while (tmp_cl)
 	{
-		if (tmp->redir_op == TI_GT || tmp->redir_op == TI_GTGT)
-			open(tmp->operand_right, O_CREAT); // とりあえず先に上書きとファイル作成を行う。
-		tmp = tmp->next;
+		tmp_re = tmp_cl->redir;
+		while (tmp_re)
+		{
+			if (tmp_re->redir_op == TI_GT || tmp_re->redir_op == TI_GTGT)
+			{
+				if (open(tmp_re->operand_right, O_CREAT) == -1); // Permissionなどでopenに失敗したらそれ以降のそれ以降の処理はしない
+					break ;
+			}
+			if (ms_check_fd(tmp_re->operand_left) < 0) // 不正なfdだった場合それ以降のリダイレクトは処理しない
+				break ;
+			tmp_re = tmp_re->next;
+		}
+		tmp_cl = tmp_cl->next;
 	}
 }
 
@@ -77,7 +96,7 @@ int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 
 	if (pl == NULL)
 		return (0);
-	ms_just_open_file(pl->clause->redir);
+	ms_just_open_file(pl->clause);
 	if (pl->clause->next != NULL) // パイプがある場合、終わるまでループ回す
 	{
 		ms_execute_pipe_command(pl, var, state);

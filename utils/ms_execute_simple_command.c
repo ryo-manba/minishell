@@ -73,7 +73,8 @@ int	ms_simple_command(t_clause *clause, t_shellvar *var)
 	{
 		if (ms_create_backup_fd(backup_fd) == 1)
 			return (1);
-		ms_expand_and_redirect(clause); // 変数展開とリダイレクト処理
+		if (ms_expand_and_redirect(clause) == 1) // 変数展開とリダイレクト処理
+			return (1);
 	}
 	if (ms_is_builtin(clause->stree) == 1)
 	{
