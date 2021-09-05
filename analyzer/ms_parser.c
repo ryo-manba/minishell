@@ -5,8 +5,7 @@ static void	destroy_pipeline(t_pipeline *pipeline);
 // パーサを初期化
 static int	init_parser(t_parse_state *state, t_wdlist *words, int for_subshell)
 {
-	ft_bzero(state, sizeof(t_parse_state));
-	state->pipeline = ft_calloc(1, sizeof(t_pipeline));
+	pa_add_new_pipeline(state);
 	if (!state->pipeline)
 		return (MS_AZ_FAIL);
 	state->cursor.word = words;

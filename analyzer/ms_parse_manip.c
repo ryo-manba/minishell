@@ -25,7 +25,7 @@ t_pipeline	*pa_add_new_pipeline(t_parse_state *state)
 		return (NULL);
 	if (state->cursor.pipeline)
 		state->cursor.pipeline->next = pipeline;
-	else
+	if (!state->pipeline)
 		state->pipeline = pipeline;
 	state->cursor.pipeline = pipeline;
 	state->cursor.clause = NULL;

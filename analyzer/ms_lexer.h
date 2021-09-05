@@ -59,5 +59,6 @@ int			lx_is_char_for_name(char c, size_t pos);
 int			lx_is_name(const char *str, size_t len);
 int			lx_is_char_for_bare(char c);
 int			lx_is_assignment_word(const char *str, size_t len);
+void		lx_destroy_token(t_wdlist *t);
 
 #endif

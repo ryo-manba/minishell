@@ -64,6 +64,7 @@ int main()
 		words = ms_lexer(g_commands_ok[i]);
 		print_words(words);
 		ms_parse(&ps, words, 0);
+		lx_destroy_token(words);
 		printf("%s\n", g_commands_ok[i]);
 		print_pipeline(&ps, ps.pipeline, 0);
 		printf("\n");
@@ -78,6 +79,7 @@ int main()
 		print_stree(&ps, expd, 0);
 		printf("\n");
 		pa_destroy_stree(expd);
+		pa_destroy_pipeline(ps.pipeline);
 	}
 	// system("leaks tlex");
 }
