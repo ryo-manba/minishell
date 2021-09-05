@@ -57,12 +57,21 @@ t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
 	init_ex_cursor(&cursor, src);
 	while (cursor.src.tail)
 	{
+		printf("[LL]\n");
 		res = ex_shell_param(state, cursor.src.tail);
 		ex_stringify_extoken(res);
+		if (!state->no_split || cursor.src.tail->token_id != TI_ASSIGNMENT_WORD)
+		{
+			printf("[SP]\n");
+			res = ex_split(state, res);
+		}
+		ex_stringify_extoken(res);
+		printf("[FX]\n");
+		res = ex_fx(state, res);
+		ex_stringify_extoken(res);
+		printf("[JO]\n");
 		st = ex_join(state, res);
 		return (st);
-		// if (!state->no_split)
-		// 	res = ex_split_word(state, res);
 		// ex_stringify_extoken(res);
 		// res = ex_filename(state, res);
 		// result_stree = ex_join_words(state, res);

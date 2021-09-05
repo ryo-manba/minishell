@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ex_ll_var.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/05 19:00:34 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/05 19:00:34 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
 static int	ex_ll_err_bad_substitution(t_ex_state *state, t_ex_unit_cursor *csr)
 {
-	state->failed = MS_AZ_FAIL;
+	state->failed = 1;
 	if (csr->running != XI_BRACED_VAR)
 		ft_putstr_fd("[!!] something wrong: unexpected running type\n",
 			STDERR_FILENO);
@@ -22,16 +34,17 @@ static int	ex_ll_validate_var_key(t_ex_state *state, t_ex_unit_cursor *csr)
 	i = csr->substr_s;
 	if (n == 0)
 		return (ex_ll_err_bad_substitution(state, csr));
-	if (n == 1 && !ft_strchr(EX_SPECIAL_VAR, csr->str[i]))
-		return (ex_ll_err_bad_substitution(state, csr));
 	if (n == 1)
+	{
+		if (!ft_strchr(EX_SPECIAL_VAR_CHAR, csr->str[i]))
+			return (ex_ll_err_bad_substitution(state, csr));
 		return (MS_AZ_SUCC);
+	}
 	while (i < csr->substr_e)
 	{
 		c = csr->str[i];
-		if (i == 0 && !ft_isalpha(c) && c != '_')
-			return (ex_ll_err_bad_substitution(state, csr));
-		if (i > 0 && !ft_isalnum(c) && c != '_')
+		if ((i == 0 && !ft_isalpha(c) && c != '_')
+			|| (i > 0 && !ft_isalnum(c) && c != '_'))
 			return (ex_ll_err_bad_substitution(state, csr));
 		i += 1;
 	}
@@ -79,24 +92,23 @@ static char	*ex_ll_replace_nominal_var(t_ex_state *state, t_ex_unit_cursor *csr)
 
 int	ex_ll_replace_var(t_ex_state *state, t_ex_unit_cursor *csr)
 {
-	char		*val;
-	size_t		n;
+	char	*val;
+	size_t	n;
 
 	if (ex_ll_validate_var_key(state, csr))
-		return (state->failed);
+		return (MS_AZ_FAIL);
 	n = csr->substr_e - csr->substr_s;
-	if (n == 1 && ft_strchr(EX_SPECIAL_VAR, csr->str[csr->substr_s]))
+	if (n == 1 && ft_strchr(EX_SPECIAL_VAR_CHAR, csr->str[csr->substr_s]))
 		val = ex_ll_replace_special_var(state, csr);
 	else
 		val = ex_ll_replace_nominal_var(state, csr);
 	if (!val)
 		val = ft_strdup("");
-	if (val)
-	{
-		csr->running = XI_VAR;
-		if (ex_push_back_token(state, csr, val))
-			return (MS_AZ_SUCC);
-		free(val);
-	}
+	if (!val)
+		return (MS_AZ_FAIL);
+	csr->running = XI_VAR;
+	if (ex_push_back_token(state, csr, val))
+		return (MS_AZ_SUCC);
+	free(val);
 	return (MS_AZ_FAIL);
 }
