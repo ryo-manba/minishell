@@ -1,9 +1,9 @@
 LEXER_SRCS		:=	ms_lexer.c ms_wordutils.c ms_string_class.c ms_operator.c\
 					lx_destroy.c
 
-PARSER_SRCS		:=	ms_parser.c ms_parse_unit.c ms_parse_error.c ms_parse_factory.c\
-					ms_parse_redir.c ms_parse_manip.c ms_parse_unit_operator.c\
-					ms_parse_syntax_term.c ms_parse_cleaner.c
+PARSER_SRCS		:=	ms_parser.c pa_unit.c pa_error.c pa_factory.c\
+					pa_redir.c pa_manip.c pa_unit_operator.c\
+					pa_syntax_term.c pa_destroy.c
 
 EXPANDER_SRCS	:=	ms_expander.c\
 					ex_state.c ex_error.c\
