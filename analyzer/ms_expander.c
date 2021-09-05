@@ -9,6 +9,8 @@ static void	init_ex_cursor(t_ex_cursor *cursor, t_stree *src)
 
 void	concat_stree_cursor(t_ex_cursor *cursor, t_stree *res)
 {
+	if (!res)
+		return ;
 	if (!cursor->res.head)
 		cursor->res.head = res;
 	if (!cursor->res.tail)
