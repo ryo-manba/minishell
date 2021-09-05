@@ -9,9 +9,11 @@ const char	*g_commands_ok[] = {
 	// "ab\"cd$VAR@@\"ef\n",
 	// "$VAR\"a$VAR@\"$var\n",
 	// "$VAR\"\"\"${VAR}$~\"${?}\n",
-	// "a${VAR}b\n",
-	// "a${VAR}\"b   c\"\n",
-	"echo *x*c\n",
+	"export *\n",
+	// "export VAR=*\n",
+	// "echo a${VAR}\"b   c\"\n",
+	// "export a=.*\n",
+	// "echo $a\n",
 	NULL};
 
 void	print_words(t_wdlist *words)
@@ -67,12 +69,15 @@ int main()
 		printf("\n");
 		if (ps.err_message)
 			printf("[Parse Error] %s\n", ps.err_message);
-		ms_init_expander_state(&es, env, 0);
-		// es.no_split = 1;
 		ft_bzero(&es, sizeof(t_ex_state));
+		ms_ex_init_state(&es, env, 0);
+		print_stree(&ps, ps.pipeline->clause->stree, 0);
+		printf("\n");
 		t_stree *expd = ms_expand_stree(&es, ps.pipeline->clause->stree);
-		printf("%p\n", expd);
+		printf("%s", g_commands_ok[i]);
 		print_stree(&ps, expd, 0);
 		printf("\n");
+		pa_destroy_stree(expd);
 	}
+	// system("leaks tlex");
 }

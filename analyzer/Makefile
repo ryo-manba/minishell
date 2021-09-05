@@ -20,7 +20,8 @@ SRCS		:=	$(LEXER_SRCS)\
 				$(EXT_SRCS)
 
 CC			:= gcc
-CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror
+# CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror
+CFLAGS		:= -g -Wall -Wextra -Werror
 OBJS		:= $(SRCS:.c=.o)
 LIBFT_DIR	:= ../libft
 LIBFT		:= $(LIBFT_DIR)/libft.a
