@@ -47,6 +47,7 @@ typedef struct s_ex_state
 	int			last_exit_status;
 	t_pipeline	*pipeline;
 	int			failed;
+	int			error_printed;
 
 	int			no_split;
 	int			ex_quoted;
@@ -111,6 +112,8 @@ t_stree		*ms_expand_stree(t_ex_state *state, t_stree *stree);
 void		ex_add_token_csr(t_ex_part_cursor *cursor, t_ex_token *ext);
 t_ex_token	*ex_pop_src_token_csr(t_ex_part_cursor *cursor);
 
+void		ms_ex_init_state(t_ex_state *state, t_shellvar *env,
+				int last_exit_status);
 t_ex_token	*ex_shell_param(t_ex_state *state, t_stree *stree);
 t_ex_token	*ex_split(t_ex_state *state, t_ex_token *token);
 t_ex_token	*ex_fx(t_ex_state *state, t_ex_token *token);
@@ -142,6 +145,7 @@ t_ex_token	*ex_clone_and_push_back_token(t_ex_state *state,
 
 void		*ex_error(t_ex_state *state, t_stree *stree, char *message);
 void		*ex_fatal(t_ex_state *state, char *message);
+int			ex_mark_failed(t_ex_state *state, int mark);
 void		ex_destroy_token(t_ex_token *ext);
 void		ex_destroy_a_token(t_ex_token *ext);
 

@@ -7,7 +7,7 @@ static void	init_ex_cursor(t_ex_cursor *cursor, t_stree *src)
 	cursor->src.tail = src;
 }
 
-void concat_stree_cursor(t_ex_cursor *cursor, t_stree *res)
+void	concat_stree_cursor(t_ex_cursor *cursor, t_stree *res)
 {
 	if (!cursor->res.head)
 		cursor->res.head = res;
@@ -40,14 +40,6 @@ t_redir	*ms_expand_redir(t_ex_state *state, t_redir *redir)
 	return (redir);
 }
 
-
-void	ms_init_expander_state(t_ex_state *state, t_shellvar *env, int last_exit_status)
-{
-	ft_bzero(state, sizeof(t_ex_state));
-	state->var = env;
-	state->last_exit_status = last_exit_status;
-}
-
 t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
 {
 	t_ex_cursor	cursor;
@@ -71,11 +63,7 @@ t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
 		ex_stringify_extoken(res);
 		printf("[JO]\n");
 		st = ex_join(state, res);
-		return (st);
-		// ex_stringify_extoken(res);
-		// res = ex_filename(state, res);
-		// result_stree = ex_join_words(state, res);
-		// concat_stree_cursor(&cursor, result_stree);
+		concat_stree_cursor(&cursor, st);
 		cursor.src.tail = cursor.src.tail->right;
 	}
 	pa_destroy_stree(cursor.src.head);
