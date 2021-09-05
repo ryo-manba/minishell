@@ -145,7 +145,7 @@ t_ex_token	*ex_clone_and_push_back_token(t_ex_state *state,
 
 void		*ex_error(t_ex_state *state, t_stree *stree, char *message);
 void		*ex_fatal(t_ex_state *state, char *message);
-int			ex_mark_failed(t_ex_state *state, int mark);
+int			ex_mark_failed(t_ex_state *state, int mark, char *message);
 void		ex_destroy_token(t_ex_token *ext);
 void		ex_destroy_a_token(t_ex_token *ext);
 

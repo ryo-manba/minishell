@@ -38,7 +38,7 @@ $(LIBFT)	:
 
 .PHONY		: clean
 clean		:
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) $(TEST_OBJS)
 
 .PHONY		: fclean
 fclean		: clean

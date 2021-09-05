@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 18:59:33 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 18:59:33 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/05 21:49:38 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ size_t	ex_fx_expand(t_ex_state *state, t_ex_unit_cursor *cursor,
 	dpcsr.dp[0] = (unsigned char *)ft_calloc((n + 1), sizeof(unsigned char));
 	dpcsr.dp[1] = (unsigned char *)ft_calloc((n + 1), sizeof(unsigned char));
 	if (!dpcsr.dp[0] || !dpcsr.dp[1])
-		state->failed = 1;
+		ex_mark_failed(state, 1, "[FX] init ex-fx-dp");
 	else
 		ex_fx_match_loop(state, cursor, &dpcsr);
 	free(dpcsr.dp[0]);

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 05:54:52 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 21:13:14 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/05 22:03:31 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static t_ex_token	*ex_fx_terminate(t_ex_state *state,
 	}
 	joined = ex_strcat_exlist(temp, 0);
 	if (!joined)
-		state->failed = 1;
+		ex_mark_failed(state, 1, "[FX] join ex-fx pattern");
 	m = 0;
 	if (!state->failed && ft_strchr(joined, '*'))
 	{

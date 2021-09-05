@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 18:39:58 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 00:23:23 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/05 21:49:52 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ static t_stree	*ex_join_into(t_ex_state *state, t_ex_unit_cursor *csr,
 	joined = ex_strcat_exlist(temp, 0);
 	if (!joined)
 	{
-		state->failed = 1;
+		ex_mark_failed(state, 1, "[JO] join splitted token");
 		return (NULL);
 	}
 	st = ex_make_stree(joined, temp->pa_token_id);
 	if (!st)
 	{
 		free(joined);
-		state->failed = 1;
+		ex_mark_failed(state, 1, "[JO] make a joined stree");
 		return (NULL);
 	}
 	if (csr->t.tail)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ex_state.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/05 21:42:54 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/05 21:42:55 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
 void	ms_ex_init_state(t_ex_state *state, t_shellvar *env,
@@ -8,15 +20,22 @@ void	ms_ex_init_state(t_ex_state *state, t_shellvar *env,
 	state->last_exit_status = last_exit_status;
 }
 
-int		ex_mark_failed(t_ex_state *state, int mark)
+int	ex_mark_failed(t_ex_state *state, int mark, char *message)
 {
 	if (mark)
 	{
 		state->failed = 1;
 		if (!state->error_printed)
 		{
-			ft_putstr_fd("-" MS_AZ_PROGNAME ": error in expansion\n",
+			if (message)
+				ft_putstr_fd("-" MS_AZ_PROGNAME ": error in expansion\n",
 					STDERR_FILENO);
+			else
+			{
+				ft_putstr_fd("-" MS_AZ_PROGNAME ": ", STDERR_FILENO);
+				ft_putstr_fd(message, STDERR_FILENO);
+				ft_putstr_fd("\n", STDERR_FILENO);
+			}
 			state->error_printed = 1;
 		}
 	}
