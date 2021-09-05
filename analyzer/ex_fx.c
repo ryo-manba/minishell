@@ -31,16 +31,16 @@ static int	ex_fx_extdup(t_ex_state *state, t_ex_unit_cursor *cursor,
 	temp = head;
 	while (!state->failed)
 	{
-		if (temp == cursor->s.tail)
-			break ;
-		if (temp->token_id == XI_DIVIDER)
+		if (temp && temp->token_id == XI_DIVIDER)
 			ex_push_back_divider_if_needed(state, cursor, temp);
-		else
+		else if (temp)
 		{
 			cursor->vs = 0;
 			cursor->i = ft_strlen(temp->token);
 			ex_clone_and_push_back_token(state, cursor, temp);
 		}
+		if (temp == cursor->s.tail)
+			break ;
 		temp = temp->right;
 	}
 	return (!!state->failed);
