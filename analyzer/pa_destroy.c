@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pa_destroy.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 00:19:54 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 00:20:02 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
-// 与えられたstreeを連鎖的に破棄する
 void	pa_destroy_stree(t_stree *stree)
 {
 	t_stree	*left;
@@ -18,7 +29,6 @@ void	pa_destroy_stree(t_stree *stree)
 		pa_destroy_stree(right);
 }
 
-// 与えられたredirを連鎖的に破棄する
 void	pa_destroy_redir(t_redir *redir)
 {
 	t_stree	*left;

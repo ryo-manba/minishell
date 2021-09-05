@@ -1,9 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pa_manip.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 00:20:36 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 00:21:14 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
-// Word(Lexerトークン)を先頭から1つ取って返す。
-// 構造は破壊しない。
-// ないならNULLを返す。
-t_wdlist	*pa_shift_word(t_parse_state *state)
+t_wdlist	*pa_shift_lx_token(t_parse_state *state)
 {
 	t_wdlist	*rv;
 
@@ -14,8 +23,6 @@ t_wdlist	*pa_shift_word(t_parse_state *state)
 	return (rv);
 }
 
-// 新しいpipelineをアクティブなpipelineとして追加する。
-// 成功したら、新しいpipelineを返す。
 t_pipeline	*pa_add_new_pipeline(t_parse_state *state)
 {
 	t_pipeline	*pipeline;
@@ -35,9 +42,6 @@ t_pipeline	*pa_add_new_pipeline(t_parse_state *state)
 	return (pipeline);
 }
 
-// 新しいclauseをアクティブなclauseとして追加する。
-// 必要ならより上位の構造も追加する。
-// 成功したら、新しいclauseを返す。
 t_clause	*pa_add_new_clause(t_parse_state *state)
 {
 	t_clause	*clause;
@@ -59,9 +63,6 @@ t_clause	*pa_add_new_clause(t_parse_state *state)
 	return (clause);
 }
 
-// redirを現在アクティブなclauseに追加する。
-// 必要ならより上位の構造も追加する。
-// 成功したら、redir自身を返す。
 t_redir	*pa_add_redir(t_parse_state *state, t_redir *redir)
 {
 	if (!state->cursor.clause)
@@ -77,9 +78,6 @@ t_redir	*pa_add_redir(t_parse_state *state, t_redir *redir)
 	return (redir);
 }
 
-// streeを現在アクティブなclauseに追加する。
-// 必要ならより上位の構造も追加する。
-// 成功したら、stree自身を返す。
 t_stree	*pa_add_stree(t_parse_state *state, t_stree *stree)
 {
 	if (!state->cursor.clause)

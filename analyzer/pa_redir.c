@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pa_redir.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 00:21:37 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 00:21:37 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
 int	pa_sub_redir(t_parse_state *state, t_wdlist *word, t_stree *ion_st)
@@ -6,7 +18,7 @@ int	pa_sub_redir(t_parse_state *state, t_wdlist *word, t_stree *ion_st)
 	t_stree		*target_st;
 	t_redir		*redir;
 
-	target_wd = pa_shift_word(state);
+	target_wd = pa_shift_lx_token(state);
 	if (!target_wd)
 		return (pa_syntax_error(state, word, "NO_RIGHT_OPERAND"));
 	if (target_wd->lex_type != LT_TOKEN)

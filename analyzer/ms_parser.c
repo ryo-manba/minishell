@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_parser.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 00:26:04 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 00:26:06 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
 static void	destroy_pipeline(t_pipeline *pipeline);
 
-// パーサを初期化
 static int	init_parser(t_parse_state *state, t_wdlist *words, int for_subshell)
 {
 	pa_add_new_pipeline(state);

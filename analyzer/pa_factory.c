@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pa_factory.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 00:20:17 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 00:20:27 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
 // factory funcs for parser.
@@ -10,7 +22,6 @@ t_stree	*pa_make_stree(t_wdlist *word, int for_subshell)
 	if (!st)
 		return (NULL);
 	st->token = ft_substr(word->word, 0, word->len);
-	printf("st->token: %s [%d, %d)\n", st->token, word->i, word->i + word->len);
 	if (!st->token)
 	{
 		free(st);

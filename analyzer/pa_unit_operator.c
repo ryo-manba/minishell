@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pa_unit_operator.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 00:21:48 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 00:22:00 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
-// サブシェルのパース開始
 int	pa_sub_enter_subshell(t_parse_state *state, t_wdlist *word)
 {
 	t_parse_state	substate;
@@ -28,7 +39,6 @@ int	pa_sub_enter_subshell(t_parse_state *state, t_wdlist *word)
 	return (MS_AZ_SUCC);
 }
 
-// サブシェルのパース終了
 int	pa_sub_leave_subshell(t_parse_state *state, t_wdlist *word)
 {
 	char		*final_error;
@@ -44,7 +54,6 @@ int	pa_sub_leave_subshell(t_parse_state *state, t_wdlist *word)
 	return (MS_AZ_SUCC);
 }
 
-// パイプライン終端トークン(; & || &&)
 int	pa_sub_term_pipeline(t_parse_state *state, t_wdlist *word)
 {
 	t_token_id	joint;
@@ -60,7 +69,6 @@ int	pa_sub_term_pipeline(t_parse_state *state, t_wdlist *word)
 	return (MS_AZ_SUCC);
 }
 
-// 節終端トークン(|)
 int	pa_sub_term_clause(t_parse_state *state, t_wdlist *word)
 {
 	t_token_id	term;

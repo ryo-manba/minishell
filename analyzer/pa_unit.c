@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pa_unit.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 00:22:13 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 00:30:31 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
-// 改行トークンのパース
-int	ms_unit_newline(t_parse_state *state, t_wdlist *word)
+int	pa_unit_newline(t_parse_state *state, t_wdlist *word)
 {
 	char	*final_error;
 
@@ -14,8 +25,7 @@ int	ms_unit_newline(t_parse_state *state, t_wdlist *word)
 	return (1);
 }
 
-// IO_NUMBERトークンのパース
-int	ms_unit_token_io_number(t_parse_state *state, t_wdlist *word)
+int	pa_unit_token_io_number(t_parse_state *state, t_wdlist *word)
 {
 	t_stree		*st;
 	t_wdlist	*next_word;
@@ -23,7 +33,7 @@ int	ms_unit_token_io_number(t_parse_state *state, t_wdlist *word)
 	st = pa_make_stree(word, 0);
 	if (!st)
 		return (pa_syntax_error(state, word, "ALLOCATION FAILED"));
-	next_word = pa_shift_word(state);
+	next_word = pa_shift_lx_token(state);
 	if (!next_word)
 		return (pa_syntax_error(state, word, "SOLE_IO_NUMBER"));
 	if (pa_sub_redir(state, next_word, st))
@@ -31,8 +41,7 @@ int	ms_unit_token_io_number(t_parse_state *state, t_wdlist *word)
 	return (MS_AZ_SUCC);
 }
 
-// TOKENトークンのパース
-int	ms_unit_token_token(t_parse_state *state, t_wdlist *word)
+int	pa_unit_token_token(t_parse_state *state, t_wdlist *word)
 {
 	t_stree	*st;
 
@@ -42,15 +51,14 @@ int	ms_unit_token_token(t_parse_state *state, t_wdlist *word)
 		return (pa_syntax_error(state, word, "ALLOCATION FAILED"));
 	if (state->cursor.stree && state->cursor.stree->token_id == TI_SUBSHELL)
 		return (pa_syntax_error(state, word, "NEXT_TO_SUBSHELL"));
-	if (lx_is_assignment_word(word->word, word->len))
+	if (lx_str_is_for_assignment_word(word->word, word->len))
 		st->token_id = TI_ASSIGNMENT_WORD;
 	if (!pa_add_stree(state, st))
 		return (MS_AZ_FAIL);
 	return (MS_AZ_SUCC);
 }
 
-// OPERATORトークンのパース
-int	ms_unit_token_operator(t_parse_state *state, t_wdlist *word)
+int	pa_unit_token_operator(t_parse_state *state, t_wdlist *word)
 {
 	t_token_id	ti;
 
@@ -71,23 +79,22 @@ int	ms_unit_token_operator(t_parse_state *state, t_wdlist *word)
 	return (pa_syntax_error(state, word, "NOT_CAPTURED"));
 }
 
-// トークンを使い尽くした場合は1を返す。そうでないなら0を返す。
 int	pa_unit(t_parse_state *state)
 {
 	t_wdlist	*word;
 
-	word = pa_shift_word(state);
+	word = pa_shift_lx_token(state);
 	if (!word)
 		return (1);
 	printf("parsing word: %p %.*s\n", word, word->len, word->word);
 	if (word->lex_type == LT_NEWLINE)
-		return (ms_unit_newline(state, word));
+		return (pa_unit_newline(state, word));
 	else if (word->lex_type == LT_IO_NUMBER)
-		return (ms_unit_token_io_number(state, word));
+		return (pa_unit_token_io_number(state, word));
 	else if (word->lex_type == LT_TOKEN)
-		return (ms_unit_token_token(state, word));
+		return (pa_unit_token_token(state, word));
 	else if (word->lex_type == LT_OPERATOR)
-		return (ms_unit_token_operator(state, word));
+		return (pa_unit_token_operator(state, word));
 	else
 		pa_syntax_error(state, word, "NOT_CAPTURED");
 	return (MS_AZ_SUCC);

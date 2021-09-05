@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lx_operator.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 00:26:24 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 00:27:47 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
-// 演算子文字列(長さ降順)
 const char			*g_op_label[] = {
 	"<<-",
 	"<<",
@@ -19,7 +30,6 @@ const char			*g_op_label[] = {
 	")",
 	NULL};
 
-// 演算子 t_token_id
 const t_token_id	g_op_token_id[] = {
 	TI_LTLTHYPHEN,
 	TI_LTLT,
@@ -38,7 +48,6 @@ const t_token_id	g_op_token_id[] = {
 	TI_PAREN_R,
 	0};
 
-// 演算子 長さ
 const size_t		g_op_len[] = {
 	3,
 	2,
@@ -57,14 +66,13 @@ const size_t		g_op_len[] = {
 	1,
 	0};
 
-// 全 token_id
 const t_token_id	g_all_token_id[] = {
 	TI_WORD,
 	TI_IO_NUMBER,
 	TI_NAME,
 	TI_ASSIGNMENT_WORD,
 	TI_SUBSHELL,
-	// [リダイレクション演算子]
+	// [redirection]
 	TI_LT, // <
 	TI_GT, // >
 	TI_LTLT, // <<
@@ -73,27 +81,26 @@ const t_token_id	g_all_token_id[] = {
 	TI_LTAND, // <&
 	TI_GTAND, // >&
 	TI_LTLTHYPHEN, // <<-
-	// [clause終端演算子]
+	// [term clause]
 	TI_PIPE, // |
-	// [パイプライン終端演算子]
+	// [term pipeline]
 	TI_ANDAND, // &&
 	TI_PIPEPIPE, // ||
 	TI_AND, // &
 	TI_SEMICOLON, // ;
-	// [サブシェル開始・終了演算子]
+	// [open and close subshell]
 	TI_PAREN_L, // (
 	TI_PAREN_R, // )
 	TI_NONE,
 	0};
 
-// 全 token_idラベル
 const char			*g_all_token_label[] = {
 	"WORD",
 	"IO_NUMBER",
 	"NAME",
 	"ASSIGNMENT_WORD",
 	"SUBSHELL",
-	// [リダイレクション演算子]
+	// [redirection]
 	"<",
 	">",
 	"<<",
@@ -102,20 +109,19 @@ const char			*g_all_token_label[] = {
 	"<&",
 	">&",
 	"<<-",
-	// [clause終端演算子]
+	// [term clause]
 	"|",
-	// [パイプライン終端演算子]
+	// [term pipeline]
 	"&&",
 	"||",
 	"&",
 	";",
-	// [サブシェル開始・終了演算子]
+	// [open and close subshell]
 	"(",
 	")",
 	"NONE",
 	NULL};
 
-// アクティブなLexerトークンがなんらかの演算子なら1を返す
 // returns 1 if active t_wdlist is an operator.
 int	lx_is_an_operator(t_lex_cursor *cursor)
 {
@@ -154,7 +160,6 @@ size_t	lx_cut_operator(t_lex_cursor *cursor)
 	return (0);
 }
 
-// Lexer演算子トークンに対応するParserトークンIDを得る
 // returns a t_token_id for given t_wdlist(only for operator)
 t_token_id	pa_operator_token_id(t_wdlist *word)
 {
@@ -169,7 +174,6 @@ t_token_id	pa_operator_token_id(t_wdlist *word)
 	return (TI_NONE);
 }
 
-// Parser演算子トークンIDのラベル文字列を得る
 // returns a label string for given t_token_id(only for operator)
 const char	*pa_operator_label(t_token_id ti)
 {
@@ -184,7 +188,6 @@ const char	*pa_operator_label(t_token_id ti)
 	return (NULL);
 }
 
-// ParserトークンIDのラベル文字列を得る
 // returns a label string for given t_token_id
 const char	*pa_token_label(t_token_id ti)
 {

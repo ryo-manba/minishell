@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_expander.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 00:19:44 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 00:19:45 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
 static void	init_ex_cursor(t_ex_cursor *cursor, t_stree *src)
@@ -51,22 +63,14 @@ t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
 	init_ex_cursor(&cursor, src);
 	while (cursor.src.tail)
 	{
-		printf("[LL]\n");
 		res = ex_shell_param(state, cursor.src.tail);
 		ex_stringify_extoken(res);
 		if (!state->no_split || cursor.src.tail->token_id != TI_ASSIGNMENT_WORD)
-		{
-			printf("[SP]\n");
 			res = ex_split(state, res);
-		}
 		ex_stringify_extoken(res);
 		if (cursor.src.tail->token_id != TI_ASSIGNMENT_WORD)
-		{
-			printf("[FX]\n");
 			res = ex_fx(state, res);
-		}
 		ex_stringify_extoken(res);
-		printf("[JO]\n");
 		st = ex_join(state, res);
 		concat_stree_cursor(&cursor, st);
 		cursor.src.tail = cursor.src.tail->right;

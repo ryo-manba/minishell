@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_expander.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 01:38:23 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 01:38:56 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MS_EXPANDER_H
 # define MS_EXPANDER_H
 # include "../libft/libft.h"
@@ -97,17 +109,10 @@ typedef struct s_ex_fx_dpcursor
 	size_t			mathched;
 }	t_ex_fx_dpcursor;
 
-// エグゼキュータがstateを初期化するための関数
-// 呼び出し前は、stateは一切初期化しなくていい
-// t_ex_state	state;
-//
-// ms_init_expander_state(&state, last_exit_status);
-void		ms_init_expander_state(t_ex_state *state, t_shellvar *env, int last_exit_status);
-// redirの先頭のみをexpandする
+void		ms_init_expander_state(t_ex_state *state, t_shellvar *env,
+				int last_exit_status);
 t_redir		*ms_expand_redir(t_ex_state *state, t_redir *redir);
-// streeの全体を先頭から順番にexpandする
 t_stree		*ms_expand_stree(t_ex_state *state, t_stree *stree);
-
 
 void		ex_add_token_csr(t_ex_part_cursor *cursor, t_ex_token *ext);
 t_ex_token	*ex_pop_src_token_csr(t_ex_part_cursor *cursor);
@@ -135,8 +140,8 @@ int			ex_ll_replace_var(t_ex_state *state, t_ex_unit_cursor *csr);
 char		*ex_strcat_exlist(t_ex_token *head, size_t s);
 void		ex_ll_init_cursor(t_ex_unit_cursor *cursor, t_token_id tid,
 				const char *str, char quote);
-int			ex_push_back_divider_if_needed(t_ex_state *state, t_ex_unit_cursor *csr,
-				t_ex_token *token);
+int			ex_push_back_divider_if_needed(t_ex_state *state,
+				t_ex_unit_cursor *csr, t_ex_token *token);
 t_ex_token	*ex_fx_dir_ents(t_ex_state *state);
 size_t		ex_fx_expand(t_ex_state *state, t_ex_unit_cursor *cursor,
 				char *pattern, size_t n);

@@ -1,5 +1,5 @@
-LEXER_SRCS		:=	ms_lexer.c ms_wordutils.c ms_string_class.c ms_operator.c\
-					lx_destroy.c
+LEXER_SRCS		:=	ms_lexer.c lx_wordutils.c lx_string_class.c lx_operator.c\
+					lx_destroy.c lx_cursor.c
 
 PARSER_SRCS		:=	ms_parser.c pa_unit.c pa_error.c pa_factory.c\
 					pa_redir.c pa_manip.c pa_unit_operator.c\
@@ -26,6 +26,7 @@ CFLAGS		:= -g -Wall -Wextra -Werror
 OBJS		:= $(SRCS:.c=.o)
 LIBFT_DIR	:= ../libft
 LIBFT		:= $(LIBFT_DIR)/libft.a
+NORM		:= python3 -m norminette
 
 TEST_NAME	:= tlex
 TEST_SRCS	:= test.c test_parser.c
@@ -48,3 +49,8 @@ fclean		: clean
 
 .PHONY		: re
 re			: fclean test_build
+
+.PHONY		: norm
+norm		:
+	$(NORM) $(LEXER_SRCS) $(PARSER_SRCS) $(EXPANDER_SRCS) *.h
+	$(NORM) -v

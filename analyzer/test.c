@@ -9,7 +9,7 @@ const char	*g_commands_ok[] = {
 	// "ab\"cd$VAR@@\"ef\n",
 	// "$VAR\"a$VAR@\"$var\n",
 	// "$VAR\"\"\"${VAR}$~\"${?}\n",
-	"export *\n",
+	"echo a > *\n",
 	// "export VAR=*\n",
 	// "echo a${VAR}\"b   c\"\n",
 	// "export a=.*\n",
