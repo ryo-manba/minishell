@@ -58,8 +58,11 @@ t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
 			res = ex_split(state, res);
 		}
 		ex_stringify_extoken(res);
-		printf("[FX]\n");
-		res = ex_fx(state, res);
+		if (cursor.src.tail->token_id != TI_ASSIGNMENT_WORD)
+		{
+			printf("[FX]\n");
+			res = ex_fx(state, res);
+		}
 		ex_stringify_extoken(res);
 		printf("[JO]\n");
 		st = ex_join(state, res);
