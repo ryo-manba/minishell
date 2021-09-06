@@ -17,7 +17,7 @@ SRCS 	=	ms_builtin.c \
 OBJS	=	$(SRCS:.c=.o)
 RM		=	rm -f
 CC		= 	gcc -g #-fsanitize=address
-#CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror
 CFLAGS	= 	-I/usr/local/opt/readline/include/
 LIBFT	=	../libft/libft.a
 all: $(NAME)

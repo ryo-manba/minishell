@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blt_export_check.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 17:52:58 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/09/06 18:00:03 by rmatsuka         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_builtin.h"
 
 void	blt_export_print_error(char *message)
@@ -17,14 +29,9 @@ int	blt_check_export_key(char *token, char *key_value[2], int32_t equal_idx)
 	i = 0;
 	while (i < equal_idx)
 	{
-		if (i == 0 && ft_isalpha(token[i] != 1) && token[i] != '_') // 先頭
-		{
-			return (1);
-		}
-		else if (ft_isalnum(token[i]) != 1 && token[i] != '_')
-		{
-			return (1);
-		}
+		if ((i == 0 && ft_isalpha(token[i] == 0) && token[i] != '_')
+			|| (ft_isalnum(token[i]) != 1 && token[i] != '_'))
+				return (1);
 	}
 	return (0);
 }

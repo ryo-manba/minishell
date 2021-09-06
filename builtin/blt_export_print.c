@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blt_export_print.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 18:00:05 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/09/06 18:00:06 by rmatsuka         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_builtin.h"
 
 // sort済みの環境変数を出力する
@@ -10,9 +22,7 @@ void	blt_print_export(t_shellvar *env)
 	{
 		ft_putstr_fd("declare -x ", STDOUT_FILENO);
 		if (tmp->value == NULL)
-		{
 			ft_putendl_fd(tmp->key, STDOUT_FILENO);
-		}
 		else
 		{
 			ft_putstr_fd(tmp->key, STDOUT_FILENO);
@@ -26,22 +36,8 @@ void	blt_print_export(t_shellvar *env)
 	}
 }
 
-// 環境変数をクリアする
-void	blt_env_clear(t_shellvar *env)
-{
-	t_shellvar	*tmp;
-
-	tmp = env;
-	while (env)
-	{
-		tmp = env;
-		env = env->next;
-		blt_env_free(tmp);
-	}
-}
-
 // ソートするため環境変数のコピーを作る
-t_shellvar *blt_copy_env(t_shellvar *env)
+t_shellvar	*blt_copy_env(t_shellvar *env)
 {
 	t_shellvar *tmp;
 	t_shellvar *copy;
@@ -63,5 +59,5 @@ void	blt_print_sort_env(t_shellvar *env)
 	copy = blt_copy_env(env); // 本体をsortしないようにコピーを作る。
 	blt_quick_sort(copy, blt_envlast(copy));
 	blt_print_export(copy);
-	blt_env_clear(copy); // copyをfreeする
+	ms_env_all_free(copy); // copyをfreeする
 }
