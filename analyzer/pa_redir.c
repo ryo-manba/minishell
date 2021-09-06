@@ -6,13 +6,13 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:21:37 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 00:21:37 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/06 10:52:53 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_analyzer.h"
 
-int	pa_sub_redir(t_parse_state *state, t_wdlist *word, t_stree *ion_st)
+int	pa_redirection(t_parse_state *state, t_wdlist *word, t_stree *ion_st)
 {
 	t_wdlist	*target_wd;
 	t_stree		*target_st;

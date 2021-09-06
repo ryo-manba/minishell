@@ -9,7 +9,7 @@ const char	*g_commands_ok[] = {
 	// "ab\"cd$VAR@@\"ef\n",
 	// "$VAR\"a$VAR@\"$var\n",
 	// "$VAR\"\"\"${VAR}$~\"${?}\n",
-	"echo a > *\n",
+	"echo 2>x && echo 3>x\n",
 	// "export VAR=*\n",
 	// "echo a${VAR}\"b   c\"\n",
 	// "export a=.*\n",
@@ -30,7 +30,7 @@ void	print_words(t_wdlist *words)
 			lex_type = "OP";
 		if (words->lex_type == LT_NEWLINE)
 			lex_type = "NEWLINE";
-		printf("{ type: %s, \"%.*s\" } ", lex_type,
+		printf("<%s{%.*s}> ", lex_type,
 			words->lex_type == LT_NEWLINE ? 2 : words->len,
 			words->lex_type == LT_NEWLINE ? "\\n" : words->word);
 		words = words->next;
@@ -61,15 +61,25 @@ int main()
 	while (g_commands_ok[++i])
 	{	
 		printf("%s\n", g_commands_ok[i]);
+		// [Lex]
 		words = ms_lexer(g_commands_ok[i]);
-		print_words(words);
+		if (words)
+			print_words(words);
+		else
+			continue ;
+
+		// [Parse]
 		ms_parse(&ps, words, 0);
 		lx_destroy_token(words);
-		printf("%s\n", g_commands_ok[i]);
-		print_pipeline(&ps, ps.pipeline, 0);
-		printf("\n");
-		if (ps.err_message)
-			printf("[Parse Error] %s\n", ps.err_message);
+		if (ps.failed)
+			continue ;
+		else
+		{
+			print_pipeline(&ps, ps.pipeline, 0);
+			printf("\n");
+		}
+
+		// [Expand]
 		ft_bzero(&es, sizeof(t_ex_state));
 		ms_ex_init_state(&es, env, 0);
 		print_stree(&ps, ps.pipeline->clause->stree, 0);
@@ -78,6 +88,7 @@ int main()
 		printf("%s", g_commands_ok[i]);
 		print_stree(&ps, expd, 0);
 		printf("\n");
+
 		pa_destroy_stree(expd);
 		pa_destroy_pipeline(ps.pipeline);
 	}

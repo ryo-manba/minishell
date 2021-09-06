@@ -6,40 +6,42 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:21:48 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 00:22:00 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/06 13:59:44 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_analyzer.h"
 
-int	pa_sub_enter_subshell(t_parse_state *state, t_wdlist *word)
+int	pa_subshell_enter(t_parse_state *state, t_wdlist *word)
 {
 	t_parse_state	substate;
 	t_stree			*st;
 
 	if (!state->cursor.word->next)
-		return (pa_syntax_error(state, word, "NO_RIGHT_ELEM"));
+		return (pa_syntax_error(state, word, "'(' needs right elem)"));
 	if (state->cursor.stree)
-		return (pa_syntax_error(state, word, "SUBSHELL_IS_NOT_LEADING"));
+		return (pa_syntax_error(state, word, "'(' is not leading"));
 	if (state->cursor.redir)
 		return (pa_syntax_error(state, word, "REDIR_BEFORE_SUBSHELL"));
 	if (ms_parse(&substate, word->next, 1))
-		return (pa_syntax_error(state, word, "ALLOCATION FAILED"));
+	{
+		state->error_printed = state->error_printed || substate.error_printed;
+		return (pa_generic_error(state, word, "bad alloc subshell"));
+	}
 	if (substate.err_message && substate.err_word)
 		return (pa_syntax_error(state,
 				substate.err_word, substate.err_message));
 	state->cursor.word = substate.cursor.word;
-	st = (t_stree *)ft_calloc(1, sizeof(t_stree));
+	st = pa_make_stree(word, 1);
 	if (!st)
-		return (pa_syntax_error(state, word, "ALLOCATION FAILED"));
-	st->token_id = TI_SUBSHELL;
+		return (pa_generic_error(state, word, "bad alloc stree"));
 	st->subshell = substate.pipeline;
 	if (!pa_add_stree(state, st))
-		return (pa_syntax_error(state, word, "ALLOCATION FAILED"));
+		return (pa_generic_error(state, word, "bad alloc stree"));
 	return (MS_AZ_SUCC);
 }
 
-int	pa_sub_leave_subshell(t_parse_state *state, t_wdlist *word)
+int	pa_subshell_leave(t_parse_state *state, t_wdlist *word)
 {
 	char		*final_error;
 
@@ -54,29 +56,29 @@ int	pa_sub_leave_subshell(t_parse_state *state, t_wdlist *word)
 	return (MS_AZ_SUCC);
 }
 
-int	pa_sub_term_pipeline(t_parse_state *state, t_wdlist *word)
+int	pa_terminate_pipeline(t_parse_state *state, t_wdlist *word)
 {
-	t_token_id	joint;
+	t_token_id	term;
 
-	if (pa_syntax_term_pipeline(state, false))
-		return (MS_AZ_FAIL);
-	joint = pa_operator_token_id(word);
-	state->cursor.pipeline->joint = joint;
+	if (pa_syntax_term_pipeline(state, 0))
+		return (pa_syntax_error(state, word, "syntax error in pipeline"));
+	term = pa_operator_token_id(word);
+	state->cursor.pipeline->joint = term;
 	if (!pa_add_new_pipeline(state))
-		return (pa_syntax_error(state, word, "PIPELINE ALLOCATION FAILED"));
+		return (pa_generic_error(state, word, "bad alloc pipeline"));
 	state->cursor.expecting_continuation
-		= (joint == TI_ANDAND || joint == TI_PIPEPIPE);
+		= (term == TI_ANDAND || term == TI_PIPEPIPE);
 	return (MS_AZ_SUCC);
 }
 
-int	pa_sub_term_clause(t_parse_state *state, t_wdlist *word)
+int	pa_terminate_clause(t_parse_state *state, t_wdlist *word)
 {
 	t_token_id	term;
 
 	if (pa_syntax_term_clause(state, 0))
-		return (MS_AZ_FAIL);
+		return (pa_syntax_error(state, word, "syntax error in clause"));
 	if (!pa_add_new_clause(state))
-		return (pa_syntax_error(state, word, "CLAUSE ALLOCATION FAILED"));
+		return (pa_generic_error(state, word, "bad alloc clause"));
 	term = pa_operator_token_id(word);
 	state->cursor.expecting_continuation = (term == TI_PIPE);
 	return (MS_AZ_SUCC);

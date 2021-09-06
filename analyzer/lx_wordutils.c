@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:30:53 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 02:17:13 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/06 09:07:42 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	lx_conclude_token(t_lex_cursor *cursor)
 	tail->concluded = 1;
 	if (tail->starting_chartype == LC_NEWLINE)
 		tail->lex_type = LT_NEWLINE;
-	else if (lx_is_an_operator(cursor))
+	else if (lx_tail_is_an_operator(cursor))
 		tail->lex_type = LT_OPERATOR;
 	else if (ft_strchr("<>", tail->delimiter)
 		&& lx_str_is_digital(tail->word, tail->len))

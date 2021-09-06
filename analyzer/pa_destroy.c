@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:19:54 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 00:20:02 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/06 14:11:50 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,73 +14,55 @@
 
 void	pa_destroy_stree(t_stree *stree)
 {
-	t_stree	*left;
-	t_stree	*right;
+	t_stree	*temp;
 
-	if (!stree)
-		return ;
-	free(stree->token);
-	left = stree->left;
-	right = stree->right;
-	free(stree);
-	if (left)
-		pa_destroy_stree(left);
-	if (right)
-		pa_destroy_stree(right);
+	while (stree)
+	{
+		free(stree->token);
+		pa_destroy_stree(stree->left);
+		temp = stree->right;
+		free(stree);
+		stree = temp;
+	}
 }
 
 void	pa_destroy_redir(t_redir *redir)
 {
-	t_stree	*left;
-	t_stree	*right;
-	t_redir	*next;
+	t_redir	*temp;
 
-	if (!redir)
-		return ;
-	left = redir->operand_left;
-	right = redir->operand_right;
-	next = redir->next;
-	free(redir);
-	if (left)
-		pa_destroy_stree(left);
-	if (right)
-		pa_destroy_stree(right);
-	if (next)
-		pa_destroy_redir(next);
+	while (redir)
+	{
+		temp = redir->next;
+		pa_destroy_stree(redir->operand_left);
+		pa_destroy_stree(redir->operand_right);
+		free(redir);
+		redir = temp;
+	}
 }
 
 void	pa_destroy_clause(t_clause *clause)
 {
-	t_stree		*stree;
-	t_redir		*redir;
-	t_clause	*next;
+	t_clause	*temp;
 
-	if (!clause)
-		return ;
-	stree = clause->stree;
-	redir = clause->redir;
-	next = clause->next;
-	free(clause);
-	if (stree)
-		pa_destroy_stree(stree);
-	if (redir)
-		pa_destroy_redir(redir);
-	if (next)
-		pa_destroy_clause(next);
+	while (clause)
+	{
+		temp = clause->next;
+		pa_destroy_stree(clause->stree);
+		pa_destroy_redir(clause->redir);
+		free(clause);
+		clause = temp;
+	}
 }
 
 void	pa_destroy_pipeline(t_pipeline *pipeline)
 {
-	t_clause	*clause;
-	t_pipeline	*next;
+	t_pipeline	*temp;
 
-	if (!pipeline)
-		return ;
-	clause = pipeline->clause;
-	next = pipeline->next;
-	free(pipeline);
-	if (clause)
-		pa_destroy_clause(clause);
-	if (next)
-		pa_destroy_pipeline(next);
+	while (pipeline)
+	{
+		temp = pipeline->next;
+		pa_destroy_clause(pipeline->clause);
+		free(pipeline);
+		pipeline = temp;
+	}
 }

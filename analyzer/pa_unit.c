@@ -6,13 +6,13 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:22:13 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 00:30:31 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/06 10:54:50 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_analyzer.h"
 
-int	pa_unit_newline(t_parse_state *state, t_wdlist *word)
+static int	pa_unit_newline(t_parse_state *state, t_wdlist *word)
 {
 	char	*final_error;
 
@@ -25,30 +25,30 @@ int	pa_unit_newline(t_parse_state *state, t_wdlist *word)
 	return (1);
 }
 
-int	pa_unit_token_io_number(t_parse_state *state, t_wdlist *word)
+static int	pa_unit_io_number(t_parse_state *state, t_wdlist *word)
 {
 	t_stree		*st;
 	t_wdlist	*next_word;
 
 	st = pa_make_stree(word, 0);
 	if (!st)
-		return (pa_syntax_error(state, word, "ALLOCATION FAILED"));
+		return (pa_generic_error(state, word, "bad alloc"));
 	next_word = pa_shift_lx_token(state);
 	if (!next_word)
 		return (pa_syntax_error(state, word, "SOLE_IO_NUMBER"));
-	if (pa_sub_redir(state, next_word, st))
-		return (pa_syntax_error(state, next_word, "ALLOCATION FAILED"));
+	if (pa_redirection(state, next_word, st))
+		return (pa_generic_error(state, next_word, "bad alloc"));
 	return (MS_AZ_SUCC);
 }
 
-int	pa_unit_token_token(t_parse_state *state, t_wdlist *word)
+static int	pa_unit_token(t_parse_state *state, t_wdlist *word)
 {
 	t_stree	*st;
 
 	st = pa_make_stree(word, 0);
 	printf("%p(%.*s) -> %p\n", word, word->len, word->word, st);
 	if (!st)
-		return (pa_syntax_error(state, word, "ALLOCATION FAILED"));
+		return (pa_generic_error(state, word, "bad alloc"));
 	if (state->cursor.stree && state->cursor.stree->token_id == TI_SUBSHELL)
 		return (pa_syntax_error(state, word, "NEXT_TO_SUBSHELL"));
 	if (lx_str_is_for_assignment_word(word->word, word->len))
@@ -58,24 +58,24 @@ int	pa_unit_token_token(t_parse_state *state, t_wdlist *word)
 	return (MS_AZ_SUCC);
 }
 
-int	pa_unit_token_operator(t_parse_state *state, t_wdlist *word)
+static int	pa_unit_operator(t_parse_state *state, t_wdlist *word)
 {
 	t_token_id	ti;
 
 	ti = pa_operator_token_id(word);
 	if (ti == TI_PAREN_L)
-		return (pa_sub_enter_subshell(state, word));
+		return (pa_subshell_enter(state, word));
 	if (ti == TI_PAREN_R)
-		return (pa_sub_leave_subshell(state, word));
+		return (pa_subshell_leave(state, word));
 	if (ti == TI_ANDAND || ti == TI_PIPEPIPE || ti == TI_AND
 		|| ti == TI_SEMICOLON)
-		return (pa_sub_term_pipeline(state, word));
+		return (pa_terminate_pipeline(state, word));
 	if (ti == TI_PIPE)
-		return (pa_sub_term_clause(state, word));
+		return (pa_terminate_clause(state, word));
 	if (ti == TI_LT || ti == TI_GT || ti == TI_LTLT || ti == TI_GTGT
 		|| ti == TI_LTGT || ti == TI_LTAND || ti == TI_GTAND
 		|| ti == TI_LTLTHYPHEN)
-		return (pa_sub_redir(state, word, NULL));
+		return (pa_redirection(state, word, NULL));
 	return (pa_syntax_error(state, word, "NOT_CAPTURED"));
 }
 
@@ -86,15 +86,14 @@ int	pa_unit(t_parse_state *state)
 	word = pa_shift_lx_token(state);
 	if (!word)
 		return (1);
-	printf("parsing word: %p %.*s\n", word, word->len, word->word);
 	if (word->lex_type == LT_NEWLINE)
 		return (pa_unit_newline(state, word));
 	else if (word->lex_type == LT_IO_NUMBER)
-		return (pa_unit_token_io_number(state, word));
+		return (pa_unit_io_number(state, word));
 	else if (word->lex_type == LT_TOKEN)
-		return (pa_unit_token_token(state, word));
+		return (pa_unit_token(state, word));
 	else if (word->lex_type == LT_OPERATOR)
-		return (pa_unit_token_operator(state, word));
+		return (pa_unit_operator(state, word));
 	else
 		pa_syntax_error(state, word, "NOT_CAPTURED");
 	return (MS_AZ_SUCC);

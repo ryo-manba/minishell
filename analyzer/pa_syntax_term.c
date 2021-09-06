@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:21:44 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 00:21:44 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/06 10:31:44 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,13 @@ int	pa_syntax_term_clause(t_parse_state *state, int by_newline)
 	cursor = &(state->cursor);
 	clause = cursor->clause;
 	if (!clause)
-		return (pa_syntax_error(state, cursor->word, "NO CLAUSE"));
+		return (MS_AZ_FAIL);
 	if (!clause->stree && !clause->redir)
 	{
 		if (!by_newline)
-			return (pa_syntax_error(state, cursor->word, "BLANK_CLAUSE"));
+			return (MS_AZ_FAIL);
 		if (cursor->expecting_continuation)
-			return (pa_syntax_error(state,
-					cursor->word, "EXPECTED_CONTINUATION"));
+			return (MS_AZ_FAIL);
 	}
 	return (MS_AZ_SUCC);
 }

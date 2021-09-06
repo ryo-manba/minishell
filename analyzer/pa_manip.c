@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:20:36 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 00:21:14 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/06 11:43:28 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,20 @@ t_pipeline	*pa_add_new_pipeline(t_parse_state *state)
 
 	pipeline = (t_pipeline *)ft_calloc(1, sizeof(t_pipeline));
 	if (!pipeline)
+	{
+		pa_generic_error(state, NULL, "bad alloc pipeline");
 		return (NULL);
+	}
+	printf("(%p, %p)\n", &(state->cursor), state->cursor.pipeline);
 	if (state->cursor.pipeline)
 		state->cursor.pipeline->next = pipeline;
 	if (!state->pipeline)
 		state->pipeline = pipeline;
+	// printf("(%p)\n", pipeline);
 	state->cursor.pipeline = pipeline;
 	state->cursor.clause = NULL;
 	state->cursor.redir = NULL;
 	state->cursor.stree = NULL;
-	printf("added new pipeline\n");
 	return (pipeline);
 }
 
@@ -51,7 +55,10 @@ t_clause	*pa_add_new_clause(t_parse_state *state)
 			return (NULL);
 	clause = (t_clause *)ft_calloc(1, sizeof(t_clause));
 	if (!clause)
+	{
+		pa_generic_error(state, NULL, "bad alloc clause");
 		return (NULL);
+	}
 	if (state->cursor.clause)
 		state->cursor.clause->next = clause;
 	else
@@ -59,7 +66,6 @@ t_clause	*pa_add_new_clause(t_parse_state *state)
 	state->cursor.clause = clause;
 	state->cursor.redir = NULL;
 	state->cursor.stree = NULL;
-	printf("added new clause\n");
 	return (clause);
 }
 
@@ -74,7 +80,6 @@ t_redir	*pa_add_redir(t_parse_state *state, t_redir *redir)
 		state->cursor.clause->redir = redir;
 	state->cursor.redir = redir;
 	state->cursor.expecting_continuation = 0;
-	printf("added new redir\n");
 	return (redir);
 }
 
@@ -94,6 +99,5 @@ t_stree	*pa_add_stree(t_parse_state *state, t_stree *stree)
 		state->cursor.clause->stree = stree;
 	state->cursor.stree = stree;
 	state->cursor.expecting_continuation = 0;
-	printf("added new stree\n");
 	return (stree);
 }

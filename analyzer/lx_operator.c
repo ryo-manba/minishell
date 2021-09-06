@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:26:24 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 00:27:47 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/06 09:07:42 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ const char			*g_all_token_label[] = {
 	NULL};
 
 // returns 1 if active t_wdlist is an operator.
-int	lx_is_an_operator(t_lex_cursor *cursor)
+int	lx_tail_is_an_operator(t_lex_cursor *cursor)
 {
 	const char	*strhead;
 	int			i;

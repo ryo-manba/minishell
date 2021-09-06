@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:40:02 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 01:40:03 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/06 11:00:50 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define MS_PARSER_H
 # include "../libft/libft.h"
 # include "ms_lexer.h"
+# ifndef PA_DEBUG
+#  define PA_DEBUG 0
+# endif
 
 typedef enum e_token_id
 {
@@ -95,11 +98,12 @@ typedef struct s_parse_state
 	int				for_subshell;
 
 	int				finished;
+	int				failed;
+	int				error_printed;
 	char			*err_message;
 	t_wdlist		*err_word;
 }	t_parse_state;
 
-int			lx_is_an_operator(t_lex_cursor *cursor);
 size_t		lx_cut_operator(t_lex_cursor *cursor);
 
 int			ms_parse(t_parse_state *state, t_wdlist *words, int for_subshell);
@@ -120,15 +124,19 @@ t_stree		*pa_add_stree(t_parse_state *state, t_stree *stree);
 t_redir		*pa_add_redir(t_parse_state *state, t_redir *redir);
 t_clause	*pa_add_new_clause(t_parse_state *state);
 t_pipeline	*pa_add_new_pipeline(t_parse_state *state);
-int			pa_sub_enter_subshell(t_parse_state *state, t_wdlist *word);
-int			pa_sub_leave_subshell(t_parse_state *state, t_wdlist *word);
-int			pa_sub_redir(t_parse_state *state, t_wdlist *word, t_stree *ion_st);
-int			pa_sub_term_pipeline(t_parse_state *state, t_wdlist *word);
-int			pa_sub_term_clause(t_parse_state *state, t_wdlist *word);
+int			pa_subshell_enter(t_parse_state *state, t_wdlist *word);
+int			pa_subshell_leave(t_parse_state *state, t_wdlist *word);
+int			pa_redirection(t_parse_state *state, t_wdlist *word,
+				t_stree *ion_st);
+int			pa_terminate_pipeline(t_parse_state *state, t_wdlist *word);
+int			pa_terminate_clause(t_parse_state *state, t_wdlist *word);
 char		*pa_syntax_final(t_parse_state *state);
 int			pa_syntax_term_clause(t_parse_state *state, int by_newline);
 int			pa_syntax_term_pipeline(t_parse_state *state, int by_newline);
 int			pa_syntax_error(t_parse_state *state, t_wdlist *word,
 				char *message);
+int			pa_generic_error(t_parse_state *state, t_wdlist *word,
+				char *message);
+int			pa_mark_failed(t_parse_state *state, int mark, char *message);
 
 #endif
