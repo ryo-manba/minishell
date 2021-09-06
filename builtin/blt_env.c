@@ -1,4 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blt_env.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 17:59:57 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/09/06 17:59:58 by rmatsuka         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_builtin.h"
+
+// keyがある場合更新する
+int	blt_search_and_update_env(t_shellvar *env, char *key, char *new_value)
+{
+	t_shellvar	*key_pos;
+
+	key_pos = blt_search_key(env, key);
+	if (key_pos != NULL)
+	{
+		if (blt_update_env(key_pos, new_value) == MS_BLT_FAIL)
+			return (MS_BLT_FAIL);
+	}
+	return (MS_BLT_FAIL);
+}
 
 // ここはエクスパンダー絡むはず
 int	ms_create_key_value(char *env, char *key_value[2])
@@ -58,5 +84,5 @@ int	blt_env(t_shellvar *var)
 		}
 		tmp = tmp->next;
 	}
-	return (0);
+	return (MS_BLT_SUCC);
 }
