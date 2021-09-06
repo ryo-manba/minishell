@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:19:44 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 22:15:59 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/07 01:28:46 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,26 +38,26 @@ t_redir	*ms_expand_a_redir(t_ex_state *state, t_redir *redir)
 {
 	t_redir	*cloned;
 	t_stree	*original;
-	t_stree	*expanded;
 
-	cloned = (t_redir *)malloc(sizeof(t_redir));
+	original = redir->operand_right;
+	if (!original)
+		return ((t_redir *)ex_error(state, NULL, "*UNEXPECTED blank redir*"));
+	cloned = (t_redir *)ft_calloc(1, sizeof(t_redir));
 	if (!cloned)
 		return (NULL);
-	ft_memcpy(cloned, redir, sizeof(t_redir));
-	cloned->next = NULL;
-	original = cloned->operand_right;
-	if (!original)
+	cloned->redir_op = redir->redir_op;
+	cloned->operand_right = ms_expand_stree(state, original);
+	if (!cloned->operand_right || cloned->operand_right->right)
 	{
-		free(cloned);
-		return ((t_redir *)ex_error(state, NULL, "*UNEXPECTED blank redir*"));
-	}
-	expanded = ms_expand_stree(state, original);
-	if (!expanded || expanded->right)
-	{
-		free(cloned);
+		pa_destroy_redir(cloned);
 		return ((t_redir *)ex_error(state, original, "ambiguous redirect"));
 	}
-	cloned->operand_right = expanded;
+	cloned->operand_left = ms_expand_stree(state, redir->operand_left);
+	if (!cloned->operand_left || cloned->operand_left->left)
+	{
+		pa_destroy_redir(cloned);
+		return ((t_redir *)ex_error(state, original, "ambiguous redirect"));
+	}
 	return (cloned);
 }
 
@@ -71,13 +71,10 @@ t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
 	while (cursor.src.tail)
 	{
 		res = ex_shell_param(state, cursor.src.tail);
-		ex_stringify_extoken(res);
 		if (!state->no_split || cursor.src.tail->token_id != TI_ASSIGNMENT_WORD)
 			res = ex_split(state, res);
-		ex_stringify_extoken(res);
 		if (cursor.src.tail->token_id != TI_ASSIGNMENT_WORD)
 			res = ex_fx(state, res);
-		ex_stringify_extoken(res);
 		st = ex_join(state, res);
 		concat_stree_cursor(&cursor, st);
 		cursor.src.tail = cursor.src.tail->right;
