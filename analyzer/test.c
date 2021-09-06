@@ -56,7 +56,6 @@ int main()
 	t_shellvar 		*env;
 
 	setvbuf(stdout, (char *)NULL, _IONBF, 0);
-	env = ms_create_env();
 	i = -1;
 	while (g_commands_ok[++i])
 	{	
@@ -81,6 +80,7 @@ int main()
 
 		// [Expand]
 		ft_bzero(&es, sizeof(t_ex_state));
+		env = ms_create_env();
 		ms_ex_init_state(&es, env, 0);
 		print_stree(&ps, ps.pipeline->clause->stree, 0);
 		printf("\n");
@@ -89,6 +89,8 @@ int main()
 		print_stree(&ps, expd, 0);
 		printf("\n");
 
+		ms_env_all_free(env);
+		env = NULL;
 		pa_destroy_stree(expd);
 		pa_destroy_pipeline(ps.pipeline);
 	}

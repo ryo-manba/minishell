@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:38:23 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 01:38:56 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/06 22:15:39 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ typedef struct s_ex_fx_dpcursor
 
 void		ms_init_expander_state(t_ex_state *state, t_shellvar *env,
 				int last_exit_status);
-t_redir		*ms_expand_redir(t_ex_state *state, t_redir *redir);
+t_redir		*ms_expand_a_redir(t_ex_state *state, t_redir *redir);
 t_stree		*ms_expand_stree(t_ex_state *state, t_stree *stree);
 
 void		ex_add_token_csr(t_ex_part_cursor *cursor, t_ex_token *ext);
@@ -149,7 +149,6 @@ t_ex_token	*ex_clone_and_push_back_token(t_ex_state *state,
 				t_ex_unit_cursor *csr, t_ex_token *token);
 
 void		*ex_error(t_ex_state *state, t_stree *stree, char *message);
-void		*ex_fatal(t_ex_state *state, char *message);
 int			ex_mark_failed(t_ex_state *state, int mark, char *message);
 void		ex_destroy_token(t_ex_token *ext);
 void		ex_destroy_a_token(t_ex_token *ext);

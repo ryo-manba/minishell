@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 21:42:54 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 21:42:55 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/06 22:17:14 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ex_mark_failed(t_ex_state *state, int mark, char *message)
 		state->failed = 1;
 		if (!state->error_printed)
 		{
-			if (message)
+			if (!message)
 				ft_putstr_fd("-" MS_AZ_PROGNAME ": error in expansion\n",
 					STDERR_FILENO);
 			else

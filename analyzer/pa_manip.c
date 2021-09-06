@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:20:36 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 11:43:28 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/06 22:14:18 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ t_pipeline	*pa_add_new_pipeline(t_parse_state *state)
 		state->cursor.pipeline->next = pipeline;
 	if (!state->pipeline)
 		state->pipeline = pipeline;
-	// printf("(%p)\n", pipeline);
 	state->cursor.pipeline = pipeline;
 	state->cursor.clause = NULL;
 	state->cursor.redir = NULL;

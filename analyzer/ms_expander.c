@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:19:44 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 00:19:45 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/06 22:15:59 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,32 @@ void	concat_stree_cursor(t_ex_cursor *cursor, t_stree *res)
 		cursor->res.tail = cursor->res.tail->right;
 }
 
-t_redir	*ms_expand_redir(t_ex_state *state, t_redir *redir)
+// expand **ONLY** a given redir
+t_redir	*ms_expand_a_redir(t_ex_state *state, t_redir *redir)
 {
-	t_redir	*tail;
+	t_redir	*cloned;
 	t_stree	*original;
 	t_stree	*expanded;
 
-	tail = redir;
-	while (tail)
+	cloned = (t_redir *)malloc(sizeof(t_redir));
+	if (!cloned)
+		return (NULL);
+	ft_memcpy(cloned, redir, sizeof(t_redir));
+	cloned->next = NULL;
+	original = cloned->operand_right;
+	if (!original)
 	{
-		if (!tail->operand_right)
-			return ((t_redir *)ex_fatal(state, "redir has no right"));
-		original = tail->operand_right;
-		expanded = ms_expand_stree(state, original);
-		if (!expanded || expanded->right)
-			return ((t_redir *)ex_error(state, original, "ambiguous redirect"));
-		tail->operand_right = expanded;
-		tail = tail->next;
+		free(cloned);
+		return ((t_redir *)ex_error(state, NULL, "*UNEXPECTED blank redir*"));
 	}
-	return (redir);
+	expanded = ms_expand_stree(state, original);
+	if (!expanded || expanded->right)
+	{
+		free(cloned);
+		return ((t_redir *)ex_error(state, original, "ambiguous redirect"));
+	}
+	cloned->operand_right = expanded;
+	return (cloned);
 }
 
 t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
