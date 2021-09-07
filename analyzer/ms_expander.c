@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:19:44 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/07 01:28:46 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/07 10:36:11 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_redir	*ms_expand_a_redir(t_ex_state *state, t_redir *redir)
 		return ((t_redir *)ex_error(state, original, "ambiguous redirect"));
 	}
 	cloned->operand_left = ms_expand_stree(state, redir->operand_left);
-	if (!cloned->operand_left || cloned->operand_left->left)
+	if (cloned->operand_left && cloned->operand_left->left)
 	{
 		pa_destroy_redir(cloned);
 		return ((t_redir *)ex_error(state, original, "ambiguous redirect"));
