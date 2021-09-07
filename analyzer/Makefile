@@ -12,6 +12,7 @@ EXPANDER_SRCS	:=	ms_expander.c\
 					ex_split.c\
 					ex_fx.c ex_fx_cwd.c ex_fx_match.c\
 					ex_join.c\
+					test_parser.c
 
 BLT_DIR 		:= ../builtin
 
@@ -29,15 +30,19 @@ OBJS		:= $(SRCS:.c=.o)
 LIBFT_DIR	:= ../libft
 LIBFT		:= $(LIBFT_DIR)/libft.a
 NORM		:= python3 -m norminette
+NAME		:= libmsa.a
+
+$(NAME): $(OBJS)
+	ar rcs $(NAME) $(OBJS)
 
 TEST_NAME	:= tlex
-TEST_SRCS	:= test.c test_parser.c
+TEST_SRCS	:= test.c
 TEST_OBJS	:= $(TEST_SRCS:.c=.o)
 
 test_build	: $(TEST_NAME)
 
-$(TEST_NAME): $(TEST_OBJS) $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(TEST_NAME) $(TEST_OBJS) $(OBJS) $(LIBFT)
+$(TEST_NAME): $(NAME) $(TEST_OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(TEST_NAME) $(TEST_OBJS) $(NAME) $(LIBFT)
 $(LIBFT)	:
 	$(MAKE) -C $(LIBFT_DIR)
 
@@ -47,10 +52,10 @@ clean		:
 
 .PHONY		: fclean
 fclean		: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(TEST_NAME)
 
 .PHONY		: re
-re			: fclean test_build
+re			: fclean all
 
 .PHONY		: norm
 norm		:
