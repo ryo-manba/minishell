@@ -13,7 +13,9 @@ EXPANDER_SRCS	:=	ms_expander.c\
 					ex_fx.c ex_fx_cwd.c ex_fx_match.c\
 					ex_join.c\
 
-EXT_SRCS		:= ../builtin/ms_env.c ../builtin/ms_env_utils.c
+BLT_DIR 		:= ../builtin
+
+EXT_SRCS		:= $(BLT_DIR)/blt_env.c $(BLT_DIR)//blt_env_utils.c $(BLT_DIR)/blt_export_utils.c
 
 SRCS		:=	$(LEXER_SRCS)\
 				$(PARSER_SRCS)\

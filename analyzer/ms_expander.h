@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:38:23 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 22:15:39 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/07 12:51:16 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ typedef struct s_ex_state
 	int			failed;
 	int			error_printed;
 
+	int			no_param;
+	int			no_file;
 	int			no_split;
 	int			ex_quoted;
 	t_ex_token	*file_names;

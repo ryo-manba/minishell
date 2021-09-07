@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 22:14:46 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 21:50:13 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/07 12:06:25 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	ex_ll_trap_bare(t_ex_state *state, t_ex_unit_cursor *csr)
 	char	c;
 
 	c = csr->str[csr->i];
-	if ((c == '\'' && !csr->quote) || c == '"' || c == '$' || !c)
+	if ((c == '\'' && !csr->quote) || c == '"'
+		|| (!state->no_param && c == '$') || !c)
 	{
 		csr->substr_s = csr->vs;
 		csr->substr_e = csr->i;
@@ -54,7 +55,6 @@ int	ex_ll_trap_braced_var(t_ex_state *state, t_ex_unit_cursor *csr)
 {
 	char	c;
 
-	(void)state;
 	c = csr->str[csr->i];
 	if (c == '}' || !c)
 	{

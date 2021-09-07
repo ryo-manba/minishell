@@ -6,11 +6,24 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 18:39:58 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 21:49:52 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/07 11:15:16 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_analyzer.h"
+
+static int	ex_quote_involved(t_ex_token *temp)
+{
+	while (temp && temp->token)
+	{
+		if (temp->token_id == XI_SQUOTED)
+			return (1);
+		if (temp->token_id == XI_DQUOTED)
+			return (1);
+		temp = temp->right;
+	}
+	return (0);
+}
 
 static t_stree	*ex_join_into(t_ex_state *state, t_ex_unit_cursor *csr,
 		t_ex_token *temp)
@@ -31,6 +44,7 @@ static t_stree	*ex_join_into(t_ex_state *state, t_ex_unit_cursor *csr,
 		ex_mark_failed(state, 1, "[JO] make a joined stree");
 		return (NULL);
 	}
+	st->quote_involved = ex_quote_involved(temp);
 	if (csr->t.tail)
 		csr->t.tail->right = st;
 	csr->t.tail = st;

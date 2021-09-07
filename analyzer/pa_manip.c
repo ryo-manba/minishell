@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:20:36 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 22:14:18 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/07 11:07:25 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ t_pipeline	*pa_add_new_pipeline(t_parse_state *state)
 		pa_generic_error(state, NULL, "bad alloc pipeline");
 		return (NULL);
 	}
-	printf("(%p, %p)\n", &(state->cursor), state->cursor.pipeline);
 	if (state->cursor.pipeline)
 		state->cursor.pipeline->next = pipeline;
 	if (!state->pipeline)

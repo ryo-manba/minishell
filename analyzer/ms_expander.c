@@ -6,20 +6,27 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:19:44 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/07 10:36:11 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/07 12:56:23 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_analyzer.h"
 
-static void	init_ex_cursor(t_ex_cursor *cursor, t_stree *src)
+static void	make_state_for_redir(t_ex_state *state, t_redir *redir)
 {
-	ft_bzero(cursor, sizeof(t_ex_cursor));
-	cursor->src.head = src;
-	cursor->src.tail = src;
+	state->no_param =
+		(redir->redir_op == TI_LTLT || redir->redir_op == TI_LTLTHYPHEN);
+	state->no_file =
+		(redir->redir_op == TI_LTLT || redir->redir_op == TI_LTLTHYPHEN);
 }
 
-void	concat_stree_cursor(t_ex_cursor *cursor, t_stree *res)
+static void	reverse_state_for_redir(t_ex_state *state)
+{
+	state->no_param = 0;
+	state->no_file = 0;
+}
+
+static void	concat_stree_cursor(t_ex_cursor *cursor, t_stree *res)
 {
 	if (!res)
 		return ;
@@ -44,16 +51,18 @@ t_redir	*ms_expand_a_redir(t_ex_state *state, t_redir *redir)
 		return ((t_redir *)ex_error(state, NULL, "*UNEXPECTED blank redir*"));
 	cloned = (t_redir *)ft_calloc(1, sizeof(t_redir));
 	if (!cloned)
-		return (NULL);
+		return ((t_redir *)ex_error(state, NULL, "bad alloc"));
 	cloned->redir_op = redir->redir_op;
-	cloned->operand_right = ms_expand_stree(state, original);
-	if (!cloned->operand_right || cloned->operand_right->right)
+	make_state_for_redir(state, redir);
+	cloned->operand_right = ms_expand_stree(state, redir->operand_right);
+	reverse_state_for_redir(state);
+	if (state->failed || !cloned->operand_right || original->right)
 	{
 		pa_destroy_redir(cloned);
 		return ((t_redir *)ex_error(state, original, "ambiguous redirect"));
 	}
 	cloned->operand_left = ms_expand_stree(state, redir->operand_left);
-	if (cloned->operand_left && cloned->operand_left->left)
+	if (state->failed || (cloned->operand_left && cloned->operand_left->left))
 	{
 		pa_destroy_redir(cloned);
 		return ((t_redir *)ex_error(state, original, "ambiguous redirect"));
@@ -67,7 +76,9 @@ t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
 	t_ex_token	*res;
 	t_stree		*st;
 
-	init_ex_cursor(&cursor, src);
+	ft_bzero(&cursor, sizeof(t_ex_cursor));
+	cursor.src.head = src;
+	cursor.src.tail = src;
 	while (cursor.src.tail)
 	{
 		res = ex_shell_param(state, cursor.src.tail);

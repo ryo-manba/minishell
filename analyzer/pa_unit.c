@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:22:13 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 10:54:50 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/07 11:07:32 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static int	pa_unit_token(t_parse_state *state, t_wdlist *word)
 	t_stree	*st;
 
 	st = pa_make_stree(word, 0);
-	printf("%p(%.*s) -> %p\n", word, word->len, word->word, st);
 	if (!st)
 		return (pa_generic_error(state, word, "bad alloc"));
 	if (state->cursor.stree && state->cursor.stree->token_id == TI_SUBSHELL)

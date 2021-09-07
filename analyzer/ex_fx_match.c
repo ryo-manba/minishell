@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 18:59:33 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 23:45:43 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/07 12:58:38 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,5 +87,6 @@ size_t	ex_fx_expand(t_ex_state *state, t_ex_unit_cursor *cursor,
 	free(dpcsr.dp[0]);
 	free(dpcsr.dp[1]);
 	ex_destroy_token(state->file_names);
+	state->file_names = NULL;
 	return (dpcsr.mathched);
 }

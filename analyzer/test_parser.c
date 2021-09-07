@@ -7,7 +7,7 @@ void	print_stree(t_stree *stree, int depth)
 {
 	if (!stree)
 		return ;
-	printf("%*s[%s: ", depth*SW, "", pa_token_label(stree->token_id));
+	printf("%*s[%s", depth*SW, "", pa_token_label(stree->token_id));
 	if (stree->subshell)
 	{
 		printf("%.*s", !!SW, "\n");
@@ -15,7 +15,7 @@ void	print_stree(t_stree *stree, int depth)
 		printf("%*s] ", depth*SW, "");
 	}
 	else
-		printf("%s] ", stree->token);
+		printf("{%s}%s] ", stree->token, stree->quote_involved ? "q" : "");
 	if (stree->right)
 		print_stree(stree->right, 0);
 }
@@ -31,8 +31,10 @@ void	print_redir(t_redir *redir, int depth)
 		depth*SW, "",
 		redir->operand_left ? redir->operand_left->token : "",
 		str);
-	printf("%s) ",
-		redir->operand_right ? redir->operand_right->token : NULL);
+	printf("{%s}%s) ",
+		redir->operand_right ? redir->operand_right->token : NULL,
+		redir->operand_right->quote_involved ? "q" : ""
+		);
 	if (redir->next)
 		print_redir(redir->next, 0);
 }
