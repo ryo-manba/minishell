@@ -6,11 +6,17 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:26:14 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/06 13:29:20 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/08 13:25:53 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
+
+void	blt_print_perror(char *s)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	perror(s);
+}
 
 int	ms_is_builtin(t_stree *tree)
 {
