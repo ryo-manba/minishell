@@ -6,11 +6,27 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:05 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 16:44:44 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/08 17:40:07 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
+
+// ソートするため環境変数のコピーを作る
+t_shellvar	*blt_copy_env(t_shellvar *env)
+{
+	t_shellvar	*tmp;
+	t_shellvar	*copy;
+
+	tmp = env;
+	copy = NULL;
+	while (tmp)
+	{
+		ms_env_add_back(&copy, ms_new_env(tmp->key, tmp->value));
+		tmp = tmp->next;
+	}
+	return (copy);
+}
 
 // sort済みの環境変数を出力する
 // export a="\n"　declare -x a="\\n"にする
@@ -35,22 +51,6 @@ void	blt_print_export(t_shellvar *env)
 		}
 		tmp = tmp->next;
 	}
-}
-
-// ソートするため環境変数のコピーを作る
-t_shellvar	*blt_copy_env(t_shellvar *env)
-{
-	t_shellvar	*tmp;
-	t_shellvar	*copy;
-
-	tmp = env;
-	copy = NULL;
-	while (tmp)
-	{
-		ms_env_add_back(&copy, ms_new_env(tmp->key, tmp->value));
-		tmp = tmp->next;
-	}
-	return (copy);
 }
 
 void	blt_print_sort_env(t_shellvar *env)

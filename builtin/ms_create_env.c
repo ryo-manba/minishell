@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 14:53:27 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 14:55:42 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/08 17:24:28 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ms_check_malloc_key_value(t_shellvar *var, char *s, int key_or_value)
 		if (var->key == NULL)
 		{
 			free(var);
-			blt_print_perror("malloc");
+			ms_print_perror("malloc");
 			return (MS_BLT_FAIL);
 		}
 	}
@@ -32,7 +32,7 @@ int	ms_check_malloc_key_value(t_shellvar *var, char *s, int key_or_value)
 		{
 			free(var->key);
 			free(var);
-			blt_print_perror("malloc");
+			ms_print_perror("malloc");
 			return (MS_BLT_FAIL);
 		}
 	}
@@ -91,13 +91,13 @@ int	ms_create_key_value(char *env, char *key_value[2])
 	key_value[KEY] = ft_substr(env, 0, equal_idx);
 	if (key_value[KEY] == NULL)
 	{
-		blt_print_perror("malloc");
+		ms_print_perror("malloc");
 		return (MS_BLT_FAIL);
 	}
 	key_value[VALUE] = ft_substr(env, equal_idx + 1, ft_strlen(env));
 	if (key_value[VALUE] == NULL)
 	{
-		blt_print_perror("malloc");
+		ms_print_perror("malloc");
 		free(key_value[KEY]);
 		return (MS_BLT_FAIL);
 	}
@@ -112,7 +112,7 @@ t_shellvar	*ms_new_env(char *key, char *value)
 	new_env = (t_shellvar *)malloc(sizeof(t_shellvar));
 	if (new_env == NULL)
 	{
-		blt_print_perror("malloc");
+		ms_print_perror("malloc");
 		return (NULL);
 	}
 	if (ms_check_malloc_key_value(new_env, key, KEY) == MS_BLT_FAIL)

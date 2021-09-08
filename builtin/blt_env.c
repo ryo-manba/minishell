@@ -6,25 +6,11 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:59:57 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 16:45:41 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/08 17:33:40 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
-
-// keyがある場合更新する(pwd, oldpwd)
-int	blt_search_and_update_env(t_shellvar *env, char *key, char *new_value)
-{
-	t_shellvar	*key_pos;
-
-	key_pos = ms_search_key(env, key);
-	if (key_pos != NULL)
-	{
-		if (blt_update_env(key_pos, new_value) == MS_BLT_FAIL)
-			return (MS_BLT_FAIL);
-	}
-	return (MS_BLT_SUCC);
-}
 
 int	blt_env(t_shellvar *var)
 {
@@ -40,6 +26,20 @@ int	blt_env(t_shellvar *var)
 			ft_putendl_fd(tmp->value, STDOUT_FILENO);
 		}
 		tmp = tmp->next;
+	}
+	return (MS_BLT_SUCC);
+}
+
+// keyがある場合更新する(pwd, oldpwd)
+int	blt_search_and_update_env(t_shellvar *env, char *key, char *new_value)
+{
+	t_shellvar	*key_pos;
+
+	key_pos = ms_search_key(env, key);
+	if (key_pos != NULL)
+	{
+		if (blt_update_env(key_pos, new_value) == MS_BLT_FAIL)
+			return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
 }

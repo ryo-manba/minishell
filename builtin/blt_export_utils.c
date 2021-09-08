@@ -6,25 +6,11 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:09 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 16:46:43 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/08 17:46:26 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
-
-t_shellvar	*ms_search_key(t_shellvar *env, char *key)
-{
-	t_shellvar	*key_pos;
-
-	key_pos = env;
-	while (key_pos)
-	{
-		if (ft_strcmp(key_pos->key, key) == 0)
-			break ;
-		key_pos = key_pos->next;
-	}
-	return (key_pos);
-}
 
 // 環境変数を追加する
 int	blt_append_env(t_shellvar *env, char *key, char *value)
@@ -34,23 +20,10 @@ int	blt_append_env(t_shellvar *env, char *key, char *value)
 	append = ms_new_env(key, value);
 	if (append == NULL)
 	{
-		blt_print_perror("malloc");
+		ms_print_perror("malloc");
 		return (MS_BLT_FAIL);
 	}
 	ms_env_add_back(&env, append);
-	return (MS_BLT_SUCC);
-}
-
-// 環境変数のvalueを更新する
-int	blt_update_env(t_shellvar *update_pos, char *value)
-{
-	free(update_pos->value);
-	update_pos->value = ft_strdup(value);
-	if (update_pos->value == NULL)
-	{
-		blt_print_perror("malloc");
-		return (MS_BLT_FAIL);
-	}
 	return (MS_BLT_SUCC);
 }
 
@@ -72,4 +45,31 @@ int	blt_append_or_update_env(t_shellvar *env, char *key, char *value)
 			return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
+}
+
+// 環境変数のvalueを更新する
+int	blt_update_env(t_shellvar *update_pos, char *value)
+{
+	free(update_pos->value);
+	update_pos->value = ft_strdup(value);
+	if (update_pos->value == NULL)
+	{
+		ms_print_perror("malloc");
+		return (MS_BLT_FAIL);
+	}
+	return (MS_BLT_SUCC);
+}
+
+t_shellvar	*ms_search_key(t_shellvar *env, char *key)
+{
+	t_shellvar	*key_pos;
+
+	key_pos = env;
+	while (key_pos)
+	{
+		if (ft_strcmp(key_pos->key, key) == 0)
+			break ;
+		key_pos = key_pos->next;
+	}
+	return (key_pos);
 }
