@@ -54,7 +54,7 @@ void		blt_swap_env(t_shellvar *env1, t_shellvar *env2);
 
 /* blt_env_utils */
 int			ms_check_malloc_key_value(t_shellvar *var, char *s, int key_or_value);
-void		ms_env_add_back(t_shellvar **env, t_shellvar *new);
+void		ms_env_add_back(t_shellvar **env, t_shellvar *new_var);
 t_shellvar	*ms_envlast(t_shellvar *env);
 t_shellvar	*ms_new_env(char *key, char *value);
 void		ms_env_all_free(t_shellvar *var);
@@ -89,8 +89,8 @@ t_shellvar	*blt_copy_env(t_shellvar *env);
 void		blt_print_sort_env(t_shellvar *env);
 
 /* blt_export_utils */
-void		blt_env_free(t_shellvar *env);
-t_shellvar	*blt_search_key(t_shellvar *env, char *key);
+void		ms_env_free(t_shellvar *env);
+t_shellvar	*ms_search_key(t_shellvar *env, char *key);
 int			blt_append_env(t_shellvar *env, char *key, char *value);
 int			blt_update_env(t_shellvar *update_pos, char *value);
 int			blt_append_or_update_env(t_shellvar *env, char *key, char *value);
@@ -103,8 +103,4 @@ int			blt_unset(t_shellvar *env, t_stree *tree);
 void		blt_unset_head(t_shellvar *env);
 void		blt_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos);
 
-/* blt_builtin_error */
-void		blt_cd_print_error(char *dirname, char *message);
 #endif
-
-

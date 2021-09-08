@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:30:08 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/06 17:59:46 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/08 16:45:41 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	blt_cd_home(t_shellvar *env)
 {
 	t_shellvar	*home_pos;
 
-	home_pos = blt_search_key(env, "HOME");
+	home_pos = ms_search_key(env, "HOME");
 	if (home_pos == NULL)
 	{
 		blt_cd_print_error("HOME", "not set");

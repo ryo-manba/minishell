@@ -41,16 +41,16 @@ static void	blt_cd_pwd_oldpwd(t_shellvar *env, char *path)
 	t_shellvar *pwd;
 	t_shellvar *oldpwd;
 
-	pwd = blt_search_key(env, "PWD");
-	oldpwd = blt_search_key(env, "OLDPWD");
+	pwd = ms_search_key(env, "PWD");
+	oldpwd = ms_search_key(env, "OLDPWD");
 	printf("OLDPWD :  %s\n", oldpwd->value);
 	printf("PWD    :  %s\n", pwd->value);
 	printf("command: [cd %s]\n", path);
 	blt_cd(env, path);
 	printf("=====================================\n");
 
-//	pwd = blt_search_key(env, "PWD");
-//	oldpwd = blt_search_key(env, "OLDPWD");
+//	pwd = ms_search_key(env, "PWD");
+//	oldpwd = ms_search_key(env, "OLDPWD");
 //	printf("OLDPWD is %s\n", oldpwd->value);
 //	printf("PWD    is %s\n", pwd->value);
 }

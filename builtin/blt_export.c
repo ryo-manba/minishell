@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:12 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/06 18:00:13 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/08 16:48:44 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	blt_append_or_join_env(t_shellvar *var, char* key_value[2])
 {
 	t_shellvar	*key_pos;
 
-	key_pos = blt_search_key(var, key_value[KEY]);
+	key_pos = ms_search_key(var, key_value[KEY]);
 	if (key_pos == NULL) // keyが存在しなかったら追加するだけ
 	{
 		if (blt_append_env(var, key_value[KEY], key_value[VALUE]))
@@ -77,6 +77,8 @@ int	blt_check_and_export(t_stree *tree, t_shellvar *var, char *key_value[2])
 }
 
 // tokenに入ってる引数をチェックしながらexportする
+// 不正な値の場合はその都度エラー表示する。
+// 一つでもエラーが出たら終了ステータスは1
 int blt_export_env(t_shellvar *var, t_stree *tree)
 {
 	char	*key_value[2];
@@ -85,10 +87,10 @@ int blt_export_env(t_shellvar *var, t_stree *tree)
 	ex_status = MS_BLT_SUCC;
 	while (tree != NULL)
 	{
-		if (blt_check_and_separate_export(tree->token, key_value) == MS_BLT_FAIL) // 不正な値の場合はその都度エラー表示する。
+		if (blt_check_and_separate_export(tree->token, key_value) == MS_BLT_FAIL)
 		{
 			blt_export_print_error(tree->token);
-			ex_status = MS_BLT_FAIL;  // 一つでもエラーが出たら終了ステータスは1
+			ex_status = MS_BLT_FAIL;
 		}
 		else
 		{
@@ -105,13 +107,15 @@ int blt_export_env(t_shellvar *var, t_stree *tree)
 ** tree->token = "TEST=test"
 ** tree->right->token = "aaa"
 */
+// 'export' 単体の場合は環境変数をソートして'declare -x hoge="huga"'の形式で出力する
+// 環境変数を追加または更新する
 int	blt_export(t_shellvar *var, t_stree *tree)
 {
-	if (tree == NULL) // 'export' 単体の場合は環境変数をソートして'declare -x hoge="huga"'の形式で出力する
+	if (tree == NULL)
 	{
 		blt_print_sort_env(var);
 	}
-	else // 環境変数を追加または更新する
+	else
 	{
 		if (blt_export_env(var, tree) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);
