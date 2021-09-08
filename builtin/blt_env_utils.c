@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:59:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/06 17:59:55 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/08 13:28:51 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	blt_check_malloc_key_value(t_shellvar *var, char *s, int key_or_value)
 		if (var->key == NULL)
 		{
 			free(var);
+			blt_print_perror("malloc");
 			return (MS_BLT_FAIL);
 		}
 	}
@@ -31,6 +32,7 @@ int	blt_check_malloc_key_value(t_shellvar *var, char *s, int key_or_value)
 		{
 			free(var->key);
 			free(var);
+			blt_print_perror("malloc");
 			return (MS_BLT_FAIL);
 		}
 	}
@@ -62,19 +64,20 @@ t_shellvar	*blt_envlast(t_shellvar *var)
 	return (last);
 }
 
+// '=' がない場合,valueをNULLにする
 t_shellvar	*blt_new_env(char *key, char *value, int is_env)
 {
-	t_shellvar *new_env;
+	t_shellvar	*new_env;
 
 	new_env = (t_shellvar *)malloc(sizeof(t_shellvar));
 	if (new_env == NULL)
 	{
-		perror("malloc");
+		blt_print_perror("malloc");
 		return (NULL);
 	}
 	if (blt_check_malloc_key_value(new_env, key, KEY) == MS_BLT_FAIL)
 		return (NULL);
-	if (value == NULL) // export VAR  =がつながってない場合
+	if (value == NULL)
 		new_env->value = NULL;
 	else
 	{
@@ -82,14 +85,14 @@ t_shellvar	*blt_new_env(char *key, char *value, int is_env)
 			return (NULL);
 	}
 	new_env->is_env = is_env;
-	new_env->attr = 0;	// とりあえず保留
+	new_env->attr = 0;
 	new_env->next = NULL;
 	return (new_env);
 }
 
 void	ms_env_all_free(t_shellvar *var)
 {
-	t_shellvar *tmp;
+	t_shellvar	*tmp;
 
 	while (var)
 	{
