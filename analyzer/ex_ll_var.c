@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:00:34 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 19:00:34 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/05 21:50:20 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 static int	ex_ll_err_bad_substitution(t_ex_state *state, t_ex_unit_cursor *csr)
 {
-	state->failed = 1;
 	if (csr->running != XI_BRACED_VAR)
 		ft_putstr_fd("[!!] something wrong: unexpected running type\n",
 			STDERR_FILENO);
 	ft_putstr_fd("-" MS_AZ_PROGNAME ": ", STDERR_FILENO);
 	write(STDERR_FILENO, csr->str + csr->vs, csr->i + 1 - csr->vs);
 	ft_putstr_fd(": bad substitution\n", STDERR_FILENO);
-	return (state->failed);
+	state->error_printed = 1;
+	return (ex_mark_failed(state, 1, NULL));
 }
 
 static int	ex_ll_validate_var_key(t_ex_state *state, t_ex_unit_cursor *csr)
@@ -32,11 +32,12 @@ static int	ex_ll_validate_var_key(t_ex_state *state, t_ex_unit_cursor *csr)
 
 	n = csr->substr_e - csr->substr_s;
 	i = csr->substr_s;
+	c = csr->str[i];
 	if (n == 0)
 		return (ex_ll_err_bad_substitution(state, csr));
 	if (n == 1)
 	{
-		if (!ft_strchr(EX_SPECIAL_VAR_CHAR, csr->str[i]))
+		if (!ft_isalpha(c) && c != '_' && !ft_strchr(EX_SPECIAL_VAR_CHAR, c))
 			return (ex_ll_err_bad_substitution(state, csr));
 		return (MS_AZ_SUCC);
 	}
@@ -71,7 +72,7 @@ static char	*ex_ll_replace_nominal_var(t_ex_state *state, t_ex_unit_cursor *csr)
 			csr->substr_e - csr->substr_s);
 	if (!key)
 	{
-		state->failed = 1;
+		ex_mark_failed(state, 1, "[LL] replace nominal var");
 		return (NULL);
 	}
 	var = state->var;

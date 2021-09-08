@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 13:23:15 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 18:53:16 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/05 22:00:41 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ex_push_back_divider_if_needed(t_ex_state *state, t_ex_unit_cursor *csr,
 	divider = (t_ex_token *)ft_calloc(1, sizeof(t_ex_token));
 	if (!divider)
 	{
-		state->failed = 1;
+		ex_mark_failed(state, 1, "[SP-div] alloc divider");
 		return (MS_AZ_FAIL);
 	}
 	divider->token_id = XI_DIVIDER;
@@ -46,7 +46,7 @@ t_ex_token	*ex_clone_and_push_back_token(t_ex_state *state,
 	{
 		free(cloned_ext);
 		free(cloned_str);
-		state->failed = 1;
+		ex_mark_failed(state, 1, "[SP-clone] clone ex-token");
 		return (NULL);
 	}
 	ft_memcpy(cloned_ext, token, sizeof(t_ex_token));

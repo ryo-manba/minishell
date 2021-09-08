@@ -1,71 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_parser.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 00:26:04 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 14:06:12 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
-static void	destroy_pipeline(t_pipeline *pipeline);
-
-// パーサを初期化
 static int	init_parser(t_parse_state *state, t_wdlist *words, int for_subshell)
 {
 	ft_bzero(state, sizeof(t_parse_state));
-	state->pipeline = ft_calloc(1, sizeof(t_pipeline));
-	if (!state->pipeline)
-		return (MS_AZ_FAIL);
+	if (!pa_add_new_pipeline(state))
+		return (pa_generic_error(state, NULL, "failed to alloc a pipeline"));
 	state->cursor.word = words;
 	state->for_subshell = for_subshell;
 	return (MS_AZ_SUCC);
 }
 
-static void	destroy_clause(t_clause *clause)
-{
-	t_redir		*redir;
-	t_stree		*stree;
-	void		*temp;
-
-	redir = clause->redir;
-	while (redir)
-	{
-		temp = redir->next;
-		free(redir);
-		redir = temp;
-	}
-	stree = clause->stree;
-	while (stree)
-	{
-		temp = stree->right;
-		free(stree->token);
-		destroy_pipeline(stree->subshell);
-		free(stree);
-		stree = temp;
-	}
-}
-
-static void	destroy_pipeline(t_pipeline *pipeline)
-{
-	t_clause	*clause;
-	void		*temp;
-
-	while (pipeline)
-	{
-		clause = pipeline->clause;
-		while (clause)
-		{
-			temp = clause->next;
-			destroy_clause(clause);
-			clause = temp;
-		}
-		temp = pipeline->next;
-		free(pipeline);
-		pipeline = temp;
-	}
-}
-
 int	ms_parse(t_parse_state *state, t_wdlist *words, int for_subshell)
 {
-	int	i;
-
 	if (init_parser(state, words, for_subshell))
-		return (MS_AZ_FAIL);
-	i = -1;
-	while (++i < 10000)
+		return (pa_generic_error(state, NULL, "failed to init parser"));
+	while (1)
 	{
 		if (state->finished)
 			break ;
@@ -74,10 +35,11 @@ int	ms_parse(t_parse_state *state, t_wdlist *words, int for_subshell)
 		if (pa_unit(state))
 			break ;
 	}
-	if (state->err_message)
+	if (state->failed)
 	{
-		destroy_pipeline(state->pipeline);
+		pa_destroy_pipeline(state->pipeline);
 		state->pipeline = NULL;
+		return (MS_AZ_FAIL);
 	}
 	return (MS_AZ_SUCC);
 }

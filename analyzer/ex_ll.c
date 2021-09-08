@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:00:19 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 19:00:19 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/07 12:09:19 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_ex_token	*ex_push_back_token(t_ex_state *state,
 		if (!ext->token)
 		{
 			free(ext);
-			state->failed = 1;
+			ex_mark_failed(state, 1, "[LL] push back ex-token");
 			return (NULL);
 		}
 	}
@@ -54,7 +54,6 @@ t_ex_token	*ex_push_back_token(t_ex_state *state,
 // 唯一何かを開始できる and 展開を終了できるモード
 int	ex_ll_trap_neutral(t_ex_state *state, t_ex_unit_cursor *csr)
 {
-	(void)state;
 	if (csr->str[csr->i] == '\'' && !csr->quote)
 	{
 		csr->vs = csr->i++;
@@ -63,9 +62,9 @@ int	ex_ll_trap_neutral(t_ex_state *state, t_ex_unit_cursor *csr)
 	else if (csr->str[csr->i] == '"')
 	{
 		if (ex_ll_trap_dquote(state, csr))
-			state->failed = 1;
+			ex_mark_failed(state, 1, "[LL-nt] push back ex-token");
 	}
-	else if (csr->str[csr->i] == '$')
+	else if (csr->str[csr->i] == '$' && !state->no_param)
 	{
 		csr->vs = csr->i++;
 		csr->running = XI_VAR;
@@ -80,7 +79,6 @@ int	ex_ll_trap_neutral(t_ex_state *state, t_ex_unit_cursor *csr)
 
 void	ex_ll_unit(t_ex_state *state, t_ex_unit_cursor *csr)
 {
-	printf("ex_ll_unit: \"%s\"\n", csr->str);
 	while (!state->failed)
 	{
 		if (csr->running == XI_NEUTRAL && csr->str[csr->i] == csr->quote)
@@ -96,11 +94,6 @@ void	ex_ll_unit(t_ex_state *state, t_ex_unit_cursor *csr)
 		if (csr->running == XI_BARE && ex_ll_trap_bare(state, csr))
 			continue ;
 	}
-	if (state->failed)
-		printf("!!FAILED!!\n");
-	else
-		printf("finished\n");
-	return ;
 }
 
 t_ex_token	*ex_shell_param(t_ex_state *state, t_stree *stree)

@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   lx_destroy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/10 17:13:30 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/06 10:29:44 by yokawada         ###   ########.fr       */
+/*   Created: 2021/09/05 23:47:20 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/05 23:47:48 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ms_analyzer.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	lx_destroy_token(t_wdlist *t)
 {
-	if (s == NULL)
+	if (!t)
 		return ;
-	write(fd, s, ft_strlen((const char *)s));
-}
-
-
-void	ft_putnstr_fd(char *s, size_t n, int fd)
-{
-	if (s == NULL)
-		return ;
-	write(fd, s, n);
+	lx_destroy_token(t->next);
+	free(t);
 }

@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_lexer.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 01:39:11 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 09:07:42 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MS_LEXER_H
 # define MS_LEXER_H
 
 # include "../libft/libft.h"
-#include <stdio.h>
 
 # define LC_NEWLINE	'N'
 # define LC_SINGLE_QUOTE	'\''
@@ -17,6 +28,7 @@
 # define LC_PAREN_L	'('
 # define LC_PAREN_R	')'
 # define LC_WORD	'_'
+# define LX_OPERATOR_OPENER	"|&<>;()"
 
 typedef enum e_lex_type
 {
@@ -47,6 +59,7 @@ typedef struct s_lex_cursor
 	char		under_quoted;
 	int			i;
 	int			failed;
+	int			error_printed;
 }	t_lex_cursor;
 
 # define CHARS_WORD_INCLUDED "\"'_"
@@ -54,10 +67,14 @@ typedef struct s_lex_cursor
 t_wdlist	*ms_lexer(const char *line);
 int			lx_add_token(t_lex_cursor *cursor, char starting_char);
 void		lx_conclude_token(t_lex_cursor *cursor);
-int			lx_is_digital_str(const	char *str, size_t len);
-int			lx_is_char_for_name(char c, size_t pos);
-int			lx_is_name(const char *str, size_t len);
-int			lx_is_char_for_bare(char c);
-int			lx_is_assignment_word(const char *str, size_t len);
+int			lx_str_is_digital(const	char *str, size_t len);
+int			lx_char_is_for_name(char c, size_t pos);
+int			lx_str_is_for_name(const char *str, size_t len);
+int			lx_char_is_for_bare(char c);
+int			lx_str_is_for_assignment_word(const char *str, size_t len);
+int			lx_tail_is_an_operator(t_lex_cursor *cursor);
+void		lx_destroy_token(t_wdlist *t);
+int			lx_mark_failed(t_lex_cursor *cursor, int mark, char *message);
+t_wdlist	*lx_finalize(t_lex_cursor *cursor);
 
 #endif

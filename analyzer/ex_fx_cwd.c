@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 23:34:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 18:59:54 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/05 21:49:33 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static t_ex_token	*ex_fx_push_back_token(t_ex_state *state,
 	{
 		free(ext);
 		free(cloned_str);
-		state->failed = 1;
+		ex_mark_failed(state, 1, "[FX] alloc ex-token");
 		return (NULL);
 	}
 	ext->token = cloned_str;
@@ -72,7 +72,7 @@ static void	ex_fx_sort_dir_ents(t_ex_state *state,
 	strarr = (char **)malloc(n * sizeof(char *));
 	if (!strarr)
 	{
-		state->failed = 1;
+		ex_mark_failed(state, 1, "[FX] alloc dir ent");
 		return ;
 	}
 	csr->tail = csr->head;
@@ -98,7 +98,7 @@ static size_t	ex_open_and_pack(t_ex_state *state, t_ex_part_cursor *csr)
 	free(str);
 	if (!dir)
 	{
-		state->failed = 1;
+		ex_mark_failed(state, 1, "[FX] opendir");
 		return (0);
 	}
 	n = 0;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_lexer.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 00:31:20 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 02:43:46 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
 const char	g_type_chars[] = {
@@ -16,8 +28,6 @@ const char	g_type_chars[] = {
 	LC_PAREN_R,
 	'\0'};
 
-// lexerのうちクオート関連処理
-// 引っかからなかった場合は0を返す。
 static int	treat_quote(t_lex_cursor *cursor, char c, char ct)
 {
 	if (c == cursor->under_quoted)
@@ -27,7 +37,7 @@ static int	treat_quote(t_lex_cursor *cursor, char c, char ct)
 	{
 		cursor->under_quoted = ct;
 		if (lx_add_token(cursor, ct))
-			return (1);
+			return (lx_mark_failed(cursor, 1, "add lex-token(quote)"));
 	}
 	else if (cursor->under_quoted || ct == LC_WORD)
 	{
@@ -35,7 +45,7 @@ static int	treat_quote(t_lex_cursor *cursor, char c, char ct)
 			&& !ft_strchr(CHARS_WORD_INCLUDED, cursor->tail->starting_chartype))
 			lx_conclude_token(cursor);
 		if (lx_add_token(cursor, ct))
-			return (1);
+			return (lx_mark_failed(cursor, 1, "add lex-token(unquote)"));
 	}
 	else
 		return (0);
@@ -43,8 +53,6 @@ static int	treat_quote(t_lex_cursor *cursor, char c, char ct)
 	return (1);
 }
 
-// lexerのうちNEWLINE処理
-// 引っかからなかった場合は0を返す。
 static int	treat_nl(t_lex_cursor *cursor, char c, char ct)
 {
 	(void)c;
@@ -52,13 +60,11 @@ static int	treat_nl(t_lex_cursor *cursor, char c, char ct)
 		return (0);
 	lx_conclude_token(cursor);
 	if (lx_add_token(cursor, ct))
-		return (1);
+		return (lx_mark_failed(cursor, 1, "add lex-token(nl)"));
 	cursor->i += 1;
 	return (1);
 }
 
-// lexerのうち空白処理
-// 引っかからなかった場合は0を返す。
 static int	treat_space(t_lex_cursor *cursor, char c, char ct)
 {
 	(void)c;
@@ -69,20 +75,18 @@ static int	treat_space(t_lex_cursor *cursor, char c, char ct)
 	return (1);
 }
 
-// lexerのうち演算子関連処理
-// 引っかからなかった場合は0を返す。
 static int	treat_operator(t_lex_cursor *cursor, char c, char ct)
 {
-	if (!ft_strchr("|&<>;()", c))
+	if (!ft_strchr(LX_OPERATOR_OPENER, c))
 		return (0);
 	if (!cursor->tail || cursor->tail->concluded)
 		if (lx_add_token(cursor, ct))
-			return (1);
-	if (!ft_strchr("|&<>;()", cursor->line[cursor->tail->i]))
+			return (lx_mark_failed(cursor, 1, "add lex-token(op)"));
+	if (!ft_strchr(LX_OPERATOR_OPENER, cursor->line[cursor->tail->i]))
 	{
 		lx_conclude_token(cursor);
 		if (lx_add_token(cursor, ct))
-			return (1);
+			return (lx_mark_failed(cursor, 1, "add lex-token(op)"));
 	}
 	cursor->i += lx_cut_operator(cursor);
 	lx_conclude_token(cursor);
@@ -97,10 +101,8 @@ t_wdlist	*ms_lexer(const char *line)
 
 	ft_bzero(&cursor, sizeof(t_lex_cursor));
 	cursor.line = line;
-	while (line[cursor.i])
+	while (!cursor.failed && line[cursor.i])
 	{
-		if (cursor.failed)
-			break ;
 		i = ft_strchr_i("\n'\" \t<>&|;()", line[cursor.i]);
 		chartype = g_type_chars[i + 1];
 		if (treat_quote(&cursor, line[cursor.i], chartype))
@@ -113,8 +115,5 @@ t_wdlist	*ms_lexer(const char *line)
 			continue ;
 		cursor.i += 1;
 	}
-	// TODO: 末尾にNLトークンがない場合はParseエラーとする
-	if (!cursor.failed)
-		lx_conclude_token(&cursor);
-	return (cursor.head);
+	return (lx_finalize(&cursor));
 }

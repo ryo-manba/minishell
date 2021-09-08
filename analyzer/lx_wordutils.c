@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lx_wordutils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/06 00:30:53 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/06 09:07:42 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_analyzer.h"
 
 static t_wdlist	*new_lexer_token(int i, char starting_char)
@@ -14,7 +26,6 @@ static t_wdlist	*new_lexer_token(int i, char starting_char)
 	return (new);
 }
 
-// 追加できる状態なら追加。そうでなければなにもしない。
 // returns 1 if it failed
 int	lx_add_token(t_lex_cursor *cursor, char ct)
 {
@@ -24,10 +35,7 @@ int	lx_add_token(t_lex_cursor *cursor, char ct)
 		return (MS_AZ_SUCC);
 	new = new_lexer_token(cursor->i, ct);
 	if (!new)
-	{
-		cursor->failed = 1;
-		return (MS_AZ_FAIL);
-	}
+		return (lx_mark_failed(cursor, 1, "alloc lex-token"));
 	if (cursor->tail)
 		cursor->tail->next = new;
 	cursor->tail = new;
@@ -37,7 +45,6 @@ int	lx_add_token(t_lex_cursor *cursor, char ct)
 	return (MS_AZ_SUCC);
 }
 
-// Lexerトークンを閉じる
 // always succeeds
 void	lx_conclude_token(t_lex_cursor *cursor)
 {
@@ -53,9 +60,9 @@ void	lx_conclude_token(t_lex_cursor *cursor)
 	tail->concluded = 1;
 	if (tail->starting_chartype == LC_NEWLINE)
 		tail->lex_type = LT_NEWLINE;
-	else if (lx_is_an_operator(cursor))
+	else if (lx_tail_is_an_operator(cursor))
 		tail->lex_type = LT_OPERATOR;
 	else if (ft_strchr("<>", tail->delimiter)
-		&& lx_is_digital_str(tail->word, tail->len))
+		&& lx_str_is_digital(tail->word, tail->len))
 		cursor->tail->lex_type = LT_IO_NUMBER;
 }

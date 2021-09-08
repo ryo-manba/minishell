@@ -6,31 +6,24 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 05:54:52 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 05:54:52 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/05 22:03:31 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_analyzer.h"
 
-size_t	ex_exlist_size(t_ex_unit_cursor *cursor, t_ex_token *head)
+static t_ex_token	*ex_fx_exit(t_ex_state *state, t_ex_unit_cursor *csr)
 {
-	t_ex_token	*temp;
-	size_t		n;
-
-	n = 0;
-	temp = head;
-	while (temp != cursor->s.tail)
+	ex_destroy_token(csr->s.head);
+	if (state->failed)
 	{
-		n += 1;
-		printf("n = %zu, %p\n", n, temp);
-		printf("%s\n", temp->token);
-		temp = temp->right;
+		ex_destroy_token(csr->p.head);
+		csr->p.head = NULL;
 	}
-	printf("n = %zu\n", n);
-	return (n);
+	return (csr->p.head);
 }
 
-int	ex_fx_extdup(t_ex_state *state, t_ex_unit_cursor *cursor,
+static int	ex_fx_extdup(t_ex_state *state, t_ex_unit_cursor *cursor,
 	t_ex_token *head)
 {
 	t_ex_token	*temp;
@@ -38,18 +31,23 @@ int	ex_fx_extdup(t_ex_state *state, t_ex_unit_cursor *cursor,
 	temp = head;
 	while (!state->failed)
 	{
+		if (temp && temp->token_id == XI_DIVIDER)
+			ex_push_back_divider_if_needed(state, cursor, temp);
+		else if (temp)
+		{
+			cursor->vs = 0;
+			cursor->i = ft_strlen(temp->token);
+			ex_clone_and_push_back_token(state, cursor, temp);
+		}
 		if (temp == cursor->s.tail)
 			break ;
-		cursor->vs = 0;
-		cursor->i = ft_strlen(temp->token);
-		ex_clone_and_push_back_token(state, cursor, temp);
 		temp = temp->right;
 	}
 	return (!!state->failed);
 }
 
-t_ex_token	*ex_fx_terminate(t_ex_state *state, t_ex_unit_cursor *cursor,
-	t_ex_token *temp)
+static t_ex_token	*ex_fx_terminate(t_ex_state *state,
+	t_ex_unit_cursor *cursor, t_ex_token *temp)
 {
 	char	*joined;
 	size_t	m;
@@ -62,7 +60,7 @@ t_ex_token	*ex_fx_terminate(t_ex_state *state, t_ex_unit_cursor *cursor,
 	}
 	joined = ex_strcat_exlist(temp, 0);
 	if (!joined)
-		state->failed = 1;
+		ex_mark_failed(state, 1, "[FX] join ex-fx pattern");
 	m = 0;
 	if (!state->failed && ft_strchr(joined, '*'))
 	{
@@ -79,28 +77,25 @@ t_ex_token	*ex_fx_terminate(t_ex_state *state, t_ex_unit_cursor *cursor,
 t_ex_token	*ex_fx(t_ex_state *state, t_ex_token *token)
 {
 	t_ex_unit_cursor	csr;
-	t_ex_token			*temp;
+	t_ex_token			*sublist_head;
 
 	ex_init_cursor_mid(&csr, token);
-	temp = NULL;
+	sublist_head = NULL;
 	while (!state->failed)
 	{
 		if (csr.s.tail && csr.s.tail->token_id != XI_DIVIDER)
 		{
-			if (!temp)
-				temp = csr.s.tail;
+			if (!sublist_head)
+				sublist_head = csr.s.tail;
 		}
 		else
-			ex_fx_terminate(state, &csr, temp);
+		{
+			ex_fx_terminate(state, &csr, sublist_head);
+			sublist_head = NULL;
+		}
 		if (!csr.s.tail)
 			break ;
 		csr.s.tail = csr.s.tail->right;
 	}
-	ex_destroy_token(csr.s.head);
-	if (state->failed)
-	{
-		ex_destroy_token(csr.p.head);
-		csr.p.head = NULL;
-	}
-	return (csr.p.head);
+	return (ex_fx_exit(state, &csr));
 }
