@@ -10,16 +10,20 @@ LIBFT_DIR	:= ../libft
 LIBFT		:= $(LIBFT_DIR)/libft.a
 ANALYZER_DIR	:= ../analyzer
 ANALYZER	:= $(ANALYZER_DIR)/libmsa.a
+UTILS_DIR	:= ../utils
+UTILS		:= $(UTILS_DIR)/libmu.a
 NORM		:= python3 -m norminette
 
 all			: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) $(ANALYZER)
-	$(CC) $(CFLAGS) $(LFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(ANALYZER)
+$(NAME): $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS)
+	$(CC) $(CFLAGS) $(LFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS)
 $(LIBFT)	:
 	$(MAKE) -C $(LIBFT_DIR)
 $(ANALYZER)	:
 	$(MAKE) -C $(ANALYZER_DIR)
+$(UTILS)	:
+	$(MAKE) -C $(UTILS_DIR)
 
 .PHONY		: clean
 clean		:

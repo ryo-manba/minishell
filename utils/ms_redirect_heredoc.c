@@ -43,10 +43,10 @@ void ms_heredoc_read(t_list **lst, char *delimiter)
 		close(backup_fd);
 		ft_lstclear(lst, free);
 	//	ex_status = 1;
-		return (NULL);
+		return ;
 	}
 	close(backup_fd);
-	return (lst);
+	return ;
 }
 
 // 変数展開して出力する
@@ -74,16 +74,18 @@ int	ms_heredoc_write(t_list *lst, int quoted, int fd)
 }
 
 // << EOT << 'EOT' << "EOT" この判定どうするか
-int	ms_redirect_heredoc(t_redir *redir, int quoted)
+int	ms_redirect_heredoc(t_redir *redir)
 {
 	t_list	**lst;
 	int		pipefd[2];
+	int		quoted;
 
 	lst = (t_list **)malloc(sizeof(t_list *));
 	if (lst == NULL)
 	{
 		perror("malloc");
 	}
+	quoted = !!redir->operand_right->quote_involved;
 	ms_heredoc_read(lst, redir->operand_right->token); // 標準入力から読み取る
 	if (lst == NULL) // Ctrl+Cで終了した場合は何もしない
 	{

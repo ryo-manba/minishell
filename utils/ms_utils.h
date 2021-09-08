@@ -11,7 +11,6 @@
 #include <fcntl.h>
 #include <sys/errno.h>
 #include "../libft/libft.h"
-#include "../lexer/ms_lexer.h"
 #include "../analyzer/ms_analyzer.h"
 
 /* ms_get_execution_path */
@@ -83,6 +82,6 @@ void	ms_heredoc_sigint_handler(int sig);
 int		ms_heredoc_signal_set(void);
 void 	ms_heredoc_read(t_list **lst, char *delimiter);
 int		ms_heredoc_write(t_list *lst, int quoted, int fd);
-int		ms_redirect_heredoc(t_redir *redir, int quoted);
+int		ms_redirect_heredoc(t_redir *redir);
 
 #endif

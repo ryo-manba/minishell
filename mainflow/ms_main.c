@@ -10,11 +10,12 @@ t_pipeline	*ms_lex_parse(char *line)
 	t_parse_state	ps;
 
 	lexer_token = ms_lexer(line);
+	if (!lexer_token)
+		return (NULL);
 	ms_parse(&ps, lexer_token, 0);
 	lx_destroy_token(lexer_token);
 	return (ps.pipeline);
 }
-
 
 int main(void)
 {
@@ -25,10 +26,21 @@ int main(void)
 	while (1)
 	{
 		line = readline("% ");
-		pipeline = ms_lex_parse(line);
-		print_pipeline(pipeline, 0);
-		pa_destroy_pipeline(pipeline);
-		add_history(line);
+		if (!line)
+			break ;
+		if (ft_strlen(line) > 0)
+		{
+			add_history(line);
+			pipeline = ms_lex_parse(line);
+			if (pipeline)
+			{
+				print_pipeline(pipeline, 0);
+
+				ms_executer(pipeline, NULL, NULL);
+
+				pa_destroy_pipeline(pipeline);
+			}
+		}
 		free(line);
 	}
 }

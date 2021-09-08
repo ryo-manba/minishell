@@ -37,7 +37,9 @@ int	ms_create_backup_fd(int backup_fd[3])
 int	ms_execute_child(t_clause *clause)
 {
 	pid_t	pid;
+	t_ex_state	es;
 
+	ms_ex_init_state(&es, NULL, 0);
 	pid = fork();
 	if (pid == -1)
 	{
@@ -46,7 +48,7 @@ int	ms_execute_child(t_clause *clause)
 	if (pid == 0)
 	{
 		errno = 0;
-		execve(ms_get_path(clause->stree->token),
+		execve(ms_get_path(clause->stree->token, NULL, &es),
 			ms_create_execute_command(clause->stree), NULL);
 	}
 	else
