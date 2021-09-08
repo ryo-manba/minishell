@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:18 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/06 18:00:19 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/08 11:28:02 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ void	blt_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos)
 	t_shellvar	*tmp;
 
 	head = env;
-	while (head->next != key_pos) // 削除するkeyが見つかるまで進める
-	{
+	while (head->next != key_pos)
 		head = head->next;
-	}
 	tmp = head->next;
 	head->next = head->next->next;
 	blt_env_free(tmp);
@@ -43,27 +41,21 @@ void	blt_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos)
  * tree->token = PWD
  * tree->right->token = USER
  */
-// keyを探して見つかったらリストから外す
 int	blt_unset(t_shellvar *env, t_stree *tree)
 {
 	t_shellvar	*key_pos;
 
-	while (tree != NULL) // unset 単体の場合は何もしない
+	while (tree != NULL)
 	{
-		key_pos	= blt_search_key(env, tree->token);
-		if (key_pos != NULL) // 存在しなかったら何もしない
+		key_pos = blt_search_key(env, tree->token);
+		if (key_pos != NULL)
 		{
-			if (env == key_pos) //先頭だった場合
-			{
+			if (env == key_pos)
 				blt_unset_head(env);
-			}
-			else // 2番目以降
-			{
+			else
 				blt_unset_second_and_subsequent(env, key_pos);
-			}
 		}
 		tree = tree->right;
 	}
 	return (MS_BLT_SUCC);
 }
-
