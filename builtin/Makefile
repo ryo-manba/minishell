@@ -1,29 +1,41 @@
-NAME	=	a.out
-SRCS 	=	ms_builtin.c \
-			ms_buitin_error.c \
-			ms_cd.c \
-			ms_echo.c \
-			ms_env.c \
-			ms_env_sort.c \
-			ms_exit.c \
-			ms_export.c \
-			ms_export_check.c \
-			ms_export_print.c \
-			ms_export_utils.c \
-			ms_pwd.c \
-			ms_unset.c \
-			main.c \
+NAME		:=	libmblt.a
+TEST_NAME	:=	a.out
+SRCS 		:=	blt_cd.c \
+				blt_echo.c \
+				blt_env.c \
+				blt_env_sort.c \
+				blt_exit.c \
+				blt_export.c \
+				blt_export_check.c \
+				blt_export_print.c \
+				blt_export_utils.c \
+				blt_pwd.c \
+				blt_unset.c \
+				ms_builtin.c \
+				ms_create_env.c \
+				ms_env_utils.c\
+
+TEST_SRCS	:=	main.c
 
 OBJS	=	$(SRCS:.c=.o)
+TEST_OBJS	:=	$(TEST_SRCS:.c=.o)
 RM		=	rm -f
 CC		= 	gcc -g #-fsanitize=address
 CFLAGS	=	-Wall -Wextra -Werror
 CFLAGS	= 	-I/usr/local/opt/readline/include/
-LIBFT	=	../libft/libft.a
+LIBFT_DIR	:=	../libft
+LIBFT		:=	$(LIBFT_DIR)/libft.a
+
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) -lreadline -lhistory -o $(NAME) $(LIBFT) -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include $(OBJS)
+	ar rcs $(NAME) $(OBJS)
+
+$(TEST_NAME): $(OBJS) $(TEST_OBJS) $(LIBFT)
+	$(CC) -lreadline -lhistory -o $(TEST_NAME) $(LIBFT) -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include $(OBJS)
+
+$(LIBFT)	:
+	$(MAKE) -C $(LIBFT_DIR)
 
 clean:
 	$(RM) $(OBJS)
@@ -34,6 +46,6 @@ fclean: clean
 re: fclean all
 
 test: all
-	./a.out
+	./$(TEST_NAME)
 
 .PHONY: all clean fclean re

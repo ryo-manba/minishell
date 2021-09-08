@@ -12,18 +12,22 @@ ANALYZER_DIR	:= ../analyzer
 ANALYZER	:= $(ANALYZER_DIR)/libmsa.a
 UTILS_DIR	:= ../utils
 UTILS		:= $(UTILS_DIR)/libmu.a
+BLTIN_DIR	:= ../builtin
+BLTIN		:= $(BLTIN_DIR)/libmblt.a
 NORM		:= python3 -m norminette
 
 all			: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS)
-	$(CC) $(CFLAGS) $(LFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS)
+$(NAME): $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
+	$(CC) $(CFLAGS) $(LFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
 $(LIBFT)	:
 	$(MAKE) -C $(LIBFT_DIR)
 $(ANALYZER)	:
 	$(MAKE) -C $(ANALYZER_DIR)
 $(UTILS)	:
 	$(MAKE) -C $(UTILS_DIR)
+$(BLTIN)	:
+	$(MAKE) -C $(BLTIN_DIR)
 
 .PHONY		: clean
 clean		:
@@ -33,6 +37,8 @@ clean		:
 fclean		: clean
 	$(RM) $(NAME)
 	$(MAKE) -C $(ANALYZER_DIR) fclean
+	$(MAKE) -C $(UTILS_DIR) fclean
+	$(MAKE) -C $(BLTIN_DIR) fclean
 
 .PHONY		: re
 re			: fclean all
