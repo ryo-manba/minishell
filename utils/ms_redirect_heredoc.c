@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_redirect_heredoc.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/09/08 19:09:08 by rmatsuka         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_utils.h"
 
 volatile sig_atomic_t g_flag = 0;
@@ -82,7 +94,7 @@ int	ms_redirect_heredoc(t_redir *redir, int quoted)
 	lst = (t_list **)malloc(sizeof(t_list *));
 	if (lst == NULL)
 	{
-		perror("malloc");
+		ms_print_perror("malloc");
 	}
 	ms_heredoc_read(lst, redir->operand_right->token); // 標準入力から読み取る
 	if (lst == NULL) // Ctrl+Cで終了した場合は何もしない

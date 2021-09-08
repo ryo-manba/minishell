@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_execute_pipe_command.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/09/08 19:08:39 by rmatsuka         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_utils.h"
 
 void	print_error_exit(int ex_status, char *path)
@@ -89,7 +101,7 @@ int	ms_execute_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 		pid = fork();
 		if (pid < 0)
 		{
-			perror("fork");
+			ms_print_perror("fork");
 			return (1);
 		}
 		if (pid == 0)
