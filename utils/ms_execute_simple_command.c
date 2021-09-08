@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_execute_simple_command.c                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/09/08 19:08:43 by rmatsuka         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_utils.h"
 
 void	ms_print_exec_error(t_clause *clause)
@@ -41,9 +53,10 @@ int	ms_execute_child(t_clause *clause)
 
 	ms_ex_init_state(&es, NULL, 0);
 	pid = fork();
-	if (pid == -1)
+	if (pid < -1)
 	{
-		perror("fork");
+		ms_print_perror("fork");
+		return (1);
 	}
 	if (pid == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:15 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 13:30:58 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/08 17:24:28 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	blt_pwd(void)
 	path = getcwd(NULL, 0);
 	if (errno != 0)
 	{
-		blt_print_perror("getcwd");
+		ms_print_perror("getcwd");
 		return (MS_BLT_FAIL);
 	}
 	ft_putendl_fd(path, STDOUT_FILENO);

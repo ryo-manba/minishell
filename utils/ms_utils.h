@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_utils.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/09/08 19:09:26 by rmatsuka         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MS_UTILS_H
 # define MS_UTILS_H
 
@@ -45,7 +57,7 @@ int		ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 
 /* ms_execute_utils */
 size_t	ms_get_cmd_size(t_stree *tree);
-int	ms_check_fd(char *fd);
+int		ms_check_fd(char *fd);
 
 /* ms_execute_pipe_command */
 void	ms_print_error_exit(int ex_status, char *path);

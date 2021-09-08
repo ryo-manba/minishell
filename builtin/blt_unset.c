@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:18 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 11:28:02 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/08 16:45:41 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	blt_unset_head(t_shellvar *env)
 
 	tmp = env;
 	env = env->next;
-	blt_env_free(tmp);
+	ms_env_free(tmp);
 }
 
 // "unset b"  a->b->c を a->c free(b)
@@ -33,7 +33,7 @@ void	blt_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos)
 		head = head->next;
 	tmp = head->next;
 	head->next = head->next->next;
-	blt_env_free(tmp);
+	ms_env_free(tmp);
 }
 
 /**
@@ -47,7 +47,7 @@ int	blt_unset(t_shellvar *env, t_stree *tree)
 
 	while (tree != NULL)
 	{
-		key_pos = blt_search_key(env, tree->token);
+		key_pos = ms_search_key(env, tree->token);
 		if (key_pos != NULL)
 		{
 			if (env == key_pos)

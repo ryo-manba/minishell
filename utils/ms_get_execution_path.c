@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_get_execution_path.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/08 19:08:59 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/09/08 19:09:00 by rmatsuka         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_utils.h"
 #include <sys/stat.h>
 
@@ -18,7 +30,7 @@ char *ms_create_split_path(t_shellvar *var, char **split_path)
 {
 	t_shellvar	*path_pos;
 
-	path_pos = blt_search_key(var, "PATH");
+	path_pos = ms_search_key(var, "PATH");
 	if (path_pos == NULL)
 		return (NULL);
 	split_path = ft_split(path_pos->value, ':');
