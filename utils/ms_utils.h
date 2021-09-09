@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 14:45:14 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/09 23:19:52 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 #define IS_A_DIR 1260
 #define PERMISSION 1261
 #define	CMD_NOT_FOUND 127
+#define NO_SUCH_FILE 128
 
 /* ms_execute_utils */
 #define OVER_FD -1
