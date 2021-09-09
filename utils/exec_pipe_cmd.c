@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 15:32:59 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 02:56:37 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,32 +25,35 @@ int	exec_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pid_t pi
 // エクスパンダーの部分修正する
 void	exec_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe)
 {
-	char *path;
+	char 	*path;
+	t_stree	*expanded;
 
 	ms_do_piping(pl->clause, dpipe->new, dpipe->before); // パイプをつなげる
-	exec_expand_redirect(pl->clause); 		// 変数展開してリダイレクト
+	exec_expand_redirect(pl->clause, var); 		// 変数展開してリダイレクト
 	if (pl->clause->stree->subshell != NULL) 	// subshellの場合、再帰的にエグゼキューターに渡す
 	{
 		ms_executer(pl->clause->stree->subshell, var, state);
 	}
-	ms_expander(pl->clause->stree); // echo $VAR -> echo var 展開する
-	if (ms_is_builtin(pl->clause->stree) == 1) // builtinならそのまま実行してexitする
+	expanded = ms_expand_stree(state, pl->clause->stree); // echo $VAR -> echo var 展開する
+	if (!expanded)
+		exit(1);
+	if (ms_is_builtin(expanded) == 1) // builtinならそのまま実行してexitする
 	{
-		exit(ms_exec_builtin(var, pl->clause->stree));
+		exit(ms_exec_builtin(var, expanded));
 	}
 	else
 	{
 		errno = 0;
-		path = exec_get_path(pl->clause->stree->right->token,var, state);
+		path = exec_get_path(expanded->right->token,var, state);
 		if (state->last_exit_status == PERMISSION || state->last_exit_status == IS_A_DIR)
 		{
 			exec_print_error_exit(state->last_exit_status, path);
 		}
 		else if (path == NULL)
-			exec_print_error_exit(state->last_exit_status, pl->clause->stree->right->token);
+			exec_print_error_exit(state->last_exit_status, expanded->right->token);
 		else
 		{
-			execve(path,exec_create_command(pl->clause->stree), NULL);
+			execve(path,exec_create_command(expanded), NULL);
 		}
 		exit(errno);
 	}

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 21:31:49 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/04 18:19:26 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 02:49:25 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,25 @@ int	ex_ll_trap_dquote(t_ex_state *state, t_ex_unit_cursor *csr)
 	csr->running = XI_NEUTRAL;
 	csr->i += cursor.i + 1;
 	return (MS_AZ_SUCC);
+}
+
+// for heredoc, ONLY expand variables in a given line.
+// ignore all quotations.
+char	*ex_ll_heredoc_line(char *line, t_shellvar *var)
+{
+	t_ex_unit_cursor	cursor;
+	t_ex_state			hstate;
+	char				*joined;
+
+	ms_ex_init_state(&hstate, var, 0);
+	ex_ll_init_cursor(&cursor, TI_WORD, line, '\0');
+	hstate.ignore_quote = 1;
+	ex_ll_unit(&hstate, &cursor);
+	if (hstate.failed)
+		return (NULL);
+	joined = ex_strcat_exlist(cursor.p.head, 0);
+	ex_destroy_token(cursor.p.head);
+	if (!joined)
+		return (NULL);
+	return (joined);
 }

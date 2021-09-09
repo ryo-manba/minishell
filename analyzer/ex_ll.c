@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:00:19 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/07 12:09:19 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 02:33:51 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,16 @@ t_ex_token	*ex_push_back_token(t_ex_state *state,
 	return (ext);
 }
 
-// 唯一何かを開始できる and 展開を終了できるモード
+// transit from neutral to any other modes (except BRACED_BAR).
+// and trap double-quote.
 int	ex_ll_trap_neutral(t_ex_state *state, t_ex_unit_cursor *csr)
 {
-	if (csr->str[csr->i] == '\'' && !csr->quote)
+	if (csr->str[csr->i] == '\'' && !csr->quote && !state->ignore_quote)
 	{
 		csr->vs = csr->i++;
 		csr->running = XI_SQUOTED;
 	}
-	else if (csr->str[csr->i] == '"')
+	else if (csr->str[csr->i] == '"' && !state->ignore_quote)
 	{
 		if (ex_ll_trap_dquote(state, csr))
 			ex_mark_failed(state, 1, "[LL-nt] push back ex-token");

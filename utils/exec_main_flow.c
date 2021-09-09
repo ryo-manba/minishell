@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main_flow.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 15:39:07 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 03:35:23 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,24 @@ char	**exec_create_command(t_stree *tree)
 
 // 環境変数を展開しながらリダイレクションを処理する
 // エクスパンダーの部分修正する
-int	exec_expand_redirect(t_clause *clause)
+int	exec_expand_redirect(t_clause *clause, t_shellvar *var)
 {
-	t_redir	*rd;
-	t_redir *expand_rd;
+	t_redir		*rd;
+	t_redir		*expanded_rd;
+	t_ex_state	es;
 
+	ms_ex_init_state(&es, var, 0);
 	rd = clause->redir;
 	while (rd) // 逐次的にエキスパンドとリダイレクトを行う  echo hello > $VAR > b > c | cat
 	{
-		expand_rd = do_expander(rd); // リダイレクションを展開する (echo a > $VAR　-> echo a > var)
-		if (ms_redirect(expand_rd) == 1)// リダイレクションを処理する
+		expanded_rd = ms_expand_a_redir(NULL, rd); // リダイレクションを展開する (echo a > $VAR　-> echo a > var)
+		if (ms_redirect(expanded_rd) == 1)// リダイレクションを処理する
 		{
-			ms_check_fd_print_error(expand_rd);
-			pa_destroy_redir(expand_rd);
+			ms_check_fd_print_error(expanded_rd);
+			pa_destroy_redir(expanded_rd);
 			break ;
 		}
-		pa_destroy_redir(expand_rd);
+		pa_destroy_redir(expanded_rd);
 		rd = rd->next;
 	}
 	if (rd != NULL) // リダイレクトが最後まで処理されていない場合
@@ -111,17 +113,22 @@ void	exec_all_open(t_redir *expand_rd)
 
 // ">,>>" があったらとりあえず先に上書きとファイル作成を行う。
 // 不正なfdや権限で失敗してもここではエラーを出さない
-void	exec_just_open(t_clause *clause)
+void	exec_just_open(t_clause *clause, t_shellvar *var)
 {
+	t_ex_state	es;
 	t_clause	*tmp_cl;
-	t_redir		*expand_rd;
+	t_redir		*expanded_rd;
 
+	ms_ex_init_state(&es, var, 0);
 	tmp_cl = clause;
 	while (tmp_cl)
 	{
-		expand_rd = do_expander(tmp_cl->redir);
-		exec_all_open(expand_rd);
-		pa_destroy_redir(expand_rd);
+		if (tmp_cl->redir)
+		{
+			expanded_rd = ms_expand_a_redir(&es, tmp_cl->redir);
+			exec_all_open(expanded_rd);
+			pa_destroy_redir(expanded_rd);
+		}
 		tmp_cl = tmp_cl->next;
 	}
 }
@@ -133,7 +140,14 @@ int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 
 	if (pl == NULL)
 		return (0);
-	exec_just_open(pl->clause);
+	if (!var)
+		var = state->var;
+	if (!var)
+		var = ms_create_env();
+	if (!var)
+		return (1);
+	state->var = var;
+	exec_just_open(pl->clause, var);
 	if (pl->clause->next != NULL) // パイプがある場合、終わるまでループ回す
 		exec_pipe_command(pl, var, state);
 	else

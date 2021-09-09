@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_create_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 14:53:27 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 17:24:28 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 03:30:00 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ t_shellvar	*ms_create_append_env(char *env)
 		free(key_value[VALUE]);
 		return (NULL);
 	}
+	return (append_var);
 }
 
 // environから一文字ずつ見ていって, "key = value"に分けて構造体を作る
 t_shellvar	*ms_create_env(void)
 {
 	extern char	**environ;
-	char		*key_value[2];
 	t_shellvar	*var;
 	t_shellvar	*append_var;
 	int			i;
@@ -75,8 +75,6 @@ t_shellvar	*ms_create_env(void)
 			return (NULL);
 		}
 		ms_env_add_back(&var, append_var);
-		free(key_value[KEY]);
-		free(key_value[VALUE]);
 		i++;
 	}
 	return (var);
@@ -109,7 +107,7 @@ t_shellvar	*ms_new_env(char *key, char *value)
 {
 	t_shellvar	*new_env;
 
-	new_env = (t_shellvar *)malloc(sizeof(t_shellvar));
+	new_env = (t_shellvar *)ft_calloc(1, sizeof(t_shellvar));
 	if (new_env == NULL)
 	{
 		ms_print_perror("malloc");

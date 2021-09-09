@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 17:37:05 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 03:00:22 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void ms_heredoc_read(t_list **lst, char *delimiter)
 	if (g_flag == 1) // ctrl-cで終わった場合終了ステータスは1になる
 	{
 		if (dup2(backup_fd, STDIN_FILENO) == -1)// dup2失敗した場合、どうするか
-			do_something();
+			ft_putendl_fd("do_something", STDERR_FILENO);
 		close(backup_fd);
 		ft_lstclear(lst, free);
 	//	ex_status = 1;
@@ -65,13 +65,18 @@ void ms_heredoc_read(t_list **lst, char *delimiter)
 int	ms_heredoc_write(t_list *lst, int quoted, int fd)
 {
 	t_list *tmp;
+	char	*expanded;
 
 	tmp = lst;
 	if (quoted == 0) // クオートで囲まれていなかったら変数展開する
 	{
 		while (tmp != NULL)
 		{
-			ms_expander((char *)lst->content);
+			expanded = ex_ll_heredoc_line((char *)lst->content, NULL);
+			if (!expanded)
+				return (1);
+			free(tmp->content);
+			tmp->content = expanded;
 			tmp = tmp->next;
 		}
 		tmp = lst;

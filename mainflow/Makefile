@@ -2,8 +2,8 @@ NAME		:=	minishell
 SRCS		:=	ms_main.c
 
 CC			:= gcc
-# CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -D PA_DEBUG=1
-CFLAGS		:= -g -Wall -Wextra -Werror -D PA_DEBUG=1
+CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -D PA_DEBUG=1
+# CFLAGS		:= -g -Wall -Wextra -Werror -D PA_DEBUG=1
 LFLAGS		:= -lreadline
 OBJS		:= $(SRCS:.c=.o)
 LIBFT_DIR	:= ../libft
@@ -47,3 +47,7 @@ re			: fclean all
 norm		:
 	$(NORM) $(SRCS) *.h
 	$(NORM) -v
+
+.PHONY		: name
+name		: $(NAME)
+	nm -u $(NAME) | sort -u

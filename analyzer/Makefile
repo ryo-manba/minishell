@@ -14,14 +14,11 @@ EXPANDER_SRCS	:=	ms_expander.c\
 					ex_join.c\
 					test_parser.c
 
-BLT_DIR 		:= ../builtin
-
-EXT_SRCS		:= $(BLT_DIR)/blt_env.c $(BLT_DIR)//blt_env_utils.c $(BLT_DIR)/blt_export_utils.c
+BLT_DIR 		:=	../builtin
 
 SRCS		:=	$(LEXER_SRCS)\
 				$(PARSER_SRCS)\
-				$(EXPANDER_SRCS)\
-				$(EXT_SRCS)
+				$(EXPANDER_SRCS)
 
 CC			:= gcc
 # CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -D PA_DEBUG=1
@@ -31,6 +28,10 @@ LIBFT_DIR	:= ../libft
 LIBFT		:= $(LIBFT_DIR)/libft.a
 NORM		:= python3 -m norminette
 NAME		:= libmsa.a
+BLTIN_DIR	:= ../builtin
+BLTIN		:= $(BLTIN_DIR)/libmblt.a
+
+all			: $(NAME)
 
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
@@ -39,12 +40,16 @@ TEST_NAME	:= tlex
 TEST_SRCS	:= test.c
 TEST_OBJS	:= $(TEST_SRCS:.c=.o)
 
-test_build	: $(TEST_NAME)
+testbuild	: $(TEST_NAME)
 
-$(TEST_NAME): $(NAME) $(TEST_OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(TEST_NAME) $(TEST_OBJS) $(NAME) $(LIBFT)
+$(TEST_NAME): $(NAME) $(TEST_OBJS) $(LIBFT) $(BLTIN)
+	$(CC) $(CFLAGS) -o $(TEST_NAME) $(TEST_OBJS) $(NAME) $(LIBFT) $(BLTIN)
+
 $(LIBFT)	:
 	$(MAKE) -C $(LIBFT_DIR)
+
+$(BLTIN)	:
+	$(MAKE) -C $(BLTIN_DIR)
 
 .PHONY		: clean
 clean		:
@@ -56,8 +61,13 @@ fclean		: clean
 
 .PHONY		: re
 re			: fclean all
+	$(MAKE) -C $(BLTIN_DIR) fclean
 
 .PHONY		: norm
 norm		:
 	$(NORM) $(LEXER_SRCS) $(PARSER_SRCS) $(EXPANDER_SRCS) *.h
 	$(NORM) -v
+
+.PHONY		: name
+name		: $(NAME)
+	nm -u $(NAME) | sort -u

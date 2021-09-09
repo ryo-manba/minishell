@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_env_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:59:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 17:30:26 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 03:28:40 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ t_shellvar	*ms_envlast(t_shellvar *var)
 {
 	t_shellvar	*last;
 
-	if (var == NULL)
+	if (!var)
 		return (NULL);
 	last = var;
-	while (last->next != NULL)
+	while (last && last->next)
 		last = last->next;
 	return (last);
 }

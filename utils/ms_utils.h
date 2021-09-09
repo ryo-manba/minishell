@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 23:19:52 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 02:58:03 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int		ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2]);
 
 /* ms_executer */
 char	**exec_create_command(t_stree *tree);
-int		exec_expand_redirect(t_clause *clause);
+int		exec_expand_redirect(t_clause *clause, t_shellvar *var);
 void	ms_update_exitstatus(t_ex_state *state, pid_t pid);
-void	exec_just_open(t_clause *clause);
+void	exec_just_open(t_clause *clause, t_shellvar *var);
 int		ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 
 /* ms_execute_utils */
@@ -74,7 +74,7 @@ void	exec_wait_child(int sz);
 void	exec_print_error(t_clause *clause);
 int		exec_duplicate_backup_fd(int backup_fd[3]);
 int		exec_create_backup_fd(int backup_fd[3]);
-int		exec_child(t_clause *clause);
+int		exec_child(t_clause *clause, t_shellvar *var);
 int		exec_simple_command(t_clause *clause, t_shellvar *var);
 
 /* ms_get_execution_path */

@@ -2,14 +2,18 @@ NAME	:=	libmu.a
 
 TEST_NAME	:=	tutils
 
-SRCS		:=	ms_execute_pipe_command.c \
-				ms_execute_simple_command.c \
-				ms_execute_utils.c \
-				ms_executer.c \
-				ms_get_execution_path.c \
+SRCS		:=	exec_error.c \
+				exec_get_path.c \
+				exec_main_flow.c \
+				exec_pipe_cmd.c \
+				exec_simple_cmd.c \
+				exec_utils.c \
 				ms_pipe.c \
-				ms_redirect.c \
-				ms_redirect_heredoc.c
+				ms_redir.c \
+				ms_redir_error.c \
+				ms_redir_heredoc.c\
+
+
 
 TEST_SRCS	:=	main.c
 OBJS		:=	$(SRCS:.c=.o)

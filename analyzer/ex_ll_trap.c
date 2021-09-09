@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 22:14:46 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/07 12:06:25 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/08 19:02:47 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	ex_ll_push_back(t_ex_state *state, t_ex_unit_cursor *csr)
 	csr->i = csr->substr_e;
 }
 
+// trap a char in a BARE word.
 int	ex_ll_trap_bare(t_ex_state *state, t_ex_unit_cursor *csr)
 {
 	char	c;
@@ -50,7 +51,8 @@ int	ex_ll_trap_bare(t_ex_state *state, t_ex_unit_cursor *csr)
 	return (1);
 }
 
-// }で解除される。
+// trap a chsr in BRAVED_VAR.
+// BRAVED_VAR will close by encounting '}'.
 int	ex_ll_trap_braced_var(t_ex_state *state, t_ex_unit_cursor *csr)
 {
 	char	c;
@@ -71,7 +73,8 @@ int	ex_ll_trap_braced_var(t_ex_state *state, t_ex_unit_cursor *csr)
 	return (1);
 }
 
-// BRACED_VARに遷移することがある。
+// trap a char in VAR.
+// VAR will transit to BRACED_VAR by encounting '{'.
 int	ex_ll_trap_var(t_ex_state *state, t_ex_unit_cursor *csr)
 {
 	char	c;
@@ -98,7 +101,8 @@ int	ex_ll_trap_var(t_ex_state *state, t_ex_unit_cursor *csr)
 	return (1);
 }
 
-// シングルクオートはシングルクオートで解除される。
+// trap a char in SQUOTED.
+// SQUOTED will close by '.
 int	ex_ll_trap_squoted(t_ex_state *state, t_ex_unit_cursor *csr)
 {
 	char	c;

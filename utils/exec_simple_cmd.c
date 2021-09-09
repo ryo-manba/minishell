@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 17:37:30 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 02:56:33 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ int	exec_create_backup_fd(int backup_fd[3])
 	return (0);
 }
 
-int	exec_child(t_clause *clause)
+int	exec_child(t_clause *clause, t_shellvar *var)
 {
 	pid_t	pid;
 	t_ex_state	es;
 
-	ms_ex_init_state(&es, NULL, 0);
+	ms_ex_init_state(&es, var, 0);
 	pid = fork();
 	if (pid < -1)
 	{
@@ -54,13 +54,8 @@ int	exec_child(t_clause *clause)
 	if (pid == 0)
 	{
 		errno = 0;
-<<<<<<< HEAD:utils/ms_execute_simple_command.c
-		execve(ms_get_path(clause->stree->token, NULL, &es),
-			ms_create_execute_command(clause->stree), NULL);
-=======
-		execve(exec_get_path(clause->stree->token),
+		execve(exec_get_path(clause->stree->token, var, &es),
 			exec_create_command(clause->stree), NULL);
->>>>>>> 0d52358c853ca5b8bfe32433095bf2751691bf43:utils/exec_simple_cmd.c
 	}
 	else
 	{
@@ -86,16 +81,16 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var)
 	{
 		if (exec_create_backup_fd(backup_fd) == 1)
 			return (1);
-		if (exec_expand_redirect(clause) == 1) // 変数展開とリダイレクト処理
+		if (exec_expand_redirect(clause, var) == 1) // 変数展開とリダイレクト処理
 			return (1);
 	}
 	if (ms_is_builtin(clause->stree) == 1)
 	{
-		status = ms_execute_builtin(var, clause);
+		status = ms_exec_builtin(var, clause->stree);
 	}
 	else
 	{
-		exec_child(clause); // ビルトイン以外なら以外なら子プロセスで実行する
+		exec_child(clause, var); // ビルトイン以外なら以外なら子プロセスで実行する
 	}
 	if (clause->redir)
 	{
