@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 14:21:51 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/09 17:45:49 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,15 @@ int	exec_check_path(struct stat sb, t_ex_state *state, char *path, char *err_pat
 	if (sb.st_mode & S_IXUSR == 1) // 実行可能ビットが立ってたらOK (S_IXUSR (00100))所有者による実行
 	{
 		state->last_exit_status = 0;
-		free(err_path);
-		return (0);
+		free(path);
+		return (MS_EXEC_SUCC);
 	}
 	state->last_exit_status = PERMISSION;
 	if ((sb.st_mode & S_IFMT) == S_IFREG) // これだったらディレクトリ
 		state->last_exit_status = IS_A_DIR;
 	free(err_path);
 	err_path = path;
-	return (1);
+	return (MS_EXEC_FAIL);
 }
 
 char	*exec_create_path(char *cmd, char **split_path, t_ex_state *state)
@@ -82,8 +82,11 @@ char	*exec_get_path(char *cmd, t_shellvar *var, t_ex_state *state)
 	char *path;
 	struct stat sb;
 
-	if (exec_create_split_path(var, split_path) == NULL)
+	if (exec_create_split_path(var, split_path) == NULL) // "bash: ls: No such file or directory"
+	{
+		state->last_exit_status = NO_SUCH_FILE;
 		return (NULL);
+	}
 	path = exec_create_path(cmd, split_path, state);
 	if (path == NULL && (state->last_exit_status != IS_A_DIR
 		|| state->last_exit_status != PERMISSION))

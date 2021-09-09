@@ -6,12 +6,11 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 14:37:38 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/09 17:37:30 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
-
 
 // 親プロセスでリダイレクションをするとき用に、fd(0,1,2)のバックアップをとっておく。
 int	exec_duplicate_backup_fd(int backup_fd[3])

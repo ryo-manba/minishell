@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 14:37:38 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/09 15:32:59 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,19 @@ int	exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 {
 	t_dpipe *dpipe;
 	pid_t	pid;
-	int		sz;
+	int		child_sum;
 
-	sz = 0;
+	child_sum = 0;
 	while (pl->clause != NULL) // すべてのコマンドを実行していく
 	{
 		if (pl->clause->next != NULL)
-			pipe(dpipe->new);
+		{
+			if (pipe(dpipe->new) == -1)
+			{
+				ms_print_perror("pipe");
+				return (1);
+			}
+		}
 		pid = fork();
 		if (pid < 0)
 		{
@@ -88,8 +94,8 @@ int	exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 		else
 			exec_pipe_parent(pl, state, dpipe, pid);
 		pl->clause = pl->clause->next;
-		sz++;
+		child_sum += 1;
 	}
 	ms_update_exitstatus(state, pid); // 最後のコマンドのpidからステータスを取る
-	exec_wait_child(sz);
+	exec_wait_child(child_sum);
 }
