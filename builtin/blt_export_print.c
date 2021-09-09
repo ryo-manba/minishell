@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_print.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:05 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 17:40:07 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 04:41:24 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	blt_print_export(t_shellvar *env)
 		else
 		{
 			ft_putstr_fd(tmp->key, STDOUT_FILENO);
-			ft_putstr_fd('=\"', STDOUT_FILENO);
+			ft_putstr_fd("=\"", STDOUT_FILENO);
 			if (ft_strncmp(tmp->value, "\\", 1) == 0)
 				ft_putchar_fd('\\', STDOUT_FILENO);
 			ft_putstr_fd(tmp->value, STDOUT_FILENO);
