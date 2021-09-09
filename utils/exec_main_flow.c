@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 13:31:09 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/09 14:37:38 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 // execveに送る場合
 // {"ls", "-l", "NULL"}の状態にする。
-char	**ms_create_execute_command(t_stree *tree)
+char	**exec_create_command(t_stree *tree)
 {
 	char	**command;
 	size_t	i;
 	t_stree	*tmp;
 
-	i = ms_get_cmd_size(tree);
+	i = exec_get_command_size(tree);
 	command = (char **)malloc(sizeof(char *) * i + 1);
 	if (command == NULL)
 	{
@@ -47,7 +47,7 @@ char	**ms_create_execute_command(t_stree *tree)
 
 // 環境変数を展開しながらリダイレクションを処理する
 // エクスパンダーの部分修正する
-int	ms_expand_and_redirect(t_clause *clause)
+int	exec_expand_redirect(t_clause *clause)
 {
 	t_redir	*rd;
 	t_redir *expand_rd;
@@ -80,7 +80,7 @@ void	ms_update_exitstatus(t_ex_state *state, pid_t pid)
 
 // ">,>>" があったらとりあえず先に上書きとファイル作成を行う。
 // 不正なfdでもここではエラー処理はしない
-void	ms_just_open_file(t_clause *clause)
+void	exec_just_open(t_clause *clause)
 {
 	t_clause	*tmp_cl;
 	t_redir		*tmp_re;
@@ -122,14 +122,14 @@ int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 
 	if (pl == NULL)
 		return (0);
-	ms_just_open_file(pl->clause);
+	exec_just_open(pl->clause);
 	if (pl->clause->next != NULL) // パイプがある場合、終わるまでループ回す
 	{
-		ms_execute_pipe_command(pl, var, state);
+		exec_pipe_command(pl, var, state);
 	}
 	else
 	{
-		state->last_exit_status = ms_simple_command(pl->clause, var);
+		state->last_exit_status = exec_simple_command(pl->clause, var);
 	}
 	if (pl->joint == TI_ANDAND && state->last_exit_status == 0 // && 前のコマンドが成功した場合
 		|| pl->joint == TI_PIPEPIPE && state->last_exit_status == 1) // || 前のコマンドが失敗した場合

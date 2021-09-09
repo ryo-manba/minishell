@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:26:37 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 13:33:42 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/09 14:19:26 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,14 @@ void	exec_print_error_exit(int ex_status, char *path)
 			ft_putendl_fd("Permission denied", STDERR_FILENO);
 		exit(126);
 	}
-	else
+	else if (ex_status == CMD_NOT_FOUND)
 	{
 		ft_putendl_fd("command not found", STDERR_FILENO);
+		exit(127);
+	}
+	else
+	{
+		ft_putendl_fd("No such file or directory", STDERR_FILENO);
 		exit(127);
 	}
 }

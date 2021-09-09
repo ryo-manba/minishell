@@ -6,14 +6,13 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 13:29:39 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/09 14:37:38 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
-
 // エラーチェックとパイプを閉じる
-int	ms_execute_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pid_t pid)
+int	exec_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pid_t pid)
 {
 	if (errno != 0)
 	{
@@ -24,12 +23,12 @@ int	ms_execute_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pi
 
 // コマンド実行の核
 // エクスパンダーの部分修正する
-void	ms_execute_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe)
+void	exec_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe)
 {
 	char *path;
 
 	ms_do_piping(pl->clause, dpipe->new, dpipe->before); // パイプをつなげる
-	ms_expand_and_redirect(pl->clause); 		// 変数展開してリダイレクト
+	exec_expand_redirect(pl->clause); 		// 変数展開してリダイレクト
 	if (pl->clause->stree->subshell != NULL) 	// subshellの場合、再帰的にエグゼキューターに渡す
 	{
 		ms_executer(pl->clause->stree->subshell, var, state);
@@ -42,23 +41,23 @@ void	ms_execute_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t
 	else
 	{
 		errno = 0;
-		path = ms_get_path(pl->clause->stree->right->token,var, state);
+		path = exec_get_path(pl->clause->stree->right->token,var, state);
 		if (state->last_exit_status == PERMISSION || state->last_exit_status == IS_A_DIR)
 		{
-			ms_exec_print_error_exit(state->last_exit_status, path);
+			exec_print_error_exit(state->last_exit_status, path);
 		}
 		else if (path == NULL)
-			ms_exec_print_error_exit(state->last_exit_status, pl->clause->stree->right->token);
+			exec_print_error_exit(state->last_exit_status, pl->clause->stree->right->token);
 		else
 		{
-			execve(path,ms_create_execute_command(pl->clause->stree), NULL);
+			execve(path,exec_create_command(pl->clause->stree), NULL);
 		}
 		exit(errno);
 	}
 }
 
 // forkした分の子プロセスを回収する
-void	ms_wait_child(int sz)
+void	exec_wait_child(int sz)
 {
 	while (sz--)
 	{
@@ -67,7 +66,7 @@ void	ms_wait_child(int sz)
 }
 
 // パイプが繋がっていた場合のコマンド実行の処理
-int	ms_execute_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
+int	exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 {
 	t_dpipe *dpipe;
 	pid_t	pid;
@@ -85,12 +84,12 @@ int	ms_execute_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 			return (1);
 		}
 		if (pid == 0)
-			ms_execute_pipe_child(pl, var, state, dpipe);
+			exec_pipe_child(pl, var, state, dpipe);
 		else
-			ms_execute_pipe_parent(pl, state, dpipe, pid);
+			exec_pipe_parent(pl, state, dpipe, pid);
 		pl->clause = pl->clause->next;
 		sz++;
 	}
 	ms_update_exitstatus(state, pid); // 最後のコマンドのpidからステータスを取る
-	ms_wait_child(sz);
+	exec_wait_child(sz);
 }
