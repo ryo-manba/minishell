@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_executer.c                                      :+:      :+:    :+:   */
+/*   exec_main_flow.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 19:08:55 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/09 13:31:09 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,33 @@
 // {"ls", "-l", "NULL"}の状態にする。
 char	**ms_create_execute_command(t_stree *tree)
 {
-	char **new_cmd;
-	size_t	sz;
+	char	**command;
 	size_t	i;
 	t_stree	*tmp;
 
-	sz = ms_get_cmd_size(tree);
-	new_cmd = (char **)malloc(sizeof(char *) * sz + 1);
-	if (new_cmd == NULL)
+	i = ms_get_cmd_size(tree);
+	command = (char **)malloc(sizeof(char *) * i + 1);
+	if (command == NULL)
+	{
+		ms_print_perror("malloc");
 		return (NULL);
+	}
 	tmp = tree;
 	i = 0;
-	while (tmp != NULL)
+	while (tmp)
 	{
-		new_cmd[i] = ft_strdup(tmp->token);
-		if (new_cmd[i] == NULL)
+		command[i] = ft_strdup(tmp->token);
+		if (command[i] == NULL)
 		{
-			while (i--)
-				free(new_cmd[i]);
-			free(new_cmd);
+			ms_all_free(command);
+			ms_print_perror("malloc");
 			return (NULL);
 		}
 		tmp = tmp->right;
 		i++;
 	}
-	new_cmd[i] = NULL;
-	return (new_cmd);
+	command[i] = NULL;
+	return (command);
 }
 
 // 環境変数を展開しながらリダイレクションを処理する
@@ -49,16 +50,19 @@ char	**ms_create_execute_command(t_stree *tree)
 int	ms_expand_and_redirect(t_clause *clause)
 {
 	t_redir	*rd;
-	int	flag;
+	t_redir *expand_rd;
 
-	flag = 0;
 	rd = clause->redir;
 	while (rd) // 逐次的にエキスパンドとリダイレクトを行う  echo hello > $VAR > b > c | cat
 	{
-		do_expander(rd); // リダイレクションを展開する (echo a > $VAR　-> echo a > var)
-		flag = ms_redirect(rd);// リダイレクションを処理する
-		if (ms_check_and_print_error(rd, flag) == 1)
+		expand_rd = do_expander(rd); // リダイレクションを展開する (echo a > $VAR　-> echo a > var)
+		if (ms_redirect(expand_rd) == 1)// リダイレクションを処理する
+		{
+			ms_check_fd_print_error(expand_rd);
+			free(expand_rd);
 			break ;
+		}
+		free(expand_rd);
 		rd = rd->next;
 	}
 	if (rd != NULL) // リダイレクトが最後まで処理されていない場合
@@ -87,9 +91,19 @@ void	ms_just_open_file(t_clause *clause)
 		tmp_re = tmp_cl->redir;
 		while (tmp_re)
 		{
-			if (tmp_re->redir_op == TI_GT || tmp_re->redir_op == TI_GTGT)
+			if (tmp_re->redir_op == TI_GT)
 			{
-				if (open(tmp_re->operand_right, O_CREAT) == -1); // Permissionなどでopenに失敗したらそれ以降のそれ以降の処理はしない
+				if (open(tmp_re->operand_right, O_WRONLY | O_CREAT | O_TRUNC, 0666) == -1); // Permissionなどでopenに失敗したらそれ以降のそれ以降の処理はしない
+					break ;
+			}
+			if (tmp_re->redir_op == TI_GTGT)
+			{
+				if (open(tmp_re->operand_right, O_WRONLY | O_CREAT | O_TRUNC, 0666) == -1); // Permissionなどでopenに失敗したらそれ以降のそれ以降の処理はしない
+					break ;
+			}
+			if (tmp_re->redir_op == TI_LT)
+			{
+				if (open(tmp_re->operand_right, O_RDONLY) == -1)
 					break ;
 			}
 			if (ms_check_fd(tmp_re->operand_left) < 0) // 不正なfdだった場合それ以降のリダイレクトは処理しない

@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 19:09:12 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/09 13:16:01 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,12 @@ int ms_open_at(int fd, const char *path, int oflag, int mode)
 	else
 		open_fd = open(path, oflag, mode);
 	if (open_fd < 0)
-		return (errno);
+		return (1);
 	if (dup2(open_fd, fd) == -1)
-		return (errno);
-	close(open_fd);
-	return (errno);
+		return (1);
+	if (close(open_fd) == -1)
+		return (1);
+	return (0);
 }
 
 // [abstract functions for redirection]

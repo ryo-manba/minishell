@@ -1,23 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_execute_simple_command.c                        :+:      :+:    :+:   */
+/*   exec_simple_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 19:08:43 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/09 13:29:16 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-void	ms_print_exec_error(t_clause *clause)
-{
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(clause->stree->token, STDERR_FILENO);
-	ft_putendl_fd(": command not found", STDERR_FILENO);
-}
 
 // 親プロセスでリダイレクションをするとき用に、fd(0,1,2)のバックアップをとっておく。
 int	ms_duplicate_backup_fd(int backup_fd[3])
@@ -67,7 +61,7 @@ int	ms_execute_child(t_clause *clause)
 		wait(NULL);
 		if (errno != 0)
 		{
-			ms_print_exec_error(clause);
+			exec_print_error(clause);
 			return (errno);
 		}
 	}

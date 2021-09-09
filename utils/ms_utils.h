@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 19:09:26 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/09 13:33:54 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <sys/errno.h>
+#include <sys/stat.h>
 #include "../libft/libft.h"
 #include "../lexer/ms_lexer.h"
 #include "../analyzer/ms_analyzer.h"
@@ -61,14 +62,14 @@ size_t	ms_get_cmd_size(t_stree *tree);
 int		ms_check_fd(char *fd);
 
 /* ms_execute_pipe_command */
-void	ms_print_error_exit(int ex_status, char *path);
+void	ms_exec_print_error_exit(int ex_status, char *path);
 int		ms_execute_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pid_t pid);
 void	ms_execute_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
 int		ms_execute_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 void	ms_wait_child(int sz);
 
 /* ms_execute_simple_command */
-void	ms_print_exec_error(t_clause *clause);
+void	exec_print_error(t_clause *clause);
 int		ms_duplicate_backup_fd(int backup_fd[3]);
 int		ms_create_backup_fd(int backup_fd[3]);
 int		ms_execute_child(t_clause *clause);
