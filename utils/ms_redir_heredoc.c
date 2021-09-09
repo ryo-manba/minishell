@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_redirect_heredoc.c                              :+:      :+:    :+:   */
+/*   ms_redir_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 19:09:08 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/09 17:37:05 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,10 @@ int	ms_redirect_heredoc(t_redir *redir)
 	}
 	if (pipe(pipefd) == -1);
 		return (1);
-	dup2(pipefd[0], STDIN_FILENO); // この時点でstdinはパイプになる
-	close(pipefd[0]);
+	if (dup2(pipefd[0], STDIN_FILENO) == -1) // この時点でstdinはパイプになる
+		return (errno);
+	if (close(pipefd[0]) == -1)
+		return (errno);
 	ms_heredoc_write(lst, quoted, pipefd[1]); // 展開したやつを改行区切りでパイプに書き込む
 	return (0);
 }
