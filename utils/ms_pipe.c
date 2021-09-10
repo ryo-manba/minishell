@@ -6,77 +6,61 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:03 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 17:06:38 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 21:17:16 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
 // 最初のコマンド 標準出力をパイプの入り口に繋げる
-int ms_first_pipe(int pipe_fd[2])
+void	ms_first_pipe(int pipe_fd[2])
 {
 	if (close(pipe_fd[0]) == -1)
-		return (MS_EXEC_FAIL);
+		ms_print_perror_exit("close");
 	if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-		return (MS_EXEC_FAIL);
+		ms_print_perror_exit("dup2");
 	if (close(pipe_fd[1]) == -1)
-		return (MS_EXEC_FAIL);
-	return (MS_EXEC_SUCC);
+		ms_print_perror_exit("close");
 }
 
 // 最後のコマンド 出力はそのままで入力だけ一つ前のpipeから受け取る
-int ms_last_pipe(int before_pipe[2])
+void	ms_last_pipe(int before_pipe[2])
 {
 	if (close(before_pipe[1]) == -1)
-		return (MS_EXEC_FAIL);
+		ms_print_perror_exit("close");
 	if (dup2(before_pipe[0], STDIN_FILENO) == -1)
-		return (MS_EXEC_FAIL);
+		ms_print_perror_exit("dup2");
 	if (close(before_pipe[0]) == -1)
-		return (MS_EXEC_FAIL);
-	return (MS_EXEC_SUCC);
+		ms_print_perror_exit("close");
 }
 
 // 途中のコマンドなので上記の処理を両方やる
-int ms_middle_pipe(int pipe_fd[2], int before_pipe[2])
+void	ms_middle_pipe(int pipe_fd[2], int before_pipe[2])
 {
-	if (ms_last_pipe(before_pipe) == MS_EXEC_FAIL)
-		return (MS_EXEC_FAIL);
-	if (ms_first_pipe(pipe_fd) == MS_EXEC_FAIL)
-		return (MS_EXEC_FAIL);
-	return (MS_EXEC_SUCC);
+	ms_last_pipe(before_pipe);
+	ms_first_pipe(pipe_fd);
 }
 
 // つなげ終わったパイプを閉じて一つ前のpipeを保持する
-int	ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2])
+void	ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2])
 {
 	if (before_pipe[0] != -1 && before_pipe[1] != -1)
 	{
 		if (close(before_pipe[0]) == -1 || \
 			close(before_pipe[1]) == -1)
-			return (MS_EXEC_FAIL);
+			ms_print_perror_exit("close");
 	}
 	before_pipe[0] = pipe_fd[0];
 	before_pipe[1] = pipe_fd[1];
-	return (MS_EXEC_SUCC);
 }
 
 // 子プロセスでpipeをつなぐ
-int	ms_do_piping(t_clause *clause, int pipe_fd[2], int before_pipe[2])
+void	ms_do_piping(t_clause *clause, int pipe_fd[2], int before_pipe[2])
 {
-	if (before_pipe[0] == -1) // 最初
-	{
-		if (ms_first_pipe(pipe_fd) == 1)
-			return (1);
-	}
+	if (before_pipe[0] == -1)
+		ms_first_pipe(pipe_fd);
 	else if (clause->next == NULL)
-	{
-		if (ms_last_pipe(before_pipe) == 1)
-			return (1);
-	}
+		ms_last_pipe(before_pipe);
 	else
-	{
-		if (ms_middle_pipe(pipe_fd, before_pipe) == 1)
-			return (1);
-	}
-	return (0);
+		ms_middle_pipe(pipe_fd, before_pipe);
 }

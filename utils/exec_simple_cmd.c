@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 18:22:35 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 22:31:58 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ int	exec_child(t_shellvar *var, t_stree *expanded)
 {
 	pid_t		pid;
 	t_ex_state	es;
-	char		*path;
 
 	ms_ex_init_state(&es, var, 0);
 	pid = fork();
@@ -72,16 +71,10 @@ int	exec_child(t_shellvar *var, t_stree *expanded)
 		return (1);
 	}
 	if (pid == 0)
-	{
-		path = exec_get_path(expanded->token, var, &es);
-		if (exec_check_path_state(&es, expanded, path) == MS_EXEC_FAIL)
-			exit(NO_SUCH_FILE);
-		execve(path, exec_create_command(expanded), NULL);
-		exit(CMD_NOT_FOUND);
-	}
+		exec_run_cmd_exit(expanded, var, &es);
 	else
 	{
-		ms_update_exitstatus(&es, pid);
+		exec_update_exitstatus(&es, pid);
 		if (es.last_exit_status == CMD_NOT_FOUND)
 		{
 			exec_print_error(expanded->token);

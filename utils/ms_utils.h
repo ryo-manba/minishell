@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 19:33:19 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 22:31:46 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,48 +47,59 @@ typedef struct	s_dpipe
 	int	before[2];
 }	t_dpipe;
 
-/* ms_pipe.c */
-int 	ms_first_pipe(int pipe_fd[2]);
-int 	ms_last_pipe(int before_pipe[2]);
-int 	ms_middle_pipe(int pipe_fd[2], int before_pipe[2]);
-int		ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2]);
-int		ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2]);
+/* exec_error */
+void	exec_print_error(char *command);
+void	exec_print_error_exit(int ex_status, char *path);
 
-/* ms_executer */
+/* exec_get_path */
+void	exec_all_free(char **s);
+int		exec_check_path(struct stat sb, t_ex_state *state);
+char	*exec_create_path(char *cmd, char **split_path, t_ex_state *state);
+char	**exec_create_split_path(t_shellvar *var);
+char	*exec_get_path(char *cmd, t_shellvar *var, t_ex_state *state);
+
+/* exec_just_open */
+void	exec_all_open(t_redir *expand_rd);
+void	exec_just_open(t_clause *clause, t_shellvar *var);
+
+/* exec_main_flow */
 char	**exec_create_command(t_stree *tree);
 int		exec_expand_redirect(t_clause *clause, t_shellvar *var);
-void	ms_update_exitstatus(t_ex_state *state, pid_t pid);
-void	exec_just_open(t_clause *clause, t_shellvar *var);
+void	exec_update_exitstatus(t_ex_state *state, pid_t pid);
 int		ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
+
+/* exec_pipe_cmd */
+int		exec_check_piping(t_dpipe *dpipe, t_clause *clause);
+void	exec_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
+int		exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
+void	exec_pipe_parent(t_dpipe *dpipe);
+void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var, t_ex_state *state);
+
+/* ms_execute_simple_command */
+int		exec_close_backup_fd(int backup_fd[3]);
+int		exec_duplicate_backup_fd(int backup_fd[3]);
+int		exec_create_backup_fd(int backup_fd[3]);
+int		exec_child(t_shellvar *var, t_stree *expanded);
+int		exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *state);
+int		exec_check_path_state(t_ex_state *es, t_stree *expanded, char *path);
+
+
+
+/* ms_pipe */
+void 	ms_first_pipe(int pipe_fd[2]);
+void 	ms_last_pipe(int before_pipe[2]);
+void 	ms_middle_pipe(int pipe_fd[2], int before_pipe[2]);
+void	ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2]);
+void	ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2]);
 
 /* ms_execute_utils */
 size_t	exec_get_command_size(t_stree *tree);
 int		ms_check_fd(char *fd);
 int		ms_check_fd_print_error(t_redir *rd);
 
-/* exec_pipe_command */
-void	exec_print_error_exit(int ex_status, char *path);
-int		exec_pipe_parent(t_pipeline *pl, t_dpipe *dpipe);
-void	exec_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
-int		exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
-void	exec_wait_child(int sz);
-
-/* ms_execute_simple_command */
-int		exec_close_backup_fd(int backup_fd[3]);
-void	exec_print_error(char *command);
-int		exec_duplicate_backup_fd(int backup_fd[3]);
-int		exec_create_backup_fd(int backup_fd[3]);
-int		exec_child(t_shellvar *var, t_stree *expanded);
-int		exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *state);
-int	exec_check_path_state(t_ex_state *es, t_stree *expanded, char *path);
 
 
-/* ms_get_path */
-void	ms_all_free(char **s);
-char	**exec_create_split_path(t_shellvar *var);
-char	*exec_create_path(char *cmd, char **split_path, t_ex_state *state);
-int		exec_check_path(struct stat sb, t_ex_state *state);
-char	*exec_get_path(char *cmd, t_shellvar *var, t_ex_state *state);
+
 
 /* ms_redirect */
 int ms_open_at(int fd, const char *path, int oflag, int mode);
