@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:12 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 09:50:11 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 20:16:15 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	blt_join_env(t_shellvar *key_pos, char *key_value[2])
 
 	if (key_pos->value == NULL)
 		key_pos->value = ft_strdup(key_value[VALUE]);
-	else if (strcmp(key_pos->value, "") == 0)
+	else if (ft_strcmp(key_pos->value, "") == 0)
 	{
 		free(key_pos->value);
 		key_pos->value = ft_strdup(key_value[VALUE]);
