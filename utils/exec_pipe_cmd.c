@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 17:34:33 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 18:08:18 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,11 @@ void	exec_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe
 	}
 	else
 	{
-		path = exec_get_path(expanded->right->token,var, state);
+		path = exec_get_path(expanded->token,var, state);
 		if (exec_check_path_state(state, expanded, path) == MS_EXEC_FAIL)
 			exit(NO_SUCH_FILE);
 		execve(path,exec_create_command(expanded), NULL);
+		_exit(1);
 		exit(CMD_NOT_FOUND);
 	}
 }
