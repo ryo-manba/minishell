@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 02:58:03 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 03:44:09 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	exec_print_error(t_clause *clause);
 int		exec_duplicate_backup_fd(int backup_fd[3]);
 int		exec_create_backup_fd(int backup_fd[3]);
 int		exec_child(t_clause *clause, t_shellvar *var);
-int		exec_simple_command(t_clause *clause, t_shellvar *var);
+int		exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *state);
 
 /* ms_get_execution_path */
 void	ms_all_free(char **s);

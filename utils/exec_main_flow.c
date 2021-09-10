@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 03:35:23 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 03:43:20 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 	if (pl->clause->next != NULL) // パイプがある場合、終わるまでループ回す
 		exec_pipe_command(pl, var, state);
 	else
-		state->last_exit_status = exec_simple_command(pl->clause, var);
+		state->last_exit_status = exec_simple_command(pl->clause, var, state);
 	if (pl->joint == TI_ANDAND && state->last_exit_status == 0 // && 前のコマンドが成功した場合
 		|| pl->joint == TI_PIPEPIPE && state->last_exit_status == 1) // || 前のコマンドが失敗した場合
 	{

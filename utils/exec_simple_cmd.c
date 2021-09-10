@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 02:56:33 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 05:11:49 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,11 @@ int	exec_child(t_clause *clause, t_shellvar *var)
 // パイプなしのシンプルなコマンド
 // ビルトインならそのまま実行する。
 // 外部コマンドならforkして実行する。
-int	exec_simple_command(t_clause *clause, t_shellvar *var)
+int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *state)
 {
 	int		status;
 	int		backup_fd[3];
+	t_stree	*expanded;
 
 	if (clause->redir)// リダイレクトがある場合, バックアップをとって実行後に戻す
 	{
@@ -84,9 +85,14 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var)
 		if (exec_expand_redirect(clause, var) == 1) // 変数展開とリダイレクト処理
 			return (1);
 	}
-	if (ms_is_builtin(clause->stree) == 1)
+	expanded = ms_expand_stree(state, clause->stree); // echo $VAR -> echo var 展開する
+	if (!expanded)
+		exit(1);
+	print_stree(expanded, 0);
+	printf("\n");
+	if (ms_is_builtin(expanded) == 1)
 	{
-		status = ms_exec_builtin(var, clause->stree);
+		status = ms_exec_builtin(var, expanded);
 	}
 	else
 	{
