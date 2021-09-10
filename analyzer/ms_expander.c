@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:19:44 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/07 12:56:23 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 20:06:59 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 static void	make_state_for_redir(t_ex_state *state, t_redir *redir)
 {
-	state->no_param =
-		(redir->redir_op == TI_LTLT || redir->redir_op == TI_LTLTHYPHEN);
-	state->no_file =
-		(redir->redir_op == TI_LTLT || redir->redir_op == TI_LTLTHYPHEN);
+	state->no_param = (redir->redir_op == TI_LTLT
+			|| redir->redir_op == TI_LTLTHYPHEN);
+	state->no_file = (redir->redir_op == TI_LTLT
+			|| redir->redir_op == TI_LTLTHYPHEN);
 }
 
 static void	reverse_state_for_redir(t_ex_state *state)

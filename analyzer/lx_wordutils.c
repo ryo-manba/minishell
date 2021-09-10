@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:30:53 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 09:07:42 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 20:13:10 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	lx_conclude_token(t_lex_cursor *cursor)
 		tail->lex_type = LT_NEWLINE;
 	else if (lx_tail_is_an_operator(cursor))
 		tail->lex_type = LT_OPERATOR;
-	else if (ft_strchr("<>", tail->delimiter)
+	else if (tail->delimiter && ft_strchr("<>", tail->delimiter)
 		&& lx_str_is_digital(tail->word, tail->len))
 		cursor->tail->lex_type = LT_IO_NUMBER;
 }
