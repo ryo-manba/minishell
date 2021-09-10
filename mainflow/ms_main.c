@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/10 14:05:49 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 20:07:23 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_pipeline	*ms_lex_parse(char *line)
 	lexer_token = ms_lexer(line);
 	if (!lexer_token)
 		return (NULL);
+	print_words(lexer_token);
 	ms_parse(&ps, lexer_token, 0);
 	lx_destroy_token(lexer_token);
 	return (ps.pipeline);
