@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 10:24:30 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 15:21:15 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,22 +68,24 @@ int		ms_check_fd_print_error(t_redir *rd);
 
 /* exec_pipe_command */
 void	exec_print_error_exit(int ex_status, char *path);
-int		exec_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pid_t pid);
+int		exec_pipe_parent(t_pipeline *pl, t_dpipe *dpipe);
 void	exec_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
 int		exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 void	exec_wait_child(int sz);
 
 /* ms_execute_simple_command */
+int		exec_close_backup_fd(int backup_fd[3]);
 void	exec_print_error(t_clause *clause);
 int		exec_duplicate_backup_fd(int backup_fd[3]);
 int		exec_create_backup_fd(int backup_fd[3]);
 int		exec_child(t_clause *clause, t_shellvar *var);
 int		exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *state);
 
-/* ms_get_execution_path */
+/* ms_get_path */
 void	ms_all_free(char **s);
-char	**exec_create_split_path(t_shellvar *var, char ***split_path);
+char	**exec_create_split_path(t_shellvar *var);
 char	*exec_create_path(char *cmd, char **split_path, t_ex_state *state);
+int		exec_check_path(struct stat sb, t_ex_state *state);
 char	*exec_get_path(char *cmd, t_shellvar *var, t_ex_state *state);
 
 /* ms_redirect */

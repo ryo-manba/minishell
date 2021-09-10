@@ -31,8 +31,12 @@ int	main(void)
 	char		*line;
 	t_pipeline	*pipeline;
 	t_ex_state	es;
+	t_shellvar	*var;
 
 	setvbuf(stdout, (char *)NULL, _IONBF, 0);
+	var = ms_create_env();
+	if (var == NULL)
+		return (1);
 	ms_ex_init_state(&es, NULL, 0);
 	es.var = ms_create_env();
 	while (1)
@@ -47,7 +51,7 @@ int	main(void)
 			if (pipeline)
 			{
 				print_pipeline(pipeline, 0);
-				ms_executer(pipeline, es.var, &es);
+				ms_executer(pipeline, var, &es);
 				pa_destroy_pipeline(pipeline);
 			}
 		}

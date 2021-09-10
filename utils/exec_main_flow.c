@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main_flow.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 10:37:21 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 15:28:53 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,23 +52,23 @@ int	exec_expand_redirect(t_clause *clause, t_shellvar *var)
 	t_redir		*rd;
 	t_redir		*expanded_rd;
 	t_ex_state	es;
+	int			err;
 
 	ms_ex_init_state(&es, var, 0);
 	rd = clause->redir;
-	while (rd) // 逐次的にエキスパンドとリダイレクトを行う  echo hello > $VAR > b > c | cat
+	err = 0;
+	while (rd) // 逐次的にエキスパンドとリダイレクトを行う
 	{
-		expanded_rd = ms_expand_a_redir(&es, rd); // リダイレクションを展開する (echo a > $VAR　-> echo a > var)
-		if (ms_redirect(expanded_rd) == 1)// リダイレクションを処理する
+		expanded_rd = ms_expand_a_redir(&es, rd);	// リダイレクションを展開する
+		if (ms_redirect(expanded_rd) == 1)			// リダイレクションを処理する
 		{
-			ms_check_fd_print_error(expanded_rd);
+			err = ms_check_fd_print_error(expanded_rd);
 			pa_destroy_redir(expanded_rd);
-			break ;
+			return (err);
 		}
 		pa_destroy_redir(expanded_rd);
 		rd = rd->next;
 	}
-	if (rd != NULL) // リダイレクトが最後まで処理されていない場合
-		return (1);
 	return (0);
 }
 
@@ -140,12 +140,6 @@ int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 {
 	if (pl == NULL)
 		return (0);
-	if (!var)
-		var = state->var;
-	if (!var)
-		var = ms_create_env();
-	if (!var)
-		return (1);
 	state->var = var;
 	exec_just_open(pl->clause, var);
 	if (pl->clause->next != NULL) // パイプがある場合、終わるまでループ回す

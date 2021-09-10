@@ -3,19 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 10:18:59 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 13:07:13 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 // エラーチェックとパイプを閉じる
-int	exec_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pid_t pid)
+int	exec_pipe_parent(t_pipeline *pl, t_dpipe *dpipe)
 {
-	(void)state;
-	(void)pid;
 	if (errno != 0)
 	{
 		exec_print_error(pl->clause);
@@ -99,7 +97,7 @@ int	exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 		if (pid == 0)
 			exec_pipe_child(pl, var, state, dpipe);
 		else
-			exec_pipe_parent(pl, state, dpipe, pid);
+			exec_pipe_parent(pl, dpipe);
 		pl->clause = pl->clause->next;
 		child_sum += 1;
 	}
