@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 17:36:19 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 19:33:19 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int ms_open_at(int fd, const char *path, int oflag, int mode);
 int ms_open_redirect_input(t_redir *redir);
 int ms_open_redirect_output(t_redir *redir);
 int	ms_open_redirect_append(t_redir *redir);
-int	ms_redirect(t_redir *redir);
+int	ms_redirect(t_redir *redir, t_shellvar *var);
 
 // 必要なし
 int ms_duplicate_fd(int fd_from, int fd_into);
@@ -103,8 +103,8 @@ int ms_duplicate_fd(int fd_from, int fd_into);
 /* ms_redirect_heredoc */
 void	ms_heredoc_sigint_handler(int sig);
 int		ms_heredoc_signal_set(void);
-void 	ms_heredoc_read(t_list **lst, char *delimiter);
-int		ms_heredoc_write(t_list *lst, int quoted, int fd);
-int		ms_redirect_heredoc(t_redir *redir);
+int	 	ms_heredoc_read(t_list **lst, char *delimiter);
+int		ms_heredoc_write(t_list *lst, t_shellvar *var, int quoted, int fd);
+int		ms_redirect_heredoc(t_redir *redir, t_shellvar *var);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 18:13:05 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 19:30:24 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	exec_expand_redirect(t_clause *clause, t_shellvar *var)
 	while (rd) // 逐次的にエキスパンドとリダイレクトを行う
 	{
 		expanded_rd = ms_expand_a_redir(&es, rd);	// リダイレクションを展開する
-		if (ms_redirect(expanded_rd) == 1)			// リダイレクションを処理する
+		if (ms_redirect(expanded_rd, var) == 1)			// リダイレクションを処理する
 		{
 			err = ms_check_fd_print_error(expanded_rd);
 			pa_destroy_redir(expanded_rd);
