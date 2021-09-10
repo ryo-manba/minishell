@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 05:11:49 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 15:30:43 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,12 @@ int	exec_duplicate_backup_fd(int backup_fd[3])
 	int	flag;
 
 	flag = 0;
-	if (dup2(backup_fd[0], STDIN_FILENO) == -1
-		|| dup2(backup_fd[1], STDOUT_FILENO) == -1
-		|| dup2(backup_fd[2], STDERR_FILENO) == -1)
+	if (dup2(backup_fd[0], STDIN_FILENO) == -1 || \
+		dup2(backup_fd[1], STDOUT_FILENO) == -1 || \
+		dup2(backup_fd[2], STDERR_FILENO) == -1)
 			flag = 1;
-	close(backup_fd[0]);
-	close(backup_fd[1]);
-	close(backup_fd[2]);
+	if (exec_close_backup_fd(backup_fd) == 1)
+		flag = 1;
 	return (flag);
 }
 
@@ -39,10 +38,20 @@ int	exec_create_backup_fd(int backup_fd[3])
 	return (0);
 }
 
+int	exec_close_backup_fd(int backup_fd[3])
+{
+	if (close(backup_fd[0]) == -1 || \
+		close(backup_fd[1] == -1) || \
+		close(backup_fd[2]) == -1)
+		return (1);
+	return (0);
+}
+
 int	exec_child(t_clause *clause, t_shellvar *var)
 {
-	pid_t	pid;
+	pid_t		pid;
 	t_ex_state	es;
+	char		*path;
 
 	ms_ex_init_state(&es, var, 0);
 	pid = fork();
@@ -54,17 +63,18 @@ int	exec_child(t_clause *clause, t_shellvar *var)
 	if (pid == 0)
 	{
 		errno = 0;
-		execve(exec_get_path(clause->stree->token, var, &es),
-			exec_create_command(clause->stree), NULL);
+		path = exec_get_path(clause->stree->token, var, &es);
+		execve(path, exec_create_command(clause->stree), NULL);
+		exit(1);
 	}
 	else
 	{
 		wait(NULL);
-		if (errno != 0)
-		{
-			exec_print_error(clause);
-			return (errno);
-		}
+//		if (errno != 0)
+//		{
+//			exec_print_error(clause);
+//			return (errno);
+//		}
 	}
 	return (0);
 }
@@ -91,13 +101,9 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *state)
 	print_stree(expanded, 0);
 	printf("\n");
 	if (ms_is_builtin(expanded) == 1)
-	{
 		status = ms_exec_builtin(var, expanded);
-	}
 	else
-	{
-		exec_child(clause, var); // ビルトイン以外なら以外なら子プロセスで実行する
-	}
+		status = exec_child(clause, var); // ビルトイン以外なら以外なら子プロセスで実行する
 	if (clause->redir)
 	{
 		if (exec_duplicate_backup_fd(backup_fd) == 1) // リダイレクトしていたらfd(0,1,2)を元に戻す

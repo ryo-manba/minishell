@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir_error.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:32:51 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 10:20:43 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 13:05:00 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int	ms_check_fd_print_error(t_redir *rd)
 {
 	int	err;
 
+	err = 0;
 	if (errno == EBADF || errno == EACCES)
 	{
-		err = 0; // TODO: 適切な値のセット
 		if (errno == EBADF)
 			err = ms_check_fd(rd->operand_left->token);
 		ms_redir_print_error(err, rd->operand_left->token);
@@ -49,7 +49,7 @@ int	ms_check_fd_print_error(t_redir *rd)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 	}
-	return (0); // TODO: 適切な値のリターン
+	return (errno);
 }
 
 int	ms_check_fd(char *fd)

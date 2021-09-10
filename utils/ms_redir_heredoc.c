@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 11:33:19 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 13:09:44 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ volatile sig_atomic_t g_flag = 0;
 // ctrl+Cが来たら標準入力をcloseすることでreadlineはNULLを返す
 void	ms_heredoc_sigint_handler(int sig)
 {
-	(void)sig; // TOOD: 適切に使用
+	(void)sig;
 	g_flag = 1;
 	ft_putchar_fd('\n', STDOUT_FILENO);
 	close(STDIN_FILENO);
