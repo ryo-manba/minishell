@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_check.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:52:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 17:37:57 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 05:01:25 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	blt_check_and_separate_env(char *token, char *key_value[2])
 {
 	int32_t	equal_idx;
 
-	equal_idx = ft_strchr_i(token, '-');
+	equal_idx = ft_strchr_i(token, '=');
 	if (blt_check_export_key(token, key_value, equal_idx) == MS_BLT_FAIL)
 	{
 		blt_export_print_error(token);
@@ -45,6 +45,7 @@ int	blt_check_export_key(char *token, char *key_value[2], int32_t equal_idx)
 		if ((i == 0 && ft_isalpha(token[i] == 0) && token[i] != '_')
 			|| (ft_isalnum(token[i]) != 1 && token[i] != '_'))
 			return (MS_BLT_FAIL);
+		i += 1;
 	}
 	return (MS_BLT_SUCC);
 }
