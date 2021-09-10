@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 02:56:37 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 10:18:59 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 // エラーチェックとパイプを閉じる
 int	exec_pipe_parent(t_pipeline *pl, t_ex_state *state, t_dpipe *dpipe ,pid_t pid)
 {
+	(void)state;
+	(void)pid;
 	if (errno != 0)
 	{
 		exec_print_error(pl->clause);
 	}
 	ms_close_and_update_pipe(dpipe->new, dpipe->before); // 親でpipeを閉じる
+	return (MS_EXEC_SUCC);
 }
 
 // コマンド実行の核
@@ -76,6 +79,7 @@ int	exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 	int		child_sum;
 
 	child_sum = 0;
+	dpipe = NULL; // TODO: よろしく
 	while (pl->clause != NULL) // すべてのコマンドを実行していく
 	{
 		if (pl->clause->next != NULL)
@@ -101,4 +105,5 @@ int	exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 	}
 	ms_update_exitstatus(state, pid); // 最後のコマンドのpidからステータスを取る
 	exec_wait_child(child_sum);
+	return (state->last_exit_status);
 }

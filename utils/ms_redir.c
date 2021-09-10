@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 17:37:07 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 10:19:38 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,6 @@ int	ms_redirect(t_redir *redir)
 // otherwise: duplicate
 int ms_duplicate_fd(int fd_from, int fd_into)
 {
-	int	rv;
-
 	if (dup2(fd_from, fd_into) == -1)
 		return (-1);
 	close(fd_from);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:03 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 19:09:04 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 10:19:22 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int ms_last_pipe(int before_pipe[2])
 	if (dup2(before_pipe[0], STDIN_FILENO) == -1)
 		return (1);
 	close(before_pipe[0]);
+	return (0);
 }
 
 // 途中のコマンドなので上記の処理を両方やる

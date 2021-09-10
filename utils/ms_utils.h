@@ -6,38 +6,40 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 03:44:09 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 10:24:30 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MS_UTILS_H
 # define MS_UTILS_H
 
-#include <stdio.h>
-#include <string.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <dirent.h>
-#include <fcntl.h>
-#include <sys/errno.h>
-#include <sys/stat.h>
-#include "../libft/libft.h"
-#include "../analyzer/ms_analyzer.h"
+# include <stdio.h>
+# include <string.h>
+# include <sys/wait.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <errno.h>
+# include <dirent.h>
+# include <fcntl.h>
+# include <sys/errno.h>
+# include <sys/stat.h>
+# include "../libft/libft.h"
+# include "../analyzer/ms_analyzer.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 
-#define MS_EXEC_SUCC 0
-#define MS_EXEC_FAIL 1
+# define MS_EXEC_SUCC 0
+# define MS_EXEC_FAIL 1
 
 /* ms_get_execution_path */
-#define IS_A_DIR 1260
-#define PERMISSION 1261
-#define	CMD_NOT_FOUND 127
-#define NO_SUCH_FILE 128
+# define IS_A_DIR 1260
+# define PERMISSION 1261
+# define	CMD_NOT_FOUND 127
+# define NO_SUCH_FILE 128
 
 /* ms_execute_utils */
-#define OVER_FD -1
-#define OVER_INT -2
+# define OVER_FD -1
+# define OVER_INT -2
 
 typedef struct	s_dpipe
 {
@@ -62,6 +64,7 @@ int		ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 /* ms_execute_utils */
 size_t	exec_get_command_size(t_stree *tree);
 int		ms_check_fd(char *fd);
+int		ms_check_fd_print_error(t_redir *rd);
 
 /* exec_pipe_command */
 void	exec_print_error_exit(int ex_status, char *path);
@@ -79,7 +82,7 @@ int		exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *state);
 
 /* ms_get_execution_path */
 void	ms_all_free(char **s);
-char	*exec_create_split_path(t_shellvar *var, char **split_path);
+char	**exec_create_split_path(t_shellvar *var, char ***split_path);
 char	*exec_create_path(char *cmd, char **split_path, t_ex_state *state);
 char	*exec_get_path(char *cmd, t_shellvar *var, t_ex_state *state);
 

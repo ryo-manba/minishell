@@ -21,7 +21,7 @@ TEST_OBJS	:=	$(TEST_SRCS:.c=.o)
 RM			:= rm -f
 CC			:= gcc
 #CFLAGS	=	-Wall -Wextra -Werror
-CFLAGS		:= -g -I/usr/local/opt/readline/include/
+CFLAGS		:= -g -Wall -Wextra -Werror -I/usr/local/opt/readline/include/
 LIBFT_DIR	:=	../libft
 LIBFT		:=	$(LIBFT_DIR)/libft.a
 

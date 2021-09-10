@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 03:43:20 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 09:59:26 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,21 +91,21 @@ void	exec_all_open(t_redir *expand_rd)
 		if (tmp_rd->redir_op == TI_GT)
 		{
 			if (open(
-				tmp_rd->operand_right, O_WRONLY | O_CREAT | O_TRUNC, 0666) == -1); // Permissionなどでopenに失敗したらそれ以降のそれ以降の処理はしない
+				tmp_rd->operand_right->token, O_WRONLY | O_CREAT | O_TRUNC, 0666) == -1) // Permissionなどでopenに失敗したらそれ以降のそれ以降の処理はしない
 				break ;
 		}
 		if (tmp_rd->redir_op == TI_GTGT)
 		{
 			if (open(
-				tmp_rd->operand_right, O_WRONLY | O_CREAT | O_APPEND, 0666) == -1); // Permissionなどでopenに失敗したらそれ以降のそれ以降の処理はしない
+				tmp_rd->operand_right->token, O_WRONLY | O_CREAT | O_APPEND, 0666) == -1) // Permissionなどでopenに失敗したらそれ以降のそれ以降の処理はしない
 				break ;
 		}
 		if (tmp_rd->redir_op == TI_LT)
 		{
-			if (open(tmp_rd->operand_right, O_RDONLY) == -1)
+			if (open(tmp_rd->operand_right->token, O_RDONLY) == -1)
 				break ;
 		}
-		if (ms_check_fd(tmp_rd->operand_left) < 0) // 不正なfdだった場合それ以降のリダイレクトは処理しない
+		if (ms_check_fd(tmp_rd->operand_left->token) < 0) // 不正なfdだった場合それ以降のリダイレクトは処理しない
 			break ;
 		tmp_rd = tmp_rd->next;
 	}
@@ -136,8 +136,6 @@ void	exec_just_open(t_clause *clause, t_shellvar *var)
 // パイプラインを再帰的に処理する
 int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 {
-	t_dpipe	*dpipe;
-
 	if (pl == NULL)
 		return (0);
 	if (!var)
@@ -152,8 +150,8 @@ int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 		exec_pipe_command(pl, var, state);
 	else
 		state->last_exit_status = exec_simple_command(pl->clause, var, state);
-	if (pl->joint == TI_ANDAND && state->last_exit_status == 0 // && 前のコマンドが成功した場合
-		|| pl->joint == TI_PIPEPIPE && state->last_exit_status == 1) // || 前のコマンドが失敗した場合
+	if ((pl->joint == TI_ANDAND && state->last_exit_status == 0) // && 前のコマンドが成功した場合
+		|| (pl->joint == TI_PIPEPIPE && state->last_exit_status == 1)) // || 前のコマンドが失敗した場合
 	{
 		ms_executer(pl->next, var, state); // '&&','||' で条件を満たしている場合に再帰的に実行する
 	}

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 03:00:22 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 10:29:49 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ volatile sig_atomic_t g_flag = 0;
 // ctrl+Cが来たら標準入力をcloseすることでreadlineはNULLを返す
 void	ms_heredoc_sigint_handler(int sig)
 {
+	(void)sig; // TOOD: 適切に使用
 	g_flag = 1;
 	ft_putchar_fd('\n', STDOUT_FILENO);
 	close(STDIN_FILENO);
@@ -109,12 +110,12 @@ int	ms_redirect_heredoc(t_redir *redir)
 		close(STDIN_FILENO);
 		return (1);
 	}
-	if (pipe(pipefd) == -1);
+	if (pipe(pipefd) == -1)
 		return (1);
 	if (dup2(pipefd[0], STDIN_FILENO) == -1) // この時点でstdinはパイプになる
 		return (errno);
 	if (close(pipefd[0]) == -1)
 		return (errno);
-	ms_heredoc_write(lst, quoted, pipefd[1]); // 展開したやつを改行区切りでパイプに書き込む
+	ms_heredoc_write(*lst, quoted, pipefd[1]); // 展開したやつを改行区切りでパイプに書き込む
 	return (0);
 }
