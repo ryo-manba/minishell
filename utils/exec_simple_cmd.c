@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 17:34:33 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 18:22:35 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int	exec_duplicate_backup_fd(int backup_fd[3])
 		dup2(backup_fd[1], STDOUT_FILENO) == -1 || \
 		dup2(backup_fd[2], STDERR_FILENO) == -1)
 			flag = 1;
-	if (exec_close_backup_fd(backup_fd) == 1)
-		flag = 1;
+//	if (exec_close_backup_fd(backup_fd) == 1)
+//		flag = 1;
 	return (flag);
 }
 
