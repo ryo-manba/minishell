@@ -34,6 +34,7 @@ int	main(void)
 
 	setvbuf(stdout, (char *)NULL, _IONBF, 0);
 	ms_ex_init_state(&es, NULL, 0);
+	es.var = ms_create_env();
 	while (1)
 	{
 		line = readline("% ");
@@ -46,9 +47,7 @@ int	main(void)
 			if (pipeline)
 			{
 				print_pipeline(pipeline, 0);
-
-				ms_executer(pipeline, NULL, &es);
-
+				ms_executer(pipeline, es.var, &es);
 				pa_destroy_pipeline(pipeline);
 			}
 		}
