@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:26:37 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 14:19:26 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 16:55:05 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	exec_print_error_exit(int ex_status, char *path)
 	}
 }
 
-void	exec_print_error(t_clause *clause)
+void	exec_print_error(char *command)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(clause->stree->token, STDERR_FILENO);
+	ft_putstr_fd(command, STDERR_FILENO);
 	ft_putendl_fd(": command not found", STDERR_FILENO);
 }

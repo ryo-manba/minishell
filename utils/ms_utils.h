@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 15:21:15 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 17:36:19 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct	s_dpipe
 int 	ms_first_pipe(int pipe_fd[2]);
 int 	ms_last_pipe(int before_pipe[2]);
 int 	ms_middle_pipe(int pipe_fd[2], int before_pipe[2]);
-void 	ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2]);
+int		ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2]);
 int		ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2]);
 
 /* ms_executer */
@@ -75,11 +75,13 @@ void	exec_wait_child(int sz);
 
 /* ms_execute_simple_command */
 int		exec_close_backup_fd(int backup_fd[3]);
-void	exec_print_error(t_clause *clause);
+void	exec_print_error(char *command);
 int		exec_duplicate_backup_fd(int backup_fd[3]);
 int		exec_create_backup_fd(int backup_fd[3]);
-int		exec_child(t_clause *clause, t_shellvar *var);
+int		exec_child(t_shellvar *var, t_stree *expanded);
 int		exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *state);
+int	exec_check_path_state(t_ex_state *es, t_stree *expanded, char *path);
+
 
 /* ms_get_path */
 void	ms_all_free(char **s);
