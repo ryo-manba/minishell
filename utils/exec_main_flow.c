@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 09:59:26 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 10:37:21 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	exec_expand_redirect(t_clause *clause, t_shellvar *var)
 	rd = clause->redir;
 	while (rd) // 逐次的にエキスパンドとリダイレクトを行う  echo hello > $VAR > b > c | cat
 	{
-		expanded_rd = ms_expand_a_redir(NULL, rd); // リダイレクションを展開する (echo a > $VAR　-> echo a > var)
+		expanded_rd = ms_expand_a_redir(&es, rd); // リダイレクションを展開する (echo a > $VAR　-> echo a > var)
 		if (ms_redirect(expanded_rd) == 1)// リダイレクションを処理する
 		{
 			ms_check_fd_print_error(expanded_rd);
@@ -123,7 +123,9 @@ void	exec_just_open(t_clause *clause, t_shellvar *var)
 	tmp_cl = clause;
 	while (tmp_cl)
 	{
-		if (tmp_cl->redir)
+		if (tmp_cl->redir
+			&& (tmp_cl->redir->redir_op == TI_GT
+				|| tmp_cl->redir->redir_op == TI_GTGT))
 		{
 			expanded_rd = ms_expand_a_redir(&es, tmp_cl->redir);
 			exec_all_open(expanded_rd);

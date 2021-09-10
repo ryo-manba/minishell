@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 10:29:49 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 11:33:19 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,17 @@ void ms_heredoc_read(t_list **lst, char *delimiter)
 // 変数展開して出力する
 int	ms_heredoc_write(t_list *lst, int quoted, int fd)
 {
-	t_list *tmp;
-	char	*expanded;
+	t_list 		*tmp;
+	t_shellvar	*env;
+	char		*expanded;
 
 	tmp = lst;
 	if (quoted == 0) // クオートで囲まれていなかったら変数展開する
 	{
+		env = ms_create_env();
 		while (tmp != NULL)
 		{
-			expanded = ex_ll_heredoc_line((char *)lst->content, NULL);
+			expanded = ex_ll_heredoc_line((char *)tmp->content, env);
 			if (!expanded)
 				return (1);
 			free(tmp->content);
@@ -94,17 +96,13 @@ int	ms_heredoc_write(t_list *lst, int quoted, int fd)
 // << EOT << 'EOT' << "EOT" この判定どうするか
 int	ms_redirect_heredoc(t_redir *redir)
 {
-	t_list	**lst;
+	t_list	*lst;
 	int		pipefd[2];
 	int		quoted;
 
-	lst = (t_list **)malloc(sizeof(t_list *));
-	if (lst == NULL)
-	{
-		ms_print_perror("malloc");
-	}
+	lst = NULL;
 	quoted = !!redir->operand_right->quote_involved;
-	ms_heredoc_read(lst, redir->operand_right->token); // 標準入力から読み取る
+	ms_heredoc_read(&lst, redir->operand_right->token); // 標準入力から読み取る
 	if (lst == NULL) // Ctrl+Cで終了した場合は何もしない
 	{
 		close(STDIN_FILENO);
@@ -116,6 +114,6 @@ int	ms_redirect_heredoc(t_redir *redir)
 		return (errno);
 	if (close(pipefd[0]) == -1)
 		return (errno);
-	ms_heredoc_write(*lst, quoted, pipefd[1]); // 展開したやつを改行区切りでパイプに書き込む
+	ms_heredoc_write(lst, quoted, pipefd[1]); // 展開したやつを改行区切りでパイプに書き込む
 	return (0);
 }
