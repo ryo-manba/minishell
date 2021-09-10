@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:46 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/09 14:28:51 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 22:55:23 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // $ "ls -l" = 2
 size_t	exec_get_command_size(t_stree *tree)
 {
-	t_stree *tmp;
+	t_stree	*tmp;
 	size_t	sz;
 
 	tmp = tree;
@@ -28,4 +28,3 @@ size_t	exec_get_command_size(t_stree *tree)
 	}
 	return (sz);
 }
-

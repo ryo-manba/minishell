@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 19:29:35 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 23:24:30 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 // [concrete functions for redirection]
 // opens a file at `path` and binds to `fd`.
 // the function closes `fd` before opening `path`.
-int ms_open_at(int fd, const char *path, int oflag, int mode)
+// mode = -1 の場合はstdin
+int	ms_open_at(int fd, const char *path, int oflag, int mode)
 {
 	int	open_fd;
 
-	errno = 0;
-	if (mode == -1) // stdin
+	if (mode == -1)
 		open_fd = open(path, oflag);
 	else
 		open_fd = open(path, oflag, mode);
@@ -33,36 +33,9 @@ int ms_open_at(int fd, const char *path, int oflag, int mode)
 	return (0);
 }
 
-// [abstract functions for redirection]
-// open file for input-redirection [io_number]< path
-// if io_number is not specified, STDIN_FILENO will be used for default value.
-int ms_open_redirect_input(t_redir *redir)
-{
-	const char *path = redir->operand_right->token;
-	int			io_number;
-
-	if (redir->operand_left == NULL)
-		io_number = STDIN_FILENO;
-	else
-		io_number = ft_atoi(redir->operand_left->token);
-	return (ms_open_at(io_number, path, O_RDONLY, -1));
-}
-
-int ms_open_redirect_output(t_redir *redir)
-{
-	const char *path = redir->operand_right->token;
-	int			io_number;
-
-	if (redir->operand_left == NULL)
-		io_number = STDOUT_FILENO;
-	else
-		io_number = ft_atoi(redir->operand_left->token);
-	return (ms_open_at(io_number, path, O_WRONLY | O_CREAT | O_TRUNC, 0666));
-}
-
 int	ms_open_redirect_append(t_redir *redir)
 {
-	const char *path = redir->operand_right->token;
+	const char	*path = redir->operand_right->token;
 	int			io_number;
 
 	if (redir->operand_left == NULL)
@@ -72,34 +45,42 @@ int	ms_open_redirect_append(t_redir *redir)
 	return (ms_open_at(io_number, path, O_WRONLY | O_CREAT | O_APPEND, 0666));
 }
 
-int	ms_redirect(t_redir *redir, t_shellvar *var)
+// [abstract functions for redirection]
+// open file for input-redirection [io_number]< path
+// if io_number is not specified, STDIN_FILENO will be used for default value.
+int	ms_open_redirect_input(t_redir *redir)
 {
-	if (redir->redir_op == TI_LT) // <
-	{
-		return (ms_open_redirect_input(redir));
-	}
-	else if (redir->redir_op == TI_GT) // >
-	{
-		return (ms_open_redirect_output(redir));
-	}
-	else if (redir->redir_op == TI_GTGT) // >>
-	{
-		return (ms_open_redirect_append(redir));
-	}
-	else if (redir->redir_op == TI_LTLT) // <<
-	{
-		return (ms_redirect_heredoc(redir, var));
-	}
-	return (1);
+	const char	*path = redir->operand_right->token;
+	int			io_number;
+
+	if (redir->operand_left == NULL)
+		io_number = STDIN_FILENO;
+	else
+		io_number = ft_atoi(redir->operand_left->token);
+	return (ms_open_at(io_number, path, O_RDONLY, -1));
 }
 
-// duplicates fd_from into fd_into, or closes fd_into.
-// if fd_from < 0: close
-// otherwise: duplicate
-int ms_duplicate_fd(int fd_from, int fd_into)
+int	ms_open_redirect_output(t_redir *redir)
 {
-	if (dup2(fd_from, fd_into) == -1)
-		return (-1);
-	close(fd_from);
-	return (0);
+	const char	*path = redir->operand_right->token;
+	int			io_number;
+
+	if (redir->operand_left == NULL)
+		io_number = STDOUT_FILENO;
+	else
+		io_number = ft_atoi(redir->operand_left->token);
+	return (ms_open_at(io_number, path, O_WRONLY | O_CREAT | O_TRUNC, 0666));
+}
+
+int	ms_redirect(t_redir *redir, t_shellvar *var)
+{
+	if (redir->redir_op == TI_LT)
+		return (ms_open_redirect_input(redir));
+	else if (redir->redir_op == TI_GT)
+		return (ms_open_redirect_output(redir));
+	else if (redir->redir_op == TI_GTGT)
+		return (ms_open_redirect_append(redir));
+	else if (redir->redir_op == TI_LTLT)
+		return (ms_redirect_heredoc(redir, var));
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 20:14:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 20:36:57 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 23:14:10 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	exec_all_open(t_redir *expand_rd)
 			open(tmp_rd->operand_right->token, lt) == -1)
 			break ;
 		if (tmp_rd->operand_left && \
-			ms_check_fd(tmp_rd->operand_left->token) < 0)
+			ms_check_fd(tmp_rd->operand_left->token) > 0)
 			break ;
 		tmp_rd = tmp_rd->next;
 	}

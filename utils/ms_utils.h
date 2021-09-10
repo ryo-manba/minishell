@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 22:31:46 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 23:26:57 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define OVER_FD -1
 # define OVER_INT -2
 
-typedef struct	s_dpipe
+typedef struct s_dpipe
 {
 	int	new[2];
 	int	before[2];
@@ -70,51 +70,47 @@ int		ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 
 /* exec_pipe_cmd */
 int		exec_check_piping(t_dpipe *dpipe, t_clause *clause);
-void	exec_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
+void	exec_pipe_child(
+			t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
 int		exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 void	exec_pipe_parent(t_dpipe *dpipe);
-void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var, t_ex_state *state);
+void	exec_run_cmd_exit(
+			t_stree *expanded, t_shellvar *var, t_ex_state *state);
 
-/* ms_execute_simple_command */
-int		exec_close_backup_fd(int backup_fd[3]);
-int		exec_duplicate_backup_fd(int backup_fd[3]);
-int		exec_create_backup_fd(int backup_fd[3]);
-int		exec_child(t_shellvar *var, t_stree *expanded);
-int		exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *state);
+/* exec_simple_cmd */
 int		exec_check_path_state(t_ex_state *es, t_stree *expanded, char *path);
+int		exec_child(t_shellvar *var, t_stree *expanded);
+int		exec_create_backup_fd(int backup_fd[3]);
+int		exec_duplicate_backup_fd(int backup_fd[3]);
+int		exec_simple_command(
+			t_clause *clause, t_shellvar *var, t_ex_state *state);
 
-
+/* exec_utils */
+size_t	exec_get_command_size(t_stree *tree);
 
 /* ms_pipe */
-void 	ms_first_pipe(int pipe_fd[2]);
-void 	ms_last_pipe(int before_pipe[2]);
-void 	ms_middle_pipe(int pipe_fd[2], int before_pipe[2]);
 void	ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2]);
 void	ms_do_piping(t_clause *test, int pipe_fd[2], int before_pipe[2]);
+void	ms_first_pipe(int pipe_fd[2]);
+void	ms_last_pipe(int before_pipe[2]);
+void	ms_middle_pipe(int pipe_fd[2], int before_pipe[2]);
 
-/* ms_execute_utils */
-size_t	exec_get_command_size(t_stree *tree);
+/* ms_redir_error */
 int		ms_check_fd(char *fd);
 int		ms_check_fd_print_error(t_redir *rd);
-
-
-
-
+void	ms_redir_print_error(int err, char *s);
 
 /* ms_redirect */
-int ms_open_at(int fd, const char *path, int oflag, int mode);
-int ms_open_redirect_input(t_redir *redir);
-int ms_open_redirect_output(t_redir *redir);
-int	ms_open_redirect_append(t_redir *redir);
-int	ms_redirect(t_redir *redir, t_shellvar *var);
+int		ms_open_at(int fd, const char *path, int oflag, int mode);
+int		ms_open_redirect_append(t_redir *redir);
+int		ms_open_redirect_input(t_redir *redir);
+int		ms_open_redirect_output(t_redir *redir);
+int		ms_redirect(t_redir *redir, t_shellvar *var);
 
-// 必要なし
-int ms_duplicate_fd(int fd_from, int fd_into);
-
-/* ms_redirect_heredoc */
+/* ms_redir_heredoc */
+int		ms_heredoc_read(t_list **lst, char *delimiter);
 void	ms_heredoc_sigint_handler(int sig);
 int		ms_heredoc_signal_set(void);
-int	 	ms_heredoc_read(t_list **lst, char *delimiter);
 int		ms_heredoc_write(t_list *lst, t_shellvar *var, int quoted, int fd);
 int		ms_redirect_heredoc(t_redir *redir, t_shellvar *var);
 
