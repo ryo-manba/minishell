@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:12 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 17:44:23 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 09:50:11 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	blt_export_env(t_shellvar *var, t_stree *tree)
 		}
 		else
 		{
-			if (blt_check_and_export(var, tree, key_value) == MS_BLT_FAIL)
+			if (blt_check_and_export(tree, var, key_value) == MS_BLT_FAIL)
 				return (MS_BLT_FAIL);
 		}
 		tree = tree->right;
