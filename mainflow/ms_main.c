@@ -1,24 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_main.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/10 20:07:23 by yokawada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 #include <stdlib.h>
 
 t_pipeline	*ms_lex_parse(char *line)
 {
-	t_wdlist	*lexer_token;
+	t_wdlist		*lexer_token;
 	t_parse_state	ps;
 
 	lexer_token = ms_lexer(line);
 	if (!lexer_token)
 		return (NULL);
+	print_words(lexer_token);
 	ms_parse(&ps, lexer_token, 0);
 	lx_destroy_token(lexer_token);
 	return (ps.pipeline);
 }
 
-int main(void)
+int	main(void)
 {
-	char *line;
+	char		*line;
 	t_pipeline	*pipeline;
 	t_ex_state	es;
 	t_shellvar	*var;
@@ -28,6 +39,7 @@ int main(void)
 	if (var == NULL)
 		return (1);
 	ms_ex_init_state(&es, NULL, 0);
+	es.var = ms_create_env();
 	while (1)
 	{
 		line = readline("% ");
@@ -40,9 +52,7 @@ int main(void)
 			if (pipeline)
 			{
 				print_pipeline(pipeline, 0);
-
 				ms_executer(pipeline, var, &es);
-
 				pa_destroy_pipeline(pipeline);
 			}
 		}
