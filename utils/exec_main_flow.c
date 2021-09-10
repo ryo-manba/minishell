@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 15:28:53 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 17:08:30 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,9 @@ void	exec_just_open(t_clause *clause, t_shellvar *var)
 	tmp_cl = clause;
 	while (tmp_cl)
 	{
-		if (tmp_cl->redir
-			&& (tmp_cl->redir->redir_op == TI_GT
-				|| tmp_cl->redir->redir_op == TI_GTGT))
+		if (tmp_cl->redir && \
+			(tmp_cl->redir->redir_op == TI_GT || \
+			tmp_cl->redir->redir_op == TI_GTGT))
 		{
 			expanded_rd = ms_expand_a_redir(&es, tmp_cl->redir);
 			exec_all_open(expanded_rd);

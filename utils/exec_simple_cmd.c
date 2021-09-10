@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 15:30:43 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 17:34:33 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,18 @@ int	exec_close_backup_fd(int backup_fd[3])
 	return (0);
 }
 
-int	exec_child(t_clause *clause, t_shellvar *var)
+int	exec_check_path_state(t_ex_state *es, t_stree *expanded, char *path)
+{
+	if (es->last_exit_status == PERMISSION || es->last_exit_status == IS_A_DIR)
+		exec_print_error_exit(es->last_exit_status, path);
+	else if (path == NULL)
+		exec_print_error_exit(es->last_exit_status, expanded->right->token);
+	else
+		return (MS_EXEC_SUCC);
+	return (MS_EXEC_FAIL);
+}
+
+int	exec_child(t_shellvar *var, t_stree *expanded)
 {
 	pid_t		pid;
 	t_ex_state	es;
@@ -62,21 +73,22 @@ int	exec_child(t_clause *clause, t_shellvar *var)
 	}
 	if (pid == 0)
 	{
-		errno = 0;
-		path = exec_get_path(clause->stree->token, var, &es);
-		execve(path, exec_create_command(clause->stree), NULL);
-		exit(1);
+		path = exec_get_path(expanded->token, var, &es);
+		if (exec_check_path_state(&es, expanded, path) == MS_EXEC_FAIL)
+			exit(NO_SUCH_FILE);
+		execve(path, exec_create_command(expanded), NULL);
+		exit(CMD_NOT_FOUND);
 	}
 	else
 	{
-		wait(NULL);
-//		if (errno != 0)
-//		{
-//			exec_print_error(clause);
-//			return (errno);
-//		}
+		ms_update_exitstatus(&es, pid);
+		if (es.last_exit_status == CMD_NOT_FOUND)
+		{
+			exec_print_error(expanded->token);
+			return (MS_EXEC_FAIL);
+		}
 	}
-	return (0);
+	return (MS_EXEC_SUCC);
 }
 
 // パイプなしのシンプルなコマンド
@@ -103,7 +115,7 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *state)
 	if (ms_is_builtin(expanded) == 1)
 		status = ms_exec_builtin(var, expanded);
 	else
-		status = exec_child(clause, var); // ビルトイン以外なら以外なら子プロセスで実行する
+		status = exec_child(var, expanded); // ビルトイン以外なら以外なら子プロセスで実行する
 	if (clause->redir)
 	{
 		if (exec_duplicate_backup_fd(backup_fd) == 1) // リダイレクトしていたらfd(0,1,2)を元に戻す

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_pipe.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:03 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 10:19:22 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/10 17:06:38 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,40 +15,49 @@
 // 最初のコマンド 標準出力をパイプの入り口に繋げる
 int ms_first_pipe(int pipe_fd[2])
 {
-	close(pipe_fd[0]);
+	if (close(pipe_fd[0]) == -1)
+		return (MS_EXEC_FAIL);
 	if (dup2(pipe_fd[1], STDOUT_FILENO) == -1)
-		return (1);
-	close(pipe_fd[1]);
-	return (0);
+		return (MS_EXEC_FAIL);
+	if (close(pipe_fd[1]) == -1)
+		return (MS_EXEC_FAIL);
+	return (MS_EXEC_SUCC);
 }
 
 // 最後のコマンド 出力はそのままで入力だけ一つ前のpipeから受け取る
 int ms_last_pipe(int before_pipe[2])
 {
-	close(before_pipe[1]);
+	if (close(before_pipe[1]) == -1)
+		return (MS_EXEC_FAIL);
 	if (dup2(before_pipe[0], STDIN_FILENO) == -1)
-		return (1);
-	close(before_pipe[0]);
-	return (0);
+		return (MS_EXEC_FAIL);
+	if (close(before_pipe[0]) == -1)
+		return (MS_EXEC_FAIL);
+	return (MS_EXEC_SUCC);
 }
 
 // 途中のコマンドなので上記の処理を両方やる
 int ms_middle_pipe(int pipe_fd[2], int before_pipe[2])
 {
-	if (ms_last_pipe(before_pipe) == 1)
-		return (1);
-	if (ms_first_pipe(pipe_fd) == 1)
-		return (1);
-	return (0);
+	if (ms_last_pipe(before_pipe) == MS_EXEC_FAIL)
+		return (MS_EXEC_FAIL);
+	if (ms_first_pipe(pipe_fd) == MS_EXEC_FAIL)
+		return (MS_EXEC_FAIL);
+	return (MS_EXEC_SUCC);
 }
 
 // つなげ終わったパイプを閉じて一つ前のpipeを保持する
-void ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2])
+int	ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2])
 {
-	close(before_pipe[0]);
-	close(before_pipe[1]);
+	if (before_pipe[0] != -1 && before_pipe[1] != -1)
+	{
+		if (close(before_pipe[0]) == -1 || \
+			close(before_pipe[1]) == -1)
+			return (MS_EXEC_FAIL);
+	}
 	before_pipe[0] = pipe_fd[0];
 	before_pipe[1] = pipe_fd[1];
+	return (MS_EXEC_SUCC);
 }
 
 // 子プロセスでpipeをつなぐ

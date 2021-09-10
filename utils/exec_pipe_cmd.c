@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 13:07:13 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 17:34:33 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,14 @@
 // エラーチェックとパイプを閉じる
 int	exec_pipe_parent(t_pipeline *pl, t_dpipe *dpipe)
 {
-	if (errno != 0)
-	{
-		exec_print_error(pl->clause);
-	}
-	ms_close_and_update_pipe(dpipe->new, dpipe->before); // 親でpipeを閉じる
+	(void)pl;
+//	if (errno != 0)
+//	{
+//		exec_print_error(pl->clause->stree->token);
+//		return (MS_EXEC_FAIL);
+//	}
+	if (ms_close_and_update_pipe(dpipe->new, dpipe->before) == MS_BLT_FAIL) // 親でpipeを閉じる
+		return (MS_EXEC_FAIL);
 	return (MS_EXEC_SUCC);
 }
 
@@ -44,19 +47,11 @@ void	exec_pipe_child(t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe
 	}
 	else
 	{
-		errno = 0;
 		path = exec_get_path(expanded->right->token,var, state);
-		if (state->last_exit_status == PERMISSION || state->last_exit_status == IS_A_DIR)
-		{
-			exec_print_error_exit(state->last_exit_status, path);
-		}
-		else if (path == NULL)
-			exec_print_error_exit(state->last_exit_status, expanded->right->token);
-		else
-		{
-			execve(path,exec_create_command(expanded), NULL);
-		}
-		exit(errno);
+		if (exec_check_path_state(state, expanded, path) == MS_EXEC_FAIL)
+			exit(NO_SUCH_FILE);
+		execve(path,exec_create_command(expanded), NULL);
+		exit(CMD_NOT_FOUND);
 	}
 }
 
@@ -72,17 +67,17 @@ void	exec_wait_child(int sz)
 // パイプが繋がっていた場合のコマンド実行の処理
 int	exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 {
-	t_dpipe *dpipe;
+	t_dpipe dpipe;
 	pid_t	pid;
 	int		child_sum;
 
 	child_sum = 0;
-	dpipe = NULL; // TODO: よろしく
-	while (pl->clause != NULL) // すべてのコマンドを実行していく
+	ft_memset(&dpipe, -1, sizeof(t_dpipe));
+	while (pl->clause) // すべてのコマンドを実行していく
 	{
 		if (pl->clause->next != NULL)
 		{
-			if (pipe(dpipe->new) == -1)
+			if (pipe(dpipe.new) == -1)
 			{
 				ms_print_perror("pipe");
 				return (1);
@@ -95,9 +90,9 @@ int	exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 			return (1);
 		}
 		if (pid == 0)
-			exec_pipe_child(pl, var, state, dpipe);
+			exec_pipe_child(pl, var, state, &dpipe);
 		else
-			exec_pipe_parent(pl, dpipe);
+			exec_pipe_parent(pl, &dpipe);
 		pl->clause = pl->clause->next;
 		child_sum += 1;
 	}
