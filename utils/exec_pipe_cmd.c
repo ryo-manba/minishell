@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 22:31:38 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 14:23:35 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,16 @@ void	exec_pipe_parent(t_dpipe *dpipe)
 	ms_close_and_update_pipe(dpipe->new, dpipe->before);
 }
 
+// '/' が含まれてる場合はそのまま実行する
+// ない場合はPATHから探す
 void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var, t_ex_state *state)
 {
 	char	*path;
 
-	path = exec_get_path(expanded->token, var, state);
+	if (ft_strchr_i(expanded->token, '/') != -1)
+		path = expanded->token;
+	else
+		path = exec_get_path(expanded->token, var, state);
 	if (exec_check_path_state(state, expanded, path) == MS_EXEC_FAIL)
 		exit(NO_SUCH_FILE);
 	execve(path, exec_create_command(expanded), NULL);

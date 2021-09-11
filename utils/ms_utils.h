@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 11:33:03 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/11 14:16:31 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@
 # define MS_EXEC_FAIL 1
 
 /* ms_get_execution_path */
-# define IS_A_DIR 1260
-# define PERMISSION 1261
-# define	CMD_NOT_FOUND 127
-# define NO_SUCH_FILE 128
+# define IS_A_DIR 120
+# define PERMISSION 121
+# define CMD_NOT_FOUND 122
+# define NO_SUCH_FILE 123
 
 /* ms_execute_utils */
 # define OVER_FD -1

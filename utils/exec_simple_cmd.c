@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 11:16:03 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 14:24:18 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	exec_child(t_shellvar *var, t_stree *expanded)
 	else
 	{
 		exec_update_exitstatus(&es, pid);
+											printf("%d\n", es.last_exit_status); // DEBUG
 		if (es.last_exit_status == CMD_NOT_FOUND)
 		{
 			exec_print_error(expanded->token);
