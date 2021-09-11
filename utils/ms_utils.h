@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 14:16:31 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 16:14:36 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	exec_run_cmd_exit(
 
 /* exec_simple_cmd */
 int		exec_check_path_state(t_ex_state *es, t_stree *expanded, char *path);
-int		exec_child(t_shellvar *var, t_stree *expanded);
+int		exec_ex_cmd(t_shellvar *var, t_stree *expanded);
 int		exec_create_backup_fd(int backup_fd[3]);
 int		exec_duplicate_backup_fd(int backup_fd[3]);
 int		exec_simple_command(

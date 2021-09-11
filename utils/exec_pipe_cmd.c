@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 14:23:35 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 16:22:08 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var, t_ex_state *state)
 	else
 		path = exec_get_path(expanded->token, var, state);
 	if (exec_check_path_state(state, expanded, path) == MS_EXEC_FAIL)
-		exit(NO_SUCH_FILE);
+		exec_print_error_exit(NO_SUCH_FILE, NULL);
 	execve(path, exec_create_command(expanded), NULL);
-	exit(CMD_NOT_FOUND);
+	free(path);
+	exec_print_error_exit(CMD_NOT_FOUND, expanded->token);
 }

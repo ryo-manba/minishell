@@ -6,13 +6,13 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 23:19:17 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 15:46:48 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-volatile sig_atomic_t	g_flag = 0;
+volatile sig_atomic_t	g_ex_states = 0;
 
 // ctrl+C    -> 改行を出力して終了
 // ctrl+D    -> 終了
@@ -24,15 +24,17 @@ int	ms_heredoc_read(t_list **lst, char *delimiter)
 	int		backup_fd;
 
 	backup_fd = dup(STDIN_FILENO);
+	if (backup_fd == -1)
+		return (MS_EXEC_FAIL);
 	ms_heredoc_signal_set();
 	while (1)
 	{
 		line = readline("> ");
-		if (line == NULL || ft_strcmp(line, delimiter) == 0 || g_flag == 1)
+		if (line == NULL || ft_strcmp(line, delimiter) == 0 || g_ex_states == 1)
 			break ;
 		ft_lstpush_back(lst, line);
 	}
-	if (g_flag == 1)
+	if (g_ex_states == 1)
 	{
 		if (dup2(backup_fd, STDIN_FILENO) == -1)
 			ms_print_perror("dup2");
@@ -48,13 +50,15 @@ int	ms_heredoc_read(t_list **lst, char *delimiter)
 void	ms_heredoc_sigint_handler(int sig)
 {
 	(void)sig;
-	g_flag = 1;
+	g_ex_states = 1;
 	ft_putchar_fd('\n', STDOUT_FILENO);
 	close(STDIN_FILENO);
 }
 
+// ctrlCを判定するためにex_statesを0にしておく
 int	ms_heredoc_signal_set(void)
 {
+	g_ex_states = 0;
 	if (signal(SIGINT, ms_heredoc_sigint_handler) == SIG_ERR)
 		return (1);
 	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)

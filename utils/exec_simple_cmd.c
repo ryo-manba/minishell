@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 14:49:28 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 15:01:48 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	exec_check_path_state(t_ex_state *es, t_stree *expanded, char *path)
 	return (MS_EXEC_FAIL);
 }
 
-int	exec_child(t_shellvar *var, t_stree *expanded)
+int	exec_ex_cmd(t_shellvar *var, t_stree *expanded)
 {
 	pid_t		pid;
 	t_ex_state	es;
@@ -38,16 +38,8 @@ int	exec_child(t_shellvar *var, t_stree *expanded)
 	if (pid == 0)
 		exec_run_cmd_exit(expanded, var, &es);
 	else
-	{
 		exec_update_exitstatus(&es, pid);
-											printf("%d\n", es.last_exit_status); // DEBUG
-		if (es.last_exit_status == CMD_NOT_FOUND)
-		{
-			exec_print_error(expanded->token);
-			return (MS_EXEC_FAIL);
-		}
-	}
-	return (MS_EXEC_SUCC);
+	return (es.last_exit_status);
 }
 
 // 親プロセスでリダイレクションをするとき用に、fd(0,1,2)のバックアップをとっておく。
@@ -103,7 +95,7 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *es)
 	if (ms_is_builtin(expanded) == 1)
 		es->last_exit_status = ms_exec_builtin(var, expanded);
 	else
-		es->last_exit_status = exec_child(var, expanded);
+		es->last_exit_status = exec_ex_cmd(var, expanded);
 	if (clause->redir)
 	{
 		if (exec_duplicate_backup_fd(backup_fd) == 1)
