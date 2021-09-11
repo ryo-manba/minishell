@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 14:37:59 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 14:49:28 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *es)
 	if (ms_is_builtin(expanded) == 1)
 		es->last_exit_status = ms_exec_builtin(var, expanded);
 	else
-		es->last_exit_status = ms_exec_exec_child(var, expanded);
+		es->last_exit_status = exec_child(var, expanded);
 	if (clause->redir)
 	{
 		if (exec_duplicate_backup_fd(backup_fd) == 1)
