@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 14:24:18 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 14:37:59 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,8 @@ int	exec_duplicate_backup_fd(int backup_fd[3])
 // ビルトインならそのまま実行する。
 // 外部コマンドならforkして実行する。
 // リダイレクトがある場合, バックアップをとって実行後に戻す
-int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *state)
+int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *es)
 {
-	int		status;
 	int		backup_fd[3];
 	t_stree	*expanded;
 
@@ -93,19 +92,22 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *state)
 		if (exec_create_backup_fd(backup_fd) == MS_EXEC_FAIL)
 			return (MS_EXEC_FAIL);
 		if (exec_expand_redirect(clause, var) == MS_EXEC_FAIL)
+		{
+			exec_duplicate_backup_fd(backup_fd);
 			return (MS_EXEC_FAIL);
+		}
 	}
-	expanded = ms_expand_stree(state, clause->stree);
+	expanded = ms_expand_stree(es, clause->stree);
 	if (!expanded)
 		exit(1);
 	if (ms_is_builtin(expanded) == 1)
-		status = ms_exec_builtin(var, expanded);
+		es->last_exit_status = ms_exec_builtin(var, expanded);
 	else
-		status = exec_child(var, expanded);
+		es->last_exit_status = ms_exec_exec_child(var, expanded);
 	if (clause->redir)
 	{
 		if (exec_duplicate_backup_fd(backup_fd) == 1)
 			return (MS_EXEC_FAIL);
 	}
-	return (status);
+	return (es->last_exit_status);
 }

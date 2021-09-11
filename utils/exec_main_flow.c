@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 14:24:32 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 14:34:40 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char	**exec_create_command(t_stree *tree)
 	while (tmp)
 	{
 		command[i] = ft_strdup(tmp->token);
-						printf("[%zu], [%s]\n", i, command[i]);　// DEBUG
 		if (command[i] == NULL)
 		{
 			exec_all_free(command);
