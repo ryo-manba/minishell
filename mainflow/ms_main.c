@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/11 16:14:52 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 16:55:17 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 
 static void	ms_sigint_handler(int sig)
 {
+	(void)sig;
 	ft_putchar_fd('\n', STDOUT_FILENO);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	g_ex_states = sig + 128;
+	g_ex_states = 1;
 }
 
 t_pipeline	*ms_lex_parse(char *line)

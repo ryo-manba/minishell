@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 14:34:40 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 17:09:40 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,11 @@ void	exec_update_exitstatus(t_ex_state *state, pid_t pid)
 {
 	int	status;
 
+	(void)state;
 	waitpid(pid, &status, 0);
-	state->last_exit_status = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+		g_ex_states = WTERMSIG(status) + 128;
+	g_ex_states = WEXITSTATUS(status);
 }
 
 // '&&','||' で条件を満たしている場合に再帰的に実行する

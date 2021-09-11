@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 16:14:36 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 16:38:00 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ typedef struct s_dpipe
 	int	new[2];
 	int	before[2];
 }	t_dpipe;
+
+extern volatile sig_atomic_t	g_ex_states;
 
 /* exec_error */
 void	exec_print_error(char *command);
