@@ -90,3 +90,14 @@ int main(int argc, char **argv, char **envp)
 	do_test(test, envp);
 	return (0);
 }
+
+// duplicates fd_from into fd_into, or closes fd_into.
+// if fd_from < 0: close
+// otherwise: duplicate
+int ms_duplicate_fd(int fd_from, int fd_into)
+{
+	if (dup2(fd_from, fd_into) == -1)
+		return (-1);
+	close(fd_from);
+	return (0);
+}

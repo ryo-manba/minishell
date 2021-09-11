@@ -6,11 +6,18 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:26:37 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 16:55:05 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/10 20:06:45 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
+
+void	exec_print_error(char *command)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(command, STDERR_FILENO);
+	ft_putendl_fd(": command not found", STDERR_FILENO);
+}
 
 void	exec_print_error_exit(int ex_status, char *path)
 {
@@ -35,11 +42,4 @@ void	exec_print_error_exit(int ex_status, char *path)
 		ft_putendl_fd("No such file or directory", STDERR_FILENO);
 		exit(127);
 	}
-}
-
-void	exec_print_error(char *command)
-{
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(command, STDERR_FILENO);
-	ft_putendl_fd(": command not found", STDERR_FILENO);
 }

@@ -4,6 +4,7 @@ TEST_NAME	:=	tutils
 
 SRCS		:=	exec_error.c \
 				exec_get_path.c \
+				exec_just_open.c \
 				exec_main_flow.c \
 				exec_pipe_cmd.c \
 				exec_simple_cmd.c \
