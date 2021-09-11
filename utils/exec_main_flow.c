@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main_flow.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 20:41:12 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 11:40:44 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ int	exec_expand_redirect(t_clause *clause, t_shellvar *var)
 	while (rd)
 	{
 		expanded_rd = ms_expand_a_redir(&es, rd);
+		if (!expanded_rd)
+			return (MS_EXEC_FAIL);
 		if (ms_redirect(expanded_rd, var) == MS_EXEC_FAIL)
 		{
 			err = ms_check_fd_print_error(expanded_rd);
@@ -82,7 +84,8 @@ int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 	if (pl == NULL)
 		return (0);
 	state->var = var;
-	exec_just_open(pl->clause, var);
+	if (exec_just_open(pl->clause, var))
+		return (1);
 	if (pl->clause->next != NULL)
 		exec_pipe_command(pl, var, state);
 	else

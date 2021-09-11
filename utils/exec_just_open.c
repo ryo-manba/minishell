@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_just_open.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 20:14:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 23:14:10 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 11:33:21 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	exec_all_open(t_redir *expand_rd)
 
 // ">,>>" があったらとりあえず先に上書きとファイル作成を行う。
 // 不正なfdや権限で失敗してもここではエラーを出さない
-void	exec_just_open(t_clause *clause, t_shellvar *var)
+// (expandに失敗した場合はエラーを考える必要がある by yokawada)
+int	exec_just_open(t_clause *clause, t_shellvar *var)
 {
 	t_ex_state	es;
 	t_clause	*tmp_cl;
@@ -56,9 +57,12 @@ void	exec_just_open(t_clause *clause, t_shellvar *var)
 			tmp_cl->redir->redir_op == TI_GTGT))
 		{
 			expanded_rd = ms_expand_a_redir(&es, tmp_cl->redir);
+			if (!expanded_rd)
+				return (1);
 			exec_all_open(expanded_rd);
 			pa_destroy_redir(expanded_rd);
 		}
 		tmp_cl = tmp_cl->next;
 	}
+	return (0);
 }

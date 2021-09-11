@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 23:26:57 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 11:33:03 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*exec_get_path(char *cmd, t_shellvar *var, t_ex_state *state);
 
 /* exec_just_open */
 void	exec_all_open(t_redir *expand_rd);
-void	exec_just_open(t_clause *clause, t_shellvar *var);
+int		exec_just_open(t_clause *clause, t_shellvar *var);
 
 /* exec_main_flow */
 char	**exec_create_command(t_stree *tree);
