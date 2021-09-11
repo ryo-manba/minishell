@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 17:07:27 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 20:52:53 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	exec_check_piping(t_dpipe *dpipe, t_clause *clause)
 	{
 		if (pipe(dpipe->new) == -1)
 		{
-			ms_print_perror("pipe");
+			ms_perror("pipe");
 			return (MS_EXEC_FAIL);
 		}
 	}
@@ -63,7 +63,7 @@ int	exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 		pid = fork();
 		if (pid < 0)
 		{
-			ms_print_perror("fork");
+			ms_perror("fork");
 			return (1);
 		}
 		if (pid == 0)
@@ -72,9 +72,13 @@ int	exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 			exec_pipe_parent(&dpipe);
 		pl->clause = pl->clause->next;
 	}
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+		ms_perror_exit("signal");
 	exec_update_exitstatus(state, pid);
 	while (wait(NULL) > 0)
 		;
+	if (signal(SIGINT, ms_sigint_handler) == SIG_ERR)
+		ms_perror_exit("signal");
 	return (state->last_exit_status);
 }
 

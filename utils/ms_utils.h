@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 16:38:00 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 20:49:54 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/stat.h>
 # include "../libft/libft.h"
 # include "../analyzer/ms_analyzer.h"
+# include "../mainflow/minishell.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 

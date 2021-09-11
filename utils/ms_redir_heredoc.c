@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 15:46:48 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	ms_heredoc_read(t_list **lst, char *delimiter)
 	if (g_ex_states == 1)
 	{
 		if (dup2(backup_fd, STDIN_FILENO) == -1)
-			ms_print_perror("dup2");
+			ms_perror("dup2");
 		close(backup_fd);
 		ft_lstclear(lst, free);
 		return (MS_EXEC_FAIL);

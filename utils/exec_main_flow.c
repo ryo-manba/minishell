@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 17:09:40 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	**exec_create_command(t_stree *tree)
 	i = exec_get_command_size(tree);
 	command = (char **)malloc(sizeof(char *) * i + 1);
 	if (command == NULL)
-		ms_print_perror_exit("malloc");
+		ms_perror_exit("malloc");
 	tmp = tree;
 	i = 0;
 	while (tmp)
@@ -32,7 +32,7 @@ char	**exec_create_command(t_stree *tree)
 		if (command[i] == NULL)
 		{
 			exec_all_free(command);
-			ms_print_perror("malloc");
+			ms_perror("malloc");
 		}
 		tmp = tmp->right;
 		i++;
@@ -76,7 +76,13 @@ void	exec_update_exitstatus(t_ex_state *state, pid_t pid)
 	(void)state;
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+			ft_putendl_fd("Quit: 3", STDERR_FILENO);
+		else if (WTERMSIG(status) == SIGINT)
+			ft_putchar_fd('\n', STDERR_FILENO);
 		g_ex_states = WTERMSIG(status) + 128;
+	}
 	g_ex_states = WEXITSTATUS(status);
 }
 

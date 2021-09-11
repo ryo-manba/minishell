@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:32 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/11 16:14:21 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 20:48:55 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,6 @@
 # include <readline/history.h>
 
 extern volatile sig_atomic_t	g_ex_states;
+void	ms_sigint_handler(int sig);
 
 #endif

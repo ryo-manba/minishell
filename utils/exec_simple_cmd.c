@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 15:01:48 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 20:52:22 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,23 @@ int	exec_ex_cmd(t_shellvar *var, t_stree *expanded)
 	pid = fork();
 	if (pid < -1)
 	{
-		ms_print_perror("fork");
+		ms_perror("fork");
 		return (1);
 	}
 	if (pid == 0)
+	{
+		if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
+			ms_perror_exit("signal");
 		exec_run_cmd_exit(expanded, var, &es);
+	}
 	else
+	{
+		if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+			ms_perror_exit("signal");
 		exec_update_exitstatus(&es, pid);
+		if (signal(SIGINT, ms_sigint_handler) == SIG_ERR)
+			ms_perror_exit("signal");
+	}
 	return (es.last_exit_status);
 }
 
