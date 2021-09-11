@@ -3,15 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   ms_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/10 20:07:23 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/11 16:14:52 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
+
+static void	ms_sigint_handler(int sig)
+{
+	ft_putchar_fd('\n', STDOUT_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	g_ex_states = sig + 128;
+}
 
 t_pipeline	*ms_lex_parse(char *line)
 {
@@ -35,6 +44,9 @@ int	main(void)
 	t_shellvar	*var;
 
 	setvbuf(stdout, (char *)NULL, _IONBF, 0);
+	if (signal(SIGINT, ms_sigint_handler) == SIG_ERR || \
+		signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+		return (1);
 	var = ms_create_env();
 	if (var == NULL)
 		return (1);

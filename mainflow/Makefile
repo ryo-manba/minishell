@@ -2,9 +2,9 @@ NAME		:=	minishell
 SRCS		:=	ms_main.c
 
 CC			:= gcc
-CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -D PA_DEBUG=1
+CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -D PA_DEBUG=1 -I/usr/local/opt/readline/include/
 # CFLAGS		:= -g -Wall -Wextra -Werror -D PA_DEBUG=1
-LFLAGS		:= -lreadline
+LFLAGS		:= -lreadline -lhistory
 OBJS		:= $(SRCS:.c=.o)
 LIBFT_DIR	:= ../libft
 LIBFT		:= $(LIBFT_DIR)/libft.a
@@ -16,10 +16,12 @@ BLTIN_DIR	:= ../builtin
 BLTIN		:= $(BLTIN_DIR)/libmblt.a
 NORM		:= python3 -m norminette
 
+INC			:= -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
+
 all			: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
-	$(CC) $(CFLAGS) $(LFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
+	$(CC) $(CFLAGS) $(LFLAGS) -o $(NAME) $(INC) $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
 $(LIBFT)	:
 	$(MAKE) -C $(LIBFT_DIR)
 $(ANALYZER)	:
