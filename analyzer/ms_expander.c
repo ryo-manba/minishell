@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:19:44 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/11 11:08:55 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/11 11:44:53 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,11 @@ t_redir	*ms_expand_a_redir(t_ex_state *state, t_redir *redir)
 	make_state_for_redir(state, redir);
 	cloned->operand_right = ms_expand_stree(state, redir->operand_right);
 	reverse_state_for_redir(state);
-	if (state->failed || !cloned->operand_right || cloned->operand_right)
-	{
-		pa_destroy_redir(cloned);
-		return ((t_redir *)ex_error(state, original, "ambiguous redirect"));
-	}
-	cloned->operand_left = ms_expand_stree(state, redir->operand_left);
-	if (state->failed || (cloned->operand_left && cloned->operand_left->left))
+	if (!state->failed)
+		cloned->operand_left = ms_expand_stree(state, redir->operand_left);
+	if (state->failed || !cloned->operand_right
+		|| cloned->operand_right->right
+		|| (cloned->operand_left && cloned->operand_left->left))
 	{
 		pa_destroy_redir(cloned);
 		return ((t_redir *)ex_error(state, original, "ambiguous redirect"));
