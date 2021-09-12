@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:39:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/11 21:27:21 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 16:48:07 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,11 @@ typedef struct s_lex_cursor
 # define CHARS_WORD_INCLUDED "\"'_{}"
 
 t_wdlist	*ms_lexer(const char *line);
+int			lx_treat_operator(t_lex_cursor *cursor, char c, char ct);
+int			lx_treat_space(t_lex_cursor *cursor, char c, char ct);
+int			lx_treat_nl(t_lex_cursor *cursor, char c, char ct);
+int			lx_treat_brace(t_lex_cursor *cursor, char c, char ct);
+int			lx_treat_quote(t_lex_cursor *cursor, char c, char ct);
 int			lx_add_token(t_lex_cursor *cursor, char starting_char);
 void		lx_conclude_token(t_lex_cursor *cursor);
 int			lx_str_is_digital(const	char *str, size_t len);

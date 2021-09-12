@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 02:12:20 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 02:43:34 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 16:45:13 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,15 @@ t_wdlist	*lx_finalize(t_lex_cursor *cursor)
 	}
 	else
 		lx_conclude_token(cursor);
+	if (cursor->tail->lex_type != LT_NEWLINE)
+	{
+		if (lx_add_token(cursor, 'N'))
+		{
+			lx_mark_failed(cursor, 1, "add lex-token(nl)");
+			lx_destroy_token(cursor->head);
+			return (NULL);
+		}
+		lx_conclude_token(cursor);
+	}
 	return (cursor->head);
 }
