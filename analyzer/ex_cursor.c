@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:01:57 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/12 23:14:16 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 23:21:52 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ex_ll_init_cursor(t_ex_unit_cursor *cursor, t_token_id tid,
 	cursor->n = n;
 	cursor->running = XI_NEUTRAL;
 	cursor->pa_token_id = tid;
-	cursor->vs = 0;
+	cursor->vs = 1;
 	if (quote == '"')
 		cursor->i += 1;
 }
