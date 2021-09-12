@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 02:12:20 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/12 16:45:13 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 17:48:30 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_wdlist	*lx_finalize(t_lex_cursor *cursor)
 	}
 	else
 		lx_conclude_token(cursor);
-	if (cursor->tail->lex_type != LT_NEWLINE)
+	if (cursor->tail && cursor->tail->lex_type != LT_NEWLINE)
 	{
 		if (lx_add_token(cursor, 'N'))
 		{
