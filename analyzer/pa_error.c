@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:20:12 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/12 17:44:21 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 19:07:18 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	pa_mark_failed(t_parse_state *state, int mark, char *message)
 		state->failed = mark;
 		if (!state->error_printed)
 		{
-			if (message)
+			if (!message)
 				ft_putstr_fd(MS_AZ_PROGNAME ": error in parsing\n",
 					STDERR_FILENO);
 			else
