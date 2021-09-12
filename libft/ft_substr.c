@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 20:43:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/04/13 11:40:27 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/13 03:00:37 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 char	*ft_substr_range(char const *s, unsigned int start, unsigned int end)
 {
 	if (start <= end)
-		return ft_substr(s, start, end - start);
+		return (ft_substr(s, start, end - start));
 	return (NULL);
 }
