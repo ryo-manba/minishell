@@ -6,22 +6,11 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/12 22:05:47 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/12 22:50:42 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
-
-int	exec_check_path_state(t_ex_state *es, t_stree *expanded, char *path)
-{
-	if (es->last_exit_status == PERMISSION || es->last_exit_status == IS_A_DIR)
-		exec_print_error_exit(es->last_exit_status, path);
-	else if (path == NULL)
-		exec_print_error_exit(es->last_exit_status, expanded->right->token);
-	else
-		return (MS_EXEC_SUCC);
-	return (MS_EXEC_FAIL);
-}
 
 int	exec_ex_cmd(t_shellvar *var, t_stree *expanded)
 {
@@ -39,17 +28,17 @@ int	exec_ex_cmd(t_shellvar *var, t_stree *expanded)
 	{
 		if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
 			ms_perror_exit("signal");
-		exec_run_cmd_exit(expanded, var, &es);
+		exec_run_cmd_exit(expanded, var);
 	}
 	else
 	{
 		if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 			ms_perror_exit("signal");
-		exec_update_exitstatus(&es, pid);
+		exec_update_exitstatus(pid);
 		if (signal(SIGINT, ms_sigint_handler) == SIG_ERR)
 			ms_perror_exit("signal");
 	}
-	return (es.last_exit_status);
+	return (g_ex_states);
 }
 
 // 親プロセスでリダイレクションをするとき用に、fd(0,1,2)のバックアップをとっておく。
@@ -89,6 +78,27 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *es)
 	int		backup_fd[3];
 	t_stree	*expanded;
 
+	if (exec_simple_redir(clause, var, backup_fd) == MS_EXEC_FAIL)
+		return (MS_EXEC_FAIL);
+	expanded = ms_expand_stree(es, clause->stree);
+	if (!expanded && es->failed == 0)
+		return (MS_EXEC_SUCC);
+	if (!expanded && es->failed == 1)
+		return (MS_EXEC_FAIL);
+	if (ms_is_builtin(expanded) == 1)
+		g_ex_states = ms_exec_builtin(var, expanded);
+	else
+		g_ex_states = exec_ex_cmd(var, expanded);
+	if (clause->redir)
+	{
+		if (exec_duplicate_backup_fd(backup_fd) == 1)
+			return (MS_EXEC_FAIL);
+	}
+	return (g_ex_states);
+}
+
+int	exec_simple_redir(t_clause *clause, t_shellvar *var, int backup_fd[3])
+{
 	if (clause->redir)
 	{
 		if (exec_create_backup_fd(backup_fd) == MS_EXEC_FAIL)
@@ -99,19 +109,5 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *es)
 			return (MS_EXEC_FAIL);
 		}
 	}
-	expanded = ms_expand_stree(es, clause->stree);
-	if (!expanded && es->failed == 0)
-		return (MS_EXEC_SUCC);
-	if (!expanded && es->failed == 1)
-		return (MS_EXEC_FAIL);
-	if (ms_is_builtin(expanded) == 1)
-		es->last_exit_status = ms_exec_builtin(var, expanded);
-	else
-		es->last_exit_status = exec_ex_cmd(var, expanded);
-	if (clause->redir)
-	{
-		if (exec_duplicate_backup_fd(backup_fd) == 1)
-			return (MS_EXEC_FAIL);
-	}
-	return (es->last_exit_status);
+	return (MS_EXEC_SUCC);
 }
