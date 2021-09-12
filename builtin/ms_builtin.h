@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 20:22:59 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@
 /* ms_builtin */
 int			ms_exec_builtin(t_shellvar *env, t_stree *tree);
 int			ms_is_builtin(t_stree *tree);
-void		ms_print_perror(char *func_name);
-void		ms_print_perror_exit(char *func_name);
+void		ms_perror(char *func_name);
+void		ms_perror_exit(char *func_name);
 
 /* ms_create_env */
 int			ms_check_malloc_key_value(

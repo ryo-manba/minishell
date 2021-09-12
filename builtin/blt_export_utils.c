@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:09 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 17:46:26 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	blt_append_env(t_shellvar *env, char *key, char *value)
 	append = ms_new_env(key, value);
 	if (append == NULL)
 	{
-		ms_print_perror("malloc");
+		ms_perror("malloc");
 		return (MS_BLT_FAIL);
 	}
 	ms_env_add_back(&env, append);
@@ -54,7 +54,7 @@ int	blt_update_env(t_shellvar *update_pos, char *value)
 	update_pos->value = ft_strdup(value);
 	if (update_pos->value == NULL)
 	{
-		ms_print_perror("malloc");
+		ms_perror("malloc");
 		return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);

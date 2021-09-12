@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_check.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:52:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 05:01:25 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	blt_check_and_separate_env(char *token, char *key_value[2])
 	}
 	if (blt_separate_key_value(equal_idx, token, key_value) == MS_BLT_FAIL)
 	{
-		ms_print_perror("malloc");
+		ms_perror("malloc");
 		return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);

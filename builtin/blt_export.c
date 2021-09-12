@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:12 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 20:16:15 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	blt_join_env(t_shellvar *key_pos, char *key_value[2])
 	}
 	if (key_pos->value == NULL)
 	{
-		ms_print_perror("malloc");
+		ms_perror("malloc");
 		return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);

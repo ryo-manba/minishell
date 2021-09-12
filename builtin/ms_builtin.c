@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:26:14 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 20:22:41 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ int	ms_is_builtin(t_stree *tree)
 	return (0);
 }
 
-void	ms_print_perror(char *func_name)
+void	ms_perror(char *func_name)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	perror(func_name);
 }
 
-void	ms_print_perror_exit(char *func_name)
+void	ms_perror_exit(char *func_name)
 {
-	ms_print_perror(func_name);
+	ms_perror(func_name);
 	exit(1);
 }
