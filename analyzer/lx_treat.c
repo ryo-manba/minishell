@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:31:20 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/12 16:48:54 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 17:53:17 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	lx_treat_quote(t_lex_cursor *cursor, char c, char ct)
 	{
 		cursor->under_quoted = ct;
 		if (lx_add_token(cursor, ct))
-			return (lx_mark_failed(cursor, 1, "add lex-token(quote)"));
+			return (lx_mark_failed(cursor, LX_ERR_GEN, "add l-token(quote)"));
 	}
 	else if (cursor->under_quoted || ct == LC_WORD)
 	{
@@ -29,7 +29,7 @@ int	lx_treat_quote(t_lex_cursor *cursor, char c, char ct)
 			&& !ft_strchr(CHARS_WORD_INCLUDED, cursor->tail->starting_chartype))
 			lx_conclude_token(cursor);
 		if (lx_add_token(cursor, ct))
-			return (lx_mark_failed(cursor, 1, "add lex-token(unquote)"));
+			return (lx_mark_failed(cursor, LX_ERR_GEN, "add l-token(unquote)"));
 	}
 	else
 		return (0);
@@ -46,7 +46,7 @@ int	lx_treat_brace(t_lex_cursor *cursor, char c, char ct)
 	{
 		cursor->under_brace = 1;
 		if (lx_add_token(cursor, ct))
-			return (lx_mark_failed(cursor, 1, "add lex-token(brace)"));
+			return (lx_mark_failed(cursor, LX_ERR_GEN, "add l-token(brace)"));
 	}
 	else if (cursor->under_brace || ct == LC_WORD)
 	{
@@ -54,7 +54,7 @@ int	lx_treat_brace(t_lex_cursor *cursor, char c, char ct)
 			&& !ft_strchr(CHARS_WORD_INCLUDED, cursor->tail->starting_chartype))
 			lx_conclude_token(cursor);
 		if (lx_add_token(cursor, ct))
-			return (lx_mark_failed(cursor, 1, "add lex-token(unbrace)"));
+			return (lx_mark_failed(cursor, LX_ERR_GEN, "add l-token(unbrace)"));
 	}
 	else
 		return (0);
@@ -69,7 +69,7 @@ int	lx_treat_nl(t_lex_cursor *cursor, char c, char ct)
 		return (0);
 	lx_conclude_token(cursor);
 	if (lx_add_token(cursor, ct))
-		return (lx_mark_failed(cursor, 1, "add lex-token(nl)"));
+		return (lx_mark_failed(cursor, LX_ERR_GEN, "add l-token(nl)"));
 	cursor->i += 1;
 	return (1);
 }
@@ -90,12 +90,12 @@ int	lx_treat_operator(t_lex_cursor *cursor, char c, char ct)
 		return (0);
 	if (!cursor->tail || cursor->tail->concluded)
 		if (lx_add_token(cursor, ct))
-			return (lx_mark_failed(cursor, 1, "add lex-token(op)"));
+			return (lx_mark_failed(cursor, LX_ERR_GEN, "add l-token(op)"));
 	if (!ft_strchr(LX_OPERATOR_OPENER, cursor->line[cursor->tail->i]))
 	{
 		lx_conclude_token(cursor);
 		if (lx_add_token(cursor, ct))
-			return (lx_mark_failed(cursor, 1, "add lex-token(op)"));
+			return (lx_mark_failed(cursor, LX_ERR_GEN, "a lex-token(op)"));
 	}
 	cursor->i += lx_cut_operator(cursor);
 	lx_conclude_token(cursor);

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:20:12 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 10:59:27 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 17:44:21 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	pa_generic_error(t_parse_state *state, t_wdlist *word, char *message)
 {
 	state->err_word = word;
-	return (pa_mark_failed(state, 1, message));
+	return (pa_mark_failed(state, PA_ERR_GENERIC, message));
 }
 
 int	pa_syntax_error(t_parse_state *state, t_wdlist *word, char *message)
@@ -37,14 +37,14 @@ int	pa_syntax_error(t_parse_state *state, t_wdlist *word, char *message)
 		}
 		state->error_printed = 1;
 	}
-	return (pa_mark_failed(state, 1, message));
+	return (pa_mark_failed(state, PA_ERR_UNEXPECTED, message));
 }
 
 int	pa_mark_failed(t_parse_state *state, int mark, char *message)
 {
 	if (mark)
 	{
-		state->failed = 1;
+		state->failed = mark;
 		if (!state->error_printed)
 		{
 			if (message)

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:39:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/12 16:48:07 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 17:54:26 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # define LC_BRACE_R	'}'
 # define LC_WORD	'_'
 # define LX_OPERATOR_OPENER	"|&<>;()"
+
+# define LX_ERR_GEN	257
 
 typedef enum e_lex_type
 {
@@ -67,7 +69,7 @@ typedef struct s_lex_cursor
 
 # define CHARS_WORD_INCLUDED "\"'_{}"
 
-t_wdlist	*ms_lexer(const char *line);
+t_wdlist	*ms_lexer(const char *line, t_lex_cursor *cursor);
 int			lx_treat_operator(t_lex_cursor *cursor, char c, char ct);
 int			lx_treat_space(t_lex_cursor *cursor, char c, char ct);
 int			lx_treat_nl(t_lex_cursor *cursor, char c, char ct);
