@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:40:02 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 11:00:50 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 17:30:54 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # ifndef PA_DEBUG
 #  define PA_DEBUG 0
 # endif
+# define PA_ERR_GENERIC	257
+# define PA_ERR_UNEXPECTED	258
 
 typedef enum e_token_id
 {

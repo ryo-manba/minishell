@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:00:34 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 21:50:20 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/11 18:47:43 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,8 @@ static int	ex_ll_validate_var_key(t_ex_state *state, t_ex_unit_cursor *csr)
 
 static char	*ex_ll_replace_special_var(t_ex_state *state, t_ex_unit_cursor *csr)
 {
-	char	c;
+	const char	c = csr->str[csr->substr_s];
 
-	c = csr->str[csr->substr_s];
 	if (c == '?')
 		return (ft_itoa(state->last_exit_status));
 	return (NULL);
@@ -99,7 +98,7 @@ int	ex_ll_replace_var(t_ex_state *state, t_ex_unit_cursor *csr)
 	if (ex_ll_validate_var_key(state, csr))
 		return (MS_AZ_FAIL);
 	n = csr->substr_e - csr->substr_s;
-	if (n == 1 && ft_strchr(EX_SPECIAL_VAR_CHAR, csr->str[csr->substr_s]))
+	if (n == 1 && ex_ll_now_at_special_var(csr, csr->substr_s))
 		val = ex_ll_replace_special_var(state, csr);
 	else
 		val = ex_ll_replace_nominal_var(state, csr);

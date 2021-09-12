@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:39:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 09:07:42 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 17:54:26 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,12 @@
 # define LC_SEMICOLON	';'
 # define LC_PAREN_L	'('
 # define LC_PAREN_R	')'
+# define LC_BRACE_L	'{'
+# define LC_BRACE_R	'}'
 # define LC_WORD	'_'
 # define LX_OPERATOR_OPENER	"|&<>;()"
+
+# define LX_ERR_GEN	257
 
 typedef enum e_lex_type
 {
@@ -57,14 +61,20 @@ typedef struct s_lex_cursor
 	t_wdlist	*tail;
 	const char	*line;
 	char		under_quoted;
+	int			under_brace;
 	int			i;
 	int			failed;
 	int			error_printed;
 }	t_lex_cursor;
 
-# define CHARS_WORD_INCLUDED "\"'_"
+# define CHARS_WORD_INCLUDED "\"'_{}"
 
-t_wdlist	*ms_lexer(const char *line);
+t_wdlist	*ms_lexer(const char *line, t_lex_cursor *cursor);
+int			lx_treat_operator(t_lex_cursor *cursor, char c, char ct);
+int			lx_treat_space(t_lex_cursor *cursor, char c, char ct);
+int			lx_treat_nl(t_lex_cursor *cursor, char c, char ct);
+int			lx_treat_brace(t_lex_cursor *cursor, char c, char ct);
+int			lx_treat_quote(t_lex_cursor *cursor, char c, char ct);
 int			lx_add_token(t_lex_cursor *cursor, char starting_char);
 void		lx_conclude_token(t_lex_cursor *cursor);
 int			lx_str_is_digital(const	char *str, size_t len);

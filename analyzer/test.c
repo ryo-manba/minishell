@@ -98,6 +98,8 @@ int main()
 {
 	int 			i;
 	t_wdlist		*words;
+	t_lex_cursor	cursor;
+
 	t_parse_state	ps;
 	// t_ex_state		es;
 
@@ -107,7 +109,7 @@ int main()
 	{	
 		printf("%s\n", g_commands_ok[i]);
 		// [Lex]
-		words = ms_lexer(g_commands_ok[i]);
+		words = ms_lexer(g_commands_ok[i], cursor);
 		if (words)
 			print_words(words);
 		else

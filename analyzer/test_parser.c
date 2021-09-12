@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 20:06:13 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/10 20:12:23 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/11 18:25:34 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,21 +75,21 @@ void	print_clause(t_clause *clause, int depth)
 
 void	print_pipeline(t_pipeline *pipeline, int depth)
 {
-	const char *str;
+	const char	*str;
 
 	if (!pipeline)
 		return ;
-	printf("%*s{Pipeline:%.*s", depth*SW, "", !!SW, "\n");
+	printf("%*s{Pipeline:%.*s", depth * SW, "", !!SW, "\n");
 	str = pa_operator_label(pipeline->joint);
 	print_clause(pipeline->clause, depth + 1);
-	printf("%*s%s }%.*s", depth*SW, "", str ? str : "", !!SW, "\n");
+	printf("%*s%s }%.*s", depth * SW, "", str ? str : "", !!SW, "\n");
 	if (pipeline->next)
 		print_pipeline(pipeline->next, depth);
 }
 
 void	print_words(t_wdlist *words)
 {
-	char *lex_type;
+	char	*lex_type;
 
 	while (words)
 	{
