@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/12 17:24:50 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/12 22:01:41 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 	if (pl == NULL)
 		return (0);
 	state->var = var;
+	// expand
 	if (exec_just_open(pl->clause, var))
 		return (1);
 	if (pl->clause->next != NULL)

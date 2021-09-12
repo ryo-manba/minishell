@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/12 11:24:38 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/12 22:05:47 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,10 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *es)
 		}
 	}
 	expanded = ms_expand_stree(es, clause->stree);
-	if (!expanded)
-		exit(1);
+	if (!expanded && es->failed == 0)
+		return (MS_EXEC_SUCC);
+	if (!expanded && es->failed == 1)
+		return (MS_EXEC_FAIL);
 	if (ms_is_builtin(expanded) == 1)
 		es->last_exit_status = ms_exec_builtin(var, expanded);
 	else

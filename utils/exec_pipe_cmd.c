@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 20:52:53 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/12 22:04:58 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ void	exec_pipe_child(
 	if (pl->clause->stree->subshell != NULL)
 		ms_executer(pl->clause->stree->subshell, var, es);
 	expanded = ms_expand_stree(es, pl->clause->stree);
-	if (!expanded)
+	if (!expanded && es->failed == 0)
+		exit(0);
+	if (!expanded && es->failed)
 		exit(1);
 	if (ms_is_builtin(expanded))
 		exit(ms_exec_builtin(var, expanded));
@@ -95,7 +97,11 @@ void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var, t_ex_state *state)
 	char	*path;
 
 	if (ft_strchr_i(expanded->token, '/') != -1)
-		path = expanded->token;
+	{
+		path = ft_strdup(expanded->token);
+		if (path == NULL)
+			ms_perror_exit("malloc");
+	}
 	else
 		path = exec_get_path(expanded->token, var, state);
 	if (exec_check_path_state(state, expanded, path) == MS_EXEC_FAIL)
