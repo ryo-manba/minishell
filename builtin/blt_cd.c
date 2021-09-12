@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:30:08 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/12 19:12:57 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/12 22:56:18 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	blt_cd_update_pwd(t_shellvar *env, char *old_pwd)
 		free(pwd);
 		return (MS_BLT_SUCC);
 	}
-	if (blt_search_and_update_env(env, "OLDPWD", old_pwd) == MS_BLT_FAIL && \
+	if (blt_search_and_update_env(env, "OLDPWD", old_pwd) == MS_BLT_FAIL || \
 		blt_search_and_update_env(env, "PWD", pwd) == MS_BLT_FAIL)
 		return (MS_BLT_FAIL);
 	return (MS_BLT_SUCC);

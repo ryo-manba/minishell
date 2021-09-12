@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:52:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/13 00:15:19 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,23 @@ int	blt_check_export_key(char *token, char *key_value[2], int32_t equal_idx)
 {
 	int32_t	i;
 
+	i = 0;
 	if (equal_idx == -1)
 		equal_idx = ft_strlen(token);
-	i = 0;
+	if (equal_idx == 0)
+	{
+		while (token[i] == '=')
+			i += 1;
+	}
+	if (i == ft_strlen(token))
+		return (MS_BLT_FAIL);
 	while (i < equal_idx)
 	{
-		if ((i == 0 && ft_isalpha(token[i] == 0) && token[i] != '_')
-			|| (ft_isalnum(token[i]) != 1 && token[i] != '_'))
+		if ((i == 0 && (ft_isalpha(token[i]) || token[i] == '_')) || \
+			(i >= 1 && (ft_isalpha(token[i]) || ft_isalnum(token[i]) || token[i] == '_')))
+			i += 1;
+		else
 			return (MS_BLT_FAIL);
-		i += 1;
 	}
 	return (MS_BLT_SUCC);
 }
@@ -54,7 +62,7 @@ void	blt_export_print_error(char *token)
 {
 	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
 	ft_putstr_fd(token, STDERR_FILENO);
-	ft_putendl_fd("': not a valid identifier\n", STDERR_FILENO);
+	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 }
 
 // '+='と'='で分ける

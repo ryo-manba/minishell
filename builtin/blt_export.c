@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:12 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/12 23:43:21 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,7 @@ int	blt_export_env(t_shellvar *var, t_stree *tree)
 	while (tree != NULL)
 	{
 		if (blt_check_and_separate_env(tree->token, key_value) == MS_BLT_FAIL)
-		{
-			blt_export_print_error(tree->token);
 			ex_status = MS_BLT_FAIL;
-		}
 		else
 		{
 			if (blt_check_and_export(tree, var, key_value) == MS_BLT_FAIL)
