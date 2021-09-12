@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/12 17:24:50 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,8 @@ void	exec_update_exitstatus(t_ex_state *state, pid_t pid)
 			ft_putchar_fd('\n', STDERR_FILENO);
 		g_ex_states = WTERMSIG(status) + 128;
 	}
-	g_ex_states = WEXITSTATUS(status);
+	else
+		g_ex_states = WEXITSTATUS(status);
 }
 
 // '&&','||' で条件を満たしている場合に再帰的に実行する
