@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:31:20 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 02:43:46 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/11 21:28:07 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ const char	g_type_chars[] = {
 	LC_SEMICOLON,
 	LC_PAREN_L,
 	LC_PAREN_R,
+	LC_BRACE_L,
+	LC_BRACE_R,
 	'\0'};
 
 static int	treat_quote(t_lex_cursor *cursor, char c, char ct)
@@ -46,6 +48,31 @@ static int	treat_quote(t_lex_cursor *cursor, char c, char ct)
 			lx_conclude_token(cursor);
 		if (lx_add_token(cursor, ct))
 			return (lx_mark_failed(cursor, 1, "add lex-token(unquote)"));
+	}
+	else
+		return (0);
+	cursor->i += 1;
+	return (1);
+}
+
+static int	treat_brace(t_lex_cursor *cursor, char c, char ct)
+{
+	if (cursor->under_brace && c == LC_BRACE_R)
+		cursor->under_brace = 0;
+	else if (!cursor->under_brace
+		&& ct == LC_BRACE_L)
+	{
+		cursor->under_brace = 1;
+		if (lx_add_token(cursor, ct))
+			return (lx_mark_failed(cursor, 1, "add lex-token(brace)"));
+	}
+	else if (cursor->under_brace || ct == LC_WORD)
+	{
+		if (cursor->tail
+			&& !ft_strchr(CHARS_WORD_INCLUDED, cursor->tail->starting_chartype))
+			lx_conclude_token(cursor);
+		if (lx_add_token(cursor, ct))
+			return (lx_mark_failed(cursor, 1, "add lex-token(unbrace)"));
 	}
 	else
 		return (0);
@@ -103,9 +130,11 @@ t_wdlist	*ms_lexer(const char *line)
 	cursor.line = line;
 	while (!cursor.failed && line[cursor.i])
 	{
-		i = ft_strchr_i("\n'\" \t<>&|;()", line[cursor.i]);
+		i = ft_strchr_i("\n'\" \t<>&|;(){}", line[cursor.i]);
 		chartype = g_type_chars[i + 1];
 		if (treat_quote(&cursor, line[cursor.i], chartype))
+			continue ;
+		else if (treat_brace(&cursor, line[cursor.i], chartype))
 			continue ;
 		else if (treat_nl(&cursor, line[cursor.i], chartype))
 			break ;

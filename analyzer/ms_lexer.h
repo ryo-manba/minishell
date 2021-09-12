@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:39:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 09:07:42 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/11 21:27:21 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # define LC_SEMICOLON	';'
 # define LC_PAREN_L	'('
 # define LC_PAREN_R	')'
+# define LC_BRACE_L	'{'
+# define LC_BRACE_R	'}'
 # define LC_WORD	'_'
 # define LX_OPERATOR_OPENER	"|&<>;()"
 
@@ -57,12 +59,13 @@ typedef struct s_lex_cursor
 	t_wdlist	*tail;
 	const char	*line;
 	char		under_quoted;
+	int			under_brace;
 	int			i;
 	int			failed;
 	int			error_printed;
 }	t_lex_cursor;
 
-# define CHARS_WORD_INCLUDED "\"'_"
+# define CHARS_WORD_INCLUDED "\"'_{}"
 
 t_wdlist	*ms_lexer(const char *line);
 int			lx_add_token(t_lex_cursor *cursor, char starting_char);

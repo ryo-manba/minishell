@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:38:23 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/10 02:55:35 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/11 18:45:43 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MS_EXPANDER_H
 # include "../libft/libft.h"
 # include "ms_parser.h"
+# include "../common/ms_common.h"
 # include <dirent.h>
 # define EX_IFS	" \t\n"
 # define EX_SPECIAL_VAR_CHAR "?"
@@ -43,15 +44,6 @@ typedef struct s_ex_token
 	struct s_ex_token	*left;
 	size_t				n;
 }	t_ex_token;
-
-typedef struct s_shellvar
-{
-	char				*key;
-	char				*value;
-	int					is_env;
-	int					attr;
-	struct s_shellvar	*next;
-}	t_shellvar;
 
 typedef struct s_ex_state
 {
@@ -137,6 +129,7 @@ int			ex_ll_trap_var(t_ex_state *state, t_ex_unit_cursor *csr);
 int			ex_ll_trap_braced_var(t_ex_state *state, t_ex_unit_cursor *csr);
 int			ex_ll_trap_bare(t_ex_state *state, t_ex_unit_cursor *csr);
 int			ex_ll_replace_var(t_ex_state *state, t_ex_unit_cursor *csr);
+int			ex_ll_now_at_special_var(t_ex_unit_cursor *csr, size_t pos);
 char		*ex_ll_heredoc_line(char *line, t_shellvar *var);
 char		*ex_strcat_exlist(t_ex_token *head, size_t s);
 void		ex_ll_init_cursor(t_ex_unit_cursor *cursor, t_token_id tid,

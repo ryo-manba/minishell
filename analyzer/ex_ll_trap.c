@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 22:14:46 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/10 20:16:37 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 12:28:45 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,8 @@ int	ex_ll_trap_braced_var(t_ex_state *state, t_ex_unit_cursor *csr)
 // VAR will transit to BRACED_VAR by encounting '{'.
 int	ex_ll_trap_var(t_ex_state *state, t_ex_unit_cursor *csr)
 {
-	char	c;
+	const char	c = csr->str[csr->i];
 
-	c = csr->str[csr->i];
 	if ((csr->i == csr->vs + 1 && (ft_isalpha(c) || c == '_'))
 		|| (csr->i > csr->vs + 1 && (ft_isalnum(c) || c == '_')))
 		csr->i += 1;
@@ -88,14 +87,18 @@ int	ex_ll_trap_var(t_ex_state *state, t_ex_unit_cursor *csr)
 		csr->i += 1;
 		csr->running = XI_BRACED_VAR;
 	}
-	else if (csr->i == csr->vs + 1)
-		ex_ll_push_back(state, csr);
-	else
+	else if (csr->i != csr->vs + 1 || ex_ll_now_at_special_var(csr, csr->i))
 	{
 		csr->substr_s = csr->vs + 1;
+		csr->i += !!ex_ll_now_at_special_var(csr, csr->i);
 		csr->substr_e = csr->i;
 		if (ex_ll_replace_var(state, csr))
 			ex_mark_failed(state, 1, "[LL-var] push back ex-token");
+		csr->running = XI_NEUTRAL;
+	}
+	else
+	{
+		ex_ll_push_back(state, csr);
 		csr->running = XI_NEUTRAL;
 	}
 	return (1);

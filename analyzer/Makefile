@@ -1,6 +1,5 @@
 LEXER_SRCS		:=	ms_lexer.c lx_wordutils.c lx_string_class.c lx_operator.c\
 					lx_destroy.c lx_cursor.c\
-					test_parser.c
 
 PARSER_SRCS		:=	ms_parser.c pa_unit.c pa_error.c pa_factory.c\
 					pa_redir.c pa_manip.c pa_unit_operator.c\
@@ -10,6 +9,7 @@ EXPANDER_SRCS	:=	ms_expander.c\
 					ex_state.c ex_error.c\
 					ex_destroy.c ex_cursor.c ex_print.c\
 					ex_ll.c ex_lstcat.c ex_ll_trap.c ex_ll_dquote.c ex_ll_var.c\
+					ex_ll_spvar.c\
 					ex_split.c\
 					ex_fx.c ex_fx_cwd.c ex_fx_match.c\
 					ex_join.c\
