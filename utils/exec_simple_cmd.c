@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 20:52:22 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/12 11:24:38 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *es)
 	{
 		if (exec_create_backup_fd(backup_fd) == MS_EXEC_FAIL)
 			return (MS_EXEC_FAIL);
-		if (exec_expand_redirect(clause, var) == MS_EXEC_FAIL)
+		if (exec_expand_redirect(clause, var) != MS_EXEC_SUCC)
 		{
 			exec_duplicate_backup_fd(backup_fd);
 			return (MS_EXEC_FAIL);
