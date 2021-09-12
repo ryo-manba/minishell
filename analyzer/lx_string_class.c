@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:28:02 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 00:30:31 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/13 00:02:07 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	lx_char_is_for_bare(char c)
 // strがASSIGNMENT WORDとして適当かどうか?
 // 1. strが文字'='を含むこと
 // 2. strの文字'='より前の部分がNAMEとして適当であること
+//   ただし、'='の左隣に'+'がある場合、それは除外して判定する。
 int	lx_str_is_for_assignment_word(const char *str, size_t len)
 {
 	size_t	n;
@@ -66,7 +67,11 @@ int	lx_str_is_for_assignment_word(const char *str, size_t len)
 	while (n < len && str[n])
 	{
 		if (str[n] == '=')
+		{
+			if (n > 0 && str[n - 1] == '+')
+				return (lx_str_is_for_name(str, n - 1));
 			return (lx_str_is_for_name(str, n));
+		}
 		n += 1;
 	}
 	return (0);
