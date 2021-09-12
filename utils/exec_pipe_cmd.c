@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 20:52:53 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/12 22:42:44 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,20 @@ void	exec_pipe_child(
 	t_stree	*expanded;
 
 	ms_do_piping(pl->clause, dpipe->new, dpipe->before);
-	es->last_exit_status = exec_expand_redirect(pl->clause, var);
-	if (es->last_exit_status != MS_BLT_SUCC)
-		exit(es->last_exit_status);
+	g_ex_states = exec_expand_redirect(pl->clause, var);
+	if (g_ex_states != MS_BLT_SUCC)
+		exit(g_ex_states);
 	if (pl->clause->stree->subshell != NULL)
 		ms_executer(pl->clause->stree->subshell, var, es);
 	expanded = ms_expand_stree(es, pl->clause->stree);
-	if (!expanded)
+	if (!expanded && es->failed == 0)
+		exit(0);
+	if (!expanded && es->failed)
 		exit(1);
 	if (ms_is_builtin(expanded))
 		exit(ms_exec_builtin(var, expanded));
 	else
-		exec_run_cmd_exit(expanded, var, es);
+		exec_run_cmd_exit(expanded, var);
 }
 
 // パイプが繋がっていた場合のコマンド実行の処理
@@ -72,14 +74,8 @@ int	exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 			exec_pipe_parent(&dpipe);
 		pl->clause = pl->clause->next;
 	}
-	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
-		ms_perror_exit("signal");
-	exec_update_exitstatus(state, pid);
-	while (wait(NULL) > 0)
-		;
-	if (signal(SIGINT, ms_sigint_handler) == SIG_ERR)
-		ms_perror_exit("signal");
-	return (state->last_exit_status);
+	exec_set_signal_wait(pid);
+	return (g_ex_states);
 }
 
 // 親でpipeを閉じる
@@ -90,15 +86,19 @@ void	exec_pipe_parent(t_dpipe *dpipe)
 
 // '/' が含まれてる場合はそのまま実行する
 // ない場合はPATHから探す
-void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var, t_ex_state *state)
+void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var)
 {
 	char	*path;
 
 	if (ft_strchr_i(expanded->token, '/') != -1)
-		path = expanded->token;
+	{
+		path = ft_strdup(expanded->token);
+		if (path == NULL)
+			ms_perror_exit("malloc");
+	}
 	else
-		path = exec_get_path(expanded->token, var, state);
-	if (exec_check_path_state(state, expanded, path) == MS_EXEC_FAIL)
+		path = exec_get_path(expanded->token, var);
+	if (exec_check_path_state(expanded, path) == MS_EXEC_FAIL)
 		exec_print_error_exit(NO_SUCH_FILE, NULL);
 	execve(path, exec_create_command(expanded), NULL);
 	free(path);

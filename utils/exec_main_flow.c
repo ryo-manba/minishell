@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/12 17:24:50 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/12 22:40:21 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,10 @@ int	exec_expand_redirect(t_clause *clause, t_shellvar *var)
 	return (MS_EXEC_SUCC);
 }
 
-void	exec_update_exitstatus(t_ex_state *state, pid_t pid)
+void	exec_update_exitstatus(pid_t pid)
 {
 	int	status;
 
-	(void)state;
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status))
 	{
@@ -89,19 +88,20 @@ void	exec_update_exitstatus(t_ex_state *state, pid_t pid)
 
 // '&&','||' で条件を満たしている場合に再帰的に実行する
 // fork->pipe->redirect->execの順
+// TODO: open処理考える
 int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 {
 	if (pl == NULL)
 		return (0);
 	state->var = var;
-	if (exec_just_open(pl->clause, var))
-		return (1);
+//	if (exec_just_open(pl->clause, var))
+//		return (1);
 	if (pl->clause->next != NULL)
 		exec_pipe_command(pl, var, state);
 	else
-		state->last_exit_status = exec_simple_command(pl->clause, var, state);
-	if ((pl->joint == TI_ANDAND && state->last_exit_status == 0)
-		|| (pl->joint == TI_PIPEPIPE && state->last_exit_status == 1))
+		g_ex_states = exec_simple_command(pl->clause, var, state);
+	if ((pl->joint == TI_ANDAND && g_ex_states == 0)
+		|| (pl->joint == TI_PIPEPIPE && g_ex_states == 1))
 	{
 		ms_executer(pl->next, var, state);
 	}

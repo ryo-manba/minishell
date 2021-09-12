@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_just_open.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 20:14:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 11:33:21 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 22:03:33 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	exec_just_open(t_clause *clause, t_shellvar *var)
 		{
 			expanded_rd = ms_expand_a_redir(&es, tmp_cl->redir);
 			if (!expanded_rd)
-				return (1);
+				return (MS_EXEC_FAIL);
 			exec_all_open(expanded_rd);
 			pa_destroy_redir(expanded_rd);
 		}
