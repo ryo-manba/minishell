@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:31:20 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/11 21:28:07 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 16:34:39 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ const char	g_type_chars[] = {
 	LC_PAREN_L,
 	LC_PAREN_R,
 	LC_BRACE_L,
-	LC_BRACE_R,
 	'\0'};
 
 static int	treat_quote(t_lex_cursor *cursor, char c, char ct)
@@ -130,7 +129,7 @@ t_wdlist	*ms_lexer(const char *line)
 	cursor.line = line;
 	while (!cursor.failed && line[cursor.i])
 	{
-		i = ft_strchr_i("\n'\" \t<>&|;(){}", line[cursor.i]);
+		i = ft_strchr_i("\n'\" \t<>&|;(){", line[cursor.i]);
 		chartype = g_type_chars[i + 1];
 		if (treat_quote(&cursor, line[cursor.i], chartype))
 			continue ;
