@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:00:19 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/10 02:33:51 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 22:59:13 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ void	ex_ll_unit(t_ex_state *state, t_ex_unit_cursor *csr)
 {
 	while (!state->failed)
 	{
-		if (csr->running == XI_NEUTRAL && csr->str[csr->i] == csr->quote)
+		if (csr->running == XI_NEUTRAL
+			&& csr->str[csr->i] == csr->quote)
 			break ;
 		if (csr->running == XI_NEUTRAL && ex_ll_trap_neutral(state, csr))
 			continue ;
@@ -94,6 +95,9 @@ void	ex_ll_unit(t_ex_state *state, t_ex_unit_cursor *csr)
 			continue ;
 		if (csr->running == XI_BARE && ex_ll_trap_bare(state, csr))
 			continue ;
+		if (csr->running == XI_NEUTRAL
+			&& !csr->str[csr->i])
+			break ;
 	}
 }
 

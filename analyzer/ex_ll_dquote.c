@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 21:31:49 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/10 02:49:25 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 23:13:48 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,16 @@ char	*ex_strcat_exlist(t_ex_token *head, size_t s)
 
 int	ex_ll_trap_dquote(t_ex_state *state, t_ex_unit_cursor *csr)
 {
-	t_ex_unit_cursor	cursor;
+	t_ex_unit_cursor	dcursor;
 	char				*joined;
 
+	ex_ll_init_cursor(&dcursor, csr->pa_token_id, csr->str + csr->i, '"');
 	csr->i += 1;
-	ex_ll_init_cursor(&cursor, csr->pa_token_id, csr->str + csr->i, '"');
-	ex_ll_unit(state, &cursor);
+	ex_ll_unit(state, &dcursor);
 	if (state->failed)
 		return (MS_AZ_FAIL);
-	joined = ex_strcat_exlist(cursor.p.head, 0);
-	ex_destroy_token(cursor.p.head);
+	joined = ex_strcat_exlist(dcursor.p.head, 0);
+	ex_destroy_token(dcursor.p.head);
 	if (!joined)
 		return (MS_AZ_FAIL);
 	csr->running = XI_DQUOTED;
@@ -55,7 +55,7 @@ int	ex_ll_trap_dquote(t_ex_state *state, t_ex_unit_cursor *csr)
 		return (MS_AZ_FAIL);
 	}
 	csr->running = XI_NEUTRAL;
-	csr->i += cursor.i + 1;
+	csr->i += dcursor.i + 1;
 	return (MS_AZ_SUCC);
 }
 

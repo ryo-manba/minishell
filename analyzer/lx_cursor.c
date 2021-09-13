@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 02:12:20 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/12 17:48:30 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 19:07:22 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	lx_mark_failed(t_lex_cursor *cursor, int mark, char *message)
 		cursor->failed = 1;
 		if (!cursor->error_printed)
 		{
-			if (message)
+			if (!message)
 				ft_putstr_fd(MS_AZ_PROGNAME ": error in lexing\n",
 					STDERR_FILENO);
 			else

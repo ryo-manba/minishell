@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:08:43 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/06 10:30:02 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/13 02:58:44 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int				ft_memcmp(const void *s1, const void *s2, size_t sz);
 char			*ft_strdup(const char *src);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_substr_range(char const *s,
-		unsigned int start, unsigned int end);
+					unsigned int start, unsigned int end);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strrchr(const char *s, int c);
 char			*ft_strnstr(const char *s, const char *find, size_t slen);
@@ -66,6 +66,7 @@ void			ft_putstr_fd(char *s, int fd);
 void			ft_putnstr_fd(char *s, size_t n, int fd);
 void			ft_putendl_fd(char *s, int fd);
 void			ft_putnbr_fd(int n, int fd);
+void			ft_putsizet_fd(size_t n, int fd);
 void			safe_free(void *ptr);
 size_t			ft_strlen(const char *str);
 size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);

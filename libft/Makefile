@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:59:59 by rmatsuka          #+#    #+#              #
-#    Updated: 2021/09/03 13:46:20 by rmatsuka         ###   ########.fr        #
+#    Updated: 2021/09/13 02:54:30 by yokawada         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,6 +68,7 @@ RM		=	rm -f
 LIBC	=	ar rcs
 CC		= 	gcc
 CFLAGS	=	-Wall -Wextra -Werror
+NORM		:= python3 -m norminette
 
 all:		$(NAME)
 
@@ -83,3 +84,8 @@ fclean:		clean
 re:			fclean all
 
 .PHONY:		all clean fclean re
+
+.PHONY		: norm
+norm		:
+	$(NORM) $(SRCS) *.h
+	$(NORM) -v

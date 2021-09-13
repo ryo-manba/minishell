@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 22:14:46 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/12 12:28:45 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/12 23:15:32 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,20 @@ int	ex_ll_trap_bare(t_ex_state *state, t_ex_unit_cursor *csr)
 	char	c;
 
 	c = csr->str[csr->i];
-	if ((c == '\'' && !csr->quote) || c == '"'
-		|| (!state->no_param && c == '$') || !c)
+	if ((c == '\'' && !csr->quote)
+		|| c == '"'
+		|| (!state->no_param && c == '$')
+		|| !c)
 	{
 		csr->substr_s = csr->vs;
+		if (csr->quote == '"' && !c && csr->substr_s > 0)
+			csr->substr_s -= 1;
 		csr->substr_e = csr->i;
 		if (!ex_push_back_token(state, csr, NULL))
 			ex_mark_failed(state, 1, "[LL-bare] push back ex-token");
 		csr->running = XI_NEUTRAL;
+		if (csr->quote == '"' && !c)
+			return (0);
 	}
 	else
 		csr->i += 1;
@@ -104,6 +110,7 @@ int	ex_ll_trap_var(t_ex_state *state, t_ex_unit_cursor *csr)
 	return (1);
 }
 
+// ASSUMED: state->running == XI_SQUOTED
 // trap a char in SQUOTED.
 // SQUOTED will close by '.
 int	ex_ll_trap_squoted(t_ex_state *state, t_ex_unit_cursor *csr)
@@ -111,8 +118,6 @@ int	ex_ll_trap_squoted(t_ex_state *state, t_ex_unit_cursor *csr)
 	char	c;
 
 	c = csr->str[csr->i];
-	if (csr->running != XI_SQUOTED)
-		return (0);
 	if (c == '\'' || !c)
 	{
 		csr->substr_s = csr->vs + 1;
