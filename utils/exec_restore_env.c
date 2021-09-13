@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 22:37:21 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/13 22:42:27 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/13 23:52:22 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,31 +27,23 @@ int	exec_get_env_size(t_shellvar *var)
 	return (i);
 }
 
-char	**exec_restore(t_shellvar *var, char **env, int sz)
+char	*exec_restore(t_shellvar *var)
 {
-	int		i;
 	char	*tmp;
+	char	*env;
 
-	i = -1;
-	while (++i < sz)
+	if (var->value == NULL)
+		env = ft_strdup(var->key);
+	else
 	{
 		tmp = ft_strjoin(var->key, "=");
 		if (tmp == NULL)
-		{
-			exec_all_free(env);
 			return (NULL);
-		}
-		env[i] = ft_strjoin(tmp, var->value);
-		if (env[i] == NULL)
-		{
-			free(tmp);
-			exec_all_free(env);
-			return (NULL);
-		}
+		env = ft_strjoin(tmp, var->value);
 		free(tmp);
-		var = var->next;
 	}
-	env[i] = NULL;
+	if (env == NULL)
+		return (NULL);
 	return (env);
 }
 
@@ -59,12 +51,25 @@ char	**exec_restore_env(t_shellvar *var)
 {
 	int			sz;
 	char		**env;
+	int			i;
 	t_shellvar	*tmp;
 
+	i = -1;
 	sz = exec_get_env_size(var);
 	env = (char **)malloc(sizeof(char *) * sz + 1);
 	if (env == NULL)
 		return (NULL);
 	tmp = var;
-	return (exec_restore(tmp, env, sz));
+	while (++i < sz)
+	{
+		env[i] = exec_restore(tmp);
+		if (env[i] == NULL)
+		{
+			exec_all_free(env);
+			return (NULL);
+		}
+		tmp = tmp->next;
+	}
+	env[i] = NULL;
+	return (env);
 }

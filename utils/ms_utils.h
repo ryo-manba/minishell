@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/13 22:39:36 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/13 23:48:43 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var);
 
 /* exec_restore_cmd */
 int		exec_get_env_size(t_shellvar *var);
-char	**exec_restore(t_shellvar *var, char **env, int sz);
+char	*exec_restore(t_shellvar *var);
 char	**exec_restore_env(t_shellvar *var);
 
 /* exec_simple_cmd */
