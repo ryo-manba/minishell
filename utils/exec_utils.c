@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:46 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/12 22:49:52 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/13 22:34:09 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	exec_check_path_state(t_stree *expanded, char *path)
 	if (g_ex_states == PERMISSION || g_ex_states == IS_A_DIR)
 		exec_print_error_exit(g_ex_states, path);
 	else if (path == NULL)
-		exec_print_error_exit(g_ex_states, expanded->right->token);
+		exec_print_error_exit(g_ex_states, expanded->token);
 	else
 		return (MS_EXEC_SUCC);
 	return (MS_EXEC_FAIL);

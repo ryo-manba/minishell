@@ -7,6 +7,7 @@ SRCS		:=	exec_error.c \
 				exec_just_open.c \
 				exec_main_flow.c \
 				exec_pipe_cmd.c \
+				exec_restore_env.c \
 				exec_simple_cmd.c \
 				exec_utils.c \
 				ms_pipe.c \

@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/12 22:50:52 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/13 22:39:36 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,11 @@ void	exec_pipe_child(
 int		exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 void	exec_pipe_parent(t_dpipe *dpipe);
 void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var);
+
+/* exec_restore_cmd */
+int		exec_get_env_size(t_shellvar *var);
+char	**exec_restore(t_shellvar *var, char **env, int sz);
+char	**exec_restore_env(t_shellvar *var);
 
 /* exec_simple_cmd */
 int		exec_ex_cmd(t_shellvar *var, t_stree *expanded);
