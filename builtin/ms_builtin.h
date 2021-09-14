@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/14 16:45:56 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int			blt_separate_key_value(
 				int32_t equal_idx, char *token, char *key_value[2]);
 
 /* blt_export_print */
+int			blt_check_escape(char *s);
 t_shellvar	*blt_copy_env(t_shellvar *env);
 void		blt_print_export(t_shellvar *env);
 void		blt_print_sort_env(t_shellvar *env);

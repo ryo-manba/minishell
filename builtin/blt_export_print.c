@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_print.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:05 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 04:41:24 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/14 16:44:49 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
+
+int	blt_check_escape(char *s)
+{
+	if (ft_strlen(s) == 2 && ft_strcmp(s, "\\n") == 0)
+		return (1);
+	if (ft_strlen(s) == 1 && ft_strchr_i("\"'`$\\", s[0]) != -1)
+		return (1);
+	return (0);
+}
 
 // ソートするため環境変数のコピーを作る
 t_shellvar	*blt_copy_env(t_shellvar *env)
@@ -44,7 +53,7 @@ void	blt_print_export(t_shellvar *env)
 		{
 			ft_putstr_fd(tmp->key, STDOUT_FILENO);
 			ft_putstr_fd("=\"", STDOUT_FILENO);
-			if (ft_strncmp(tmp->value, "\\", 1) == 0)
+			if (blt_check_escape(tmp->value))
 				ft_putchar_fd('\\', STDOUT_FILENO);
 			ft_putstr_fd(tmp->value, STDOUT_FILENO);
 			ft_putendl_fd("\"", STDOUT_FILENO);

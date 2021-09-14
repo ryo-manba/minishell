@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:12 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/12 23:43:21 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/14 18:12:21 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,20 @@ int	blt_append_or_join_env(t_shellvar *var, char *key_value[2])
 // "+="だったら文字を結合する
 int	blt_check_and_export(t_stree *tree, t_shellvar *var, char *key_value[2])
 {
-	int32_t	equal_idx;
+	int32_t		equal_idx;
+	t_shellvar	*tmp;
 
+	tmp = var;
 	equal_idx = ft_strchr_i(tree->token, '=');
 	if (equal_idx != 0 && tree->token[equal_idx - 1] == '+')
 	{
-		if (blt_append_or_join_env(var, key_value) == MS_BLT_FAIL)
+		if (blt_append_or_join_env(tmp, key_value) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);
 	}
 	else
 	{
 		if (blt_append_or_update_env(
-				var, key_value[KEY], key_value[VALUE]) == MS_BLT_FAIL)
+				tmp, key_value[KEY], key_value[VALUE]) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
