@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/12 22:42:44 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/13 23:23:06 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,11 @@ void	exec_pipe_parent(t_dpipe *dpipe)
 void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var)
 {
 	char	*path;
+	char	**env;
 
+	env = exec_restore_env(var);
+	if (env == NULL)
+		ms_perror_exit("malloc");
 	if (ft_strchr_i(expanded->token, '/') != -1)
 	{
 		path = ft_strdup(expanded->token);
@@ -100,7 +104,8 @@ void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var)
 		path = exec_get_path(expanded->token, var);
 	if (exec_check_path_state(expanded, path) == MS_EXEC_FAIL)
 		exec_print_error_exit(NO_SUCH_FILE, NULL);
-	execve(path, exec_create_command(expanded), NULL);
+	execve(path, exec_create_command(expanded), env);
 	free(path);
+	exec_all_free(env);
 	exec_print_error_exit(CMD_NOT_FOUND, expanded->token);
 }

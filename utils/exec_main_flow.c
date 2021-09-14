@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/12 22:40:21 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/13 22:26:46 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	**exec_create_command(t_stree *tree)
 		if (command[i] == NULL)
 		{
 			exec_all_free(command);
-			ms_perror("malloc");
+			ms_perror_exit("malloc");
 		}
 		tmp = tmp->right;
 		i++;
