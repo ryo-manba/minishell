@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 17:07:08 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/15 10:14:32 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 11:41:47 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	mf_loop(t_master *master)
 	char			*line;
 	t_parse_state	ps;
 
+	ft_bzero(&ps, sizeof(t_parse_state));
 	while (!mf_read_line(master, &line))
 	{
 		if (MS_DEBUG & MS_DEBUG_LEAKS)
@@ -87,4 +88,6 @@ void	mf_loop(t_master *master)
 		master->line_num += 1;
 	}
 	safe_star_free((void **)&line);
+	if (MS_DEBUG & MS_DEBUG_LEAKS)
+		system("leaks minishell");
 }
