@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:54:45 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/05/31 08:02:31 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/15 10:18:03 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static	int	find_newline(char *memo)
+static	ssize_t	find_newline(char *memo)
 {
-	int	i;
+	ssize_t	i;
 
 	i = 0;
 	if (memo == NULL)
@@ -28,7 +28,7 @@ static	int	find_newline(char *memo)
 	return (-1);
 }
 
-static	int	get_split(char **memo, char **line, int newline_pos)
+static	int	get_split(char **memo, char **line, ssize_t newline_pos)
 {
 	char	*tmp;
 
@@ -40,9 +40,9 @@ static	int	get_split(char **memo, char **line, int newline_pos)
 	return (1);
 }
 
-static	int	check_memo(char **memo, char **line, int read_sz)
+static	int	check_memo(char **memo, char **line, ssize_t read_sz)
 {
-	int	newline_pos;
+	ssize_t	newline_pos;
 
 	if (read_sz < 0)
 		return (-1);
@@ -55,15 +55,16 @@ static	int	check_memo(char **memo, char **line, int read_sz)
 		*memo = NULL;
 		return (0);
 	}
-	*line = ft_strdup("");
+	*line = NULL;
 	return (0);
 }
 
+// variant: return NULL instead of "" after reached EOF.
 int	get_next_line(int fd, char **line)
 {
 	static char	*memo[MAX_FD];
 	char		*buf;
-	int			newline_pos;
+	ssize_t		newline_pos;
 	ssize_t		read_sz;
 
 	if (fd < 0 || MAX_FD < fd || line == NULL || BUFFER_SIZE <= 0)

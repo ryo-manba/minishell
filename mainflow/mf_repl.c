@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 17:07:08 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/15 09:38:00 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 10:14:32 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ int	mf_read_line(t_master *master, char **line)
 	{
 		if (master->spcursor.lines[master->spcursor.i])
 			*line = master->spcursor.lines[master->spcursor.i++];
-		return (0);
+		return (!*line);
 	}
 	if (master->filepath || !master->stdin_isatty)
 	{
 		status = get_next_line(STDIN_FILENO, line);
 		if (status == -1)
 			return (mf_print_errno(master, 126, errno));
-		return (0);
+		return (status == 0 && !*line);
 	}
 	*line = readline("% ");
 	return (!*line);
