@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:32:51 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 23:13:32 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/15 22:46:02 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	ms_check_fd_print_error(t_redir *rd)
 	else
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(rd->operand_right->token, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
 		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 	}
 	return (errno);
