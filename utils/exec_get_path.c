@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/12 22:30:51 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/15 15:55:07 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,19 @@ void	exec_all_free(char **s)
 	free(s);
 }
 
-// 実行可能ビットが立ってたらOK (S_IXUSR (00100))所有者による実行
-int	exec_check_path(struct stat sb)
+char	*exec_strjoin(char *split_path, char *cmd)
 {
-	if ((sb.st_mode & S_IXUSR))
-	{
-		g_ex_states = 0;
-		return (MS_EXEC_SUCC);
-	}
-	g_ex_states = PERMISSION;
-	if ((sb.st_mode & S_IFMT) == S_IFREG)
-		g_ex_states = IS_A_DIR;
-	return (MS_EXEC_FAIL);
+	char	*tmp;
+	char	*path;
+
+	tmp = ft_strjoin(split_path, "/");
+	if (!tmp)
+		ms_perror_exit("malloc");
+	path = ft_strjoin(tmp, cmd);
+	free(tmp);
+	if (!split_path)
+		ms_perror_exit("malloc");
+	return (path);
 }
 
 // err_pathは存在するが失敗した場合ようにとっておく
@@ -45,25 +46,22 @@ char	*exec_create_path(char *cmd, char **split_path)
 {
 	char		*path;
 	char		*err_path;
-	char		*tmp;
-	struct stat	sb;
 	int			i;
 
 	i = -1;
 	err_path = NULL;
 	while (split_path[++i])
 	{
-		tmp = ft_strjoin(split_path[i], "/");
-		path = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (stat(path, &sb) >= 0 && exec_check_path(sb) == 0)
+		path = exec_strjoin(split_path[i], cmd);
+		if (exec_check_path(path, 1) == MS_EXEC_SUCC)
 		{
 			free(err_path);
 			return (path);
 		}
-		tmp = err_path;
-		err_path = path;
-		free(tmp);
+		if (err_path == NULL && g_ex_states == PERMISSION)
+			err_path = path;
+		else
+			free(path);
 	}
 	return (err_path);
 }
@@ -78,7 +76,7 @@ char	**exec_create_split_path(t_shellvar *var)
 		return (NULL);
 	split_path = ft_split(path_pos->value, ':');
 	if (split_path == NULL)
-		return (NULL);
+		ms_perror_exit("malloc");
 	return (split_path);
 }
 
@@ -95,8 +93,7 @@ char	*exec_get_path(char *cmd, t_shellvar *var)
 		return (NULL);
 	}
 	path = exec_create_path(cmd, split_path);
-	if (path == NULL && \
-		(g_ex_states != IS_A_DIR || g_ex_states != PERMISSION))
+	if (!path && (g_ex_states != IS_A_DIR && g_ex_states != PERMISSION))
 		g_ex_states = CMD_NOT_FOUND;
 	exec_all_free(split_path);
 	return (path);

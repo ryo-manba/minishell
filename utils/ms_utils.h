@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 10:23:35 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 15:50:54 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,16 @@ extern volatile sig_atomic_t	g_ex_states;
 /* exec_error */
 void	exec_print_error_exit(t_master *master, int ex_status, char *path);
 
+/* exec_check_path */
+int		exec_check_path(char *path, int is_relative);
+int		exec_check_relative(char *path);
+
 /* exec_get_path */
 void	exec_all_free(char **s);
-int		exec_check_path(struct stat sb);
 char	*exec_create_path(char *cmd, char **split_path);
 char	**exec_create_split_path(t_shellvar *var);
 char	*exec_get_path(char *cmd, t_shellvar *var);
+char	*exec_strjoin(char *path, char *cmd);
 
 /* exec_just_open */
 void	exec_all_open(t_redir *expand_rd);
@@ -94,7 +98,7 @@ int		exec_simple_redir(t_master *master,
 			t_clause *clause, t_shellvar *var, int backup_fd[3]);
 
 /* exec_utils */
-int		exec_check_path_state(t_master *master, t_stree *expanded, char *path);
+void	exec_check_path_exit(t_master *master, t_stree *expanded, char *path);
 size_t	exec_get_command_size(t_stree *tree);
 void	exec_set_signal_wait(pid_t pid);
 
