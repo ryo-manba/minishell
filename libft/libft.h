@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:08:43 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 02:30:11 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 12:03:17 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void			ft_putsizet_fd(size_t n, int fd);
 void			safe_free(void *ptr);
 void			safe_star_free(void **ptr);
 size_t			ft_strlen(const char *str);
+size_t			ft_strlen_upto_c(const char *str, char c);
 size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
 ssize_t			ft_strchr_i(const char *s, int c);

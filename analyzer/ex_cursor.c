@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:01:57 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/12 23:25:22 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 17:56:19 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,15 @@ t_ex_token	*ex_pop_src_token_csr(t_ex_part_cursor *cursor)
 void	ex_ll_init_cursor(t_ex_unit_cursor *cursor, t_token_id tid,
 	const char *str, char quote)
 {
-	ssize_t	n;
-
 	ft_bzero(cursor, sizeof(t_ex_unit_cursor));
 	cursor->str = str;
 	cursor->quote = quote;
-	n = ft_strchr_i(str, quote);
-	cursor->n = n;
 	cursor->running = XI_NEUTRAL;
 	cursor->pa_token_id = tid;
-	if (quote == '"')
-	{
+	cursor->n = !!str[0] + ft_strlen_upto_c(str + !!str[0], quote);
+	if (str[cursor->n])
 		cursor->vs = 1;
-		cursor->i += 1;
-	}
+	cursor->i = !!quote;
 }
 
 void	ex_init_cursor_mid(t_ex_unit_cursor *cursor, t_ex_token *ext)

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 21:31:49 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/15 04:16:41 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 17:52:58 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,10 @@ int	ex_ll_trap_dquote(t_ex_state *state, t_ex_unit_cursor *csr)
 {
 	t_ex_unit_cursor	dcursor;
 	char				*joined;
+	int					nul_terminated;
 
 	ex_ll_init_cursor(&dcursor, csr->pa_token_id, csr->str + csr->i, '"');
-	csr->i += 1;
+	nul_terminated = !dcursor.str[dcursor.n];
 	ex_ll_unit(state, &dcursor);
 	if (state->failed)
 		return (MS_AZ_FAIL);
@@ -55,7 +56,7 @@ int	ex_ll_trap_dquote(t_ex_state *state, t_ex_unit_cursor *csr)
 		return (MS_AZ_FAIL);
 	}
 	csr->running = XI_NEUTRAL;
-	csr->i += dcursor.i + 1;
+	csr->i += dcursor.n + !nul_terminated;
 	return (MS_AZ_SUCC);
 }
 
