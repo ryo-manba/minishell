@@ -3,25 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   exec_error.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:26:37 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 20:06:45 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/15 10:27:24 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-void	exec_print_error(char *command)
+void	exec_error_prologue(t_master *master)
 {
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(command, STDERR_FILENO);
-	ft_putendl_fd(": command not found", STDERR_FILENO);
+	ft_putstr_fd(master->prog_name, STDERR_FILENO);
+	if (!master->interactive_shell)
+	{
+		if (master->line_num > 0)
+		{
+			ft_putstr_fd(": line ", STDERR_FILENO);
+			ft_putsizet_fd(master->line_num, STDERR_FILENO);
+		}
+	}
+	ft_putstr_fd(": ", STDERR_FILENO);
 }
 
-void	exec_print_error_exit(int ex_status, char *path)
+void	exec_print_error_exit(t_master *master, int ex_status, char *path)
 {
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	exec_error_prologue(master);
 	ft_putstr_fd(path, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	if (ex_status == IS_A_DIR || ex_status == PERMISSION)

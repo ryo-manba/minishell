@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 04:11:32 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 10:23:44 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	exec_ex_cmd(t_master *master, t_shellvar *var, t_stree *expanded)
 	{
 		if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
 			ms_perror_exit("signal");
-		exec_run_cmd_exit(expanded, var);
+		exec_run_cmd_exit(master, expanded, var);
 	}
 	else
 	{

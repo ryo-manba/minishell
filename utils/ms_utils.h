@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 04:15:09 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 10:23:35 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ typedef struct s_dpipe
 extern volatile sig_atomic_t	g_ex_states;
 
 /* exec_error */
-void	exec_print_error(char *command);
-void	exec_print_error_exit(int ex_status, char *path);
+void	exec_print_error_exit(t_master *master, int ex_status, char *path);
 
 /* exec_get_path */
 void	exec_all_free(char **s);
@@ -78,7 +77,7 @@ void	exec_pipe_child(
 			t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
 int		exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 void	exec_pipe_parent(t_dpipe *dpipe);
-void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var);
+void	exec_run_cmd_exit(t_master *master, t_stree *expanded, t_shellvar *var);
 
 /* exec_restore_cmd */
 int		exec_get_env_size(t_shellvar *var);
@@ -95,7 +94,7 @@ int		exec_simple_redir(t_master *master,
 			t_clause *clause, t_shellvar *var, int backup_fd[3]);
 
 /* exec_utils */
-int		exec_check_path_state(t_stree *expanded, char *path);
+int		exec_check_path_state(t_master *master, t_stree *expanded, char *path);
 size_t	exec_get_command_size(t_stree *tree);
 void	exec_set_signal_wait(pid_t pid);
 

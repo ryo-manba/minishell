@@ -50,19 +50,23 @@ fclean		: clean
 	$(MAKE) -C $(BLTIN_DIR) fclean
 
 .PHONY		: re
+# fclean all submodules without libft and rebuild.
 re			: fclean all
 
 .PHONY		: reft
+# fclean all submodules including libft and rebuild.
 reft		:
 	$(MAKE) -C $(LIBFT_DIR) fclean
 	$(MAKE) re
 
 .PHONY		: norm
+# norm
 norm		:
 	$(NORM) $(SRCS) *.h
 	$(NORM) -v
 
 .PHONY		: normall
+# norm all submodules
 normall		:
 	$(NORM) $(SRCS) *.h
 	$(MAKE) -C $(LIBFT_DIR) norm

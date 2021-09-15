@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 04:10:23 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 10:24:37 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	exec_pipe_child(
 	if (ms_is_builtin(expanded))
 		exit(ms_exec_builtin(var, expanded));
 	else
-		exec_run_cmd_exit(expanded, var);
+		exec_run_cmd_exit(es->master, expanded, var);
 }
 
 // パイプが繋がっていた場合のコマンド実行の処理
@@ -86,7 +86,7 @@ void	exec_pipe_parent(t_dpipe *dpipe)
 
 // '/' が含まれてる場合はそのまま実行する
 // ない場合はPATHから探す
-void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var)
+void	exec_run_cmd_exit(t_master *master, t_stree *expanded, t_shellvar *var)
 {
 	char	*path;
 	char	**env;
@@ -102,10 +102,10 @@ void	exec_run_cmd_exit(t_stree *expanded, t_shellvar *var)
 	}
 	else
 		path = exec_get_path(expanded->token, var);
-	if (exec_check_path_state(expanded, path) == MS_EXEC_FAIL)
-		exec_print_error_exit(NO_SUCH_FILE, NULL);
+	if (exec_check_path_state(master, expanded, path) == MS_EXEC_FAIL)
+		exec_print_error_exit(master, NO_SUCH_FILE, NULL);
 	execve(path, exec_create_command(expanded), env);
 	free(path);
 	exec_all_free(env);
-	exec_print_error_exit(CMD_NOT_FOUND, expanded->token);
+	exec_print_error_exit(master, CMD_NOT_FOUND, expanded->token);
 }
