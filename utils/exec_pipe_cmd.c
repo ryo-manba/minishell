@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 10:24:37 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 15:38:10 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,9 @@ void	exec_run_cmd_exit(t_master *master, t_stree *expanded, t_shellvar *var)
 {
 	char	*path;
 	char	**env;
+	int		is_relative;
 
+	is_relative = 1;
 	env = exec_restore_env(var);
 	if (env == NULL)
 		ms_perror_exit("malloc");
@@ -99,13 +101,15 @@ void	exec_run_cmd_exit(t_master *master, t_stree *expanded, t_shellvar *var)
 		path = ft_strdup(expanded->token);
 		if (path == NULL)
 			ms_perror_exit("malloc");
+		is_relative = 0;
 	}
 	else
 		path = exec_get_path(expanded->token, var);
-	if (exec_check_path_state(master, expanded, path) == MS_EXEC_FAIL)
-		exec_print_error_exit(master, NO_SUCH_FILE, NULL);
+	exec_check_path_exit(master, expanded, path);
 	execve(path, exec_create_command(expanded), env);
-	free(path);
 	exec_all_free(env);
+	exec_check_path(path, is_relative);
+	exec_check_path_exit(master, expanded, path);
+	free(path);
 	exec_print_error_exit(master, CMD_NOT_FOUND, expanded->token);
 }
