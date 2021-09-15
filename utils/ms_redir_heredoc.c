@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/15 04:16:32 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ms_heredoc_signal_set(void)
 
 // 変数展開して出力する
 // クオートで囲まれていなかったら変数展開する
-int	ms_heredoc_write(t_list *lst, t_shellvar *var, int quoted, int fd)
+int	ms_heredoc_write(t_ex_state *es, t_list *lst, int quoted, int fd)
 {
 	t_list		*tmp;
 	t_list		*head;
@@ -80,7 +80,7 @@ int	ms_heredoc_write(t_list *lst, t_shellvar *var, int quoted, int fd)
 	{
 		while (tmp != NULL)
 		{
-			expanded = ex_ll_heredoc_line((char *)tmp->content, var);
+			expanded = ex_ll_heredoc_line(es, (char *)tmp->content);
 			if (!expanded)
 				return (MS_EXEC_FAIL);
 			free(tmp->content);
@@ -99,7 +99,7 @@ int	ms_heredoc_write(t_list *lst, t_shellvar *var, int quoted, int fd)
 
 // Ctrl+Cで終了した場合は何もしない
 // stdinをパイプにして展開したやつを改行区切りでパイプに書き込む
-int	ms_redirect_heredoc(t_redir *redir, t_shellvar *var)
+int	ms_redirect_heredoc(t_ex_state *es, t_redir *redir)
 {
 	t_list	*lst;
 	int		pipefd[2];
@@ -120,6 +120,6 @@ int	ms_redirect_heredoc(t_redir *redir, t_shellvar *var)
 		return (MS_EXEC_FAIL);
 	if (close(pipefd[0]) == -1)
 		return (MS_EXEC_FAIL);
-	ms_heredoc_write(lst, var, quoted, pipefd[1]);
+	ms_heredoc_write(es, lst, quoted, pipefd[1]);
 	return (MS_EXEC_SUCC);
 }

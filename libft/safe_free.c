@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   safe_free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/31 08:01:33 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/05/31 08:05:40 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/15 02:30:00 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,14 @@ void	safe_free(void *ptr)
 	{
 		free(ptr);
 		ptr = NULL;
+	}
+}
+
+void	safe_star_free(void **ptr)
+{
+	if (ptr && *ptr)
+	{
+		free(*ptr);
+		*ptr = NULL;
 	}
 }

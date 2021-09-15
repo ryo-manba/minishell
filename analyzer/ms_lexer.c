@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:31:20 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/12 17:57:22 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/13 02:42:31 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ const char	g_type_chars[] = {
 	LC_BRACE_L,
 	'\0'};
 
-t_wdlist	*ms_lexer(const char *line, t_lex_cursor *cursor)
+t_wdlist	*ms_lexer(t_master *master, const char *line, t_lex_cursor *cursor)
 {
 	char			chartype;
 	int				i;
 
 	ft_bzero(cursor, sizeof(t_lex_cursor));
+	cursor->master = master;
 	cursor->line = line;
 	while (!cursor->failed && line[cursor->i])
 	{

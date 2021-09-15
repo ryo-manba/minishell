@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:38:23 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/11 18:45:43 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 04:16:53 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_ex_token
 
 typedef struct s_ex_state
 {
+	t_master	*master;
 	t_shellvar	*var;
 	int			last_exit_status;
 	int			failed;
@@ -109,8 +110,8 @@ t_stree		*ms_expand_stree(t_ex_state *state, t_stree *stree);
 void		ex_add_token_csr(t_ex_part_cursor *cursor, t_ex_token *ext);
 t_ex_token	*ex_pop_src_token_csr(t_ex_part_cursor *cursor);
 
-void		ms_ex_init_state(t_ex_state *state, t_shellvar *env,
-				int last_exit_status);
+void		ms_ex_init_state(t_ex_state *state, t_master *master,
+				t_shellvar *env, int last_exit_status);
 t_ex_token	*ex_shell_param(t_ex_state *state, t_stree *stree);
 t_ex_token	*ex_split(t_ex_state *state, t_ex_token *token);
 t_ex_token	*ex_fx(t_ex_state *state, t_ex_token *token);
@@ -130,7 +131,7 @@ int			ex_ll_trap_braced_var(t_ex_state *state, t_ex_unit_cursor *csr);
 int			ex_ll_trap_bare(t_ex_state *state, t_ex_unit_cursor *csr);
 int			ex_ll_replace_var(t_ex_state *state, t_ex_unit_cursor *csr);
 int			ex_ll_now_at_special_var(t_ex_unit_cursor *csr, size_t pos);
-char		*ex_ll_heredoc_line(char *line, t_shellvar *var);
+char		*ex_ll_heredoc_line(t_ex_state *es, char *line);
 char		*ex_strcat_exlist(t_ex_token *head, size_t s);
 void		ex_ll_init_cursor(t_ex_unit_cursor *cursor, t_token_id tid,
 				const char *str, char quote);

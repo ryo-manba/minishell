@@ -24,8 +24,11 @@ SRCS		:=	$(LEXER_SRCS)\
 				$(EXPANDER_SRCS)
 
 CC			:= gcc
-# CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -D PA_DEBUG=1
-CFLAGS		:= -g -Wall -Wextra -Werror -D PA_DEBUG=1
+CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror
+# CFLAGS		:= -g -Wall -Wextra -Werror
+ifdef PA_DEBUG
+	CFLAGS	+=	-D PA_DEBUG=1
+endif
 OBJS		:= $(SRCS:.c=.o)
 LIBFT_DIR	:= ../libft
 LIBFT		:= $(LIBFT_DIR)/libft.a

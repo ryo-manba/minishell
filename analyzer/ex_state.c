@@ -6,16 +6,17 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 21:42:54 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 22:17:14 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 03:41:38 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_analyzer.h"
 
-void	ms_ex_init_state(t_ex_state *state, t_shellvar *env,
+void	ms_ex_init_state(t_ex_state *state, t_master *master, t_shellvar *env,
 		int last_exit_status)
 {
 	ft_bzero(state, sizeof(t_ex_state));
+	state->master = master;
 	state->var = env;
 	state->last_exit_status = last_exit_status;
 }

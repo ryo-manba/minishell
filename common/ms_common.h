@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 00:02:05 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/11 01:22:59 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 05:05:42 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,18 @@
 # define MS_COMMON_H
 # include <unistd.h>
 # include <stdlib.h>
+# ifndef MS_DEBUG
+#  define MS_DEBUG 0
+# endif
+# define MS_DEBUG_PRINT_PARSED	0x1
+# define MS_DEBUG_LEAKS	0x2
+
+typedef struct s_splitcursor
+{
+	char	*c_line;
+	char	**lines;
+	size_t	i;
+}	t_splitcursor;
 
 typedef struct s_shellvar
 {
@@ -26,16 +38,18 @@ typedef struct s_shellvar
 
 typedef struct s_master
 {
-	int			args_given;
-	int			stdin_isatty;
-	int			stderr_isatty;
-	int			opt_c;
-	char		*c_line;
-	int			interactive_shell;
-	char		*filepath;
-	t_shellvar	*var;
-	size_t		line_num;
-	char		*current_line;
+	char			*prog_name;
+	int				args_given;
+	int				stdin_isatty;
+	int				stderr_isatty;
+	int				opt_c;
+	t_splitcursor	spcursor;
+	int				interactive_shell;
+	char			*filepath;
+	t_shellvar		*var;
+	size_t			line_num;
+	char			*current_line;
+	int				failed;
 }	t_master;
 
 #endif

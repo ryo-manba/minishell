@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 23:24:30 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/15 04:14:34 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	ms_open_redirect_output(t_redir *redir)
 	return (ms_open_at(io_number, path, O_WRONLY | O_CREAT | O_TRUNC, 0666));
 }
 
-int	ms_redirect(t_redir *redir, t_shellvar *var)
+int	ms_redirect(t_ex_state *es, t_redir *redir)
 {
 	if (redir->redir_op == TI_LT)
 		return (ms_open_redirect_input(redir));
@@ -81,6 +81,6 @@ int	ms_redirect(t_redir *redir, t_shellvar *var)
 	else if (redir->redir_op == TI_GTGT)
 		return (ms_open_redirect_append(redir));
 	else if (redir->redir_op == TI_LTLT)
-		return (ms_redirect_heredoc(redir, var));
+		return (ms_redirect_heredoc(es, redir));
 	return (1);
 }

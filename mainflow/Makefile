@@ -1,9 +1,16 @@
 NAME		:=	minishell
-SRCS		:=	ms_main.c
+SRCS		:=	ms_main.c\
+				mf_repl.c\
+				mf_lpx.c\
+				mf_opt.c\
+				mf_error.c\
 
 CC			:= gcc
-CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -D PA_DEBUG=1 -I/usr/local/opt/readline/include/
+CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -I/usr/local/opt/readline/include/
 # CFLAGS		:= -g -Wall -Wextra -Werror -D PA_DEBUG=1
+ifdef MS_DEBUG
+	CFLAGS	+= -D MS_DEBUG=$(MS_DEBUG)
+endif
 LFLAGS		:= -lreadline -lhistory
 OBJS		:= $(SRCS:.c=.o)
 LIBFT_DIR	:= ../libft
@@ -45,9 +52,23 @@ fclean		: clean
 .PHONY		: re
 re			: fclean all
 
+.PHONY		: reft
+reft		:
+	$(MAKE) -C $(LIBFT_DIR) fclean
+	$(MAKE) re
+
 .PHONY		: norm
 norm		:
 	$(NORM) $(SRCS) *.h
+	$(NORM) -v
+
+.PHONY		: normall
+normall		:
+	$(NORM) $(SRCS) *.h
+	$(MAKE) -C $(LIBFT_DIR) norm
+	$(MAKE) -C $(ANALYZER_DIR) PA_DEBUG=1 norm
+	$(MAKE) -C $(UTILS_DIR) norm
+	$(MAKE) -C $(BLTIN_DIR) norm
 	$(NORM) -v
 
 .PHONY		: name

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/14 14:49:37 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/15 04:10:23 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	exec_pipe_child(
 	t_stree	*expanded;
 
 	ms_do_piping(pl->clause, dpipe->new, dpipe->before);
-	g_ex_states = exec_expand_redirect(pl->clause, var);
+	g_ex_states = exec_expand_redirect(es->master, pl->clause, var);
 	if (g_ex_states != MS_BLT_SUCC)
 		exit(g_ex_states);
 	if (pl->clause->stree->subshell != NULL)

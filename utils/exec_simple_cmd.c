@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/12 22:50:42 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/15 04:11:32 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-int	exec_ex_cmd(t_shellvar *var, t_stree *expanded)
+int	exec_ex_cmd(t_master *master, t_shellvar *var, t_stree *expanded)
 {
 	pid_t		pid;
 	t_ex_state	es;
 
-	ms_ex_init_state(&es, var, 0);
+	ms_ex_init_state(&es, master, var, 0);
 	pid = fork();
 	if (pid < -1)
 	{
@@ -78,7 +78,7 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *es)
 	int		backup_fd[3];
 	t_stree	*expanded;
 
-	if (exec_simple_redir(clause, var, backup_fd) == MS_EXEC_FAIL)
+	if (exec_simple_redir(es->master, clause, var, backup_fd) == MS_EXEC_FAIL)
 		return (MS_EXEC_FAIL);
 	expanded = ms_expand_stree(es, clause->stree);
 	if (!expanded && es->failed == 0)
@@ -88,7 +88,7 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *es)
 	if (ms_is_builtin(expanded) == 1)
 		g_ex_states = ms_exec_builtin(var, expanded);
 	else
-		g_ex_states = exec_ex_cmd(var, expanded);
+		g_ex_states = exec_ex_cmd(es->master, var, expanded);
 	if (clause->redir)
 	{
 		if (exec_duplicate_backup_fd(backup_fd) == 1)
@@ -97,13 +97,14 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *es)
 	return (g_ex_states);
 }
 
-int	exec_simple_redir(t_clause *clause, t_shellvar *var, int backup_fd[3])
+int	exec_simple_redir(t_master *master,
+	t_clause *clause, t_shellvar *var, int backup_fd[3])
 {
 	if (clause->redir)
 	{
 		if (exec_create_backup_fd(backup_fd) == MS_EXEC_FAIL)
 			return (MS_EXEC_FAIL);
-		if (exec_expand_redirect(clause, var) != MS_EXEC_SUCC)
+		if (exec_expand_redirect(master, clause, var) != MS_EXEC_SUCC)
 		{
 			exec_duplicate_backup_fd(backup_fd);
 			return (MS_EXEC_FAIL);

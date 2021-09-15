@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:39:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/12 17:54:26 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/13 02:42:43 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct s_wdlist
 
 typedef struct s_lex_cursor
 {
+	t_master	*master;
 	t_wdlist	*head;
 	t_wdlist	*tail;
 	const char	*line;
@@ -69,7 +70,7 @@ typedef struct s_lex_cursor
 
 # define CHARS_WORD_INCLUDED "\"'_{}"
 
-t_wdlist	*ms_lexer(const char *line, t_lex_cursor *cursor);
+t_wdlist	*ms_lexer(t_master *master, const char *line, t_lex_cursor *cursor);
 int			lx_treat_operator(t_lex_cursor *cursor, char c, char ct);
 int			lx_treat_space(t_lex_cursor *cursor, char c, char ct);
 int			lx_treat_nl(t_lex_cursor *cursor, char c, char ct);

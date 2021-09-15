@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/13 23:48:43 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/15 04:15:09 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,12 @@ char	*exec_get_path(char *cmd, t_shellvar *var);
 
 /* exec_just_open */
 void	exec_all_open(t_redir *expand_rd);
-int		exec_just_open(t_clause *clause, t_shellvar *var);
+int		exec_just_open(t_master *master, t_clause *clause, t_shellvar *var);
 
 /* exec_main_flow */
 char	**exec_create_command(t_stree *tree);
-int		exec_expand_redirect(t_clause *clause, t_shellvar *var);
+int		exec_expand_redirect(t_master *master,
+			t_clause *clause, t_shellvar *var);
 void	exec_update_exitstatus(pid_t pid);
 int		ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
 
@@ -85,12 +86,13 @@ char	*exec_restore(t_shellvar *var);
 char	**exec_restore_env(t_shellvar *var);
 
 /* exec_simple_cmd */
-int		exec_ex_cmd(t_shellvar *var, t_stree *expanded);
+int		exec_ex_cmd(t_master *master, t_shellvar *var, t_stree *expanded);
 int		exec_create_backup_fd(int backup_fd[3]);
 int		exec_duplicate_backup_fd(int backup_fd[3]);
 int		exec_simple_command(
 			t_clause *clause, t_shellvar *var, t_ex_state *state);
-int		exec_simple_redir(t_clause *clause, t_shellvar *var, int backup_fd[3]);
+int		exec_simple_redir(t_master *master,
+			t_clause *clause, t_shellvar *var, int backup_fd[3]);
 
 /* exec_utils */
 int		exec_check_path_state(t_stree *expanded, char *path);
@@ -114,13 +116,13 @@ int		ms_open_at(int fd, const char *path, int oflag, int mode);
 int		ms_open_redirect_append(t_redir *redir);
 int		ms_open_redirect_input(t_redir *redir);
 int		ms_open_redirect_output(t_redir *redir);
-int		ms_redirect(t_redir *redir, t_shellvar *var);
+int		ms_redirect(t_ex_state *es, t_redir *redir);
 
 /* ms_redir_heredoc */
 int		ms_heredoc_read(t_list **lst, char *delimiter);
 void	ms_heredoc_sigint_handler(int sig);
 int		ms_heredoc_signal_set(void);
-int		ms_heredoc_write(t_list *lst, t_shellvar *var, int quoted, int fd);
-int		ms_redirect_heredoc(t_redir *redir, t_shellvar *var);
+int		ms_heredoc_write(t_ex_state *es, t_list *lst, int quoted, int fd);
+int		ms_redirect_heredoc(t_ex_state *es, t_redir *redir);
 
 #endif

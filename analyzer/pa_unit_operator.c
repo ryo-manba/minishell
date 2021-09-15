@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:21:48 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 13:59:44 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/13 02:44:33 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	pa_subshell_enter(t_parse_state *state, t_wdlist *word)
 		return (pa_syntax_error(state, word, "'(' is not leading"));
 	if (state->cursor.redir)
 		return (pa_syntax_error(state, word, "REDIR_BEFORE_SUBSHELL"));
-	if (ms_parse(&substate, word->next, 1))
+	if (ms_parse(state->master, &substate, word->next, 1))
 	{
 		state->error_printed = state->error_printed || substate.error_printed;
 		return (pa_generic_error(state, word, "bad alloc subshell"));

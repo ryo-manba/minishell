@@ -6,12 +6,13 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:40:02 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/12 17:30:54 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/13 02:44:24 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MS_PARSER_H
 # define MS_PARSER_H
+# include "../common/ms_common.h"
 # include "../libft/libft.h"
 # include "ms_lexer.h"
 # ifndef PA_DEBUG
@@ -94,6 +95,7 @@ typedef struct s_parse_cursor
 
 typedef struct s_parse_state
 {
+	t_master		*master;
 	t_wdlist		*words;
 	t_pipeline		*pipeline;
 	t_parse_cursor	cursor;
@@ -108,7 +110,8 @@ typedef struct s_parse_state
 
 size_t		lx_cut_operator(t_lex_cursor *cursor);
 
-int			ms_parse(t_parse_state *state, t_wdlist *words, int for_subshell);
+int			ms_parse(t_master *master, t_parse_state *state, t_wdlist *words,
+				int for_subshell);
 
 t_token_id	pa_operator_token_id(t_wdlist *word);
 const char	*pa_operator_label(t_token_id ti);

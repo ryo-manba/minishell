@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main_flow.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/13 22:26:46 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/15 04:14:20 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ char	**exec_create_command(t_stree *tree)
 }
 
 // 環境変数を展開しながらリダイレクションを処理する
-int	exec_expand_redirect(t_clause *clause, t_shellvar *var)
+int	exec_expand_redirect(t_master *master, t_clause *clause, t_shellvar *var)
 {
 	t_redir		*rd;
 	t_redir		*expanded_rd;
 	t_ex_state	es;
 	int			err;
 
-	ms_ex_init_state(&es, var, 0);
+	ms_ex_init_state(&es, master, var, 0);
 	rd = clause->redir;
 	err = 0;
 	while (rd)
@@ -57,7 +57,7 @@ int	exec_expand_redirect(t_clause *clause, t_shellvar *var)
 		expanded_rd = ms_expand_a_redir(&es, rd);
 		if (!expanded_rd)
 			return (MS_EXEC_FAIL);
-		if (ms_redirect(expanded_rd, var) == MS_EXEC_FAIL)
+		if (ms_redirect(&es, expanded_rd) == MS_EXEC_FAIL)
 		{
 			err = ms_check_fd_print_error(expanded_rd);
 			pa_destroy_redir(expanded_rd);
