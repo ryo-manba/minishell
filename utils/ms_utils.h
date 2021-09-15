@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 15:50:54 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/16 00:14:26 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ extern volatile sig_atomic_t	g_ex_states;
 /* exec_error */
 void	exec_print_error_exit(t_master *master, int ex_status, char *path);
 
+/* exec_backup_fd */
+int		exec_close_backup_fd(int backup_fd[3]);
+int		exec_create_backup_fd(int backup_fd[3]);
+int		exec_duplicate_backup_fd(int backup_fd[3]);
+
 /* exec_check_path */
 int		exec_check_path(char *path, int is_relative);
 int		exec_check_relative(char *path);
@@ -90,8 +95,6 @@ char	**exec_restore_env(t_shellvar *var);
 
 /* exec_simple_cmd */
 int		exec_ex_cmd(t_master *master, t_shellvar *var, t_stree *expanded);
-int		exec_create_backup_fd(int backup_fd[3]);
-int		exec_duplicate_backup_fd(int backup_fd[3]);
 int		exec_simple_command(
 			t_clause *clause, t_shellvar *var, t_ex_state *state);
 int		exec_simple_redir(t_master *master,
@@ -123,9 +126,11 @@ int		ms_redirect(t_ex_state *es, t_redir *redir);
 
 /* ms_redir_heredoc */
 int		ms_heredoc_read(t_list **lst, char *delimiter);
-void	ms_heredoc_sigint_handler(int sig);
-int		ms_heredoc_signal_set(void);
 int		ms_heredoc_write(t_ex_state *es, t_list *lst, int quoted, int fd);
 int		ms_redirect_heredoc(t_ex_state *es, t_redir *redir);
+
+/* ms_signal_handler */
+void	ms_heredoc_sigint_handler(int sig);
+int		ms_heredoc_signal_set(void);
 
 #endif

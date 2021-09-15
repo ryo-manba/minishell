@@ -3,6 +3,7 @@ NAME	:=	libmu.a
 TEST_NAME	:=	tutils
 
 SRCS		:=	exec_error.c \
+				exec_backup_fd.c \
 				exec_check_path.c \
 				exec_get_path.c \
 				exec_just_open.c \
@@ -15,7 +16,7 @@ SRCS		:=	exec_error.c \
 				ms_redir.c \
 				ms_redir_error.c \
 				ms_redir_heredoc.c\
-
+				ms_signal_handler.c \
 
 
 TEST_SRCS	:=	main.c
