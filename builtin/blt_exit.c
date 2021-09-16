@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:48:50 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/16 23:43:20 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 00:00:53 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	blt_exit_print_error(t_master *master, int flag, char *error_args)
 	}
 	if (flag == 2)
 	{
-		ft_putendl_fd(": too many artuments", STDERR_FILENO);
+		ft_putendl_fd("too many arguments", STDERR_FILENO);
 	}
 }
 

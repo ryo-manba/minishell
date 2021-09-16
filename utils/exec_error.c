@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:26:37 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 15:31:04 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 00:00:08 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,8 @@ void	exec_error_prologue(t_master *master)
 	ft_putstr_fd(master->prog_name, STDERR_FILENO);
 	if (!master->interactive_shell)
 	{
-		if (master->line_num > 0)
-		{
-			ft_putstr_fd(": line ", STDERR_FILENO);
-			ft_putsizet_fd(master->line_num, STDERR_FILENO);
-		}
+		ft_putstr_fd(": line ", STDERR_FILENO);
+		ft_putsizet_fd(master->line_num, STDERR_FILENO);
 	}
 	ft_putstr_fd(": ", STDERR_FILENO);
 }

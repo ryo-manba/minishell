@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/16 22:35:22 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/16 23:00:20 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	exec_pipe_child(
 	if (g_ex_states != MS_BLT_SUCC || !expanded)
 		exit(g_ex_states);
 	if (ms_is_builtin(expanded))
-		exit(ms_exec_builtin(var, expanded));
+		exit(ms_exec_builtin(var, expanded, es->master));
 	else
 		exec_run_cmd_exit(es->master, expanded, var);
 }
