@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 20:06:13 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/11 18:25:34 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 23:41:07 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	print_redir(t_redir *redir, int depth)
 	if (!redir)
 		return ;
 	str = pa_token_label(redir->redir_op);
-	printf("%*s(%s%s ",
+	printf("%*s(Redir %s%s ",
 		depth * SW, "",
 		redir->operand_left ? redir->operand_left->token : "",
 		str);

@@ -1,0 +1,13 @@
+echo "
+echo ""
+echo """
+echo '
+echo ''
+echo '''
+export VAR=var
+echo "$VAR
+echo $VAR"
+echo '$VAR
+echo $VAR'
+echo "$VAR'
+echo '$VAR"

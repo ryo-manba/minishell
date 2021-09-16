@@ -59,6 +59,11 @@ reft		:
 	$(MAKE) -C $(LIBFT_DIR) fclean
 	$(MAKE) re
 
+.PHONY		: runtest
+# test
+runtest		: $(NAME)
+	cd test; bash runner.sh
+
 .PHONY		: norm
 # norm
 norm		:
