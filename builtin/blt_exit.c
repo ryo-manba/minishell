@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:48:50 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/06 18:00:00 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/16 17:22:22 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int	blt_check_long_overflow(char *ex_status)
 	{
 		unum = unum * 10 + ex_status[i] - '0';
 		i++;
-		if (unum != 0 && ((sign == 1 && unum > LONG_MAX)
-				|| (sign == -1 && unum - 1 > LONG_MAX)))
+		if ((sign == 1 && unum > LONG_MAX) || \
+			(sign == -1 && unum > (uint64_t)LONG_MAX + 1ULL))
 			return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
@@ -50,8 +50,8 @@ int	blt_exit(t_stree *tree)
 
 	if (tree == NULL)
 		exit(0);
-	if (blt_is_args_correct(tree->token) == MS_BLT_FAIL
-		|| blt_check_long_overflow(tree->token) == MS_BLT_FAIL)
+	if (blt_is_args_correct(tree->token) == MS_BLT_FAIL || \
+		blt_check_long_overflow(tree->token) == MS_BLT_FAIL)
 	{
 		blt_exit_print_error(NOT_A_NUMBER, tree->token);
 		exit(2);
@@ -90,14 +90,16 @@ int	blt_is_args_correct(char *args)
 	size_t	i;
 
 	i = 0;
+	if (args[i] == '+' || args[i] == '-')
+		i += 1;
 	while (ft_isspace(args[i]))
-		i++;
+		i += 1;
 	if (args[i] == '\0')
 		return (MS_BLT_FAIL);
 	while (ft_isdigit(args[i]))
-		i++;
+		i += 1;
 	while (ft_isspace(args[i]))
-		i++;
+		i += 1;
 	if (args[i] == '\0')
 		return (MS_BLT_SUCC);
 	return (MS_BLT_FAIL);
