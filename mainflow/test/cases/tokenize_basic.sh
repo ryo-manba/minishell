@@ -10,12 +10,10 @@ echo 'a  '
 echo "a  "
 export COMMAND=echo
 $COMMAND
-echo @@@@@@@@@@@@@@@@@@@@@@@@@@@
 $COMMAND a
 ${COMMAND} a
 export COMMAND=ech
 ${COMMAND}o a
-echo @@@@@@@@@@@@@@@@@@@@@@@@@@@
 echo *
 export VAR="o  p"
 echo $VAR
@@ -28,3 +26,9 @@ ec${COMMAND} a
 export COMMAND="ho a"
 ec$COMMAND
 ec${COMMAND}
+echo *.c
+echo **.c
+echo **.*
+echo **.**
+echo *****
+echo c**c
