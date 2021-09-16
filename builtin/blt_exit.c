@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:48:50 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/16 17:22:22 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 00:00:53 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	blt_check_long_overflow(char *ex_status)
  * tree->token = 1
  * tree->token->right = 2
  */
-int	blt_exit(t_stree *tree)
+int	blt_exit(t_stree *tree, t_master *master)
 {
 	int		flag;
 	int64_t	ex_status;
@@ -53,23 +53,26 @@ int	blt_exit(t_stree *tree)
 	if (blt_is_args_correct(tree->token) == MS_BLT_FAIL || \
 		blt_check_long_overflow(tree->token) == MS_BLT_FAIL)
 	{
-		blt_exit_print_error(NOT_A_NUMBER, tree->token);
+		blt_exit_print_error(master, NOT_A_NUMBER, tree->token);
 		exit(2);
 	}
 	if (tree->right != NULL)
 	{
-		blt_exit_print_error(TOO_MANY_ARGS, tree->token);
+		blt_exit_print_error(master, TOO_MANY_ARGS, tree->token);
 		return (MS_BLT_FAIL);
 	}
 	ex_status = ft_atoi(tree->token);
-	ft_putendl_fd("exit", STDERR_FILENO);
+	if (master->interactive_shell)
+		ft_putendl_fd("exit", STDERR_FILENO);
 	exit(ex_status);
 }
 
-void	blt_exit_print_error(int flag, char *error_args)
+void	blt_exit_print_error(t_master *master, int flag, char *error_args)
 {
-	ft_putendl_fd("exit", STDERR_FILENO);
-	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+	if (master->interactive_shell)
+		ft_putendl_fd("exit", STDERR_FILENO);
+	exec_error_prologue(master);
+	ft_putstr_fd("exit: ", STDERR_FILENO);
 	if (flag == NOT_A_NUMBER)
 	{
 		ft_putstr_fd(error_args, STDERR_FILENO);
@@ -77,7 +80,7 @@ void	blt_exit_print_error(int flag, char *error_args)
 	}
 	if (flag == 2)
 	{
-		ft_putendl_fd("too many artuments", STDERR_FILENO);
+		ft_putendl_fd("too many arguments", STDERR_FILENO);
 	}
 }
 

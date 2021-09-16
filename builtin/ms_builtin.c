@@ -6,13 +6,13 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:26:14 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/16 22:58:35 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-int	ms_exec_builtin(t_shellvar *env, t_stree *tree)
+int	ms_exec_builtin(t_shellvar *env, t_stree *tree, t_master *master)
 {
 	if (ft_strcmp(tree->token, "cd") == 0)
 		return (blt_cd(env, tree->right));
@@ -21,7 +21,7 @@ int	ms_exec_builtin(t_shellvar *env, t_stree *tree)
 	if (ft_strcmp(tree->token, "env") == 0)
 		return (blt_env(env));
 	if (ft_strcmp(tree->token, "exit") == 0)
-		return (blt_exit(tree->right));
+		return (blt_exit(tree->right, master));
 	if (ft_strcmp(tree->token, "export") == 0)
 		return (blt_export(env, tree->right));
 	if (ft_strcmp(tree->token, "pwd") == 0)

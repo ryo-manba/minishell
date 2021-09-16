@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 14:53:27 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 00:36:44 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,27 +57,25 @@ t_shellvar	*ms_create_append_env(char *env)
 }
 
 // environから一文字ずつ見ていって, "key = value"に分けて構造体を作る
-t_shellvar	*ms_create_env(void)
+int	ms_create_env(t_shellvar **var)
 {
 	extern char	**environ;
-	t_shellvar	*var;
 	t_shellvar	*append_var;
 	int			i;
 
 	i = 0;
-	var = NULL;
 	while (environ[i])
 	{
 		append_var = ms_create_append_env(environ[i]);
 		if (append_var == NULL)
 		{
 			ms_env_all_free(var);
-			return (NULL);
+			return (1);
 		}
-		ms_env_add_back(&var, append_var);
+		ms_env_add_back(var, append_var);
 		i++;
 	}
-	return (var);
+	return (0);
 }
 
 // =でkeyとvalueを分ける

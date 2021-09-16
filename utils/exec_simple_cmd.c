@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/16 00:24:15 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/16 23:01:30 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *es)
 		return (MS_EXEC_FAIL);
 	}
 	if (ms_is_builtin(expanded))
-		g_ex_states = ms_exec_builtin(var, expanded);
+		g_ex_states = ms_exec_builtin(var, expanded, es->master);
 	else
 		g_ex_states = exec_ex_cmd(es->master, var, expanded);
 	if (clause->redir)
