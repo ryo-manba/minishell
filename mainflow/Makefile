@@ -62,7 +62,7 @@ reft		:
 .PHONY		: runtest
 # test
 runtest		: $(NAME)
-	cd test; bash runner.sh
+	bash test/runner.sh
 
 .PHONY		: norm
 # norm
