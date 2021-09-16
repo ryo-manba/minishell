@@ -5,10 +5,10 @@
 214
 1
 0
-../minishell: line 0: exit: -9223372036854775809: numeric argument required
+./minishell: line 0: exit: -9223372036854775809: numeric argument required
 2
 255
-../minishell: line 0: exit: 9223372036854775808: numeric argument required
+./minishell: line 0: exit: 9223372036854775808: numeric argument required
 2
-../minishell: line 0: exit: 9223372036854775809: numeric argument required
+./minishell: line 0: exit: 9223372036854775809: numeric argument required
 2

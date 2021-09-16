@@ -1,3 +1,4 @@
+given_case=$1
 MINISHELL="./minishell"
 TEST_DIR="test/"
 CASE_DIR="${TEST_DIR}cases/"
@@ -30,6 +31,9 @@ function print_result() {
 }
 
 function run_case() {
+	if [ "$given_case" != "" -a "$given_case" != $1 ]; then
+		return 0
+	fi
 	clear_evidence
 	# print_case $1
 	# set -x
@@ -41,6 +45,9 @@ function run_case() {
 
 # use bash for reference
 function run_case_bash_file() {
+	if [ "$given_case" != "" -a "$given_case" != $1 ]; then
+		return 0
+	fi
 	clear_evidence
 	# print_case $1
 	# set -x
@@ -53,6 +60,9 @@ function run_case_bash_file() {
 
 # use bash for reference
 function run_case_bash_stdin() {
+	if [ "$given_case" != "" -a "$given_case" != $1 ]; then
+		return 0
+	fi
 	clear_evidence
 	# print_case $1
 	# set -x
@@ -65,6 +75,9 @@ function run_case_bash_stdin() {
 
 # use bash for reference
 function run_case_bash_c() {
+	if [ "$given_case" != "" -a "$given_case" != $1 ]; then
+		return 0
+	fi
 	clear_evidence
 	# print_case $1
 	# set -x
@@ -77,6 +90,9 @@ function run_case_bash_c() {
 
 #
 function run_case_bash_by_c() {
+	if [ "$given_case" != "" -a "$given_case" != $1 ]; then
+		return 0
+	fi
 	clear_evidence
 	# print_case $1
 	# set -x
@@ -89,6 +105,7 @@ function run_case_bash_by_c() {
 
 rm					$RESULTFILE
 touch				$RESULTFILE
+run_case_bash_file	tokenize_basic
 run_case			unclosed_quote
 run_case_bash_file	ln_in_error_file
 run_case_bash_stdin	ln_in_error_stdin
