@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/15 09:36:41 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/17 00:58:26 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ int	mf_init_master(t_master *master, int argc, char **argv)
 	status = mf_parse_opt(master, argc, argv);
 	if (status)
 		return (status);
-	master->var = ms_create_env();
-	if (!master->var)
+	if (ms_create_env(&master->var))
 		return (MS_MS_FAIL);
 	master->stdin_isatty = isatty(STDIN_FILENO);
 	master->stderr_isatty = isatty(STDERR_FILENO);
