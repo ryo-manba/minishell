@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/16 00:19:07 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/16 22:35:22 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,15 @@ void	exec_pipe_child(
 	t_stree	*expanded;
 
 	ms_do_piping(pl->clause, dpipe->new, dpipe->before);
-	if (pl->clause->stree->subshell)
+	if (pl->clause->stree && pl->clause->stree->subshell)
 		ms_executer(pl->clause->stree->subshell, var, es);
 	expanded = ms_expand_stree(es, pl->clause->stree);
-	if (!expanded && es->failed == 0)
+	if (!expanded && es->failed == 0 && !pl->clause->redir)
 		exit(0);
 	if (!expanded && es->failed)
 		exit(1);
 	g_ex_states = exec_expand_redirect(es->master, pl->clause, var);
-	if (g_ex_states != MS_BLT_SUCC)
+	if (g_ex_states != MS_BLT_SUCC || !expanded)
 		exit(g_ex_states);
 	if (ms_is_builtin(expanded))
 		exit(ms_exec_builtin(var, expanded));
