@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:48:50 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 00:00:53 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 01:06:47 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	blt_check_long_overflow(char *ex_status)
  */
 int	blt_exit(t_stree *tree, t_master *master)
 {
-	int		flag;
 	int64_t	ex_status;
 
 	if (tree == NULL)
