@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 13:23:15 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 22:00:41 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/17 00:13:11 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,22 +85,20 @@ int	ex_split_var_token(t_ex_state *state, t_ex_unit_cursor *csr,
 t_ex_token	*ex_split(t_ex_state *state, t_ex_token *token)
 {
 	t_ex_unit_cursor	csr;
-	t_ex_token			*temp;
 
 	ex_init_cursor_mid(&csr, token);
 	while (csr.s.tail)
 	{
-		temp = csr.s.tail;
-		if (temp->token_id != XI_VAR)
+		if (csr.s.tail->token_id != XI_VAR)
 		{
 			csr.vs = 0;
-			csr.i = ft_strlen(temp->token);
-			if (!ex_clone_and_push_back_token(state, &csr, temp))
+			csr.i = ft_strlen(csr.s.tail->token);
+			if (!ex_clone_and_push_back_token(state, &csr, csr.s.tail))
 				break ;
 		}
-		else if (ex_split_var_token(state, &csr, temp))
+		else if (ex_split_var_token(state, &csr, csr.s.tail))
 			break ;
-		csr.s.tail = temp->right;
+		csr.s.tail = csr.s.tail->right;
 	}
 	ex_destroy_token(csr.s.head);
 	if (state->failed)
@@ -108,5 +106,7 @@ t_ex_token	*ex_split(t_ex_state *state, t_ex_token *token)
 		ex_destroy_token(csr.p.head);
 		return (NULL);
 	}
+	if (PA_DEBUG)
+		ex_stringify_extoken(csr.p.head);
 	return (csr.p.head);
 }

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 17:07:08 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/15 11:41:47 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/17 00:53:58 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,9 @@ int	mf_read_line(t_master *master, char **line)
 int	mf_execute(t_master *master, t_pipeline *pipeline)
 {
 	t_ex_state	es;
-	int			exec_status;
 
 	ms_ex_init_state(&es, master, master->var, g_ex_states);
-	exec_status = ms_executer(pipeline, master->var, &es);
-	if (es.failed)
-		g_ex_states = es.failed;
-	else if (exec_status)
-		g_ex_states = exec_status;
-	else
-		g_ex_states = 0;
+	ms_executer(pipeline, master->var, &es);
 	return (g_ex_states);
 }
 

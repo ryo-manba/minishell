@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 05:54:52 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 22:03:31 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/17 00:14:09 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static t_ex_token	*ex_fx_exit(t_ex_state *state, t_ex_unit_cursor *csr)
 		ex_destroy_token(csr->p.head);
 		csr->p.head = NULL;
 	}
+	else if (PA_DEBUG)
+		ex_stringify_extoken(csr->p.head);
 	return (csr->p.head);
 }
 
