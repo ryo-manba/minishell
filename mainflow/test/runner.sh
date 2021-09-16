@@ -63,6 +63,18 @@ function run_case_bash_c() {
 	# { set +x; } 2>/dev/null
 }
 
+#
+function run_case_bash_by_c() {
+	rm mine.txt ref.txt
+	# print_case $1
+	# set -x
+	bash $1.sh $MINISHELL > mine.txt 2>&1
+	bash $1.sh bash 2>&1 | sed s@^bash:@$MINISHELL:@ > ref.txt
+	diff -u mine.txt ref.txt
+	print_result $1
+	# { set +x; } 2>/dev/null
+}
+
 rm					$RESULTFILE
 touch				$RESULTFILE
 run_case			unclosed_quote
@@ -70,3 +82,4 @@ run_case_bash_file	ln_in_error_file
 run_case_bash_stdin	ln_in_error_stdin
 run_case_bash_c		ln_in_error_c
 run_case_bash_file	dollar_question
+run_case_bash_by_c	exit_arg
