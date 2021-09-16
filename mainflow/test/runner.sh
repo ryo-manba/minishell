@@ -1,4 +1,5 @@
 MINISHELL="../minishell"
+RESULTFILE="result.txt"
 function print_case() {
 	echo -e "\033[36m[CASE: ${1}]\033[m"
 }
@@ -8,8 +9,10 @@ function print_result() {
 	# { set +x; } 2>/dev/null
 	if [ $test_stat -eq 0 ]; then
 		echo -e "\033[32m[ OK ]\033[m $1"
+		echo "$1	$(date "+%s")" >> $RESULTFILE
 	else
 		echo -e "\033[31m[FAIL] $1\033[m"
+		echo "$1	FAIL" >> $RESULTFILE
 	fi
 	# set -x
 }
@@ -60,6 +63,8 @@ function run_case_bash_c() {
 	# { set +x; } 2>/dev/null
 }
 
+rm					$RESULTFILE
+touch				$RESULTFILE
 run_case			unclosed_quote
 run_case_bash_file	ln_in_error_file
 run_case_bash_stdin	ln_in_error_stdin
