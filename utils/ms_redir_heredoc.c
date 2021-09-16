@@ -3,16 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 04:16:32 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 23:51:49 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-volatile sig_atomic_t	g_ex_states = 0;
+volatile sig_atomic_t	g_ex_states;
+
+int	ms_heredoc_check_states(t_list **lst, int backup_fd)
+{
+	if (g_ex_states == 1)
+	{
+		if (dup2(backup_fd, STDIN_FILENO) == -1)
+			ms_perror("dup2");
+		if (close(backup_fd) == -1)
+			ms_perror("close");
+		ft_lstclear(lst, free);
+		return (MS_EXEC_SUCC);
+	}
+	if (close(backup_fd) == -1)
+		ms_perror("close");
+	return (MS_EXEC_SUCC);
+}
 
 // ctrl+C    -> 改行を出力して終了
 // ctrl+D    -> 終了
@@ -25,45 +41,25 @@ int	ms_heredoc_read(t_list **lst, char *delimiter)
 
 	backup_fd = dup(STDIN_FILENO);
 	if (backup_fd == -1)
+	{
+		ms_perror("dup");
 		return (MS_EXEC_FAIL);
-	ms_heredoc_signal_set();
+	}
+	if (ms_heredoc_signal_set())
+		return (MS_EXEC_FAIL);
 	while (1)
 	{
 		line = readline("> ");
 		if (line == NULL || ft_strcmp(line, delimiter) == 0 || g_ex_states == 1)
 			break ;
-		ft_lstpush_back(lst, line);
+		if (ft_lstpush_back(lst, line))
+		{
+			ms_perror("malloc");
+			g_ex_states = 1;
+			break ;
+		}
 	}
-	if (g_ex_states == 1)
-	{
-		if (dup2(backup_fd, STDIN_FILENO) == -1)
-			ms_perror("dup2");
-		close(backup_fd);
-		ft_lstclear(lst, free);
-		return (MS_EXEC_FAIL);
-	}
-	close(backup_fd);
-	return (MS_EXEC_SUCC);
-}
-
-// ctrl+Cが来たら標準入力をcloseすることでreadlineはNULLを返す
-void	ms_heredoc_sigint_handler(int sig)
-{
-	(void)sig;
-	g_ex_states = 1;
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	close(STDIN_FILENO);
-}
-
-// ctrlCを判定するためにex_statesを0にしておく
-int	ms_heredoc_signal_set(void)
-{
-	g_ex_states = 0;
-	if (signal(SIGINT, ms_heredoc_sigint_handler) == SIG_ERR)
-		return (1);
-	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
-		return (1);
-	return (0);
+	return (ms_heredoc_check_states(lst, backup_fd));
 }
 
 // 変数展開して出力する
@@ -109,11 +105,6 @@ int	ms_redirect_heredoc(t_ex_state *es, t_redir *redir)
 	quoted = !!redir->operand_right->quote_involved;
 	if (ms_heredoc_read(&lst, redir->operand_right->token) == MS_EXEC_FAIL)
 		return (MS_EXEC_FAIL);
-	if (lst == NULL)
-	{
-		close(STDIN_FILENO);
-		return (MS_EXEC_FAIL);
-	}
 	if (pipe(pipefd) == -1)
 		return (MS_EXEC_FAIL);
 	if (dup2(pipefd[0], STDIN_FILENO) == -1)

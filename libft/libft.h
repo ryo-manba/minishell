@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:08:43 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 12:03:17 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 23:33:44 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_list			*ft_lstnew(void *content);
 t_list			*ft_lstlast(t_list *lst);
 t_list			*ft_lstnew(void *content);
 t_list			*ft_lstmap(t_list *lst, void *(*f)(void *), void(*del)(void *));
-bool			ft_lstpush_back(t_list **lst, void *content);
+int				ft_lstpush_back(t_list **lst, void *content);
 
 size_t			ft_starts_with(const char *heystack, const char *needle);
 

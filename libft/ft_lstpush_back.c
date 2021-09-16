@@ -6,19 +6,19 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/23 21:57:34 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/08/16 20:58:54 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/15 23:33:31 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-bool	ft_lstpush_back(t_list **lst, void *content)
+int	ft_lstpush_back(t_list **lst, void *content)
 {
 	t_list	*newlst;
 
 	newlst = ft_lstnew(content);
 	if (!newlst)
-		return (false);
+		return (1);
 	ft_lstadd_back(lst, newlst);
-	return (true);
+	return (0);
 }

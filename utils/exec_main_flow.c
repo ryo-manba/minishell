@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main_flow.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 04:14:20 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/15 22:58:24 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,8 @@ int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 		exec_pipe_command(pl, var, state);
 	else
 		g_ex_states = exec_simple_command(pl->clause, var, state);
-	if ((pl->joint == TI_ANDAND && g_ex_states == 0)
-		|| (pl->joint == TI_PIPEPIPE && g_ex_states == 1))
+	if ((pl->joint == TI_ANDAND && g_ex_states == 0) || \
+		(pl->joint == TI_PIPEPIPE && g_ex_states == 1))
 	{
 		ms_executer(pl->next, var, state);
 	}
