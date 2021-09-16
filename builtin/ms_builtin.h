@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/14 16:45:56 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/16 23:04:46 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <fcntl.h>
 # include <sys/errno.h>
 # include <limits.h>
+# include "../utils/ms_utils.h"
 # include "../analyzer/ms_analyzer.h"
 
 # define MS_BLT_SUCC 0
@@ -37,7 +38,7 @@
 # define TOO_MANY_ARGS 2
 
 /* ms_builtin */
-int			ms_exec_builtin(t_shellvar *env, t_stree *tree);
+int			ms_exec_builtin(t_shellvar *env, t_stree *tree, t_master *master);
 int			ms_is_builtin(t_stree *tree);
 void		ms_perror(char *func_name);
 void		ms_perror_exit(char *func_name);
@@ -79,8 +80,8 @@ int			blt_env(t_shellvar *var);
 
 /* blt_exit */
 int			blt_check_long_overflow(char *status);
-int			blt_exit(t_stree *tree);
-void		blt_exit_print_error(int flag, char *error_args);
+int			blt_exit(t_stree *tree, t_master *master);
+void		blt_exit_print_error(t_master *master, int flag, char *error_args);
 int			blt_is_args_correct(char *args);
 
 /* blt_export_check */
