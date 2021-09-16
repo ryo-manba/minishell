@@ -10,3 +10,6 @@ $VAR
 var
 var'
 $VAR"
+declare -x squote1=""
+declare -x squote2=""
+declare -x squote3=""
