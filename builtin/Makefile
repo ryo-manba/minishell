@@ -20,9 +20,8 @@ TEST_SRCS	:=	main.c
 OBJS	=	$(SRCS:.c=.o)
 TEST_OBJS	:=	$(TEST_SRCS:.c=.o)
 RM		=	rm -f
-CC		= 	gcc -g #-fsanitize=address
-CFLAGS	=	-Wall -Wextra -Werror
-CFLAGS	= 	-I/usr/local/opt/readline/include/
+CC		= 	gcc -g
+CFLAGS	=	-Wall -Wextra -Werror -I/usr/local/opt/readline/include/
 LIBFT_DIR	:=	../libft
 LIBFT		:=	$(LIBFT_DIR)/libft.a
 

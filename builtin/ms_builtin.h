@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 00:37:09 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 01:00:32 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ t_shellvar	*ms_new_env(char *key, char *value);
 
 /* ms_env_utils */
 void		ms_env_add_back(t_shellvar **env, t_shellvar *new_var);
-void		ms_env_all_free(t_shellvar *var);
+void		ms_env_all_free(t_shellvar **var);
 t_shellvar	*ms_envlast(t_shellvar *env);
 void		ms_env_free(t_shellvar *env);
 
