@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:52:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/14 16:48:18 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 01:07:16 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	blt_check_and_separate_env(char *token, char *key_value[2])
 	int32_t	equal_idx;
 
 	equal_idx = ft_strchr_i(token, '=');
-	if (blt_check_export_key(token, key_value, equal_idx) == MS_BLT_FAIL)
+	if (blt_check_export_key(token, equal_idx) == MS_BLT_FAIL)
 	{
 		blt_export_print_error(token);
 		return (MS_BLT_FAIL);
@@ -33,7 +33,7 @@ int	blt_check_and_separate_env(char *token, char *key_value[2])
 
 // export の key が形式に沿っているかチェックする
 // '='がない場合文字を終端まで見る
-int	blt_check_export_key(char *token, char *key_value[2], int32_t equal_idx)
+int	blt_check_export_key(char *token, int32_t equal_idx)
 {
 	int32_t	i;
 

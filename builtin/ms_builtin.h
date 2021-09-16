@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 01:00:32 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 01:06:17 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ int			blt_is_args_correct(char *args);
 
 /* blt_export_check */
 int			blt_check_and_separate_env(char *token, char *key_value[2]);
-int			blt_check_export_key(
-				char *token, char *key_value[2], int32_t equal_pos);
+int			blt_check_export_key(char *token, int32_t equal_pos);
 void		blt_export_print_error(char *message);
 int			blt_separate_key_value(
 				int32_t equal_idx, char *token, char *key_value[2]);
