@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:05 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/14 16:44:49 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 00:36:08 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,5 +69,5 @@ void	blt_print_sort_env(t_shellvar *env)
 	copy = blt_copy_env(env);
 	blt_quick_sort(copy, ms_envlast(copy));
 	blt_print_export(copy);
-	ms_env_all_free(copy);
+	ms_env_all_free(&copy);
 }

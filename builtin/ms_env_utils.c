@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_env_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:59:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/10 03:28:40 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/17 00:35:50 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,17 @@ void	ms_env_add_back(t_shellvar **var, t_shellvar *new_var)
 	}
 }
 
-void	ms_env_all_free(t_shellvar *var)
+void	ms_env_all_free(t_shellvar **var)
 {
 	t_shellvar	*tmp;
 
-	while (var)
+	while (*var)
 	{
-		tmp = var;
-		var = var->next;
+		tmp = *var;
+		*var = (*var)->next;
 		ms_env_free(tmp);
 	}
+	free(var);
 }
 
 t_shellvar	*ms_envlast(t_shellvar *var)
