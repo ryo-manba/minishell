@@ -6,21 +6,22 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:52:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 01:07:16 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 14:37:22 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
 // 引数が正しいかチェックして key と value で分ける
-int	blt_check_and_separate_env(char *token, char *key_value[2])
+int	blt_check_and_separate_env(
+		t_master *master, char *token, char *key_value[2])
 {
 	int32_t	equal_idx;
 
 	equal_idx = ft_strchr_i(token, '=');
 	if (blt_check_export_key(token, equal_idx) == MS_BLT_FAIL)
 	{
-		blt_export_print_error(token);
+		blt_export_print_error(master, token);
 		return (MS_BLT_FAIL);
 	}
 	if (blt_separate_key_value(equal_idx, token, key_value) == MS_BLT_FAIL)
@@ -57,9 +58,10 @@ int	blt_check_export_key(char *token, int32_t equal_idx)
 	return (MS_BLT_SUCC);
 }
 
-void	blt_export_print_error(char *token)
+void	blt_export_print_error(t_master *master, char *token)
 {
-	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+	exec_error_prologue(master);
+	ft_putstr_fd("export: `", STDERR_FILENO);
 	ft_putstr_fd(token, STDERR_FILENO);
 	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 }
