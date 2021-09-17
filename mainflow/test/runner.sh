@@ -22,10 +22,10 @@ function print_result() {
 	# { set +x; } 2>/dev/null
 	if [ $test_stat -eq 0 ]; then
 		echo -e "\033[32m[ OK ]\033[m $1"
-		echo "$(date "+%s")	$1" >> $RESULTFILE
+		echo [ OK ] "$(date -R)	$1" >> $RESULTFILE
 	else
 		echo -e "\033[31m[FAIL] $1\033[m"
-		echo "FAIL	$1" >> $RESULTFILE
+		echo "[FAIL] "$(date -R)"	$1" >> $RESULTFILE
 	fi
 	# set -x
 }
@@ -109,9 +109,10 @@ run_case_bash_file	tokenize_basic
 run_case			unclosed_quote
 run_case_bash_file	subshell_basic
 run_case_bash_file	subshell_pipe
+run_case_bash_file	semicolon
 run_case_bash_file	ln_in_error_file
 run_case_bash_stdin	ln_in_error_stdin
-run_case_bash_stdin	ln_in_error_stdin_i -i
+# run_case_bash_stdin	ln_in_error_stdin_i -i
 run_case_bash_c		ln_in_error_c
 run_case_bash_file	dollar_question
 run_case			exit_arg

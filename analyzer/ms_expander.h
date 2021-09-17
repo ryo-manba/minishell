@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:38:23 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/16 15:46:42 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/18 02:58:53 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct s_ex_state
 {
 	t_master	*master;
 	t_shellvar	*var;
-	int			last_exit_status;
 	int			failed;
 	int			error_printed;
 
@@ -111,7 +110,7 @@ void		ex_add_token_csr(t_ex_part_cursor *cursor, t_ex_token *ext);
 t_ex_token	*ex_pop_src_token_csr(t_ex_part_cursor *cursor);
 
 void		ms_ex_init_state(t_ex_state *state, t_master *master,
-				t_shellvar *env, int last_exit_status);
+				t_shellvar *env);
 t_ex_token	*ex_shell_param(t_ex_state *state, t_stree *stree);
 t_ex_token	*ex_split(t_ex_state *state, t_ex_token *token);
 t_ex_token	*ex_fx(t_ex_state *state, t_ex_token *token);

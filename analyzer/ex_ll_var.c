@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:00:34 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/16 15:53:53 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/18 02:58:14 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,9 @@ static char	*ex_ll_replace_special_var(t_ex_state *state, t_ex_unit_cursor *csr)
 {
 	const char	c = csr->str[csr->substr_s];
 
+	(void)state;
 	if (c == '?')
-		return (ft_itoa(state->last_exit_status));
+		return (ft_itoa(g_ex_states));
 	return (NULL);
 }
 

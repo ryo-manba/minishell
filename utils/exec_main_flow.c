@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main_flow.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 22:58:24 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/18 02:59:40 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	exec_expand_redirect(t_master *master, t_clause *clause, t_shellvar *var)
 	t_ex_state	es;
 	int			err;
 
-	ms_ex_init_state(&es, master, var, 0);
+	ms_ex_init_state(&es, master, var);
 	rd = clause->redir;
 	err = 0;
 	while (rd)
@@ -101,7 +101,8 @@ int	ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 	else
 		g_ex_states = exec_simple_command(pl->clause, var, state);
 	if ((pl->joint == TI_ANDAND && g_ex_states == 0) || \
-		(pl->joint == TI_PIPEPIPE && g_ex_states == 1))
+		(pl->joint == TI_PIPEPIPE && g_ex_states == 1) || \
+		pl->joint == TI_SEMICOLON)
 	{
 		ms_executer(pl->next, var, state);
 	}

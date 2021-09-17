@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 09:04:37 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/18 02:58:57 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ int	exec_subshell(t_clause *clause, t_shellvar *var, t_ex_state *es)
 int	exec_ex_cmd(t_master *master, t_shellvar *var, t_stree *expanded)
 {
 	pid_t		pid;
-	t_ex_state	es;
 
-	ms_ex_init_state(&es, master, var, 0);
 	pid = fork();
 	if (pid < -1)
 	{

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:21:44 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 10:31:44 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/18 01:22:40 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*pa_syntax_final(t_parse_state *state)
 {
-	if (!state->cursor.clause->stree)
+	if (!state->cursor.clause || !state->cursor.clause->stree)
 		if (state->cursor.expecting_continuation)
 			return ("EXPECTED_CONTINUATION");
 	return (NULL);

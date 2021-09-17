@@ -10,6 +10,7 @@ CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -I/usr/local/opt/readline
 # CFLAGS		:= -g -Wall -Wextra -Werror -D PA_DEBUG=1
 ifdef MS_DEBUG
 	CFLAGS	+= -D MS_DEBUG=$(MS_DEBUG)
+	ANALYZER_DEFS	:= "PA_DEBUG=1"
 endif
 LFLAGS		:= -lreadline -lhistory
 OBJS		:= $(SRCS:.c=.o)
@@ -32,7 +33,7 @@ $(NAME): $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
 $(LIBFT)	:
 	$(MAKE) -C $(LIBFT_DIR)
 $(ANALYZER)	:
-	$(MAKE) -C $(ANALYZER_DIR)
+	$(MAKE) -C $(ANALYZER_DIR) $(ANALYZER_DEFS)
 $(UTILS)	:
 	$(MAKE) -C $(UTILS_DIR)
 $(BLTIN)	:
@@ -75,7 +76,7 @@ norm		:
 normall		:
 	$(NORM) $(SRCS) *.h
 	$(MAKE) -C $(LIBFT_DIR) norm
-	$(MAKE) -C $(ANALYZER_DIR) PA_DEBUG=1 norm
+	$(MAKE) -C $(ANALYZER_DIR) norm
 	$(MAKE) -C $(UTILS_DIR) norm
 	$(MAKE) -C $(BLTIN_DIR) norm
 	$(NORM) -v

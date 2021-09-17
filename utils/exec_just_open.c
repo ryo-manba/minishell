@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 20:14:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 04:08:57 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/18 02:59:34 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	exec_just_open(t_master *master, t_clause *clause, t_shellvar *var)
 	t_clause	*tmp_cl;
 	t_redir		*expanded_rd;
 
-	ms_ex_init_state(&es, master, var, 0);
+	ms_ex_init_state(&es, master, var);
 	tmp_cl = clause;
 	while (tmp_cl)
 	{
