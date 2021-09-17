@@ -1,9 +1,1 @@
-1631847500	tokenize_basic
-FAIL	unclosed_quote
-1631847503	subshell_basic
-1631847504	subshell_pipe
-1631847504	ln_in_error_file
-1631847504	ln_in_error_stdin
-1631847504	ln_in_error_c
-FAIL	dollar_question
-1631847507	exit_arg
+FAIL	redir
