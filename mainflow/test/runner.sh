@@ -108,6 +108,7 @@ touch				$RESULTFILE
 run_case_bash_file	tokenize_basic
 run_case			unclosed_quote
 run_case_bash_file	subshell_basic
+run_case_bash_file	subshell_pipe
 run_case_bash_file	ln_in_error_file
 run_case_bash_stdin	ln_in_error_stdin
 run_case_bash_c		ln_in_error_c

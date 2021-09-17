@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:00:34 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/11 18:47:43 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/16 15:53:53 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	ex_ll_err_bad_substitution(t_ex_state *state, t_ex_unit_cursor *csr)
 	if (csr->running != XI_BRACED_VAR)
 		ft_putstr_fd("[!!] something wrong: unexpected running type\n",
 			STDERR_FILENO);
-	ft_putstr_fd("-" MS_AZ_PROGNAME ": ", STDERR_FILENO);
+	ex_error_prologue(state);
 	write(STDERR_FILENO, csr->str + csr->vs, csr->i + 1 - csr->vs);
 	ft_putstr_fd(": bad substitution\n", STDERR_FILENO);
 	state->error_printed = 1;
