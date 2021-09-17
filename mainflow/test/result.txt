@@ -1,7 +1,8 @@
-1631807658	tokenize_basic
-1631807658	unclosed_quote
-1631807658	ln_in_error_file
-1631807659	ln_in_error_stdin
-1631807659	ln_in_error_c
-1631807659	dollar_question
-FAIL	exit_arg
+1631838192	tokenize_basic
+FAIL	unclosed_quote
+1631838195	subshell_basic
+1631838195	ln_in_error_file
+1631838196	ln_in_error_stdin
+1631838196	ln_in_error_c
+FAIL	dollar_question
+1631838199	exit_arg

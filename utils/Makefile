@@ -52,3 +52,10 @@ test: all
 	./$(TEST_NAME)
 
 .PHONY: all clean fclean re
+
+NORM		:= python3 -m norminette
+.PHONY		: norm
+# norm
+norm		:
+	$(NORM) $(SRCS) *.h
+	$(NORM) -v

@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/16 23:01:30 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 09:04:37 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
+
+int	exec_subshell(t_clause *clause, t_shellvar *var, t_ex_state *es)
+{
+	ms_executer(clause->stree->subshell, var, es);
+	return (g_ex_states);
+}
 
 int	exec_ex_cmd(t_master *master, t_shellvar *var, t_stree *expanded)
 {
@@ -50,6 +56,8 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *es)
 	int		backup_fd[3];
 	t_stree	*expanded;
 
+	if (clause->stree && clause->stree->subshell)
+		return (exec_subshell(clause, var, es));
 	expanded = ms_expand_stree(es, clause->stree);
 	if (!expanded && es->failed == 0 && !clause->redir)
 		return (MS_EXEC_SUCC);
@@ -65,11 +73,8 @@ int	exec_simple_command(t_clause *clause, t_shellvar *var, t_ex_state *es)
 		g_ex_states = ms_exec_builtin(var, expanded, es->master);
 	else
 		g_ex_states = exec_ex_cmd(es->master, var, expanded);
-	if (clause->redir)
-	{
-		if (exec_duplicate_backup_fd(backup_fd) == 1)
-			return (MS_EXEC_FAIL);
-	}
+	if (clause->redir && exec_duplicate_backup_fd(backup_fd) == 1)
+		return (MS_EXEC_FAIL);
 	return (g_ex_states);
 }
 

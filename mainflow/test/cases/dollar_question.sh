@@ -12,3 +12,11 @@ echo $?
 ../
 echo $?
 echo $?
+cat NOSUCHFILE
+echo $?
+cat ../
+echo $?
+export 0NAME=
+echo $?
+export A@
+echo $?
