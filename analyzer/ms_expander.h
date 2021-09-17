@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:38:23 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/15 04:16:53 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/16 15:46:42 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ size_t		ex_fx_expand(t_ex_state *state, t_ex_unit_cursor *cursor,
 t_ex_token	*ex_clone_and_push_back_token(t_ex_state *state,
 				t_ex_unit_cursor *csr, t_ex_token *token);
 
+void		ex_error_prologue(t_ex_state *state);
 void		*ex_error(t_ex_state *state, t_stree *stree, char *message);
 int			ex_mark_failed(t_ex_state *state, int mark, char *message);
 void		ex_destroy_token(t_ex_token *ext);

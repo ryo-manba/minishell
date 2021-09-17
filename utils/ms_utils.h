@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 00:05:05 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 10:41:31 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int		exec_simple_command(
 			t_clause *clause, t_shellvar *var, t_ex_state *state);
 int		exec_simple_redir(t_master *master,
 			t_clause *clause, t_shellvar *var, int backup_fd[3]);
+int		exec_subshell(t_clause *clause, t_shellvar *var, t_ex_state *es);
 
 /* exec_utils */
 void	exec_check_path_exit(t_master *master, t_stree *expanded, char *path);
