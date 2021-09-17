@@ -51,8 +51,8 @@ function run_case_bash_file() {
 	clear_evidence
 	# print_case $1
 	# set -x
-	$MINISHELL ${CASE_DIR}$1.sh > ${TEST_DIR}mine.txt 2>&1
-	bash ${CASE_DIR}$1.sh > ${TEST_DIR}ref.txt 2>&1
+	$MINISHELL $2 ${CASE_DIR}$1.sh > ${TEST_DIR}mine.txt 2>&1
+	bash $2 ${CASE_DIR}$1.sh > ${TEST_DIR}ref.txt 2>&1
 	compare_evidence
 	print_result $1
 	# { set +x; } 2>/dev/null
@@ -66,8 +66,8 @@ function run_case_bash_stdin() {
 	clear_evidence
 	# print_case $1
 	# set -x
-	cat ${CASE_DIR}$1.sh | $MINISHELL > ${TEST_DIR}mine.txt 2>&1
-	cat ${CASE_DIR}$1.sh | bash 2>&1 | sed s@^bash:@$MINISHELL:@ > ${TEST_DIR}ref.txt
+	cat ${CASE_DIR}$1.sh | $MINISHELL $2 > ${TEST_DIR}mine.txt 2>&1
+	cat ${CASE_DIR}$1.sh | bash $2 2>&1 | sed s@^bash:@$MINISHELL:@ > ${TEST_DIR}ref.txt
 	compare_evidence
 	print_result $1
 	# { set +x; } 2>/dev/null
@@ -111,6 +111,7 @@ run_case_bash_file	subshell_basic
 run_case_bash_file	subshell_pipe
 run_case_bash_file	ln_in_error_file
 run_case_bash_stdin	ln_in_error_stdin
+run_case_bash_stdin	ln_in_error_stdin_i -i
 run_case_bash_c		ln_in_error_c
 run_case_bash_file	dollar_question
 run_case			exit_arg

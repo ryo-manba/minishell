@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:32 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/15 09:22:50 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/17 16:59:42 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@
 
 # define MS_MS_FAIL 1
 # define MS_MS_SUCC 0
+# ifndef MS_PROMPT
+#  define MS_PROMPT "% "
+# endif
 
 extern volatile sig_atomic_t	g_ex_states;
 void		ms_sigint_handler(int sig);
@@ -30,6 +33,7 @@ typedef enum e_msopt
 {
 	MSO_DUMMY,
 	MSO_C,
+	MSO_I,
 	MSO_BARE,
 }	t_msopt;
 

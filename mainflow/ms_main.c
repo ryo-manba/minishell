@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/17 00:58:26 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/17 15:40:15 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,11 @@ int	mf_init_master(t_master *master, int argc, char **argv)
 	master->stdin_isatty = isatty(STDIN_FILENO);
 	master->stderr_isatty = isatty(STDERR_FILENO);
 	master->args_given = argc - 1;
-	master->interactive_shell = !master->opt_c
-		&& master->args_given == 0
-		&& master->stdin_isatty
-		&& master->stderr_isatty;
+	master->interactive_shell = (master->opt_i && !master->filepath)
+		|| (!master->opt_c
+			&& master->args_given == 0
+			&& master->stdin_isatty
+			&& master->stderr_isatty);
 	if (!master->opt_c)
 		master->line_num += 1;
 	if (MS_DEBUG)

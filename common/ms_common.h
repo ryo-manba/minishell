@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 00:02:05 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/15 05:05:42 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/17 13:22:00 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_master
 	int				stdin_isatty;
 	int				stderr_isatty;
 	int				opt_c;
+	int				opt_i;
 	t_splitcursor	spcursor;
 	int				interactive_shell;
 	char			*filepath;
