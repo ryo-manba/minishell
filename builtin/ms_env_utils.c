@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:59:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 00:35:50 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 12:26:13 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	ms_env_all_free(t_shellvar **var)
 		*var = (*var)->next;
 		ms_env_free(tmp);
 	}
-	free(var);
 }
 
 t_shellvar	*ms_envlast(t_shellvar *var)
