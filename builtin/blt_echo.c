@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_echo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 14:53:20 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 12:36:56 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/17 14:24:57 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * tree->token = -n
  * tree->right->token = hello
  */
-int	blt_echo(t_stree *tree)
+int	blt_echo(t_stree *tree, t_master *master)
 {
 	int	has_option;
 
@@ -39,14 +39,15 @@ int	blt_echo(t_stree *tree)
 		ft_putchar_fd('\n', STDOUT_FILENO);
 	if (errno != 0)
 	{
-		blt_echo_print_error(strerror(errno));
+		blt_echo_print_error(master, strerror(errno));
 		return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
 }
 
-void	blt_echo_print_error(char *message)
+void	blt_echo_print_error(t_master *master, char *message)
 {
-	ft_putstr_fd("minishell: echo: write error: ", STDERR_FILENO);
+	exec_error_prologue(master);
+	ft_putstr_fd("echo: write error: ", STDERR_FILENO);
 	ft_putendl_fd(message, STDERR_FILENO);
 }

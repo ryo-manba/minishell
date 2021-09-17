@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:30:08 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/12 22:56:18 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 14:23:23 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 // 最初のgetcwdで失敗してもエラー出さない
 // PWD がunsetされてたら参照できないので、移動前にgetcwdで保持しておく
 // 第一引数のみ適用される、それ以降は無視される
-int	blt_cd(t_shellvar *env, t_stree *tree)
+int	blt_cd(t_shellvar *env, t_stree *tree, t_master *master)
 {
 	char		*old_pwd;
 
 	if (tree != NULL && ft_strlen(tree->token) > 255)
 	{
-		blt_cd_print_error(tree->token, "File name too long");
+		blt_cd_print_error(master, tree->token, "File name too long");
 		return (MS_BLT_FAIL);
 	}
 	old_pwd = getcwd(NULL, 0);
-	if (blt_cd_change_dir(env, tree) == MS_BLT_SUCC && \
-		blt_cd_update_pwd(env, old_pwd) == MS_BLT_SUCC)
+	if (blt_cd_change_dir(env, tree, master) == MS_BLT_SUCC && \
+		blt_cd_update_pwd(master, env, old_pwd) == MS_BLT_SUCC)
 	{
 		free(old_pwd);
 		return (MS_BLT_SUCC);
@@ -35,45 +35,45 @@ int	blt_cd(t_shellvar *env, t_stree *tree)
 	return (MS_BLT_FAIL);
 }
 
-int	blt_cd_change_dir(t_shellvar *env, t_stree *tree)
+int	blt_cd_change_dir(t_shellvar *env, t_stree *tree, t_master *master)
 {
 	if (tree == NULL)
 	{
-		if (blt_cd_home(env) == MS_BLT_FAIL)
+		if (blt_cd_home(env, master) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);
 	}
 	else
 	{
 		if (chdir(tree->token) == -1)
 		{
-			blt_cd_print_error(tree->token, strerror(errno));
+			blt_cd_print_error(master, tree->token, strerror(errno));
 			return (MS_BLT_FAIL);
 		}
 	}
 	return (MS_BLT_SUCC);
 }
 
-int	blt_cd_home(t_shellvar *env)
+int	blt_cd_home(t_shellvar *env, t_master *master)
 {
 	t_shellvar	*home_pos;
 
 	home_pos = ms_search_key(env, "HOME");
 	if (home_pos == NULL)
 	{
-		blt_cd_print_error("HOME", "not set");
+		blt_cd_print_error(master, "HOME", "not set");
 		return (MS_BLT_FAIL);
 	}
 	else if (chdir(home_pos->value) == -1)
 	{
-		blt_cd_print_error(home_pos->value, strerror(errno));
+		blt_cd_print_error(master, home_pos->value, strerror(errno));
 		return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
 }
 
-void	blt_cd_print_error(char *dirname, char *message)
+void	blt_cd_print_error(t_master *master, char *dirname, char *message)
 {
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	exec_error_prologue(master);
 	if (dirname == NULL)
 		perror("getcwd");
 	else
@@ -86,7 +86,7 @@ void	blt_cd_print_error(char *dirname, char *message)
 }
 
 // PWD, OLDPWDが unsetされている場合は新しく作らない
-int	blt_cd_update_pwd(t_shellvar *env, char *old_pwd)
+int	blt_cd_update_pwd(t_master *master, t_shellvar *env, char *old_pwd)
 {
 	char	*pwd;
 
@@ -94,7 +94,7 @@ int	blt_cd_update_pwd(t_shellvar *env, char *old_pwd)
 	pwd = getcwd(NULL, 0);
 	if (errno != 0)
 	{
-		blt_cd_print_error(NULL, NULL);
+		blt_cd_print_error(master, NULL, NULL);
 		return (MS_BLT_FAIL);
 	}
 	if (old_pwd == NULL)

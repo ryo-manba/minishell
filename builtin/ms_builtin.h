@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 12:14:57 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 14:37:06 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,15 @@ t_shellvar	*ms_envlast(t_shellvar *env);
 void		ms_env_free(t_shellvar *env);
 
 /* blt_cd */
-int			blt_cd(t_shellvar *env, t_stree *tree);
-int			blt_cd_change_dir(t_shellvar *env, t_stree *tree);
-int			blt_cd_home(t_shellvar *env);
-void		blt_cd_print_error(char *dirname, char *message);
-int			blt_cd_update_pwd(t_shellvar *env, char *old_pwd);
+int			blt_cd(t_shellvar *env, t_stree *tree, t_master *master);
+int			blt_cd_change_dir(t_shellvar *env, t_stree *tree, t_master *master);
+int			blt_cd_home(t_shellvar *env, t_master *master);
+void		blt_cd_print_error(t_master *master, char *dirname, char *message);
+int			blt_cd_update_pwd(t_master *master, t_shellvar *env, char *old_pwd);
 
 /* blt_echo */
-int			blt_echo(t_stree *tree);
-void		blt_echo_print_error(char *message);
+int			blt_echo(t_stree *tree, t_master *master);
+void		blt_echo_print_error(t_master *master, char *message);
 
 /* blt_env_sort */
 t_shellvar	*blt_partition(t_shellvar *first, t_shellvar *last);
@@ -85,9 +85,10 @@ void		blt_exit_print_error(t_master *master, int flag, char *error_args);
 int			blt_is_args_correct(char *args);
 
 /* blt_export_check */
-int			blt_check_and_separate_env(char *token, char *key_value[2]);
+int			blt_check_and_separate_env(
+				t_master *master, char *token, char *key_value[2]);
 int			blt_check_export_key(char *token, int32_t equal_pos);
-void		blt_export_print_error(char *message);
+void		blt_export_print_error(t_master *master, char *message);
 int			blt_separate_key_value(
 				int32_t equal_idx, char *token, char *key_value[2]);
 
@@ -107,8 +108,8 @@ t_shellvar	*ms_search_key(t_shellvar *env, char *key);
 int			blt_append_or_join_env(t_shellvar *env, char *key_value[2]);
 int			blt_check_and_export(
 				t_stree *tree, t_shellvar *var, char *key_value[2]);
-int			blt_export(t_shellvar *env, t_stree *tree);
-int			blt_export_env(t_shellvar *env, t_stree *tok);
+int			blt_export(t_shellvar *env, t_stree *tree, t_master *master);
+int			blt_export_env(t_shellvar *env, t_stree *tree, t_master *master);
 int			blt_join_env(t_shellvar *key_pos, char *key_value[2]);
 
 /* blt_pwd */

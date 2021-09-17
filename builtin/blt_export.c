@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:12 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/14 18:12:21 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 14:38:05 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,13 @@ int	blt_check_and_export(t_stree *tree, t_shellvar *var, char *key_value[2])
 */
 // 'export' 単体の場合は環境変数をソートして'declare -x hoge="huga"'の形式で出力する
 // 環境変数を追加または更新する
-int	blt_export(t_shellvar *var, t_stree *tree)
+int	blt_export(t_shellvar *var, t_stree *tree, t_master *master)
 {
 	if (tree == NULL)
 		blt_print_sort_env(var);
 	else
 	{
-		if (blt_export_env(var, tree) == MS_BLT_FAIL)
+		if (blt_export_env(var, tree, master) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
@@ -77,7 +77,7 @@ int	blt_export(t_shellvar *var, t_stree *tree)
 // tokenに入ってる引数をチェックしながらexportする
 // 不正な値の場合はその都度エラー表示する。
 // 一つでもエラーが出たら終了ステータスは1
-int	blt_export_env(t_shellvar *var, t_stree *tree)
+int	blt_export_env(t_shellvar *var, t_stree *tree, t_master *master)
 {
 	char	*key_value[2];
 	int		ex_status;
@@ -85,11 +85,11 @@ int	blt_export_env(t_shellvar *var, t_stree *tree)
 	ex_status = MS_BLT_SUCC;
 	while (tree != NULL)
 	{
-		if (blt_check_and_separate_env(tree->token, key_value) == MS_BLT_FAIL)
+		if (blt_check_and_separate_env(master, tree->token, key_value))
 			ex_status = MS_BLT_FAIL;
 		else
 		{
-			if (blt_check_and_export(tree, var, key_value) == MS_BLT_FAIL)
+			if (blt_check_and_export(tree, var, key_value))
 				return (MS_BLT_FAIL);
 		}
 		tree = tree->right;
