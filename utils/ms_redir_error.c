@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:32:51 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 22:46:02 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 16:49:33 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	ms_check_fd(char *fd)
 	return (0);
 }
 
-int	ms_check_fd_print_error(t_redir *rd)
+int	ms_check_fd_print_error(t_redir *rd, t_master *master)
 {
 	int	err;
 
@@ -45,7 +45,7 @@ int	ms_check_fd_print_error(t_redir *rd)
 	{
 		if (errno == EBADF)
 			err = ms_check_fd(rd->operand_left->token);
-		ms_redir_print_error(err, rd->operand_left->token);
+		ms_redir_print_error(master, err, rd->operand_left->token);
 	}
 	else
 	{
@@ -60,9 +60,9 @@ int	ms_check_fd_print_error(t_redir *rd)
 // 文字列の種類
 // EACCES: file_name
 // OVER_FD: fd
-void	ms_redir_print_error(int err, char *s)
+void	ms_redir_print_error(t_master *master, int err, char *s)
 {
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	exec_error_prologue(master);
 	if (err == EACCES)
 	{
 		ft_putstr_fd(s, STDERR_FILENO);

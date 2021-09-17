@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 10:41:31 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/17 16:55:21 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,8 @@ void	ms_middle_pipe(int pipe_fd[2], int before_pipe[2]);
 
 /* ms_redir_error */
 int		ms_check_fd(char *fd);
-int		ms_check_fd_print_error(t_redir *rd);
-void	ms_redir_print_error(int err, char *s);
+int		ms_check_fd_print_error(t_redir *rd, t_master *master);
+void	ms_redir_print_error(t_master *master, int err, char *s);
 
 /* ms_redirect */
 int		ms_open_at(int fd, const char *path, int oflag, int mode);

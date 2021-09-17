@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 22:58:24 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 16:56:09 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	exec_expand_redirect(t_master *master, t_clause *clause, t_shellvar *var)
 			return (MS_EXEC_FAIL);
 		if (ms_redirect(&es, expanded_rd) == MS_EXEC_FAIL)
 		{
-			err = ms_check_fd_print_error(expanded_rd);
+			err = ms_check_fd_print_error(expanded_rd, master);
 			pa_destroy_redir(expanded_rd);
 			return (err);
 		}
