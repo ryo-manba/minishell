@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_echo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 14:53:20 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/06 17:59:49 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/17 12:36:56 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	blt_echo(t_stree *tree)
 
 	errno = 0;
 	has_option = 0;
-	if (tree != NULL && ft_strcmp(tree->token, "-n") == 0)
+	while (tree != NULL && ft_strcmp(tree->token, "-n") == 0)
 	{
 		has_option = 1;
 		tree = tree->right;

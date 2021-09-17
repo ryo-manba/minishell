@@ -1,5 +1,5 @@
 echo hello
-echo 123456789:=?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_abcdefghijklmnopqrstuvwxyz
+echo 123456789:=?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_abcdefghijklmnopqrstuvwxyz
 echo echo echo echo echo
 echo cd echo env exit export pwd unset
 echo "  "  "  " "  " hello
@@ -19,7 +19,12 @@ echo $ $ $ $ $ $
 echo 1 $NO_SUCH_ENV 2 "$NO_SUCH_ENV" 3 '$NO_SUCH_ENV'
 echo -n hello
 echo "-n" hello
+echo
 echo '-n' hello
+echo
 echo -n -n -n -n -n -n -n -n -n -n -n -n hello
+echo
 echo -n $PWD $OLDPWD
+echo
 echo -n "$PWD $OLDPWD"
+echo
