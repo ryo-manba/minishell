@@ -14,6 +14,7 @@ SRCS 		:=	blt_cd.c \
 				ms_builtin.c \
 				ms_create_env.c \
 				ms_env_utils.c\
+				ms_env_preset.c\
 
 TEST_SRCS	:=	main.c
 

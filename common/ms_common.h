@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 00:02:05 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/17 13:22:00 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/18 11:56:51 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_shellvar
 
 typedef struct s_master
 {
+	char			*staring_prog_name;
 	char			*prog_name;
 	int				args_given;
 	int				stdin_isatty;

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/17 15:40:15 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/18 12:19:30 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,11 @@ int	mf_init_master(t_master *master, int argc, char **argv)
 
 	ft_bzero(master, sizeof(t_master));
 	master->prog_name = argv[0];
+	master->staring_prog_name = master->prog_name;
 	status = mf_parse_opt(master, argc, argv);
 	if (status)
 		return (status);
-	if (ms_create_env(&master->var))
+	if (ms_create_env(&master->var, master))
 		return (MS_MS_FAIL);
 	master->stdin_isatty = isatty(STDIN_FILENO);
 	master->stderr_isatty = isatty(STDERR_FILENO);
@@ -69,12 +70,12 @@ int	mf_init_master(t_master *master, int argc, char **argv)
 	return (MS_MS_SUCC);
 }
 
-int	mf_destroy_master(t_master *master, int status)
+int	mf_destroy_master(t_master *master)
 {
-	if (status)
-		g_ex_states = status;
-	else
-		g_ex_states = master->failed;
+	// if (status)
+	// 	g_ex_states = status;
+	// else
+	// 	g_ex_states = master->failed;
 	while (master->spcursor.lines
 		&& master->spcursor.lines[master->spcursor.i])
 		free(master->spcursor.lines[master->spcursor.i++]);
@@ -102,5 +103,5 @@ int	main(int argc, char **argv)
 	if (status)
 		return (status);
 	mf_loop(&master);
-	return (mf_destroy_master(&master, 0));
+	return (mf_destroy_master(&master));
 }
