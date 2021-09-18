@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:26:14 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 14:30:51 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/18 15:23:44 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ms_exec_builtin(t_shellvar *env, t_stree *tree, t_master *master)
 	if (ft_strcmp(tree->token, "export") == 0)
 		return (blt_export(env, tree->right, master));
 	if (ft_strcmp(tree->token, "pwd") == 0)
-		return (blt_pwd());
+		return (blt_pwd(env));
 	if (ft_strcmp(tree->token, "unset") == 0)
 		return (blt_unset(env, tree->right));
 	return (0);

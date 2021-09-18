@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:30:08 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 14:23:23 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/18 15:30:13 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	blt_cd(t_shellvar *env, t_stree *tree, t_master *master)
 	}
 	old_pwd = getcwd(NULL, 0);
 	if (blt_cd_change_dir(env, tree, master) == MS_BLT_SUCC && \
-		blt_cd_update_pwd(master, env, old_pwd) == MS_BLT_SUCC)
+		blt_cd_update_pwd(env, old_pwd, tree->token) == MS_BLT_SUCC)
 	{
 		free(old_pwd);
 		return (MS_BLT_SUCC);
@@ -83,27 +83,4 @@ void	blt_cd_print_error(t_master *master, char *dirname, char *message)
 		ft_putstr_fd(": ", STDERR_FILENO);
 		ft_putendl_fd(message, STDERR_FILENO);
 	}
-}
-
-// PWD, OLDPWDが unsetされている場合は新しく作らない
-int	blt_cd_update_pwd(t_master *master, t_shellvar *env, char *old_pwd)
-{
-	char	*pwd;
-
-	errno = 0;
-	pwd = getcwd(NULL, 0);
-	if (errno != 0)
-	{
-		blt_cd_print_error(master, NULL, NULL);
-		return (MS_BLT_FAIL);
-	}
-	if (old_pwd == NULL)
-	{
-		free(pwd);
-		return (MS_BLT_SUCC);
-	}
-	if (blt_search_and_update_env(env, "OLDPWD", old_pwd) == MS_BLT_FAIL || \
-		blt_search_and_update_env(env, "PWD", pwd) == MS_BLT_FAIL)
-		return (MS_BLT_FAIL);
-	return (MS_BLT_SUCC);
 }

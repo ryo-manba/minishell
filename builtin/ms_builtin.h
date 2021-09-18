@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtin.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/18 11:59:43 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/18 15:36:09 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,20 @@ void		ms_env_free(t_shellvar *env);
 /* ms_env_preset */
 int			ms_preset_env(t_shellvar **var, t_master *master);
 
+/* blt_cd_no_current */
+char		*blt_check_slash_join(char *env_pwd, char *arg);
+int			blt_cd_no_current(t_shellvar *env, char *arg);
+int			blt_cd_no_prevdir(t_shellvar *env, char *now_pwd);
+
+/* blt_cd_update_pwd */
+int			blt_cd_update(t_shellvar *env, char *old_pwd, char *now_pwd);
+int			blt_cd_update_pwd(t_shellvar *env, char *old_pwd, char *arg);
+
 /* blt_cd */
 int			blt_cd(t_shellvar *env, t_stree *tree, t_master *master);
 int			blt_cd_change_dir(t_shellvar *env, t_stree *tree, t_master *master);
 int			blt_cd_home(t_shellvar *env, t_master *master);
 void		blt_cd_print_error(t_master *master, char *dirname, char *message);
-int			blt_cd_update_pwd(t_master *master, t_shellvar *env, char *old_pwd);
 
 /* blt_echo */
 int			blt_echo(t_stree *tree, t_master *master);
@@ -116,7 +124,8 @@ int			blt_export_env(t_shellvar *env, t_stree *tree, t_master *master);
 int			blt_join_env(t_shellvar *key_pos, char *key_value[2]);
 
 /* blt_pwd */
-int			blt_pwd(void);
+int			blt_print_env_pwd(t_shellvar *var);
+int			blt_pwd(t_shellvar *var);
 
 /* blt_unset */
 int			blt_unset(t_shellvar *env, t_stree *tree);
