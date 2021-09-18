@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_print.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:05 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 12:25:46 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/18 10:00:22 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,29 @@ int	blt_check_escape(char *s)
 	if (ft_strlen(s) == 1 && ft_strchr_i("\"'`$\\", s[0]) != -1)
 		return (1);
 	return (0);
+}
+
+void	blt_putstr_with_escaping(char *str)
+{
+	size_t	n;
+
+	while (*str)
+	{
+		if (ft_strchr_i("\"$", *str) >= 0)
+		{
+			ft_putchar_fd('\\', STDOUT_FILENO);
+			ft_putchar_fd(*str, STDOUT_FILENO);
+			str += 1;
+		}
+		else
+		{
+			n = 0;
+			while (str[n] && ft_strchr_i("\"$", str[n]) < 0)
+				n += 1;
+			ft_putnstr_fd(str, n, STDOUT_FILENO);
+			str += n;
+		}
+	}
 }
 
 // ソートするため環境変数のコピーを作る
@@ -53,9 +76,7 @@ void	blt_print_export(t_shellvar *env)
 		{
 			ft_putstr_fd(tmp->key, STDOUT_FILENO);
 			ft_putstr_fd("=\"", STDOUT_FILENO);
-			if (blt_check_escape(tmp->value))
-				ft_putchar_fd('\\', STDOUT_FILENO);
-			ft_putstr_fd(tmp->value, STDOUT_FILENO);
+			blt_putstr_with_escaping(tmp->value);
 			ft_putendl_fd("\"", STDOUT_FILENO);
 		}
 		tmp = tmp->next;

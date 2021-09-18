@@ -54,6 +54,10 @@ fclean		: clean
 # fclean all submodules without libft and rebuild.
 re			: fclean all
 
+.PHONY		: dere
+dere		:
+	$(MAKE) MS_DEBUG=1 re
+
 .PHONY		: reft
 # fclean all submodules including libft and rebuild.
 reft		:

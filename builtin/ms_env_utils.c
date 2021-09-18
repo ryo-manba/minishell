@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_env_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:59:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 12:26:13 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/18 10:00:33 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,31 @@ void	ms_env_free(t_shellvar *env)
 	free(env->key);
 	free(env->value);
 	free(env);
+}
+
+int	ms_preset_env(t_shellvar **var)
+{
+	t_shellvar	*temp;
+	char		*v;
+
+	if (!ms_search_key(*var, "OLDPWD")
+		&& blt_append_env(*var, "OLDPWD", NULL))
+		return (1);
+	temp = ms_search_key(*var, "SHLVL");
+	if (!temp || !temp->value)
+	{
+		if (blt_append_env(*var, "SHLVL", "1"))
+			return (1);
+	}
+	else
+	{
+		v = ft_itoa(ft_atoi(temp->value) + 1);
+		if (!v || !!blt_update_env(temp, v))
+		{
+			free(v);
+			return (1);
+		}
+		free(v);
+	}
+	return (0);
 }

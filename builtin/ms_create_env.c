@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_create_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 14:53:27 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 00:36:44 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/18 03:52:54 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,11 @@ int	ms_create_env(t_shellvar **var)
 		}
 		ms_env_add_back(var, append_var);
 		i++;
+	}
+	if (ms_preset_env(var))
+	{
+		ms_env_all_free(var);
+		return (1);
 	}
 	return (0);
 }
