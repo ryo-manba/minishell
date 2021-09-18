@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 14:53:27 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/18 11:57:38 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/18 18:38:39 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_shellvar	*ms_create_append_env(char *env)
 }
 
 // environから一文字ずつ見ていって, "key = value"に分けて構造体を作る
-int	ms_create_env(t_shellvar **var, t_master *master)
+int	ms_create_env(t_shellvar **var)
 {
 	extern char	**environ;
 	t_shellvar	*append_var;
@@ -75,7 +75,7 @@ int	ms_create_env(t_shellvar **var, t_master *master)
 		ms_env_add_back(var, append_var);
 		i++;
 	}
-	if (ms_preset_env(var, master))
+	if (ms_preset_env(var))
 	{
 		ms_env_all_free(var);
 		return (1);

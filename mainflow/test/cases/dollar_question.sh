@@ -20,13 +20,13 @@ export 0NAME=
 echo $?
 export A@
 echo $?
-$SHELL -c "echo >"
+$EX -c "echo >"
 echo $?
-$SHELL -c "echo > *"
+$EX -c "echo > *"
 echo $?
-$SHELL -c "echo ; ;"
+$EX -c "echo ; ;"
 echo $?
-$SHELL -c "hello"
+$EX -c "hello"
 echo $?
-$SHELL -c "${VAR }"
+$EX -c "${VAR }"
 echo $?

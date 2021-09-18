@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 11:59:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/18 12:10:28 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/18 18:38:16 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,31 +44,11 @@ static int	ms_preset_env_shlvl(t_shellvar **var)
 	return (0);
 }
 
-static int	ms_preset_env_shell(t_shellvar **var, t_master *master)
-{
-	t_shellvar	*temp;
-
-	temp = ms_search_key(*var, "SHELL");
-	if (temp)
-	{
-		if (blt_update_env(temp, master->staring_prog_name))
-			return (1);
-	}
-	else
-	{
-		if (blt_append_env(*var, "SHELL", master->staring_prog_name))
-			return (1);
-	}
-	return (0);
-}
-
-int	ms_preset_env(t_shellvar **var, t_master *master)
+int	ms_preset_env(t_shellvar **var)
 {
 	if (ms_preset_env_oldpwd(var))
 		return (1);
 	if (ms_preset_env_shlvl(var))
-		return (1);
-	if (ms_preset_env_shell(var, master))
 		return (1);
 	return (0);
 }

@@ -51,8 +51,8 @@ function run_case_bash_file() {
 	clear_evidence
 	# print_case $1
 	# set -x
-	$MINISHELL $2 ${CASE_DIR}$1.sh > ${TEST_DIR}mine.txt 2>&1
-	bash $2 ${CASE_DIR}$1.sh 2>&1 | sed s@^\/bin\/bash:@$MINISHELL:@ > ${TEST_DIR}ref.txt
+	EX=$MINISHELL $MINISHELL $2 ${CASE_DIR}$1.sh > ${TEST_DIR}mine.txt 2>&1
+	EX="bash" bash $2 ${CASE_DIR}$1.sh 2>&1 | sed s@^bash:@$MINISHELL:@ > ${TEST_DIR}ref.txt
 	compare_evidence
 	print_result $1
 	# { set +x; } 2>/dev/null
