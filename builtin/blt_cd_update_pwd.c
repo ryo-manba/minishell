@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 15:29:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/18 15:34:58 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/18 19:34:59 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	blt_cd_update(t_shellvar *env, char *old_pwd, char *now_pwd)
 }
 
 // PWD, OLDPWDが unsetされている場合は新しく作らない
-int	blt_cd_update_pwd(t_shellvar *env, char *old_pwd, char *arg)
+int	blt_cd_update_pwd(t_shellvar *env, t_stree *tree, char *old_pwd)
 {
 	char	*pwd;
 	int		flag;
@@ -30,7 +30,11 @@ int	blt_cd_update_pwd(t_shellvar *env, char *old_pwd, char *arg)
 	errno = 0;
 	pwd = getcwd(NULL, 0);
 	if (errno != 0)
-		return (blt_cd_no_current(env, arg));
+	{
+		if (tree == NULL)
+			return (MS_BLT_FAIL);
+		return (blt_cd_no_current(env, tree->token));
+	}
 	else if (old_pwd == NULL)
 		flag = blt_cd_no_prevdir(env, pwd);
 	else

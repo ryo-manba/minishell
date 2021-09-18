@@ -121,3 +121,6 @@ run_case_bash_file	echo
 run_case_bash_file	pipe
 run_case_bash_file	pwd
 run_case_bash_file	export
+run_case_bash_file	cd
+run_case_bash_file	unset
+run_case_bash_file	env

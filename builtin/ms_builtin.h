@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtin.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/18 18:38:48 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/18 19:33:41 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int			blt_cd_no_prevdir(t_shellvar *env, char *now_pwd);
 
 /* blt_cd_update_pwd */
 int			blt_cd_update(t_shellvar *env, char *old_pwd, char *now_pwd);
-int			blt_cd_update_pwd(t_shellvar *env, char *old_pwd, char *arg);
+int			blt_cd_update_pwd(t_shellvar *env, t_stree *tree, char *old_pwd);
 
 /* blt_cd */
 int			blt_cd(t_shellvar *env, t_stree *tree, t_master *master);

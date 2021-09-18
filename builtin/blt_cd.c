@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:30:08 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/18 15:30:13 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/18 19:36:24 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	blt_cd(t_shellvar *env, t_stree *tree, t_master *master)
 		return (MS_BLT_FAIL);
 	}
 	old_pwd = getcwd(NULL, 0);
-	if (blt_cd_change_dir(env, tree, master) == MS_BLT_SUCC && \
-		blt_cd_update_pwd(env, old_pwd, tree->token) == MS_BLT_SUCC)
+	if ((blt_cd_change_dir(env, tree, master) == MS_BLT_SUCC) && \
+		blt_cd_update_pwd(env, tree, old_pwd) == MS_BLT_SUCC)
 	{
 		free(old_pwd);
 		return (MS_BLT_SUCC);
