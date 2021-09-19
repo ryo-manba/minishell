@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 11:59:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/18 18:38:16 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 20:48:08 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 
 static int	ms_preset_env_oldpwd(t_shellvar **var)
 {
-	if (!ms_search_key(*var, "OLDPWD")
-		&& blt_append_env(*var, "OLDPWD", NULL))
+	t_shellvar	*target;
+
+	target = ms_search_key(*var, "OLDPWD");
+	if (target)
+		blt_delvalue_env(target);
+	else if (blt_append_env(*var, "OLDPWD", NULL))
 		return (1);
 	return (0);
 }

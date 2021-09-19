@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_cd_update_pwd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 15:29:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/18 19:34:59 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/19 20:41:39 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

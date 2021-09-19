@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 11:32:40 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 20:45:44 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void		blt_print_sort_env(t_shellvar *env);
 int			blt_append_env(t_shellvar *env, char *key, char *value);
 int			blt_append_or_update_env(t_shellvar *env, char *key, char *value);
 int			blt_update_env(t_shellvar *update_pos, char *value);
+int			blt_delvalue_env(t_shellvar *update_pos);
 t_shellvar	*ms_search_key(t_shellvar *env, char *key);
 
 /* blt_export */

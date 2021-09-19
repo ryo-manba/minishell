@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:09 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/11 20:39:25 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/19 20:47:56 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,14 @@ int	blt_update_env(t_shellvar *update_pos, char *value)
 		ms_perror("malloc");
 		return (MS_BLT_FAIL);
 	}
+	return (MS_BLT_SUCC);
+}
+
+// delete value of given var(will not unset)
+int	blt_delvalue_env(t_shellvar *update_pos)
+{
+	free(update_pos->value);
+	update_pos->value = NULL;
 	return (MS_BLT_SUCC);
 }
 
