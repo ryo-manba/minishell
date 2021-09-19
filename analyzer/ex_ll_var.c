@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:00:34 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/18 02:58:14 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 11:44:43 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static char	*ex_ll_replace_nominal_var(t_ex_state *state, t_ex_unit_cursor *csr)
 		ex_mark_failed(state, 1, "[LL] replace nominal var");
 		return (NULL);
 	}
-	var = state->var;
+	var = state->master->var;
 	val = NULL;
 	while (var)
 	{

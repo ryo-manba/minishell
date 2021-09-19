@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 17:07:08 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/18 02:59:30 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 11:45:08 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	mf_execute(t_master *master, t_pipeline *pipeline)
 {
 	t_ex_state	es;
 
-	ms_ex_init_state(&es, master, master->var);
-	ms_executer(pipeline, master->var, &es);
+	ms_ex_init_state(&es, master);
+	ms_executer(pipeline, master, &es);
 	return (g_ex_states);
 }
 

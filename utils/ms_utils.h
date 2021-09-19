@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 16:55:21 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/19 11:55:31 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,20 +72,20 @@ char	*exec_strjoin(char *path, char *cmd);
 
 /* exec_just_open */
 void	exec_all_open(t_redir *expand_rd);
-int		exec_just_open(t_master *master, t_clause *clause, t_shellvar *var);
+int		exec_just_open(t_master *master, t_clause *clause);
 
 /* exec_main_flow */
 char	**exec_create_command(t_stree *tree);
 int		exec_expand_redirect(t_master *master,
-			t_clause *clause, t_shellvar *var);
+			t_clause *clause);
 void	exec_update_exitstatus(pid_t pid);
-int		ms_executer(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
+int		ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state);
 
 /* exec_pipe_cmd */
 int		exec_check_piping(t_dpipe *dpipe, t_clause *clause);
-void	exec_pipe_child(
-			t_pipeline *pl, t_shellvar *var, t_ex_state *state, t_dpipe *dpipe);
-int		exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state);
+void	exec_pipe_child(t_pipeline *pl, t_master *master,
+			t_ex_state *state, t_dpipe *dpipe);
+int		exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state);
 void	exec_pipe_parent(t_dpipe *dpipe);
 void	exec_run_cmd_exit(t_master *master, t_stree *expanded, t_shellvar *var);
 
@@ -97,10 +97,10 @@ char	**exec_restore_env(t_shellvar *var);
 /* exec_simple_cmd */
 int		exec_ex_cmd(t_master *master, t_shellvar *var, t_stree *expanded);
 int		exec_simple_command(
-			t_clause *clause, t_shellvar *var, t_ex_state *state);
+			t_clause *clause, t_master *master, t_ex_state *state);
 int		exec_simple_redir(t_master *master,
-			t_clause *clause, t_shellvar *var, int backup_fd[3]);
-int		exec_subshell(t_clause *clause, t_shellvar *var, t_ex_state *es);
+			t_clause *clause, int backup_fd[3]);
+int		exec_subshell(t_clause *clause, t_master *master, t_ex_state *es);
 
 /* exec_utils */
 void	exec_check_path_exit(t_master *master, t_stree *expanded, char *path);

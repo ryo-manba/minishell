@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/18 18:38:54 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 11:54:48 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,6 @@ int	mf_init_master(t_master *master, int argc, char **argv)
 
 int	mf_destroy_master(t_master *master)
 {
-	// if (status)
-	// 	g_ex_states = status;
-	// else
-	// 	g_ex_states = master->failed;
 	while (master->spcursor.lines
 		&& master->spcursor.lines[master->spcursor.i])
 		free(master->spcursor.lines[master->spcursor.i++]);

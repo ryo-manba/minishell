@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 20:14:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/18 02:59:34 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 11:45:25 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ void	exec_all_open(t_redir *expand_rd)
 // ">,>>" があったらとりあえず先に上書きとファイル作成を行う。
 // 不正なfdや権限で失敗してもここではエラーを出さない
 // (expandに失敗した場合はエラーを考える必要がある by yokawada)
-int	exec_just_open(t_master *master, t_clause *clause, t_shellvar *var)
+int	exec_just_open(t_master *master, t_clause *clause)
 {
 	t_ex_state	es;
 	t_clause	*tmp_cl;
 	t_redir		*expanded_rd;
 
-	ms_ex_init_state(&es, master, var);
+	ms_ex_init_state(&es, master);
 	tmp_cl = clause;
 	while (tmp_cl)
 	{

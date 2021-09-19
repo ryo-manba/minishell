@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 21:31:49 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/18 02:59:21 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 11:44:02 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*ex_ll_heredoc_line(t_ex_state *es, char *line)
 	t_ex_state			hstate;
 	char				*joined;
 
-	ms_ex_init_state(&hstate, es->master, es->var);
+	ms_ex_init_state(&hstate, es->master);
 	ex_ll_init_cursor(&cursor, TI_WORD, line, '\0');
 	hstate.ignore_quote = 1;
 	ex_ll_unit(&hstate, &cursor);

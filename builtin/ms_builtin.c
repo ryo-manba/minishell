@@ -3,31 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:26:14 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/18 15:23:44 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/19 11:33:34 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-int	ms_exec_builtin(t_shellvar *env, t_stree *tree, t_master *master)
+int	ms_exec_builtin(t_stree *tree, t_master *master)
 {
 	if (ft_strcmp(tree->token, "cd") == 0)
-		return (blt_cd(env, tree->right, master));
+		return (blt_cd(master->var, tree->right, master));
 	if (ft_strcmp(tree->token, "echo") == 0)
 		return (blt_echo(tree->right, master));
 	if (ft_strcmp(tree->token, "env") == 0)
-		return (blt_env(env));
+		return (blt_env(master->var));
 	if (ft_strcmp(tree->token, "exit") == 0)
 		return (blt_exit(tree->right, master));
 	if (ft_strcmp(tree->token, "export") == 0)
-		return (blt_export(env, tree->right, master));
+		return (blt_export(master->var, tree->right, master));
 	if (ft_strcmp(tree->token, "pwd") == 0)
-		return (blt_pwd(env));
+		return (blt_pwd(master->var));
 	if (ft_strcmp(tree->token, "unset") == 0)
-		return (blt_unset(env, tree->right));
+		return (blt_unset(master, tree->right));
 	return (0);
 }
 

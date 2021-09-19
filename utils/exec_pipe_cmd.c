@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 11:09:26 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 11:46:03 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ int	exec_check_piping(t_dpipe *dpipe, t_clause *clause)
 // builtinの場合は、実行してexitする
 // TODO: subshellの処理
 void	exec_pipe_child(
-	t_pipeline *pl, t_shellvar *var, t_ex_state *es, t_dpipe *dpipe)
+	t_pipeline *pl, t_master *master, t_ex_state *es, t_dpipe *dpipe)
 {
 	t_stree	*expanded;
 
 	ms_do_piping(pl->clause, dpipe->new, dpipe->before);
 	if (pl->clause->stree && pl->clause->stree->subshell)
 	{
-		exec_subshell(pl->clause, var, es);
+		exec_subshell(pl->clause, master, es);
 		exit(g_ex_states);
 	}
 	expanded = ms_expand_stree(es, pl->clause->stree);
@@ -44,18 +44,18 @@ void	exec_pipe_child(
 		exit(0);
 	if (!expanded && es->failed)
 		exit(1);
-	g_ex_states = exec_expand_redirect(es->master, pl->clause, var);
+	g_ex_states = exec_expand_redirect(es->master, pl->clause);
 	if (g_ex_states != MS_BLT_SUCC || !expanded)
 		exit(g_ex_states);
 	if (ms_is_builtin(expanded))
-		exit(ms_exec_builtin(var, expanded, es->master));
+		exit(ms_exec_builtin(expanded, es->master));
 	else
-		exec_run_cmd_exit(es->master, expanded, var);
+		exec_run_cmd_exit(es->master, expanded, master->var);
 }
 
 // パイプが繋がっていた場合のコマンド実行の処理
 // 最後のコマンドのpidからステータスを取る
-int	exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
+int	exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state)
 {
 	t_dpipe	dpipe;
 	pid_t	pid;
@@ -72,7 +72,7 @@ int	exec_pipe_command(t_pipeline *pl, t_shellvar *var, t_ex_state *state)
 			return (1);
 		}
 		if (pid == 0)
-			exec_pipe_child(pl, var, state, &dpipe);
+			exec_pipe_child(pl, master, state, &dpipe);
 		else
 			exec_pipe_parent(&dpipe);
 		pl->clause = pl->clause->next;

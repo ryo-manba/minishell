@@ -23,3 +23,8 @@ export QUOTES='""'"''"'""'
 export | grep -v _= | grep -v EX=
 export VAR='$X' BAR='$' CAR='$$'
 export | grep AR=
+export com="export"
+export c="a  b"
+export a="a"$c'b'
+$com b="a"$c'b'
+export | grep -v _= | grep -v EX=

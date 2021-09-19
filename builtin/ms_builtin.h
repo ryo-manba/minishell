@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtin.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/18 19:33:41 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/19 11:32:40 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define TOO_MANY_ARGS 2
 
 /* ms_builtin */
-int			ms_exec_builtin(t_shellvar *env, t_stree *tree, t_master *master);
+int			ms_exec_builtin(t_stree *tree, t_master *master);
 int			ms_is_builtin(t_stree *tree);
 void		ms_perror(char *func_name);
 void		ms_perror_exit(char *func_name);
@@ -128,8 +128,8 @@ int			blt_print_env_pwd(t_shellvar *var);
 int			blt_pwd(t_shellvar *var);
 
 /* blt_unset */
-int			blt_unset(t_shellvar *env, t_stree *tree);
-void		blt_unset_head(t_shellvar *env);
+int			blt_unset(t_master *master, t_stree *tree);
+void		blt_unset_head(t_shellvar **env);
 void		blt_unset_second_and_subsequent(
 				t_shellvar *env, t_shellvar *key_pos);
 
