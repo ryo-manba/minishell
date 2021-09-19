@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 21:25:11 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 22:34:53 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int			blt_separate_key_value(
 int			blt_check_escape(char *s);
 t_shellvar	*blt_copy_env(t_shellvar *env);
 void		blt_print_export(t_shellvar *env);
-void		blt_print_sort_env(t_shellvar *env);
+void		blt_export_print_and_sort_env(t_shellvar *env);
 
 /* blt_export_utils */
 int			blt_append_env(t_shellvar *env, char *key, char *value);

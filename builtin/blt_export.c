@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:12 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 14:38:05 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/19 22:34:53 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,25 +50,6 @@ int	blt_check_and_export(t_stree *tree, t_shellvar *var, char *key_value[2])
 	{
 		if (blt_append_or_update_env(
 				tmp, key_value[KEY], key_value[VALUE]) == MS_BLT_FAIL)
-			return (MS_BLT_FAIL);
-	}
-	return (MS_BLT_SUCC);
-}
-
-/*
-** $ export TEST=test aaa
-** tree->token = "TEST=test"
-** tree->right->token = "aaa"
-*/
-// 'export' 単体の場合は環境変数をソートして'declare -x hoge="huga"'の形式で出力する
-// 環境変数を追加または更新する
-int	blt_export(t_shellvar *var, t_stree *tree, t_master *master)
-{
-	if (tree == NULL)
-		blt_print_sort_env(var);
-	else
-	{
-		if (blt_export_env(var, tree, master) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
@@ -122,6 +103,25 @@ int	blt_join_env(t_shellvar *key_pos, char *key_value[2])
 	{
 		ms_perror("malloc");
 		return (MS_BLT_FAIL);
+	}
+	return (MS_BLT_SUCC);
+}
+
+/*
+** $ export TEST=test aaa
+** tree->token = "TEST=test"
+** tree->right->token = "aaa"
+*/
+// 'export' 単体の場合は環境変数をソートして'declare -x hoge="huga"'の形式で出力する
+// 環境変数を追加または更新する
+int	blt_export(t_shellvar *var, t_stree *tree, t_master *master)
+{
+	if (tree == NULL)
+		blt_export_print_and_sort_env(var);
+	else
+	{
+		if (blt_export_env(var, tree, master) == MS_BLT_FAIL)
+			return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
 }

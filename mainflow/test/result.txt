@@ -1,18 +1,18 @@
-[ OK ] Sun, 19 Sep 2021 22:13:36 +0900	tokenize_basic
-[ OK ] Sun, 19 Sep 2021 22:13:36 +0900	unclosed_quote
-[ OK ] Sun, 19 Sep 2021 22:13:37 +0900	subshell_basic
-[ OK ] Sun, 19 Sep 2021 22:13:39 +0900	subshell_pipe
-[ OK ] Sun, 19 Sep 2021 22:13:39 +0900	semicolon
-[ OK ] Sun, 19 Sep 2021 22:13:39 +0900	ln_in_error_file
-[ OK ] Sun, 19 Sep 2021 22:13:39 +0900	ln_in_error_stdin
-[ OK ] Sun, 19 Sep 2021 22:13:39 +0900	ln_in_error_c
-[ OK ] Sun, 19 Sep 2021 22:13:42 +0900	dollar_question
-[ OK ] Sun, 19 Sep 2021 22:13:45 +0900	exit_arg
-[ OK ] Sun, 19 Sep 2021 22:13:51 +0900	redir
-[ OK ] Sun, 19 Sep 2021 22:13:52 +0900	echo
-[ OK ] Sun, 19 Sep 2021 22:13:52 +0900	pipe
-[ OK ] Sun, 19 Sep 2021 22:13:52 +0900	pwd
-[FAIL] Sun, 19 Sep 2021 22:14:02 +0900	export
-[ OK ] Sun, 19 Sep 2021 22:14:05 +0900	cd
-[ OK ] Sun, 19 Sep 2021 22:14:07 +0900	unset
-[ OK ] Sun, 19 Sep 2021 22:14:09 +0900	env
+[ OK ] Sun, 19 Sep 2021 23:40:45 +0900	tokenize_basic
+[ OK ] Sun, 19 Sep 2021 23:40:45 +0900	unclosed_quote
+[ OK ] Sun, 19 Sep 2021 23:40:47 +0900	subshell_basic
+[ OK ] Sun, 19 Sep 2021 23:40:49 +0900	subshell_pipe
+[ OK ] Sun, 19 Sep 2021 23:40:49 +0900	semicolon
+[ OK ] Sun, 19 Sep 2021 23:40:49 +0900	ln_in_error_file
+[ OK ] Sun, 19 Sep 2021 23:40:49 +0900	ln_in_error_stdin
+[ OK ] Sun, 19 Sep 2021 23:40:50 +0900	ln_in_error_c
+[ OK ] Sun, 19 Sep 2021 23:40:52 +0900	dollar_question
+[ OK ] Sun, 19 Sep 2021 23:40:54 +0900	exit_arg
+[ OK ] Sun, 19 Sep 2021 23:40:57 +0900	redir
+[ OK ] Sun, 19 Sep 2021 23:40:57 +0900	echo
+[ OK ] Sun, 19 Sep 2021 23:40:57 +0900	pipe
+[ OK ] Sun, 19 Sep 2021 23:40:57 +0900	pwd
+[FAIL] Sun, 19 Sep 2021 23:41:01 +0900	export
+[ OK ] Sun, 19 Sep 2021 23:41:02 +0900	cd
+[ OK ] Sun, 19 Sep 2021 23:41:03 +0900	unset
+[ OK ] Sun, 19 Sep 2021 23:41:05 +0900	env

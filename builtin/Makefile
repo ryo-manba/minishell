@@ -17,6 +17,7 @@ SRCS 		:=	blt_cd_no_current.c \
 				ms_create_env.c \
 				ms_env_utils.c\
 				ms_env_preset.c\
+				../analyzer/lx_string_class.c\
 
 TEST_SRCS	:=	main.c
 

@@ -34,8 +34,8 @@ LIBFT_DIR	:= ../libft
 LIBFT		:= $(LIBFT_DIR)/libft.a
 NORM		:= python3 -m norminette
 NAME		:= libmsa.a
-BLTIN_DIR	:= ../builtin
-BLTIN		:= $(BLTIN_DIR)/libmblt.a
+# BLTIN_DIR	:= ../builtin
+# BLTIN		:= $(BLTIN_DIR)/libmblt.a
 
 all			: $(NAME)
 

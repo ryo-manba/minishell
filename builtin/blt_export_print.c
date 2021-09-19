@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:05 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/18 10:00:22 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 22:34:53 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	blt_print_export(t_shellvar *env)
 	}
 }
 
-void	blt_print_sort_env(t_shellvar *env)
+void	blt_export_print_and_sort_env(t_shellvar *env)
 {
 	t_shellvar	*copy;
 
