@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_error.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:26:37 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 16:40:43 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/19 21:53:59 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,10 @@ void	exec_print_error_exit(t_master *master, int ex_status, char *path)
 	else if (ex_status == NO_SUCH_FILE)
 		ft_putendl_fd("No such file or directory", STDERR_FILENO);
 	exit(127);
+}
+
+void	exec_print_prologue(t_master *master)
+{
+	ft_putstr_fd(master->prog_name, STDERR_FILENO);
+	ft_putstr_fd(": warning: ", STDERR_FILENO);
 }

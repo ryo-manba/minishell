@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 20:45:44 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 21:25:11 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void		ms_perror_exit(char *func_name);
 int			ms_check_malloc_key_value(
 				t_shellvar *var, char *s, int key_or_value);
 t_shellvar	*ms_create_append_env(char *env);
-int			ms_create_env(t_shellvar **var);
+int			ms_create_env(t_master *master);
 int			ms_create_key_value(char *env, char *key_value[2]);
 t_shellvar	*ms_new_env(char *key, char *value);
 
@@ -58,7 +58,7 @@ t_shellvar	*ms_envlast(t_shellvar *env);
 void		ms_env_free(t_shellvar *env);
 
 /* ms_env_preset */
-int			ms_preset_env(t_shellvar **var);
+int			ms_preset_env(t_master *master);
 
 /* blt_cd_no_current */
 char		*blt_check_slash_join(char *env_pwd, char *arg);

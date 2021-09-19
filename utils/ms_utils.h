@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 11:55:31 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 21:53:10 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ extern volatile sig_atomic_t	g_ex_states;
 /* exec_error */
 void	exec_error_prologue(t_master *master);
 void	exec_print_error_exit(t_master *master, int ex_status, char *path);
+void	exec_print_prologue(t_master *master);
 
 /* exec_backup_fd */
 int		exec_close_backup_fd(int backup_fd[3]);
