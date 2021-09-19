@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/19 11:54:48 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 23:51:06 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	mf_init_master(t_master *master, int argc, char **argv)
 			&& master->stderr_isatty);
 	if (!master->opt_c)
 		master->line_num += 1;
+	master->pwd = getcwd(NULL, 0);
 	if (MS_DEBUG)
 		mf_print_master(master);
 	return (MS_MS_SUCC);
@@ -77,6 +78,8 @@ int	mf_destroy_master(t_master *master)
 		free(master->spcursor.lines[master->spcursor.i++]);
 	free(master->spcursor.lines);
 	free(master->var);
+	free(master->pwd);
+	free(master->old_pwd);
 	if (MS_DEBUG)
 	{
 		ft_putstr_fd("bye with ", STDERR_FILENO);

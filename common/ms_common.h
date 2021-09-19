@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_common.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 00:02:05 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/18 11:56:51 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/19 23:39:00 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ typedef struct s_master
 	size_t			line_num;
 	char			*current_line;
 	int				failed;
+	char			*pwd;
+	char			*old_pwd;
 }	t_master;
 
 #endif
