@@ -23,6 +23,7 @@ echo
 echo '-n' hello
 echo
 echo -n -n -n -n -n -n -n -n -n -n -n -n hello
+echo -nnnnnnnnnnnn hello
 echo
 echo -n $PWD $OLDPWD
 echo

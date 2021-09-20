@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:48:50 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 14:38:54 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 16:16:56 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	blt_exit(t_stree *tree, t_master *master)
 		blt_check_long_overflow(tree->token) == MS_BLT_FAIL)
 		exit(blt_exit_print_error(master, NOT_A_NUMBER, tree->token));
 	if (tree->right != NULL)
-		return (blt_exit_print_error(master, TOO_MANY_ARGS, tree->token));
+		exit(blt_exit_print_error(master, TOO_MANY_ARGS, tree->token));
 	ex_status = ft_atoi(tree->token);
 	if (master->interactive_shell)
 		ft_putendl_fd("exit", STDERR_FILENO);
