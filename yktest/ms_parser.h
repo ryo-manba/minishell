@@ -59,6 +59,7 @@ typedef enum e_token_identifier
 	TI_CLOBBER,
 	TI_AND,
 	TI_SEMICOLON,
+	TI_DSEMICOLON,
 	TI_AND_IF,
 	TI_OR_IF,
 	TI_DSEMI,

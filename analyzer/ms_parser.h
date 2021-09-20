@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:40:02 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/13 02:44:24 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 13:10:18 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef enum e_token_id
 	TI_PIPEPIPE,
 	TI_AND,
 	TI_SEMICOLON,
+	TI_DSEMICOLON,
 	TI_PAREN_L,
 	TI_PAREN_R,
 	TI_NONE,

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:39:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/13 02:42:43 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 13:09:35 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # define LC_AND	'&'
 # define LC_REDIRECT_INPUT	'<'
 # define LC_REDIRECT_OUTPUT	'>'
+# define LC_SEMICOLON	';'
 # define LC_SEMICOLON	';'
 # define LC_PAREN_L	'('
 # define LC_PAREN_R	')'

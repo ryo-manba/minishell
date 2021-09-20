@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:26:24 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 09:07:42 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 13:12:28 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ const char			*g_op_label[] = {
 	"<>",
 	"&&",
 	"||",
+	";;",
 	"<",
 	">",
 	"|",
@@ -39,6 +40,7 @@ const t_token_id	g_op_token_id[] = {
 	TI_LTGT,
 	TI_ANDAND,
 	TI_PIPEPIPE,
+	TI_DSEMICOLON,
 	TI_LT,
 	TI_GT,
 	TI_PIPE,
@@ -50,6 +52,7 @@ const t_token_id	g_op_token_id[] = {
 
 const size_t		g_op_len[] = {
 	3,
+	2,
 	2,
 	2,
 	2,
@@ -88,6 +91,7 @@ const t_token_id	g_all_token_id[] = {
 	TI_PIPEPIPE, // ||
 	TI_AND, // &
 	TI_SEMICOLON, // ;
+	TI_DSEMICOLON, // ;
 	// [open and close subshell]
 	TI_PAREN_L, // (
 	TI_PAREN_R, // )
@@ -116,6 +120,7 @@ const char			*g_all_token_label[] = {
 	"||",
 	"&",
 	";",
+	";;",
 	// [open and close subshell]
 	"(",
 	")",
