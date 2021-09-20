@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 12:58:13 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 14:20:39 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int			blt_env(t_shellvar *var);
 /* blt_exit */
 int			blt_check_long_overflow(char *status);
 int			blt_exit(t_stree *tree, t_master *master);
-void		blt_exit_print_error(t_master *master, int flag, char *error_args);
+int			blt_exit_print_error(t_master *master, int flag, char *error_args);
 int			blt_is_args_correct(char *args);
 
 /* blt_export_check */

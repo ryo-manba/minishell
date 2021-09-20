@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:48:50 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 14:06:25 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 14:38:54 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,20 @@ int	blt_exit(t_stree *tree, t_master *master)
 	int64_t	ex_status;
 
 	if (tree == NULL)
-		exit(0);
+		exit(g_ex_states);
 	if (blt_is_args_correct(tree->token) == MS_BLT_FAIL || \
 		blt_check_long_overflow(tree->token) == MS_BLT_FAIL)
-	{
-		blt_exit_print_error(master, NOT_A_NUMBER, tree->token);
-		exit(2);
-	}
+		exit(blt_exit_print_error(master, NOT_A_NUMBER, tree->token));
 	if (tree->right != NULL)
-	{
-		blt_exit_print_error(master, TOO_MANY_ARGS, tree->token);
-		return (MS_BLT_FAIL);
-	}
+		return (blt_exit_print_error(master, TOO_MANY_ARGS, tree->token));
 	ex_status = ft_atoi(tree->token);
 	if (master->interactive_shell)
 		ft_putendl_fd("exit", STDERR_FILENO);
 	exit(ex_status);
 }
 
-void	blt_exit_print_error(t_master *master, int flag, char *error_args)
+// return 2 with NOT_A_NUMBER(for newer bash)
+int	blt_exit_print_error(t_master *master, int flag, char *error_args)
 {
 	if (master->interactive_shell)
 		ft_putendl_fd("exit", STDERR_FILENO);
@@ -76,11 +71,14 @@ void	blt_exit_print_error(t_master *master, int flag, char *error_args)
 	{
 		ft_putstr_fd(error_args, STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+		return (2);
 	}
 	if (flag == 2)
 	{
 		ft_putendl_fd("too many arguments", STDERR_FILENO);
+		return (1);
 	}
+	return (MS_BLT_FAIL);
 }
 
 /**

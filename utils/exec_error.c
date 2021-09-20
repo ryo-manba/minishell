@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:26:37 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 14:06:41 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 14:31:45 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	exec_print_error_exit(t_master *master, int ex_status, char *path)
 {
 	if (ex_status == CMD_NOT_FOUND && master->line_num == 0)
 		master->interactive_shell = 1;
-	exec_error_prologue(master, 0);
+	exec_error_prologue(master, 1);
 	ft_putstr_fd(path, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	free(path);
