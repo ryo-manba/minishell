@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 11:49:16 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 11:48:18 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,9 @@ int	exec_simple_command(t_clause *clause, t_master *master, t_ex_state *es)
 
 	if (clause->stree && clause->stree->subshell)
 		return (exec_subshell(clause, master, es));
+	es->no_split = !!ms_is_special_builtin(clause->stree);
 	expanded = ms_expand_stree(es, clause->stree);
+	es->no_split = 0;
 	if (!expanded && es->failed == 0 && !clause->redir)
 		return (MS_EXEC_SUCC);
 	if (!expanded && es->failed)

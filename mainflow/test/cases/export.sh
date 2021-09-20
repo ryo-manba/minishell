@@ -28,3 +28,8 @@ export c="a  b"
 export a="a"$c'b'
 $com b="a"$c'b'
 export | grep -v _= | grep -v EX=
+echo x | $com b="a"$c'b'
+export | grep -v _= | grep -v EX=
+export com="echo"
+$com b="a"$c'b'
+export | grep -v _= | grep -v EX=

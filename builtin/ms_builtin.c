@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:26:14 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 11:33:34 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 11:56:25 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,15 @@ int	ms_is_builtin(t_stree *tree)
 	if (ft_strcmp(tree->token, "pwd") == 0)
 		return (1);
 	if (ft_strcmp(tree->token, "unset") == 0)
+		return (1);
+	return (0);
+}
+
+int	ms_is_special_builtin(t_stree *tree)
+{
+	if (!tree)
+		return (0);
+	if (ft_strcmp(tree->token, "export") == 0)
 		return (1);
 	return (0);
 }

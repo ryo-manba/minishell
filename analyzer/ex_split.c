@@ -6,11 +6,16 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 13:23:15 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/17 00:13:11 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 11:52:35 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_analyzer.h"
+
+static int	do_split(t_ex_state *state, t_ex_unit_cursor *csr)
+{
+	return (state->no_split && csr->s.tail->pa_token_id == TI_ASSIGNMENT_WORD);
+}
 
 int	ex_push_back_divider_if_needed(t_ex_state *state, t_ex_unit_cursor *csr,
 		t_ex_token *token)
@@ -89,7 +94,7 @@ t_ex_token	*ex_split(t_ex_state *state, t_ex_token *token)
 	ex_init_cursor_mid(&csr, token);
 	while (csr.s.tail)
 	{
-		if (csr.s.tail->token_id != XI_VAR)
+		if (csr.s.tail->token_id != XI_VAR || do_split(state, &csr))
 		{
 			csr.vs = 0;
 			csr.i = ft_strlen(csr.s.tail->token);

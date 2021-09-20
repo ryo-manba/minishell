@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 11:46:03 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 11:55:33 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ void	exec_pipe_child(
 		exec_subshell(pl->clause, master, es);
 		exit(g_ex_states);
 	}
+	es->no_split = !!ms_is_special_builtin(pl->clause->stree);
 	expanded = ms_expand_stree(es, pl->clause->stree);
+	es->no_split = 0;
 	if (!expanded && es->failed == 0 && !pl->clause->redir)
 		exit(0);
 	if (!expanded && es->failed)

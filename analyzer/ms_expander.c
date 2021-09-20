@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:19:44 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/18 03:59:19 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 11:48:27 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,7 @@ t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
 	while (!state->failed && cursor.src.tail)
 	{
 		res = ex_shell_param(state, cursor.src.tail);
-		if (!state->no_split && cursor.src.tail->token_id != TI_ASSIGNMENT_WORD)
-			res = ex_split(state, res);
+		res = ex_split(state, res);
 		if (cursor.src.tail->token_id != TI_ASSIGNMENT_WORD)
 			res = ex_fx(state, res);
 		st = ex_join(state, res);

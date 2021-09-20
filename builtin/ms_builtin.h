@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 22:34:53 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 11:25:10 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 /* ms_builtin */
 int			ms_exec_builtin(t_stree *tree, t_master *master);
 int			ms_is_builtin(t_stree *tree);
+int			ms_is_special_builtin(t_stree *tree);
 void		ms_perror(char *func_name);
 void		ms_perror_exit(char *func_name);
 
