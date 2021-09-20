@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 11:59:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/20 15:47:24 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 15:55:16 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static int	ms_atoi_shlvl(char *str)
 	if (!trimmed)
 		return (0);
 	n = 0;
+	while (trimmed[n] && !!ft_strchr(" \t\n\r\v\f", trimmed[n]))
+		n += 1;
 	if (trimmed[n] && !!ft_strchr("+-", trimmed[n]))
 		n += 1;
 	while (trimmed[n])
