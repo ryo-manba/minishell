@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:30:08 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/18 19:36:24 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/20 14:06:10 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	blt_cd_home(t_shellvar *env, t_master *master)
 
 void	blt_cd_print_error(t_master *master, char *dirname, char *message)
 {
-	exec_error_prologue(master);
+	exec_error_prologue(master, 0);
 	if (dirname == NULL)
 		perror("getcwd");
 	else

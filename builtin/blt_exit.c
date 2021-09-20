@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_exit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:48:50 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 01:06:47 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/20 14:06:25 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	blt_exit_print_error(t_master *master, int flag, char *error_args)
 {
 	if (master->interactive_shell)
 		ft_putendl_fd("exit", STDERR_FILENO);
-	exec_error_prologue(master);
+	exec_error_prologue(master, 0);
 	ft_putstr_fd("exit: ", STDERR_FILENO);
 	if (flag == NOT_A_NUMBER)
 	{

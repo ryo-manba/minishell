@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:18 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 23:16:49 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 14:06:33 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	blt_check_identifier(t_master *master, t_stree *tree)
 {
 	if (lx_str_is_for_name(tree->token, -1))
 		return (MS_BLT_SUCC);
-	exec_error_prologue(master);
+	exec_error_prologue(master, 0);
 	ft_putstr_fd("unset: `", STDERR_FILENO);
 	ft_putstr_fd(tree->token, STDERR_FILENO);
 	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);

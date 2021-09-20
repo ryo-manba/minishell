@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir_error.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:32:51 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 16:49:33 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/20 14:06:52 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	ms_check_fd_print_error(t_redir *rd, t_master *master)
 // OVER_FD: fd
 void	ms_redir_print_error(t_master *master, int err, char *s)
 {
-	exec_error_prologue(master);
+	exec_error_prologue(master, 1);
 	if (err == EACCES)
 	{
 		ft_putstr_fd(s, STDERR_FILENO);

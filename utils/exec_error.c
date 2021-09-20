@@ -6,19 +6,22 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:26:37 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 21:53:59 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 14:06:41 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-void	exec_error_prologue(t_master *master)
+void	exec_error_prologue(t_master *master, int limit_line)
 {
 	ft_putstr_fd(master->prog_name, STDERR_FILENO);
 	if (!master->interactive_shell)
 	{
-		ft_putstr_fd(": line ", STDERR_FILENO);
-		ft_putsizet_fd(master->line_num, STDERR_FILENO);
+		if (!limit_line || master->line_num > 0)
+		{
+			ft_putstr_fd(": line ", STDERR_FILENO);
+			ft_putsizet_fd(master->line_num, STDERR_FILENO);
+		}
 	}
 	ft_putstr_fd(": ", STDERR_FILENO);
 }
@@ -27,7 +30,7 @@ void	exec_print_error_exit(t_master *master, int ex_status, char *path)
 {
 	if (ex_status == CMD_NOT_FOUND && master->line_num == 0)
 		master->interactive_shell = 1;
-	exec_error_prologue(master);
+	exec_error_prologue(master, 0);
 	ft_putstr_fd(path, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	free(path);

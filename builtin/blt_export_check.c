@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_check.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:52:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/17 14:37:22 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/20 14:06:28 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	blt_check_export_key(char *token, int32_t equal_idx)
 
 void	blt_export_print_error(t_master *master, char *token)
 {
-	exec_error_prologue(master);
+	exec_error_prologue(master, 0);
 	ft_putstr_fd("export: `", STDERR_FILENO);
 	ft_putstr_fd(token, STDERR_FILENO);
 	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);

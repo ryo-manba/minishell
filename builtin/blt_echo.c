@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_echo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 14:53:20 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 21:17:58 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/20 14:06:21 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	blt_echo(t_stree *tree, t_master *master)
 
 void	blt_echo_print_error(t_master *master, char *message)
 {
-	exec_error_prologue(master);
+	exec_error_prologue(master, 0);
 	ft_putstr_fd("echo: write error: ", STDERR_FILENO);
 	ft_putendl_fd(message, STDERR_FILENO);
 }
