@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 11:25:10 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 12:58:13 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int			blt_cd_home(t_shellvar *env, t_master *master);
 void		blt_cd_print_error(t_master *master, char *dirname, char *message);
 
 /* blt_echo */
+int			blt_check_option(char *token);
 int			blt_echo(t_stree *tree, t_master *master);
 void		blt_echo_print_error(t_master *master, char *message);
 
