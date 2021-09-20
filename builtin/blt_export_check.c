@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:52:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 14:06:28 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 16:32:53 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	blt_check_export_key(char *token, int32_t equal_idx)
 		return (MS_BLT_FAIL);
 	if (equal_idx == -1)
 		equal_idx = ft_strlen(token);
-	if (token[equal_idx - 1] == '+')
+	else if (equal_idx >= 1 && token[equal_idx - 1] == '+')
 		equal_idx -= 1;
 	while (i < equal_idx)
 	{
