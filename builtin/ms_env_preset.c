@@ -6,11 +6,34 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 11:59:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/19 22:00:10 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 15:47:24 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
+
+static int	ms_atoi_shlvl(char *str)
+{
+	char	*trimmed;
+	size_t	n;
+	int		rv;
+
+	trimmed = ft_strtrim(str, " \t");
+	if (!trimmed)
+		return (0);
+	n = 0;
+	if (trimmed[n] && !!ft_strchr("+-", trimmed[n]))
+		n += 1;
+	while (trimmed[n])
+	{
+		if (!ft_isdigit(trimmed[n]))
+			return (0);
+		n += 1;
+	}
+	rv = ft_atoi(trimmed);
+	free(trimmed);
+	return (rv);
+}
 
 static int	ms_preset_env_oldpwd(t_shellvar **var)
 {
@@ -33,7 +56,7 @@ static int	ms_preset_env_shlvl(t_master *master)
 	temp = ms_search_key(master->var, "SHLVL");
 	if (!temp || !temp->value)
 		return (!!blt_append_env(master->var, "SHLVL", "1"));
-	lvl = ft_atoi(temp->value) + 1;
+	lvl = ms_atoi_shlvl(temp->value) + 1;
 	if (lvl >= 1000)
 	{
 		exec_print_prologue(master);
