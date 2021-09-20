@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_common.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 00:02:05 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/19 23:39:00 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/20 23:33:01 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_master
 	int				failed;
 	char			*pwd;
 	char			*old_pwd;
+	int				exited;
 }	t_master;
 
 #endif

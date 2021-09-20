@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 15:18:37 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 23:35:42 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ int	ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state)
 		(pl->joint == TI_PIPEPIPE && g_ex_states == 1) || \
 		pl->joint == TI_SEMICOLON)
 	{
-		ms_executer(pl->next, master, state);
+		if (!master->exited)
+			ms_executer(pl->next, master, state);
 	}
 	return (0);
 }

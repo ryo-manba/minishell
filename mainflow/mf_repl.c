@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 17:07:08 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/19 11:45:08 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 23:34:15 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	mf_loop(t_master *master)
 		pa_destroy_pipeline(ps.pipeline);
 		ps.pipeline = NULL;
 		master->line_num += 1;
+		master->exited = 0;
 	}
 	safe_star_free((void **)&line);
 	if (MS_DEBUG & MS_DEBUG_LEAKS)
