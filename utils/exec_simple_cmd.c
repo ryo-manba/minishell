@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 11:48:18 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 15:22:25 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	exec_simple_command(t_clause *clause, t_master *master, t_ex_state *es)
 	if (!expanded && es->failed)
 		return (MS_EXEC_FAIL);
 	if (exec_simple_redir(
-			es->master, clause, backup_fd) == MS_EXEC_FAIL || !expanded)
+			es->master, clause, backup_fd) == MS_EXEC_FAIL)
 	{
 		exec_duplicate_backup_fd(backup_fd);
 		return (MS_EXEC_FAIL);
@@ -81,14 +81,18 @@ int	exec_simple_command(t_clause *clause, t_master *master, t_ex_state *es)
 int	exec_simple_redir(t_master *master,
 	t_clause *clause, int backup_fd[3])
 {
+	int	rv;
+
 	if (clause->redir)
 	{
-		if (exec_create_backup_fd(backup_fd) == MS_EXEC_FAIL)
+		rv = exec_create_backup_fd(backup_fd);
+		if (rv)
 			return (MS_EXEC_FAIL);
-		if (exec_expand_redirect(master, clause) != MS_EXEC_SUCC)
+		rv = exec_expand_redirect(master, clause);
+		if (rv)
 		{
 			exec_duplicate_backup_fd(backup_fd);
-			return (MS_EXEC_FAIL);
+			return (rv);
 		}
 	}
 	return (MS_EXEC_SUCC);

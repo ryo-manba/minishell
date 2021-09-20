@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:26:14 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 11:56:25 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 15:21:48 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	ms_exec_builtin(t_stree *tree, t_master *master)
 {
+	if (!tree)
+		return (0);
 	if (ft_strcmp(tree->token, "cd") == 0)
 		return (blt_cd(master->var, tree->right, master));
 	if (ft_strcmp(tree->token, "echo") == 0)
@@ -33,6 +35,8 @@ int	ms_exec_builtin(t_stree *tree, t_master *master)
 
 int	ms_is_builtin(t_stree *tree)
 {
+	if (!tree)
+		return (1);
 	if (ft_strcmp(tree->token, "cd") == 0)
 		return (1);
 	if (ft_strcmp(tree->token, "echo") == 0)

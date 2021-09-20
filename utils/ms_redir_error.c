@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:32:51 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 14:06:52 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 15:12:09 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ms_check_fd_print_error(t_redir *rd, t_master *master)
 	}
 	else
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		exec_error_prologue(master, 1);
 		ft_putstr_fd(rd->operand_right->token, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
 		ft_putendl_fd(strerror(errno), STDERR_FILENO);

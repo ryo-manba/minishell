@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 11:55:40 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 15:18:37 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	exec_expand_redirect(t_master *master, t_clause *clause)
 		{
 			err = ms_check_fd_print_error(expanded_rd, master);
 			pa_destroy_redir(expanded_rd);
-			return (err);
+			return (1);
 		}
 		pa_destroy_redir(expanded_rd);
 		rd = rd->next;
