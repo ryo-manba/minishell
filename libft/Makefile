@@ -6,7 +6,7 @@
 #    By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:59:59 by rmatsuka          #+#    #+#              #
-#    Updated: 2021/09/13 02:54:30 by yokawada         ###   ########.fr        #
+#    Updated: 2021/09/23 20:48:36 by yokawada         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,6 +42,7 @@ SRCS	=	ft_strlen.c \
 			ft_strlcat.c \
 			ft_strtrim.c \
 			ft_split.c \
+			ft_split_rough.c \
 			ft_itoa.c \
 			ft_strmapi.c \
 			ft_putchar_fd.c \
