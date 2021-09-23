@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:30:08 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 14:06:10 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 14:01:42 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,16 @@
 // 第一引数のみ適用される、それ以降は無視される
 int	blt_cd(t_shellvar *env, t_stree *tree, t_master *master)
 {
-	char		*old_pwd;
-
-	if (tree != NULL && ft_strlen(tree->token) > 255)
+	if (master->pwd == NULL)
 	{
-		blt_cd_print_error(master, tree->token, "File name too long");
-		return (MS_BLT_FAIL);
+		master->pwd = getcwd(NULL, 0); // カレントディレクトリがない場合は失敗する
+		// nocurrentの場合の処理
 	}
-	old_pwd = getcwd(NULL, 0);
 	if ((blt_cd_change_dir(env, tree, master) == MS_BLT_SUCC) && \
-		blt_cd_update_pwd(env, tree, old_pwd) == MS_BLT_SUCC)
+		blt_cd_update_pwd(master, tree, env) == MS_BLT_SUCC)
 	{
-		free(old_pwd);
 		return (MS_BLT_SUCC);
 	}
-	free(old_pwd);
 	return (MS_BLT_FAIL);
 }
 

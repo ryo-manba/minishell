@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtin.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 14:20:39 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 13:59:02 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,31 @@ void		ms_env_free(t_shellvar *env);
 /* ms_env_preset */
 int			ms_preset_env(t_master *master);
 
+/* blt_cd_lst */
+t_list		 *blt_lst_init(t_list **del_lst);
+int			blt_create_lst_loop(t_list **lst, char *s, int idx);
+t_list		*blt_cd_create_list(char *s, int is_absolute);
+void		blt_lstlast_del(t_list *lst);
+
 /* blt_cd_no_current */
 char		*blt_check_slash_join(char *env_pwd, char *arg);
-int			blt_cd_no_current(t_shellvar *env, char *arg);
-int			blt_cd_no_prevdir(t_shellvar *env, char *now_pwd);
+int			blt_cd_no_current(t_master *master, t_shellvar *env, char *arg);
+int			blt_cd_no_prevdir(t_master *master, t_shellvar *env, char *now_pwd);
+
+/* blt_cd_normalize_path */
+int			blt_pre_absolute_lst(t_list **lst, char *s);
+char		*blt_cd_create_path(t_list *pwd_lst, t_list *arg_lst, int is_absolute);
+char		*blt_cd_has_args(t_master *master, t_stree *tree);
+
+/* blt_cd_normalize_utils */
+void		blt_pre_absolute_path(t_list **pwd_lst, t_list **arg_lst);
+char		*blt_cd_restore_path(t_list *pwd_lst);
+char		*blt_join(char *s1, char *s2);
+char		*blt_slash_join_path(t_list *pwd_lst);
 
 /* blt_cd_update_pwd */
-int			blt_cd_update(t_shellvar *env, char *old_pwd, char *now_pwd);
-int			blt_cd_update_pwd(t_shellvar *env, t_stree *tree, char *old_pwd);
+int			blt_cd_update(t_master *master, t_shellvar *env, char *now_pwd);
+int			blt_cd_update_pwd(t_master *master, t_stree *tree, t_shellvar *env);
 
 /* blt_cd */
 int			blt_cd(t_shellvar *env, t_stree *tree, t_master *master);
@@ -127,8 +144,7 @@ int			blt_export_env(t_shellvar *env, t_stree *tree, t_master *master);
 int			blt_join_env(t_shellvar *key_pos, char *key_value[2]);
 
 /* blt_pwd */
-int			blt_print_env_pwd(t_shellvar *var);
-int			blt_pwd(t_shellvar *var);
+int			blt_pwd(t_master *master);
 
 /* blt_unset */
 int			blt_unset(t_master *master, t_stree *tree);

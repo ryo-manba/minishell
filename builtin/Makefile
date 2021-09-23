@@ -1,6 +1,9 @@
 NAME		:=	libmblt.a
 TEST_NAME	:=	a.out
-SRCS 		:=	blt_cd_no_current.c \
+SRCS 		:=	blt_cd_lst.c \
+				blt_cd_no_current.c \
+				blt_cd_normalize_path.c \
+				blt_cd_normalize_utils.c \
 				blt_cd_update_pwd.c \
 				blt_cd.c \
 				blt_echo.c \
