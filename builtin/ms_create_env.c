@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 14:53:27 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:46:24 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:52:12 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,10 @@ t_shellvar	*ms_create_append_env(char *env)
 	if (ms_create_key_value(env, key_value) == MS_BLT_FAIL)
 		return (NULL);
 	append_var = ms_new_env(key_value[KEY], key_value[VALUE]);
+	free(key_value[KEY]);
+	free(key_value[VALUE]);
 	if (append_var == NULL)
-	{
-		free(key_value[KEY]);
-		free(key_value[VALUE]);
 		return (NULL);
-	}
 	return (append_var);
 }
 

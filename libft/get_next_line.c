@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:54:45 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 10:18:03 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 16:01:11 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	get_next_line(int fd, char **line)
 
 	if (fd < 0 || MAX_FD < fd || line == NULL || BUFFER_SIZE <= 0)
 		return (-1);
-	buf = (char *)malloc(sizeof(char) * (size_t)BUFFER_SIZE + 1);
+	buf = (char *)malloc(sizeof(char) * ((size_t)BUFFER_SIZE + 1));
 	if (buf == NULL)
 		return (-1);
 	read_sz = read(fd, buf, BUFFER_SIZE);

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 20:43:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/13 03:00:37 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 16:01:29 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (s_len <= start)
 		len = 0;
 	chmin(&len, (s_len - start + 1));
-	str = (char *)malloc(len + 1);
+	str = (char *)malloc(sizeof(char) * (len + 1));
 	if (str == NULL)
 		return (NULL);
 	i = 0;
