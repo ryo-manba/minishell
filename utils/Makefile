@@ -12,6 +12,7 @@ SRCS		:=	exec_error.c \
 				exec_restore_env.c \
 				exec_simple_cmd.c \
 				exec_utils.c \
+				exec_run.c \
 				ms_pipe.c \
 				ms_redir.c \
 				ms_redir_error.c \

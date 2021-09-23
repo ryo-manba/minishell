@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 17:09:58 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 21:56:29 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@
 # define PERMISSION 121
 # define CMD_NOT_FOUND 122
 # define NO_SUCH_FILE 123
+# define NOT_A_DIR 126
+# define ERRNO_NO_SUCH_FILE 2
 # define ERRNO_EXECVE_FORMAT_ERROR 8
+# define ERRNO_NOT_A_DIR 20
 
 /* ms_execute_utils */
 # define OVER_FD -1
