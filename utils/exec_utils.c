@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:46 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 12:18:18 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 21:54:40 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ void	exec_check_path_exit(t_master *master, t_stree *expanded, char *path)
 		exec_print_error_exit(master, g_ex_states, expanded->token);
 }
 
-// コマンドの引数を数える
-// $ "ls -l" = 2
 size_t	exec_get_command_size(t_stree *tree)
 {
 	t_stree	*tmp;
@@ -37,7 +35,6 @@ size_t	exec_get_command_size(t_stree *tree)
 	return (sz);
 }
 
-// waitで子プロセスの回収とexitstatusの更新
 void	exec_set_signal_wait(pid_t pid)
 {
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR)

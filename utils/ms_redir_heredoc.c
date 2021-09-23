@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 23:51:49 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 21:50:01 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,9 @@ int	ms_heredoc_check_states(t_list **lst, int backup_fd)
 	return (MS_EXEC_SUCC);
 }
 
-// ctrl+C    -> 改行を出力して終了
-// ctrl+D    -> 終了
-// delemiter -> 終了
-// ctrl-cで終わった場合終了ステータスは1になる
+// ctrl+C    -> Output a newline and exit
+// ctrl+D    -> exit
+// delemiter -> exit
 int	ms_heredoc_read(t_list **lst, char *delimiter)
 {
 	char	*line;
@@ -62,8 +61,6 @@ int	ms_heredoc_read(t_list **lst, char *delimiter)
 	return (ms_heredoc_check_states(lst, backup_fd));
 }
 
-// 変数展開して出力する
-// クオートで囲まれていなかったら変数展開する
 int	ms_heredoc_write(t_ex_state *es, t_list *lst, int quoted, int fd)
 {
 	t_list		*tmp;
@@ -93,8 +90,7 @@ int	ms_heredoc_write(t_ex_state *es, t_list *lst, int quoted, int fd)
 	return (MS_EXEC_SUCC);
 }
 
-// Ctrl+Cで終了した場合は何もしない
-// stdinをパイプにして展開したやつを改行区切りでパイプに書き込む
+// If you exit by entering ctrl+C, nothing will be done.
 int	ms_redirect_heredoc(t_ex_state *es, t_redir *redir)
 {
 	t_list	*lst;

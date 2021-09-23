@@ -6,7 +6,6 @@ SRCS		:=	exec_error.c \
 				exec_backup_fd.c \
 				exec_check_path.c \
 				exec_get_path.c \
-				exec_just_open.c \
 				exec_main_flow.c \
 				exec_pipe_cmd.c \
 				exec_restore_env.c \

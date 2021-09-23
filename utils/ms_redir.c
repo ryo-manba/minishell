@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 04:14:34 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 21:45:37 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 // [concrete functions for redirection]
 // opens a file at `path` and binds to `fd`.
 // the function closes `fd` before opening `path`.
-// mode = -1 の場合はstdin
 int	ms_open_at(int fd, const char *path, int oflag, int mode)
 {
 	int	open_fd;
