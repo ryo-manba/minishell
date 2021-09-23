@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/11 14:34:05 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/04/12 10:34:04 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/22 21:58:40 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 	while (*lst)
 	{
 		tmp = (*lst)->next;
-		(*del)((*lst)->content);
+		if ((*lst)->content)
+			(*del)((*lst)->content);
 		free(*lst);
 		*lst = tmp;
 	}
