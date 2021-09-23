@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 22:32:20 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/04/10 15:16:22 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 16:02:04 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*ft_itoa(int n)
 
 	num = (long)n;
 	sz = get_size(num);
-	convert_num = (char *)malloc((sizeof(char) * sz) + 1);
+	convert_num = (char *)malloc(sizeof(char) * (sz + 1));
 	if (convert_num == NULL)
 		return (NULL);
 	convert_num = create_digit(convert_num, num, sz);

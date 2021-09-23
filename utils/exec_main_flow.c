@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 23:35:42 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 16:00:42 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	**exec_create_command(t_stree *tree)
 	t_stree	*tmp;
 
 	i = exec_get_command_size(tree);
-	command = (char **)malloc(sizeof(char *) * i + 1);
+	command = (char **)malloc(sizeof(char *) * (i + 1));
 	if (command == NULL)
 		ms_perror_exit("malloc");
 	tmp = tree;

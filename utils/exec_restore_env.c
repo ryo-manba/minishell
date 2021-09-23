@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_restore_env.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 22:37:21 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/13 23:52:22 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 15:56:10 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	**exec_restore_env(t_shellvar *var)
 
 	i = -1;
 	sz = exec_get_env_size(var);
-	env = (char **)malloc(sizeof(char *) * sz + 1);
+	env = (char **)malloc(sizeof(char *) * (sz + 1));
 	if (env == NULL)
 		return (NULL);
 	tmp = var;

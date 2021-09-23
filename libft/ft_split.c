@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 22:32:23 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/05/26 22:33:03 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 16:01:53 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*ft_strcpy(char const *s, char c)
 	i = 0;
 	while (s[i] && s[i] != c)
 		i++;
-	dest = (char *)malloc(sizeof(char) * i + 1);
+	dest = (char *)malloc(sizeof(char) * (i + 1));
 	if (dest == NULL)
 		return (NULL);
 	i = 0;
