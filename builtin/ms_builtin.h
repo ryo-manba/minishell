@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 13:59:02 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 15:51:10 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char		*blt_slash_join_path(t_list *pwd_lst);
 
 /* blt_cd_update_pwd */
 int			blt_cd_update(t_master *master, t_shellvar *env, char *now_pwd);
-int			blt_cd_update_pwd(t_master *master, t_stree *tree, t_shellvar *env);
+int			blt_cd_update_pwd(t_master *master, t_stree *tree, t_shellvar *env, int is_succ);
 
 /* blt_cd */
 int			blt_cd(t_shellvar *env, t_stree *tree, t_master *master);

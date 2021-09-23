@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 15:29:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 12:29:37 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 15:56:50 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	blt_cd_update(t_master *master, t_shellvar *env, char *pwd)
 // tree->token に引数が入ってる
 // PWD, OLDPWDが unsetされている場合は新しく作らない
 // 移動前のpwdはmaster->pwd
-int	blt_cd_update_pwd(t_master *master, t_stree *tree, t_shellvar *env)
+int	blt_cd_update_pwd(t_master *master, t_stree *tree, t_shellvar *env, int is_succ)
 {
 	char	*pwd;
 	int		flag;
@@ -52,8 +52,11 @@ int	blt_cd_update_pwd(t_master *master, t_stree *tree, t_shellvar *env)
 	}
 	else if (tree) // 引数があった場合
 	{
-		free(pwd);
-		pwd = blt_cd_has_args(master, tree);
+		if (is_succ)
+		{
+			free(pwd);
+			pwd = blt_cd_has_args(master, tree);
+		}
 	}
 	flag = blt_cd_update(master, env, pwd);
 	free(pwd);
