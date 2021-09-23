@@ -106,6 +106,7 @@ function run_case_bash_by_c() {
 rm					$RESULTFILE
 touch				$RESULTFILE
 run_case_bash_file	tokenize_basic
+run_case_bash_file	wildcard
 run_case			unclosed_quote
 run_case_bash_file	subshell_basic
 run_case_bash_file	subshell_pipe

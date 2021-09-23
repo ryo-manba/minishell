@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 15:22:25 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 12:19:04 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,15 @@ int	exec_simple_command(t_clause *clause, t_master *master, t_ex_state *es)
 			es->master, clause, backup_fd) == MS_EXEC_FAIL)
 	{
 		exec_duplicate_backup_fd(backup_fd);
-		return (MS_EXEC_FAIL);
+		return (exec_out(MS_EXEC_FAIL, expanded));
 	}
 	if (ms_is_builtin(expanded))
 		g_ex_states = ms_exec_builtin(expanded, es->master);
 	else
 		g_ex_states = exec_ex_cmd(es->master, master->var, expanded);
 	if (clause->redir && exec_duplicate_backup_fd(backup_fd) == 1)
-		return (MS_EXEC_FAIL);
-	return (g_ex_states);
+		return (exec_out(MS_EXEC_FAIL, expanded));
+	return (exec_out(g_ex_states, expanded));
 }
 
 int	exec_simple_redir(t_master *master,

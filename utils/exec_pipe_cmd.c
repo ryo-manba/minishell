@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 11:55:33 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 13:56:07 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,24 @@ int	exec_check_piping(t_dpipe *dpipe, t_clause *clause)
 // builtinの場合は、実行してexitする
 // TODO: subshellの処理
 void	exec_pipe_child(
-	t_pipeline *pl, t_master *master, t_ex_state *es, t_dpipe *dpipe)
+	t_clause *clause, t_master *master, t_ex_state *es, t_dpipe *dpipe)
 {
 	t_stree	*expanded;
 
-	ms_do_piping(pl->clause, dpipe->new, dpipe->before);
-	if (pl->clause->stree && pl->clause->stree->subshell)
+	ms_do_piping(clause, dpipe->new, dpipe->before);
+	if (clause->stree && clause->stree->subshell)
 	{
-		exec_subshell(pl->clause, master, es);
+		exec_subshell(clause, master, es);
 		exit(g_ex_states);
 	}
-	es->no_split = !!ms_is_special_builtin(pl->clause->stree);
-	expanded = ms_expand_stree(es, pl->clause->stree);
+	es->no_split = !!ms_is_special_builtin(clause->stree);
+	expanded = ms_expand_stree(es, clause->stree);
 	es->no_split = 0;
-	if (!expanded && es->failed == 0 && !pl->clause->redir)
+	if (!expanded && es->failed == 0 && !clause->redir)
 		exit(0);
 	if (!expanded && es->failed)
 		exit(1);
-	g_ex_states = exec_expand_redirect(es->master, pl->clause);
+	g_ex_states = exec_expand_redirect(es->master, clause);
 	if (g_ex_states != MS_BLT_SUCC || !expanded)
 		exit(g_ex_states);
 	if (ms_is_builtin(expanded))
@@ -59,13 +59,15 @@ void	exec_pipe_child(
 // 最後のコマンドのpidからステータスを取る
 int	exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state)
 {
-	t_dpipe	dpipe;
-	pid_t	pid;
+	t_dpipe		dpipe;
+	pid_t		pid;
+	t_clause	*head;
 
 	ft_memset(&dpipe, -1, sizeof(t_dpipe));
-	while (pl->clause)
+	head = pl->clause;
+	while (head)
 	{
-		if (exec_check_piping(&dpipe, pl->clause) == MS_EXEC_FAIL)
+		if (exec_check_piping(&dpipe, head) == MS_EXEC_FAIL)
 			return (MS_EXEC_FAIL);
 		pid = fork();
 		if (pid < 0)
@@ -74,10 +76,10 @@ int	exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state)
 			return (1);
 		}
 		if (pid == 0)
-			exec_pipe_child(pl, master, state, &dpipe);
+			exec_pipe_child(head, master, state, &dpipe);
 		else
 			exec_pipe_parent(&dpipe);
-		pl->clause = pl->clause->next;
+		head = head->next;
 	}
 	exec_set_signal_wait(pid);
 	return (g_ex_states);
