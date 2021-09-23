@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 14:05:29 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 13:56:00 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int		ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state);
 
 /* exec_pipe_cmd */
 int		exec_check_piping(t_dpipe *dpipe, t_clause *clause);
-void	exec_pipe_child(t_pipeline *pl, t_master *master,
+void	exec_pipe_child(t_clause *clause, t_master *master,
 			t_ex_state *state, t_dpipe *dpipe);
 int		exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state);
 void	exec_pipe_parent(t_dpipe *dpipe);
@@ -107,6 +107,7 @@ int		exec_subshell(t_clause *clause, t_master *master, t_ex_state *es);
 void	exec_check_path_exit(t_master *master, t_stree *expanded, char *path);
 size_t	exec_get_command_size(t_stree *tree);
 void	exec_set_signal_wait(pid_t pid);
+int		exec_out(int rv, t_stree *expanded);
 
 /* ms_pipe */
 void	ms_close_and_update_pipe(int pipe_fd[2], int before_pipe[2]);

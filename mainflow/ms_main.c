@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/20 12:57:58 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 11:53:19 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	mf_destroy_master(t_master *master)
 		&& master->spcursor.lines[master->spcursor.i])
 		free(master->spcursor.lines[master->spcursor.i++]);
 	free(master->spcursor.lines);
-	free(master->var);
+	ms_env_all_free(&(master->var));
 	free(master->pwd);
 	free(master->old_pwd);
 	if (MS_DEBUG)
