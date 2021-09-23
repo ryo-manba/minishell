@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 18:45:18 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/17 15:33:09 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 21:03:03 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	mf_setup_opt(t_master *master)
 	{
 		master->spcursor.c_line = master->filepath;
 		master->filepath = NULL;
-		master->spcursor.lines = ft_split(master->spcursor.c_line, '\n');
+		master->spcursor.lines = ft_split_rough(master->spcursor.c_line, '\n');
 		if (!master->spcursor.lines)
 			return (mf_mark_failed(master, 1, "[exec-c] split"));
 	}
