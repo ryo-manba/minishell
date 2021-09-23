@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 13:56:07 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 17:10:03 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,6 @@ void	exec_run_cmd_exit(t_master *master, t_stree *expanded, t_shellvar *var)
 	exec_check_path(path, is_relative);
 	exec_check_path_exit(master, expanded, path);
 	free(path);
-	exec_print_error_exit(master, CMD_NOT_FOUND, expanded->token);
+	if (errno != ERRNO_EXECVE_FORMAT_ERROR)
+		exec_print_error_exit(master, CMD_NOT_FOUND, expanded->token);
 }
