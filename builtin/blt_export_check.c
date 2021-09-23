@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_check.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:52:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 16:32:53 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:43:34 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-// 引数が正しいかチェックして key と value で分ける
 int	blt_check_and_separate_env(
 		t_master *master, char *token, char *key_value[2])
 {
@@ -32,8 +31,7 @@ int	blt_check_and_separate_env(
 	return (MS_BLT_SUCC);
 }
 
-// export の key が形式に沿っているかチェックする
-// '='がない場合文字を終端まで見る
+// Check the export key follows the format
 int	blt_check_export_key(char *token, int32_t equal_idx)
 {
 	int32_t	i;
@@ -66,8 +64,6 @@ void	blt_export_print_error(t_master *master, char *token)
 	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 }
 
-// '+='と'='で分ける
-// valueがない場合はNULL埋め
 int	blt_separate_key_value(int32_t equal_idx, char *token, char *key_value[2])
 {
 	if (equal_idx != -1 && token[equal_idx - 1] == '+')

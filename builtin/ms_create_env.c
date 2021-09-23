@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ms_create_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 14:53:27 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 21:25:18 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:46:24 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-// keyとvalueに分けて,失敗したらfreeする
 int	ms_check_malloc_key_value(t_shellvar *var, char *s, int key_or_value)
 {
 	if (key_or_value == KEY)
@@ -56,7 +55,6 @@ t_shellvar	*ms_create_append_env(char *env)
 	return (append_var);
 }
 
-// environから一文字ずつ見ていって, "key = value"に分けて構造体を作る
 int	ms_create_env(t_master *master)
 {
 	extern char	**environ;
@@ -83,7 +81,6 @@ int	ms_create_env(t_master *master)
 	return (0);
 }
 
-// =でkeyとvalueを分ける
 int	ms_create_key_value(char *env, char *key_value[2])
 {
 	int	equal_idx;
@@ -105,7 +102,6 @@ int	ms_create_key_value(char *env, char *key_value[2])
 	return (MS_BLT_SUCC);
 }
 
-// =がない場合はvalueをNULLにする
 t_shellvar	*ms_new_env(char *key, char *value)
 {
 	t_shellvar	*new_env;

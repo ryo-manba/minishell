@@ -6,11 +6,22 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 12:29:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 15:42:49 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:48:25 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
+
+void	blt_pre_absolute_path(t_list **pwd_lst, t_list **arg_lst)
+{
+	*pwd_lst = blt_lst_init(pwd_lst);
+	if (*arg_lst && (ft_strlen((*arg_lst)->content) == 2 && \
+		ft_strcmp((*arg_lst)->content, "//") == 0))
+	{
+		ft_lstpush_back(pwd_lst, ft_strdup("/"));
+		*arg_lst = (*arg_lst)->next;
+	}
+}
 
 int	blt_pre_absolute_lst(t_list **lst, char *s)
 {
@@ -19,7 +30,7 @@ int	blt_pre_absolute_lst(t_list **lst, char *s)
 	i = 0;
 	if ((ft_strlen(s) == 1 && ft_strcmp(s, "/") == 0))
 		return (0);
-	if 	(ft_strlen(s) == 2 && ft_strcmp(s, "//") == 0)
+	if (ft_strlen(s) == 2 && ft_strcmp(s, "//") == 0)
 	{
 		ft_lstpush_back(lst, ft_strdup(s));
 		return (0);
@@ -60,26 +71,18 @@ char	*blt_cd_has_args(t_master *master, t_stree *tree)
 	t_list	*pwd_lst;
 	t_list	*arg_lst;
 	int		is_absolute;
-	char	*path;
 
 	is_absolute = 0;
-	path = ft_strdup(master->pwd);
-	if (path == NULL)
-		return (NULL);
-	pwd_lst = blt_cd_create_list(path, 1);
+	pwd_lst = blt_cd_create_list(master->pwd, 1);
 	if (pwd_lst == NULL)
 		return (NULL);
-	free(path);
-	path = ft_strdup(tree->token);
-	if (path == NULL)
-	{
-		ms_perror("malloc");
-		return (NULL);
-	}
 	if (tree->token[0] == '/')
 		is_absolute = 1;
-	arg_lst = blt_cd_create_list(path, is_absolute);
+	arg_lst = blt_cd_create_list(tree->token, is_absolute);
 	if (arg_lst == NULL)
+	{
+		ft_lstclear(pwd_lst, free);
 		return (NULL);
+	}
 	return (blt_cd_create_path(pwd_lst, arg_lst, is_absolute));
 }

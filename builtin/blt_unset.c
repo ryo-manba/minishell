@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   blt_unset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:18 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 14:06:33 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:45:01 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-// unsetで指定された要素が先頭だった場合
 void	blt_unset_head(t_shellvar **env)
 {
 	t_shellvar	*tmp;
@@ -22,7 +21,6 @@ void	blt_unset_head(t_shellvar **env)
 	ms_env_free(tmp);
 }
 
-// "unset b"  a->b->c を a->c free(b)
 void	blt_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos)
 {
 	t_shellvar	*head;

@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:59:57 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/08 17:33:40 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:40:44 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	blt_env(t_shellvar *var)
 	return (MS_BLT_SUCC);
 }
 
-// keyがある場合更新する(pwd, oldpwd)
+// Update the env if it exists.
 int	blt_search_and_update_env(t_shellvar *env, char *key, char *new_value)
 {
 	t_shellvar	*key_pos;

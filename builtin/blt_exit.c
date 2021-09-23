@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   blt_exit.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:48:50 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 23:33:36 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:41:57 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-// statusが LONG_MAX or LONG_MIN を超える場合
 int	blt_check_long_overflow(char *ex_status)
 {
 	int			i;

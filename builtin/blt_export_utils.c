@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:09 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 20:47:56 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 19:56:45 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-// 環境変数を追加する
 int	blt_append_env(t_shellvar *env, char *key, char *value)
 {
 	t_shellvar	*append;
@@ -27,8 +26,6 @@ int	blt_append_env(t_shellvar *env, char *key, char *value)
 	return (MS_BLT_SUCC);
 }
 
-// もしkeyが含まれていたら更新する、なかったら新しく作る
-// "export VAR", "export VAR=" の場合も考慮する
 int	blt_append_or_update_env(t_shellvar *env, char *key, char *value)
 {
 	t_shellvar	*key_pos;
@@ -47,7 +44,6 @@ int	blt_append_or_update_env(t_shellvar *env, char *key, char *value)
 	return (MS_BLT_SUCC);
 }
 
-// 環境変数のvalueを更新する
 int	blt_update_env(t_shellvar *update_pos, char *value)
 {
 	free(update_pos->value);
