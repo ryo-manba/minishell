@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:12 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 22:34:53 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 15:13:39 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	blt_export_env(t_shellvar *var, t_stree *tree, t_master *master)
 {
 	char	*key_value[2];
 	int		ex_status;
+	int		failed;
 
 	ex_status = MS_BLT_SUCC;
 	while (tree != NULL)
@@ -70,7 +71,10 @@ int	blt_export_env(t_shellvar *var, t_stree *tree, t_master *master)
 			ex_status = MS_BLT_FAIL;
 		else
 		{
-			if (blt_check_and_export(tree, var, key_value))
+			failed = blt_check_and_export(tree, var, key_value);
+			free(key_value[KEY]);
+			free(key_value[VALUE]);
+			if (failed)
 				return (MS_BLT_FAIL);
 		}
 		tree = tree->right;

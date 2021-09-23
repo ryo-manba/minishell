@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 14:20:39 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 14:57:53 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void		ms_env_add_back(t_shellvar **env, t_shellvar *new_var);
 void		ms_env_all_free(t_shellvar **var);
 t_shellvar	*ms_envlast(t_shellvar *env);
 void		ms_env_free(t_shellvar *env);
+void		ms_env_print(t_shellvar *env);
 
 /* ms_env_preset */
 int			ms_preset_env(t_master *master);
