@@ -1,0 +1,97 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   blt_cd_lst.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/09/23 12:26:20 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/09/23 13:59:26 by rmatsuka         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ms_builtin.h"
+
+t_list *blt_lst_init(t_list **del_lst)
+{
+	t_list	*lst;
+
+	ft_lstclear(del_lst, free);
+	lst = (t_list *)ft_calloc(sizeof(t_list), 1);
+	return (lst);
+}
+
+int	blt_create_lst_loop(t_list **lst, char *s, int idx)
+{
+	int		len;
+	int		start;
+	char	*dir;
+
+	while (s[idx])
+	{
+		len = 0;
+		start = idx;
+		while (s[idx] && s[idx] != '/')
+		{
+			idx += 1;
+			len += 1;
+		}
+		if (start != idx)
+		{
+			dir = ft_substr(s, start, len);
+			if (dir == NULL)
+			{
+				ft_lstclear(lst, free);
+				ms_perror("malloc");
+				return (MS_BLT_FAIL);
+			}
+			ft_lstpush_back(lst, dir);
+		}
+		while (s[idx] == '/')
+			idx += 1;
+	}
+	return (MS_BLT_SUCC);
+}
+
+t_list	*blt_cd_create_list(char *s, int is_absolute)
+{
+	int		i;
+	t_list	*lst;
+
+	lst = (t_list *)ft_calloc(sizeof(t_list), 1);
+	if (lst == NULL)
+	{
+		ms_perror("malloc");
+		return (NULL);
+	}
+	i = 0;
+	if (is_absolute)
+	{
+		i = blt_pre_absolute_lst(&lst, s);
+		if (i == 0)
+			return (lst);
+	}
+	blt_create_lst_loop(&lst, s, i);
+	return (lst);
+}
+
+void	blt_lstlast_del(t_list *lst)
+{
+	t_list	*last;
+	t_list	*prev;
+
+	last = lst;
+	prev = NULL;
+	if (last->next == NULL)
+		return ;
+	while (last->next)
+	{
+		prev = last;
+		last = last->next;
+	}
+	if (prev)
+	{
+		prev->next = NULL;
+		ft_lstdelone(last, free);
+	}
+}

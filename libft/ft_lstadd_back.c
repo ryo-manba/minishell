@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/11 13:29:44 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/04/12 10:29:31 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 00:28:28 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	t_list	*pb_lst;
+	t_list	*last;
 
 	if (lst == NULL || new == NULL)
 		return ;
@@ -22,8 +22,8 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 		*lst = new;
 	else
 	{
-		pb_lst = ft_lstlast(*lst);
-		if (pb_lst != NULL)
-			pb_lst->next = new;
+		last = ft_lstlast(*lst);
+		if (last != NULL)
+			last->next = new;
 	}
 }
