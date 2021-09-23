@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_print.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:05 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/19 22:34:53 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:43:55 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	blt_putstr_with_escaping(char *str)
 	}
 }
 
-// ソートするため環境変数のコピーを作る
 t_shellvar	*blt_copy_env(t_shellvar *env)
 {
 	t_shellvar	*tmp;
@@ -60,8 +59,6 @@ t_shellvar	*blt_copy_env(t_shellvar *env)
 	return (copy);
 }
 
-// sort済みの環境変数を出力する
-// export a="\n"　declare -x a="\\n"にする
 void	blt_print_export(t_shellvar *env)
 {
 	t_shellvar	*tmp;

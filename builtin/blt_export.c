@@ -6,15 +6,12 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:12 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 00:23:49 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/24 01:53:59 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-// keyがない場合は作る、あったら結合する。
-// keyが存在しなかったら追加するだけ
-// keyが存在して新しい value が NULL じゃなかった場合結合する
 int	blt_append_or_join_env(t_shellvar *var, char *key_value[2])
 {
 	t_shellvar	*key_pos;
@@ -33,7 +30,6 @@ int	blt_append_or_join_env(t_shellvar *var, char *key_value[2])
 	return (MS_BLT_SUCC);
 }
 
-// "+="だったら文字を結合する
 int	blt_check_and_export(t_stree *tree, t_shellvar *var, char *key_value[2])
 {
 	int32_t		equal_idx;
@@ -55,9 +51,6 @@ int	blt_check_and_export(t_stree *tree, t_shellvar *var, char *key_value[2])
 	return (MS_BLT_SUCC);
 }
 
-// tokenに入ってる引数をチェックしながらexportする
-// 不正な値の場合はその都度エラー表示する。
-// 一つでもエラーが出たら終了ステータスは1
 int	blt_export_env(t_shellvar *var, t_stree *tree, t_master *master)
 {
 	char	*key_value[2];
@@ -82,10 +75,6 @@ int	blt_export_env(t_shellvar *var, t_stree *tree, t_master *master)
 	return (ex_status);
 }
 
-// "+="の処理
-// valueが空文字列の場合: 除いてから新しく作る
-// valueが存在する場合:   結合する
-// valueが存在しない場合: 新しく作る
 int	blt_join_env(t_shellvar *key_pos, char *key_value[2])
 {
 	char	*tmp;
@@ -116,8 +105,6 @@ int	blt_join_env(t_shellvar *key_pos, char *key_value[2])
 ** tree->token = "TEST=test"
 ** tree->right->token = "aaa"
 */
-// 'export' 単体の場合は環境変数をソートして'declare -x hoge="huga"'の形式で出力する
-// 環境変数を追加または更新する
 int	blt_export(t_shellvar *var, t_stree *tree, t_master *master)
 {
 	if (tree == NULL)

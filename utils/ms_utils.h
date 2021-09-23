@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 21:56:29 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/24 01:53:32 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,6 @@ char	*exec_create_path(char *cmd, char **split_path);
 char	**exec_create_split_path(t_shellvar *var);
 char	*exec_get_path(char *cmd, t_shellvar *var);
 char	*exec_strjoin(char *path, char *cmd);
-
-/* exec_just_open */
-void	exec_all_open(t_redir *expand_rd);
-int		exec_just_open(t_master *master, t_clause *clause);
 
 /* exec_main_flow */
 char	**exec_create_command(t_stree *tree);

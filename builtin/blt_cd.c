@@ -6,15 +6,12 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:30:08 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 16:16:50 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:28:08 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-// 最初のgetcwdで失敗してもエラー出さない
-// PWD がunsetされてたら参照できないので、移動前にgetcwdで保持しておく
-// 第一引数のみ適用される、それ以降は無視される
 int	blt_cd(t_shellvar *env, t_stree *tree, t_master *master)
 {
 	int		is_succ;

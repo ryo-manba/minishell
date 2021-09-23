@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 15:28:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 13:38:26 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:48:05 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,8 @@ char	*blt_check_slash_join(char *env_pwd, char *arg)
 int	blt_cd_no_current(t_master *master, t_shellvar *env, char *arg)
 {
 	char		*pwd;
-	int			flag;
+	int			ret;
 
-	flag = 0;
 	ft_putendl_fd("cd: error retrieving current directory: \
 getcwd: cannot access parent directories: \
 No such file or directory", STDERR_FILENO);
@@ -53,9 +52,9 @@ No such file or directory", STDERR_FILENO);
 	pwd = blt_check_slash_join(master->pwd, arg);
 	if (pwd == NULL)
 		return (MS_BLT_FAIL);
-	flag = blt_cd_update(master, env, pwd);
+	ret = blt_cd_update(master, env, pwd);
 	free(pwd);
-	return (flag);
+	return (ret);
 }
 
 int	blt_cd_no_prevdir(t_master *master, t_shellvar *env, char *now_pwd)
@@ -72,7 +71,5 @@ int	blt_cd_no_prevdir(t_master *master, t_shellvar *env, char *now_pwd)
 		ms_perror("malloc");
 		return (MS_BLT_FAIL);
 	}
-	if (blt_cd_update(master ,env, now_pwd) == MS_BLT_FAIL)
-		return (MS_BLT_FAIL);
-	return (MS_BLT_SUCC);
+	return (blt_cd_update(master, env, now_pwd));
 }

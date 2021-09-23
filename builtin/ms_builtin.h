@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtin.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 16:54:17 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:57:06 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void		ms_env_print(t_shellvar *env);
 int			ms_preset_env(t_master *master);
 
 /* blt_cd_lst */
-t_list		 *blt_lst_init(t_list **del_lst);
+t_list		*blt_lst_init(t_list **del_lst);
+int			blt_malloc_failed_lstclear(t_list **lst);
 int			blt_create_lst_loop(t_list **lst, char *s, int idx);
 t_list		*blt_cd_create_list(char *s, int is_absolute);
 void		blt_lstlast_del(t_list *lst);
@@ -74,19 +75,22 @@ int			blt_cd_no_current(t_master *master, t_shellvar *env, char *arg);
 int			blt_cd_no_prevdir(t_master *master, t_shellvar *env, char *now_pwd);
 
 /* blt_cd_normalize_path */
+void		blt_pre_absolute_path(t_list **pwd_lst, t_list **arg_lst);
 int			blt_pre_absolute_lst(t_list **lst, char *s);
-char		*blt_cd_create_path(t_list *pwd_lst, t_list *arg_lst, int is_absolute);
+char		*blt_cd_create_path(
+				t_list *pwd_lst, t_list *arg_lst, int is_absolute);
 char		*blt_cd_has_args(t_master *master, t_stree *tree);
 
 /* blt_cd_normalize_utils */
-void		blt_pre_absolute_path(t_list **pwd_lst, t_list **arg_lst);
 char		*blt_cd_restore_path(t_list *pwd_lst);
 char		*blt_join(char *s1, char *s2);
+char		*blt_slash_join_loop(t_list *pwd_lst);
 char		*blt_slash_join_path(t_list *pwd_lst);
 
 /* blt_cd_update_pwd */
 int			blt_cd_update(t_master *master, t_shellvar *env, char *now_pwd);
-int			blt_cd_update_pwd(t_master *master, t_stree *tree, t_shellvar *env, int is_succ);
+int			blt_cd_update_pwd(
+				t_master *master, t_stree *tree, t_shellvar *env, int is_succ);
 
 /* blt_cd */
 int			blt_cd(t_shellvar *env, t_stree *tree, t_master *master);

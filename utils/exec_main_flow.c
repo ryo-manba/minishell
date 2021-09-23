@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec_main_flow.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 16:00:42 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 21:43:22 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-// execveに送る場合
-// {"ls", "-l", "NULL"}の状態にする。
+// {"ls", "-l", "NULL"}
+// Set the argument to this format.
 char	**exec_create_command(t_stree *tree)
 {
 	char	**command;
@@ -41,7 +41,6 @@ char	**exec_create_command(t_stree *tree)
 	return (command);
 }
 
-// 環境変数を展開しながらリダイレクションを処理する
 int	exec_expand_redirect(t_master *master, t_clause *clause)
 {
 	t_redir		*rd;
@@ -86,9 +85,6 @@ void	exec_update_exitstatus(pid_t pid)
 		g_ex_states = WEXITSTATUS(status);
 }
 
-// '&&','||' で条件を満たしている場合に再帰的に実行する
-// fork->pipe->redirect->execの順
-// TODO: open処理考える
 int	ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state)
 {
 	if (pl == NULL)

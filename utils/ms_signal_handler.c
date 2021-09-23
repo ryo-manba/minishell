@@ -6,13 +6,13 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/15 23:37:53 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 23:44:06 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 21:45:26 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-// ctrl+Cが来たら標準入力をcloseすることでreadlineはNULLを返す
+// Close stdin when ctrl+C is entered, readline will return null.
 void	ms_heredoc_sigint_handler(int sig)
 {
 	(void)sig;
@@ -21,7 +21,6 @@ void	ms_heredoc_sigint_handler(int sig)
 	close(STDIN_FILENO);
 }
 
-// ctrlCを判定するためにex_statesを0にしておく
 int	ms_heredoc_signal_set(void)
 {
 	g_ex_states = 0;

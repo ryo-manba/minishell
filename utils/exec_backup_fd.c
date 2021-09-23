@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 00:08:03 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/16 00:16:33 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 21:35:48 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	exec_close_backup_fd(int backup_fd[3])
 	return (0);
 }
 
-// 親プロセスでリダイレクションをするとき用に、fd(0,1,2)のバックアップをとっておく。
+// Make a backup of fd(0,1,2) for redirection in the parent process.
 int	exec_create_backup_fd(int backup_fd[3])
 {
 	backup_fd[0] = dup(STDIN_FILENO);
@@ -32,7 +32,6 @@ int	exec_create_backup_fd(int backup_fd[3])
 	return (0);
 }
 
-// 親プロセスでリダイレクションをするとき用に、fd(0,1,2)のバックアップをとっておく。
 int	exec_duplicate_backup_fd(int backup_fd[3])
 {
 	int	flag;
