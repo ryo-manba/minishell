@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:52:30 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:57:06 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int			ms_preset_env(t_master *master);
 
 /* blt_cd_lst */
 t_list		*blt_lst_init(t_list **del_lst);
-int			blt_malloc_failed_lstclear(t_list *lst);
+int			blt_malloc_failed_lstclear(t_list **lst);
 int			blt_create_lst_loop(t_list **lst, char *s, int idx);
 t_list		*blt_cd_create_list(char *s, int is_absolute);
 void		blt_lstlast_del(t_list *lst);

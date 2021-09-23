@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 12:31:03 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:27:47 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:57:39 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*blt_slash_join_path(t_list *pwd_lst)
 	path = blt_slash_join_loop(tmp_lst);
 	if (path == NULL)
 	{
-		blt_malloc_failed_lstclear(pwd_lst);
+		blt_malloc_failed_lstclear(&pwd_lst);
 		return (NULL);
 	}
 	ft_lstclear(&pwd_lst, free);

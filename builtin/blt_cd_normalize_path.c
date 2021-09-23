@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 12:29:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:48:25 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/23 20:57:22 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*blt_cd_has_args(t_master *master, t_stree *tree)
 	arg_lst = blt_cd_create_list(tree->token, is_absolute);
 	if (arg_lst == NULL)
 	{
-		ft_lstclear(pwd_lst, free);
+		ft_lstclear(&pwd_lst, free);
 		return (NULL);
 	}
 	return (blt_cd_create_path(pwd_lst, arg_lst, is_absolute));
