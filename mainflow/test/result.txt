@@ -1,4 +1,19 @@
-[ OK ] Thu, 23 Sep 2021 17:10:05 +0900	tokenize_basic
-[ OK ] Thu, 23 Sep 2021 17:10:06 +0900	wildcard
-[FAIL] Thu, 23 Sep 2021 17:10:06 +0900	unclosed_quote
-[ OK ] Thu, 23 Sep 2021 17:10:06 +0900	subshell_basic
+[ OK ] Thu, 23 Sep 2021 18:02:34 +0900	tokenize_basic
+[ OK ] Thu, 23 Sep 2021 18:02:34 +0900	wildcard
+[FAIL] Thu, 23 Sep 2021 18:02:34 +0900	unclosed_quote
+[ OK ] Thu, 23 Sep 2021 18:02:34 +0900	subshell_basic
+[ OK ] Thu, 23 Sep 2021 18:02:34 +0900	subshell_pipe
+[ OK ] Thu, 23 Sep 2021 18:02:34 +0900	semicolon
+[ OK ] Thu, 23 Sep 2021 18:02:34 +0900	ln_in_error_file
+[ OK ] Thu, 23 Sep 2021 18:02:35 +0900	ln_in_error_stdin
+[ OK ] Thu, 23 Sep 2021 18:02:35 +0900	ln_in_error_c
+[ OK ] Thu, 23 Sep 2021 18:02:35 +0900	dollar_question
+[ OK ] Thu, 23 Sep 2021 18:02:35 +0900	exit_arg
+[ OK ] Thu, 23 Sep 2021 18:02:35 +0900	redir
+[ OK ] Thu, 23 Sep 2021 18:02:35 +0900	echo
+[ OK ] Thu, 23 Sep 2021 18:02:36 +0900	pipe
+[ OK ] Thu, 23 Sep 2021 18:02:36 +0900	pwd
+[ OK ] Thu, 23 Sep 2021 18:02:36 +0900	export
+[ OK ] Thu, 23 Sep 2021 18:02:36 +0900	cd
+[ OK ] Thu, 23 Sep 2021 18:02:37 +0900	unset
+[ OK ] Thu, 23 Sep 2021 18:02:37 +0900	env
