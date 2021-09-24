@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir_error.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:32:51 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 15:12:09 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/24 18:08:57 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-// fdの指定がない場合
 int	ms_check_fd(char *fd)
 {
 	int64_t	num;
@@ -57,8 +56,8 @@ int	ms_check_fd_print_error(t_redir *rd, t_master *master)
 	return (errno);
 }
 
-// 文字列の種類
-// EACCES: file_name
+// The contents of the string 's' are
+// EACCES : file_name
 // OVER_FD: fd
 void	ms_redir_print_error(t_master *master, int err, char *s)
 {

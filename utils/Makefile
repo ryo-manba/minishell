@@ -3,6 +3,7 @@ NAME	:=	libmu.a
 TEST_NAME	:=	tutils
 
 SRCS		:=	exec_error.c \
+				exec_expand_redir.c \
 				exec_backup_fd.c \
 				exec_check_path.c \
 				exec_get_path.c \

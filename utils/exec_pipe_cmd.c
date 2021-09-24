@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 21:45:01 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/24 18:00:00 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ int	exec_check_piping(t_dpipe *dpipe, t_clause *clause)
 	return (MS_EXEC_SUCC);
 }
 
-// subshellの場合、再帰的にエグゼキューターに渡す
-// builtinの場合は、実行してexitする
-// TODO: subshellの処理
+// If it's a subshell, run it recursively.
 void	exec_pipe_child(
 	t_clause *clause, t_master *master, t_ex_state *es, t_dpipe *dpipe)
 {
@@ -55,8 +53,7 @@ void	exec_pipe_child(
 		exec_run_cmd_exit(es->master, expanded, master->var);
 }
 
-// パイプが繋がっていた場合のコマンド実行の処理
-// 最後のコマンドのpidからステータスを取る
+// Processing of command execution when a pipe is connected.
 int	exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state)
 {
 	t_dpipe		dpipe;
@@ -85,7 +82,6 @@ int	exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state)
 	return (g_ex_states);
 }
 
-// 親でpipeを閉じる
 void	exec_pipe_parent(t_dpipe *dpipe)
 {
 	ms_close_and_update_pipe(dpipe->new, dpipe->before);

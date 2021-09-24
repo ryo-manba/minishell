@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 12:19:04 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/24 18:05:53 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,9 @@ int	exec_ex_cmd(t_master *master, t_shellvar *var, t_stree *expanded)
 	return (g_ex_states);
 }
 
-// パイプなしのシンプルなコマンド
-// ビルトインならそのまま実行する。
-// 外部コマンドならforkして実行する。
-// リダイレクトがある場合, バックアップをとって実行後に戻す
+// If built-in, run as is.
+// If it's an external command, fork it and run it.
+// If there is a redirect, make a backup and revert after execution.
 int	exec_simple_command(t_clause *clause, t_master *master, t_ex_state *es)
 {
 	int		backup_fd[3];
