@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 18:00:00 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 23:57:38 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,16 @@ void	exec_pipe_child(
 		exec_run_cmd_exit(es->master, expanded, master->var);
 }
 
-// Processing of command execution when a pipe is connected.
-int	exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state)
+pid_t	exec_pipe_cmd_loop(
+		t_master *master, t_clause *cl, t_dpipe *dpipe, t_ex_state *state)
 {
-	t_dpipe		dpipe;
+	t_clause	*tmp_cl;
 	pid_t		pid;
-	t_clause	*head;
 
-	ft_memset(&dpipe, -1, sizeof(t_dpipe));
-	head = pl->clause;
-	while (head)
+	tmp_cl = cl;
+	while (tmp_cl)
 	{
-		if (exec_check_piping(&dpipe, head) == MS_EXEC_FAIL)
+		if (exec_check_piping(dpipe, tmp_cl) == MS_EXEC_FAIL)
 			return (MS_EXEC_FAIL);
 		pid = fork();
 		if (pid < 0)
@@ -73,16 +71,35 @@ int	exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state)
 			return (1);
 		}
 		if (pid == 0)
-			exec_pipe_child(head, master, state, &dpipe);
+		{
+			if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
+				ms_perror_exit("signal");
+			exec_pipe_child(tmp_cl, master, state, dpipe);
+		}
 		else
-			exec_pipe_parent(&dpipe);
-		head = head->next;
+			exec_pipe_parent(dpipe);
+		tmp_cl = tmp_cl->next;
 	}
+	return (pid);
+}
+
+// Processing of command execution when a pipe is connected.
+int	exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state)
+{
+	t_dpipe		dpipe;
+	pid_t		pid;
+
+	ft_memset(&dpipe, -1, sizeof(t_dpipe));
+	pid = exec_pipe_cmd_loop(master, pl->clause, &dpipe, state);
 	exec_set_signal_wait(pid);
 	return (g_ex_states);
 }
 
 void	exec_pipe_parent(t_dpipe *dpipe)
 {
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+		ms_perror_exit("signal");
 	ms_close_and_update_pipe(dpipe->new, dpipe->before);
+	if (signal(SIGINT, ms_sigint_handler) == SIG_ERR)
+		ms_perror_exit("signal");
 }

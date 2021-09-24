@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 12:26:20 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:56:51 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 22:07:00 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_list	*blt_cd_create_list(char *s, int is_absolute)
 	int		i;
 	t_list	*lst;
 
-	lst = (t_list *)ft_calloc(sizeof(t_list), 1);
+	lst = (t_list *)ft_calloc(1, sizeof(t_list));
 	if (lst == NULL)
 	{
 		ms_perror("malloc");

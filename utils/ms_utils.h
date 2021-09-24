@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 21:15:07 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 23:56:50 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,14 +90,18 @@ int		ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state);
 int		exec_check_piping(t_dpipe *dpipe, t_clause *clause);
 void	exec_pipe_child(t_clause *clause, t_master *master,
 			t_ex_state *state, t_dpipe *dpipe);
+pid_t	exec_pipe_cmd_loop(
+			t_master *master, t_clause *cl, t_dpipe *dpipe, t_ex_state *state);
 int		exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state);
 void	exec_pipe_parent(t_dpipe *dpipe);
-void	exec_run_cmd_exit(t_master *master, t_stree *expanded, t_shellvar *var);
 
 /* exec_restore_cmd */
 int		exec_get_env_size(t_shellvar *var);
 char	*exec_restore(t_shellvar *var);
 char	**exec_restore_env(t_shellvar *var);
+
+/* exec_run */
+void	exec_run_cmd_exit(t_master *master, t_stree *expanded, t_shellvar *var);
 
 /* exec_simple_cmd */
 int		exec_ex_cmd(t_master *master, t_shellvar *var, t_stree *expanded);
