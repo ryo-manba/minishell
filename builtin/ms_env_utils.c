@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_env_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:59:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 15:11:39 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 00:28:05 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,4 @@ void	ms_env_free(t_shellvar *env)
 	free(env->key);
 	free(env->value);
 	free(env);
-}
-
-void	ms_env_print(t_shellvar *env)
-{
-	t_shellvar	*head;
-
-	head = env;
-	while (head)
-	{
-		printf("{%s}\t%p(%p,%p) -> %p\n",
-			head->key, head, head->key, head->value, head->next);
-		head = head->next;
-	}
 }
