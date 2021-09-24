@@ -125,3 +125,4 @@ run_case_bash_file	export
 run_case_bash_file	cd
 run_case_bash_file	unset
 run_case_bash_file	env
+run_case_bash_file	extreme
