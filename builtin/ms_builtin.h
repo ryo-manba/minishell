@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:57:06 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 17:48:43 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void		blt_quick_sort(t_shellvar *first, t_shellvar *last);
 void		blt_swap_env(t_shellvar *env1, t_shellvar *env2);
 
 /* blt_env */
-int			blt_search_and_update_env(
+int			blt_create_or_update_env(
 				t_shellvar *env, char *key, char *new_value);
 int			blt_env(t_shellvar *var);
 

@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 15:29:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:36:17 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 21:51:25 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,20 @@ int	blt_cd_update(t_master *master, t_shellvar *env, char *pwd)
 {
 	int			flag;
 	char		*old_pwd;
-	t_shellvar	*env_pwd;
+	t_shellvar	*env_pwd_pos;
 
 	flag = 0;
 	free(master->pwd);
 	master->pwd = ft_strdup(pwd);
-	env_pwd = ms_search_key(env, "PWD");
-	if (env_pwd && env_pwd->value)
-		old_pwd = ft_strdup(env_pwd->value);
+	env_pwd_pos = ms_search_key(env, "PWD");
+	if (env_pwd_pos && env_pwd_pos->value)
+		old_pwd = ft_strdup(env_pwd_pos->value);
 	else
 		old_pwd = ft_strdup("");
 	if (old_pwd == NULL || master->pwd == NULL)
 		return (1);
-	if (!((blt_search_and_update_env(env, "OLDPWD", old_pwd) == MS_BLT_SUCC) && \
-		blt_search_and_update_env(env, "PWD", master->pwd) == MS_BLT_SUCC))
+	if (!((blt_create_or_update_env(env, "OLDPWD", old_pwd) == MS_BLT_SUCC) && \
+		blt_create_or_update_env(env, "PWD", master->pwd) == MS_BLT_SUCC))
 		flag = 1;
 	free(old_pwd);
 	return (flag);
