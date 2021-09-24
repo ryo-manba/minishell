@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 01:53:32 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/24 15:50:44 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ char	*exec_strjoin(char *path, char *cmd);
 
 /* exec_main_flow */
 char	**exec_create_command(t_stree *tree);
+int		exec_expand_redir_loop(t_master *master,
+			t_redir *rd, t_ex_state *es, int stdin_copy);
 int		exec_expand_redirect(t_master *master,
 			t_clause *clause);
 void	exec_update_exitstatus(pid_t pid);
