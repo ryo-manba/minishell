@@ -6,18 +6,18 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 21:40:39 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/24 21:17:40 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/25 00:46:40 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-static void	exec_exit_ifneeed(t_master *master, t_stree *expanded,
+static void	exec_exit_ifneed(t_master *master, t_stree *expanded,
 	int is_command)
 {
 	(void)is_command;
 	if (errno == ERRNO_EXECVE_FORMAT_ERROR)
-		return ;
+		exit(0);
 	if (errno == ERRNO_NO_SUCH_FILE)
 		exec_print_error_exit(master, NO_SUCH_FILE, expanded->token);
 	if (errno == ERRNO_NOT_A_DIR)
@@ -52,5 +52,5 @@ void	exec_run_cmd_exit(t_master *master, t_stree *expanded, t_shellvar *var)
 	exec_check_path_stat(path, is_command);
 	exec_check_path_exit(master, expanded, path);
 	free(path);
-	exec_exit_ifneeed(master, expanded, is_command);
+	exec_exit_ifneed(master, expanded, is_command);
 }

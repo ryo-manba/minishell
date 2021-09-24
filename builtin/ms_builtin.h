@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtin.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 21:59:12 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 00:28:09 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void		ms_env_add_back(t_shellvar **env, t_shellvar *new_var);
 void		ms_env_all_free(t_shellvar **var);
 t_shellvar	*ms_envlast(t_shellvar *env);
 void		ms_env_free(t_shellvar *env);
-void		ms_env_print(t_shellvar *env);
 
 /* ms_env_preset */
 int			ms_preset_env(t_master *master);
