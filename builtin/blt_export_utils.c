@@ -6,13 +6,13 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:09 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 21:57:16 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 02:01:34 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-int	blt_append_env(t_shellvar *env, char *key, char *value, int is_env)
+int	blt_append_env(t_shellvar **env, char *key, char *value, int is_env)
 {
 	t_shellvar	*append;
 
@@ -22,16 +22,16 @@ int	blt_append_env(t_shellvar *env, char *key, char *value, int is_env)
 		ms_perror("malloc");
 		return (MS_BLT_FAIL);
 	}
-	ms_env_add_back(&env, append);
+	ms_env_add_back(env, append);
 	return (MS_BLT_SUCC);
 }
 
-int	blt_append_or_update_env(t_shellvar *env, char *key, char *value,
+int	blt_append_or_update_env(t_shellvar **env, char *key, char *value,
 	int is_env)
 {
 	t_shellvar	*key_pos;
 
-	key_pos = ms_search_key(env, key);
+	key_pos = ms_search_key(*env, key);
 	if (key_pos == NULL)
 	{
 		if (blt_append_env(env, key, value, is_env) == MS_BLT_FAIL)

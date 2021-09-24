@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 11:59:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/24 21:51:04 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 02:08:22 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ static int	ms_preset_env_pwd(t_master *master)
 	target = ms_search_key(master->var, "OLDPWD");
 	if (target)
 		blt_delvalue_env(target);
-	else if (blt_append_env(master->var, "OLDPWD", NULL, 1))
+	else if (blt_append_env(&(master->var), "OLDPWD", NULL, 1))
 		return (1);
 	target = ms_search_key(master->var, "PWD");
-	if (!target && blt_append_env(master->var, "PWD", master->pwd, 1))
+	if (!target && blt_append_env(&(master->var), "PWD", master->pwd, 1))
 		return (1);
 	return (0);
 }
@@ -60,7 +60,7 @@ static int	ms_preset_env_shlvl(t_master *master)
 
 	temp = ms_search_key(master->var, "SHLVL");
 	if (!temp || !temp->value)
-		return (!!blt_append_env(master->var, "SHLVL", "1", 1));
+		return (!!blt_append_env(&(master->var), "SHLVL", "1", 1));
 	lvl = ms_atoi_shlvl(temp->value) + 1;
 	if (lvl >= 1000)
 	{

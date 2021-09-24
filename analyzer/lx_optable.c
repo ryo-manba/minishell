@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 00:38:16 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/25 01:20:02 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 03:44:38 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static t_op	*lx_copy_table(t_op ops[])
 	if (!copied)
 		return (NULL);
 	i = 0;
-	while (i < n)
+	while (i <= n)
 	{
 		copied[i] = ops[i];
 		i += 1;
@@ -52,7 +52,7 @@ int	lx_copy_op_table(t_master *master)
 		{";", TI_SEMICOLON, 1},
 		{"(", TI_PAREN_L, 1},
 		{")", TI_PAREN_R, 1},
-		{NULL, TI_DUMMY, 0},
+		{0},
 		});
 	return (!master->lx_ops);
 }
@@ -82,6 +82,6 @@ int	lx_copy_all_op_table(t_master *master)
 		{"(", TI_PAREN_L, 0},
 		{")", TI_PAREN_R, 0},
 		{"NONE", TI_NONE, 0},
-		{NULL, TI_DUMMY, 0}});
+		{0},
 	return (!master->lx_all_ops);
 }

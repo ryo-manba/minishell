@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 13:26:14 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 13:55:42 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/25 02:06:21 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ms_exec_builtin(t_stree *tree, t_master *master)
 	if (ft_strcmp(tree->token, "exit") == 0)
 		return (blt_exit(tree->right, master));
 	if (ft_strcmp(tree->token, "export") == 0)
-		return (blt_export(master->var, tree->right, master));
+		return (blt_export(tree->right, master));
 	if (ft_strcmp(tree->token, "pwd") == 0)
 		return (blt_pwd(master));
 	if (ft_strcmp(tree->token, "unset") == 0)

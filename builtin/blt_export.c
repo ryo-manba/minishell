@@ -6,17 +6,17 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:12 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 20:43:47 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 02:07:48 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-int	blt_append_or_join_env(t_shellvar *var, char *key_value[2])
+int	blt_append_or_join_env(t_shellvar **var, char *key_value[2])
 {
 	t_shellvar	*key_pos;
 
-	key_pos = ms_search_key(var, key_value[KEY]);
+	key_pos = ms_search_key(*var, key_value[KEY]);
 	if (key_pos == NULL)
 	{
 		if (blt_append_env(var, key_value[KEY], key_value[VALUE], 1))
@@ -30,28 +30,26 @@ int	blt_append_or_join_env(t_shellvar *var, char *key_value[2])
 	return (MS_BLT_SUCC);
 }
 
-int	blt_check_and_export(t_stree *tree, t_shellvar *var, char *key_value[2])
+int	blt_check_and_export(t_stree *tree, t_shellvar **var, char *key_value[2])
 {
 	int32_t		equal_idx;
-	t_shellvar	*tmp;
 
-	tmp = var;
 	equal_idx = ft_strchr_i(tree->token, '=');
 	if (equal_idx >= 0 && tree->token[equal_idx - 1] == '+')
 	{
-		if (blt_append_or_join_env(tmp, key_value) == MS_BLT_FAIL)
+		if (blt_append_or_join_env(var, key_value) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);
 	}
 	else
 	{
 		if (blt_append_or_update_env(
-				tmp, key_value[KEY], key_value[VALUE], 1) == MS_BLT_FAIL)
+				var, key_value[KEY], key_value[VALUE], 1) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
 }
 
-int	blt_export_env(t_shellvar *var, t_stree *tree, t_master *master)
+int	blt_export_env(t_stree *tree, t_master *master)
 {
 	char	*key_value[2];
 	int		ex_status;
@@ -64,7 +62,7 @@ int	blt_export_env(t_shellvar *var, t_stree *tree, t_master *master)
 			ex_status = MS_BLT_FAIL;
 		else
 		{
-			failed = blt_check_and_export(tree, var, key_value);
+			failed = blt_check_and_export(tree, &(master->var), key_value);
 			free(key_value[KEY]);
 			free(key_value[VALUE]);
 			if (failed)
@@ -106,13 +104,13 @@ int	blt_join_env(t_shellvar *key_pos, char *key_value[2])
 ** tree->token = "TEST=test"
 ** tree->right->token = "aaa"
 */
-int	blt_export(t_shellvar *var, t_stree *tree, t_master *master)
+int	blt_export(t_stree *tree, t_master *master)
 {
 	if (tree == NULL)
-		blt_export_print_and_sort_env(var);
+		blt_export_print_and_sort_env(master->var);
 	else
 	{
-		if (blt_export_env(var, tree, master) == MS_BLT_FAIL)
+		if (blt_export_env(tree, master) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);

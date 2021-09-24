@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtin.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/25 00:28:09 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/25 02:07:35 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,20 +131,20 @@ void		blt_print_export(t_shellvar *env);
 void		blt_export_print_and_sort_env(t_shellvar *env);
 
 /* blt_export_utils */
-int			blt_append_env(t_shellvar *env, char *key, char *value,
+int			blt_append_env(t_shellvar **env, char *key, char *value,
 				int is_env);
-int			blt_append_or_update_env(t_shellvar *env, char *key, char *value,
+int			blt_append_or_update_env(t_shellvar **env, char *key, char *value,
 				int is_env);
 int			blt_update_env(t_shellvar *update_pos, char *value, int is_env);
 int			blt_delvalue_env(t_shellvar *update_pos);
 t_shellvar	*ms_search_key(t_shellvar *env, char *key);
 
 /* blt_export */
-int			blt_append_or_join_env(t_shellvar *env, char *key_value[2]);
+int			blt_append_or_join_env(t_shellvar **env, char *key_value[2]);
 int			blt_check_and_export(
-				t_stree *tree, t_shellvar *var, char *key_value[2]);
-int			blt_export(t_shellvar *env, t_stree *tree, t_master *master);
-int			blt_export_env(t_shellvar *env, t_stree *tree, t_master *master);
+				t_stree *tree, t_shellvar **var, char *key_value[2]);
+int			blt_export(t_stree *tree, t_master *master);
+int			blt_export_env(t_stree *tree, t_master *master);
 int			blt_join_env(t_shellvar *key_pos, char *key_value[2]);
 
 /* blt_pwd */
