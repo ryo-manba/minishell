@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 15:29:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 21:17:43 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/24 21:59:03 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ int	blt_cd_update(t_master *master, t_shellvar *env, char *pwd)
 {
 	int			flag;
 	char		*old_pwd;
-	t_shellvar	*env_pwd;
+	t_shellvar	*env_pwd_pos;
 
 	flag = 0;
 	free(master->pwd);
 	master->pwd = ft_strdup(pwd);
-	env_pwd = ms_search_key(env, "PWD");
-	if (env_pwd && env_pwd->value)
-		old_pwd = ft_strdup(env_pwd->value);
+	env_pwd_pos = ms_search_key(env, "PWD");
+	if (env_pwd_pos && env_pwd_pos->value)
+		old_pwd = ft_strdup(env_pwd_pos->value);
 	else
 		old_pwd = ft_strdup("");
 	if (old_pwd == NULL || master->pwd == NULL)

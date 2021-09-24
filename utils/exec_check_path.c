@@ -3,24 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   exec_check_path.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/15 15:32:33 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 18:00:23 by yokawada         ###   ########.fr       */
+/*   Created: 2021/09/24 21:27:00 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/09/24 21:27:09 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-// '/' が入っていてstatで存在しない場合はn
-// 実行可能ビットが立ってたらOK (S_IXUSR (00100))所有者による実行
-// 絶対パスの場合
-int	exec_check_path(char *path, int is_relative)
+int	exec_check_path_stat(char *path, int is_command)
 {
 	struct stat	sb;
 
-	if (is_relative)
-		return (exec_check_relative(path));
+	if (is_command)
+		return (exec_check_cmd_stat(path));
 	if (stat(path, &sb) < 0)
 	{
 		g_ex_states = NO_SUCH_FILE;
@@ -40,8 +37,7 @@ int	exec_check_path(char *path, int is_relative)
 	return (MS_EXEC_FAIL);
 }
 
-// 相対パス
-int	exec_check_relative(char *path)
+int	exec_check_cmd_stat(char *path)
 {
 	struct stat	sb;
 	int			rv;

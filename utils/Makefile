@@ -3,6 +3,7 @@ NAME	:=	libmu.a
 TEST_NAME	:=	tutils
 
 SRCS		:=	exec_error.c \
+				exec_expand_redir.c \
 				exec_backup_fd.c \
 				exec_check_path.c \
 				exec_get_path.c \
@@ -24,8 +25,8 @@ OBJS		:=	$(SRCS:.c=.o)
 TEST_OBJS	:=	$(TEST_SRCS:.c=.o)
 RM			:= rm -f
 CC			:= gcc
-#CFLAGS	=	-Wall -Wextra -Werror
-CFLAGS		:= -g -Wall -Wextra -Werror -I/usr/local/opt/readline/include/
+CFLAGS		:= -Wall -Wextra -Werror -I/usr/local/opt/readline/include/
+#CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -I/usr/local/opt/readline/include/
 LIBFT_DIR	:=	../libft
 LIBFT		:=	$(LIBFT_DIR)/libft.a
 

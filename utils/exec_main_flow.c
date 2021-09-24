@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 21:43:22 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 20:24:56 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,33 +39,6 @@ char	**exec_create_command(t_stree *tree)
 	}
 	command[i] = NULL;
 	return (command);
-}
-
-int	exec_expand_redirect(t_master *master, t_clause *clause)
-{
-	t_redir		*rd;
-	t_redir		*expanded_rd;
-	t_ex_state	es;
-	int			err;
-
-	ms_ex_init_state(&es, master);
-	rd = clause->redir;
-	err = 0;
-	while (rd)
-	{
-		expanded_rd = ms_expand_a_redir(&es, rd);
-		if (!expanded_rd)
-			return (MS_EXEC_FAIL);
-		if (ms_redirect(&es, expanded_rd) == MS_EXEC_FAIL)
-		{
-			err = ms_check_fd_print_error(expanded_rd, master);
-			pa_destroy_redir(expanded_rd);
-			return (1);
-		}
-		pa_destroy_redir(expanded_rd);
-		rd = rd->next;
-	}
-	return (MS_EXEC_SUCC);
 }
 
 void	exec_update_exitstatus(pid_t pid)

@@ -24,11 +24,12 @@ SRCS 		:=	blt_cd_lst.c \
 
 TEST_SRCS	:=	main.c
 
-OBJS	=	$(SRCS:.c=.o)
+OBJS		:=	$(SRCS:.c=.o)
 TEST_OBJS	:=	$(TEST_SRCS:.c=.o)
-RM		=	rm -f
-CC		= 	gcc -g
-CFLAGS	=	-Wall -Wextra -Werror -I/usr/local/opt/readline/include/
+RM			:=	rm -f
+CC			:= 	gcc
+CFLAGS		:=	-Wall -Wextra -Werror -I/usr/local/opt/readline/include/
+#CFLAGS		:=	-g -fsanitize=address -Wall -Wextra -Werror -I/usr/local/opt/readline/include/
 LIBFT_DIR	:=	../libft
 LIBFT		:=	$(LIBFT_DIR)/libft.a
 

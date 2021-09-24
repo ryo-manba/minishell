@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 21:50:01 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 18:09:47 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,6 @@ int	ms_redirect_heredoc(t_ex_state *es, t_redir *redir)
 	if (close(pipefd[0]) == -1)
 		return (MS_EXEC_FAIL);
 	ms_heredoc_write(es, lst, quoted, pipefd[1]);
+	ft_lstclear(&lst, free);
 	return (MS_EXEC_SUCC);
 }

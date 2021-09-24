@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 01:53:32 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/24 21:15:07 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,20 @@ void	exec_error_prologue(t_master *master, int limit_line);
 void	exec_print_error_exit(t_master *master, int ex_status, char *path);
 void	exec_print_prologue(t_master *master);
 
+/* exec_expand_redir */
+int		exec_expand_redir_loop(t_master *master,
+			t_redir *rd, t_ex_state *es, int stdin_copy);
+int		exec_expand_redirect(t_master *master,
+			t_clause *clause);
+
 /* exec_backup_fd */
 int		exec_close_backup_fd(int backup_fd[3]);
 int		exec_create_backup_fd(int backup_fd[3]);
 int		exec_duplicate_backup_fd(int backup_fd[3]);
 
-/* exec_check_path */
-int		exec_check_path(char *path, int is_relative);
-int		exec_check_relative(char *path);
+/* exec_check_path_stat */
+int		exec_check_path_stat(char *path, int is_command);
+int		exec_check_cmd_stat(char *path);
 
 /* exec_get_path */
 void	exec_all_free(char **s);
@@ -77,8 +83,6 @@ char	*exec_strjoin(char *path, char *cmd);
 
 /* exec_main_flow */
 char	**exec_create_command(t_stree *tree);
-int		exec_expand_redirect(t_master *master,
-			t_clause *clause);
 void	exec_update_exitstatus(pid_t pid);
 int		ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state);
 

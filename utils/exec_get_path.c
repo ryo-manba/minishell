@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_get_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 02:24:07 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/24 21:15:07 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ char	*exec_strjoin(char *split_path, char *cmd)
 	return (path);
 }
 
-// err_pathは存在するが失敗した場合ようにとっておく
-// ファイルまたはディレクトリが存在したらpathを返す
+// err_path is a path that exists but is kept in case of failure.
 char	*exec_create_path(char *cmd, char **split_path)
 {
 	char		*dir;
@@ -57,7 +56,7 @@ char	*exec_create_path(char *cmd, char **split_path)
 		if (ft_strlen(dir) == 0)
 			dir = ".";
 		path = exec_strjoin(dir, cmd);
-		if (exec_check_path(path, 1) == MS_EXEC_SUCC)
+		if (exec_check_path_stat(path, 1) == MS_EXEC_SUCC)
 		{
 			free(err_path);
 			return (path);
@@ -85,7 +84,6 @@ char	**exec_create_split_path(t_shellvar *var)
 	return (split_path);
 }
 
-// PATHがunsetされてる場合は "bash: ls: No such file or directory"になる
 char	*exec_get_path(char *cmd, t_shellvar *var)
 {
 	char	**split_path;
