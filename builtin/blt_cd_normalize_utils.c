@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_cd_normalize_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 12:31:03 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:57:39 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 23:09:15 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ char	*blt_cd_restore_path(t_list *pwd_lst)
 	}
 	if (pwd_lst->next == NULL)
 		return (slash);
+	free(slash);
 	return (blt_slash_join_path(pwd_lst));
 }
 
