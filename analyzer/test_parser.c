@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 20:06:13 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/15 23:41:07 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/24 23:21:16 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,25 @@ void	print_stree(t_stree *stree, int depth)
 void	print_redir(t_redir *redir, int depth)
 {
 	const char	*str;
+	char		*temp;
 
 	if (!redir)
 		return ;
 	str = pa_token_label(redir->redir_op);
+	temp = "";
+	if (redir->operand_left)
+		temp = redir->operand_left->token;
 	printf("%*s(Redir %s%s ",
 		depth * SW, "",
-		redir->operand_left ? redir->operand_left->token : "",
+		temp,
 		str);
-	printf("{%s}%s) ",
-		redir->operand_right ? redir->operand_right->token : NULL,
-		redir->operand_right->quote_involved ? "q" : ""
+	temp = NULL;
+	if (redir->operand_right)
+		temp = redir->operand_right->token;
+	printf("{%s}%.*s) ",
+		temp,
+		!!redir->operand_right->quote_involved,
+		"q"
 		);
 	if (redir->next)
 		print_redir(redir->next, 0);
@@ -76,13 +84,17 @@ void	print_clause(t_clause *clause, int depth)
 void	print_pipeline(t_pipeline *pipeline, int depth)
 {
 	const char	*str;
+	char		*temp;
 
 	if (!pipeline)
 		return ;
 	printf("%*s{Pipeline:%.*s", depth * SW, "", !!SW, "\n");
 	str = pa_operator_label(pipeline->joint);
 	print_clause(pipeline->clause, depth + 1);
-	printf("%*s%s }%.*s", depth * SW, "", str ? str : "", !!SW, "\n");
+	temp = "";
+	if (str)
+		temp = (char *)str;
+	printf("%*s%s }%.*s", depth * SW, "", temp, !!SW, "\n");
 	if (pipeline->next)
 		print_pipeline(pipeline->next, depth);
 }
@@ -90,6 +102,8 @@ void	print_pipeline(t_pipeline *pipeline, int depth)
 void	print_words(t_wdlist *words)
 {
 	char	*lex_type;
+	char	*temp_s;
+	int		temp_i;
 
 	while (words)
 	{
@@ -99,13 +113,15 @@ void	print_words(t_wdlist *words)
 			lex_type = "IO_NUMBER";
 		if (words->lex_type == LT_OPERATOR)
 			lex_type = "OP";
+		temp_s = (char *)words->word;
+		temp_i = words->len;
 		if (words->lex_type == LT_NEWLINE)
+		{
 			lex_type = "NEWLINE";
-		printf("<%s{%.*s}'%d'> ", lex_type,
-			words->lex_type == LT_NEWLINE ? 2 : words->len,
-			words->lex_type == LT_NEWLINE ? "\\n" : words->word,
-			words->delimiter
-			);
+			temp_s = "\\n";
+			temp_i = 2;
+		}
+		printf("<%s{%.*s}'%d'> ", lex_type, temp_i, temp_s, words->delimiter);
 		words = words->next;
 	}
 	printf("\n");
