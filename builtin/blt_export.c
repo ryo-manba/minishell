@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:12 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:53:11 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 01:53:59 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	blt_check_and_export(t_stree *tree, t_shellvar *var, char *key_value[2])
 
 	tmp = var;
 	equal_idx = ft_strchr_i(tree->token, '=');
-	if (equal_idx != 0 && tree->token[equal_idx - 1] == '+')
+	if (equal_idx >= 0 && tree->token[equal_idx - 1] == '+')
 	{
 		if (blt_append_or_join_env(tmp, key_value) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);

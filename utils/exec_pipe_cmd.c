@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 17:10:03 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 21:45:01 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,35 +89,4 @@ int	exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state)
 void	exec_pipe_parent(t_dpipe *dpipe)
 {
 	ms_close_and_update_pipe(dpipe->new, dpipe->before);
-}
-
-// '/' が含まれてる場合はそのまま実行する
-// ない場合はPATHから探す
-void	exec_run_cmd_exit(t_master *master, t_stree *expanded, t_shellvar *var)
-{
-	char	*path;
-	char	**env;
-	int		is_relative;
-
-	is_relative = 1;
-	env = exec_restore_env(var);
-	if (env == NULL)
-		ms_perror_exit("malloc");
-	if (ft_strchr_i(expanded->token, '/') != -1)
-	{
-		path = ft_strdup(expanded->token);
-		if (path == NULL)
-			ms_perror_exit("malloc");
-		is_relative = 0;
-	}
-	else
-		path = exec_get_path(expanded->token, var);
-	exec_check_path_exit(master, expanded, path);
-	execve(path, exec_create_command(expanded), env);
-	exec_all_free(env);
-	exec_check_path(path, is_relative);
-	exec_check_path_exit(master, expanded, path);
-	free(path);
-	if (errno != ERRNO_EXECVE_FORMAT_ERROR)
-		exec_print_error_exit(master, CMD_NOT_FOUND, expanded->token);
 }

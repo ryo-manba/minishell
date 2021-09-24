@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:19:54 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/06 14:11:50 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/24 02:54:05 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	pa_destroy_stree(t_stree *stree)
 
 	while (stree)
 	{
+		if (stree->subshell)
+			pa_destroy_pipeline(stree->subshell);
 		free(stree->token);
 		pa_destroy_stree(stree->left);
 		temp = stree->right;

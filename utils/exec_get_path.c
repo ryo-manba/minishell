@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_get_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/15 15:55:07 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 02:24:07 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ char	*exec_strjoin(char *split_path, char *cmd)
 // ファイルまたはディレクトリが存在したらpathを返す
 char	*exec_create_path(char *cmd, char **split_path)
 {
+	char		*dir;
 	char		*path;
 	char		*err_path;
 	int			i;
@@ -52,7 +53,10 @@ char	*exec_create_path(char *cmd, char **split_path)
 	err_path = NULL;
 	while (split_path[++i])
 	{
-		path = exec_strjoin(split_path[i], cmd);
+		dir = split_path[i];
+		if (ft_strlen(dir) == 0)
+			dir = ".";
+		path = exec_strjoin(dir, cmd);
 		if (exec_check_path(path, 1) == MS_EXEC_SUCC)
 		{
 			free(err_path);
@@ -72,9 +76,10 @@ char	**exec_create_split_path(t_shellvar *var)
 	char		**split_path;
 
 	path_pos = ms_search_key(var, "PATH");
-	if (path_pos == NULL)
+	if (path_pos == NULL || path_pos->value == NULL
+		|| ft_strlen(path_pos->value) == 0)
 		return (NULL);
-	split_path = ft_split(path_pos->value, ':');
+	split_path = ft_split_rough(path_pos->value, ':');
 	if (split_path == NULL)
 		ms_perror_exit("malloc");
 	return (split_path);
