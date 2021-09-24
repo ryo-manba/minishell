@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:40:02 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/20 13:10:18 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 01:20:40 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,6 @@
 # endif
 # define PA_ERR_GENERIC	257
 # define PA_ERR_UNEXPECTED	258
-
-typedef enum e_token_id
-{
-	TI_DUMMY,
-	TI_WORD,
-	TI_IO_NUMBER,
-	TI_NAME,
-	TI_ASSIGNMENT_WORD,
-	TI_SUBSHELL,
-	TI_LT,
-	TI_GT,
-	TI_LTLT,
-	TI_GTGT,
-	TI_LTGT,
-	TI_LTAND,
-	TI_GTAND,
-	TI_LTLTHYPHEN,
-	TI_PIPE,
-	TI_ANDAND,
-	TI_PIPEPIPE,
-	TI_AND,
-	TI_SEMICOLON,
-	TI_DSEMICOLON,
-	TI_PAREN_L,
-	TI_PAREN_R,
-	TI_NONE,
-}	t_token_id;
 
 struct	s_pipelinelist;
 
@@ -114,13 +87,14 @@ size_t		lx_cut_operator(t_lex_cursor *cursor);
 int			ms_parse(t_master *master, t_parse_state *state, t_wdlist *words,
 				int for_subshell);
 
-t_token_id	pa_operator_token_id(t_wdlist *word);
-const char	*pa_operator_label(t_token_id ti);
-const char	*pa_token_label(t_token_id ti);
+t_token_id	pa_operator_token_id(t_parse_state *state, t_wdlist *word);
+const char	*pa_operator_label(t_master *master, t_token_id ti);
+const char	*pa_token_label(t_master *master, t_token_id ti);
 int			pa_unit(t_parse_state *state);
 t_wdlist	*pa_shift_lx_token(t_parse_state *state);
 t_stree		*pa_make_stree(t_wdlist *word, int for_subshell);
-t_redir		*pa_make_redir(t_wdlist *op_word, t_stree *target, t_stree *ion);
+t_redir		*pa_make_redir(t_parse_state *state,
+				t_wdlist *op_word, t_stree *target, t_stree *ion);
 t_stree		*ex_make_stree(char *token, t_token_id tid);
 void		pa_destroy_stree(t_stree *stree);
 void		pa_destroy_redir(t_redir *redir);

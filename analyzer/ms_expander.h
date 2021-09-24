@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:38:23 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/19 11:43:56 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/22 21:40:55 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,5 +147,6 @@ void		ex_destroy_token(t_ex_token *ext);
 void		ex_destroy_a_token(t_ex_token *ext);
 
 void		ex_stringify_extoken(t_ex_token *ext);
+void		ex_stringify_extoken_ifneeded(t_ex_token *ext, char *preemble);
 
 #endif

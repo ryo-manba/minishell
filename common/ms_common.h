@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 00:02:05 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/20 23:33:01 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 00:53:39 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,41 @@ typedef struct s_shellvar
 	struct s_shellvar	*next;
 }	t_shellvar;
 
+typedef enum e_token_id
+{
+	TI_DUMMY,
+	TI_WORD,
+	TI_IO_NUMBER,
+	TI_NAME,
+	TI_ASSIGNMENT_WORD,
+	TI_SUBSHELL,
+	TI_LT,
+	TI_GT,
+	TI_LTLT,
+	TI_GTGT,
+	TI_LTGT,
+	TI_LTAND,
+	TI_GTAND,
+	TI_LTLTHYPHEN,
+	TI_PIPE,
+	TI_ANDAND,
+	TI_PIPEPIPE,
+	TI_AND,
+	TI_SEMICOLON,
+	TI_DSEMICOLON,
+	TI_PAREN_L,
+	TI_PAREN_R,
+	TI_NONE,
+}	t_token_id;
+
+
+typedef struct s_op
+{
+	char		*label;
+	t_token_id	token_id;
+	size_t		len;
+}	t_op;
+
 typedef struct s_master
 {
 	char			*staring_prog_name;
@@ -55,6 +90,8 @@ typedef struct s_master
 	char			*pwd;
 	char			*old_pwd;
 	int				exited;
+	t_op			*lx_ops;
+	t_op			*lx_all_ops;
 }	t_master;
 
 #endif

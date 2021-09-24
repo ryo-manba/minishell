@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/24 21:46:07 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 01:00:49 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,13 @@ int	mf_init_master(t_master *master, int argc, char **argv)
 			&& master->args_given == 0
 			&& master->stdin_isatty
 			&& master->stderr_isatty);
-	if (!master->opt_c)
-		master->line_num += 1;
+	master->line_num += !master->opt_c;
 	master->pwd = getcwd(NULL, 0);
 	if (MS_DEBUG)
 		mf_print_master(master);
-	if (ms_create_env(master))
+	if (ms_create_env(master)
+		|| lx_copy_op_table(master)
+		|| lx_copy_all_op_table(master))
 		return (MS_MS_FAIL);
 	return (MS_MS_SUCC);
 }
@@ -80,6 +81,8 @@ int	mf_destroy_master(t_master *master)
 	ms_env_all_free(&(master->var));
 	free(master->pwd);
 	free(master->old_pwd);
+	free(master->lx_ops);
+	free(master->lx_all_ops);
 	if (MS_DEBUG)
 	{
 		ft_putstr_fd("bye with ", STDERR_FILENO);
@@ -100,7 +103,10 @@ int	main(int argc, char **argv)
 		return (1);
 	status = mf_init_master(&master, argc, argv);
 	if (status)
+	{
+		mf_destroy_master(&master);
 		return (status);
+	}
 	mf_loop(&master);
 	return (mf_destroy_master(&master));
 }

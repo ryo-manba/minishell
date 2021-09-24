@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 20:06:13 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/24 23:21:16 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 01:17:21 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,15 @@
 #include <stdio.h>
 #define SW 2
 
-void	print_stree(t_stree *stree, int depth)
+void	print_stree(t_master *master, t_stree *stree, int depth)
 {
 	if (!stree)
 		return ;
-	printf("%*s[%s", depth * SW, "", pa_token_label(stree->token_id));
+	printf("%*s[%s", depth * SW, "", pa_token_label(master, stree->token_id));
 	if (stree->subshell)
 	{
 		printf("%.*s", !!SW, "\n");
-		print_pipeline(stree->subshell, depth + 1);
+		print_pipeline(master, stree->subshell, depth + 1);
 		printf("%*s] ", depth * SW, "");
 	}
 	else if (stree->quote_involved)
@@ -31,17 +31,17 @@ void	print_stree(t_stree *stree, int depth)
 	else
 		printf("{%s}%s] ", stree->token, "");
 	if (stree->right)
-		print_stree(stree->right, 0);
+		print_stree(master, stree->right, 0);
 }
 
-void	print_redir(t_redir *redir, int depth)
+void	print_redir(t_master *master, t_redir *redir, int depth)
 {
 	const char	*str;
 	char		*temp;
 
 	if (!redir)
 		return ;
-	str = pa_token_label(redir->redir_op);
+	str = pa_token_label(master, redir->redir_op);
 	temp = "";
 	if (redir->operand_left)
 		temp = redir->operand_left->token;
@@ -58,30 +58,30 @@ void	print_redir(t_redir *redir, int depth)
 		"q"
 		);
 	if (redir->next)
-		print_redir(redir->next, 0);
+		print_redir(master, redir->next, 0);
 }
 
-void	print_clause(t_clause *clause, int depth)
+void	print_clause(t_master *master, t_clause *clause, int depth)
 {
 	if (!clause)
 		return ;
 	printf("%*s{Clause:%.*s", depth * SW, "", !!SW, "\n");
 	if (clause->redir)
 	{
-		print_redir(clause->redir, depth + 1);
+		print_redir(master, clause->redir, depth + 1);
 		printf("%.*s", !!SW, "\n");
 	}
 	if (clause->stree)
 	{
-		print_stree(clause->stree, depth + 1);
+		print_stree(master, clause->stree, depth + 1);
 		printf("%.*s", !!SW, "\n");
 	}
 	printf("%*s}%.*s", depth * SW, "", !!SW, "\n");
 	if (clause->next)
-		print_clause(clause->next, depth);
+		print_clause(master, clause->next, depth);
 }
 
-void	print_pipeline(t_pipeline *pipeline, int depth)
+void	print_pipeline(t_master *master, t_pipeline *pipeline, int depth)
 {
 	const char	*str;
 	char		*temp;
@@ -89,14 +89,14 @@ void	print_pipeline(t_pipeline *pipeline, int depth)
 	if (!pipeline)
 		return ;
 	printf("%*s{Pipeline:%.*s", depth * SW, "", !!SW, "\n");
-	str = pa_operator_label(pipeline->joint);
-	print_clause(pipeline->clause, depth + 1);
+	str = pa_operator_label(master, pipeline->joint);
+	print_clause(master, pipeline->clause, depth + 1);
 	temp = "";
 	if (str)
 		temp = (char *)str;
 	printf("%*s%s }%.*s", depth * SW, "", temp, !!SW, "\n");
 	if (pipeline->next)
-		print_pipeline(pipeline->next, depth);
+		print_pipeline(master, pipeline->next, depth);
 }
 
 void	print_words(t_wdlist *words)

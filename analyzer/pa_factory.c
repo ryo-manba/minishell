@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:20:17 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/09 01:51:47 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 01:10:30 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,13 @@ t_stree	*ex_make_stree(char *token, t_token_id tid)
 	return (st);
 }
 
-t_redir	*pa_make_redir(t_wdlist *op_word, t_stree *target, t_stree *ion)
+t_redir	*pa_make_redir(t_parse_state *state,
+	t_wdlist *op_word, t_stree *target, t_stree *ion)
 {
 	t_redir		*redir;
 	t_token_id	ti;
 
-	ti = pa_operator_token_id(op_word);
+	ti = pa_operator_token_id(state, op_word);
 	if (ti == TI_NONE)
 		return (NULL);
 	redir = (t_redir *)ft_calloc(1, sizeof(t_redir));

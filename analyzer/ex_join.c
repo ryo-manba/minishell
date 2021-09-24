@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 18:39:58 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/18 00:56:06 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 01:14:26 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ static t_stree	*ex_jo_destroy_cursor(t_ex_state *state, t_ex_unit_cursor *csr)
 	}
 	if (PA_DEBUG)
 	{
-		print_stree(csr->t.head, 0);
+		printf("[JO] ");
+		print_stree(state->master, csr->t.head, 0);
 		printf("\n");
 	}
 	return (csr->t.head);

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:22:13 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/07 11:07:32 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 01:11:05 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static int	pa_unit_operator(t_parse_state *state, t_wdlist *word)
 {
 	t_token_id	ti;
 
-	ti = pa_operator_token_id(word);
+	ti = pa_operator_token_id(state, word);
 	if (ti == TI_PAREN_L)
 		return (pa_subshell_enter(state, word));
 	if (ti == TI_PAREN_R)

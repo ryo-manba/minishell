@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:00:19 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/17 00:10:28 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/20 17:35:27 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ t_ex_token	*ex_push_back_token(t_ex_state *state,
 	return (ext);
 }
 
+// origin.
 // transit from neutral to any other modes (except BRACED_BAR).
 // and trap double-quote.
 int	ex_ll_trap_neutral(t_ex_state *state, t_ex_unit_cursor *csr)
@@ -107,7 +108,6 @@ t_ex_token	*ex_shell_param(t_ex_state *state, t_stree *stree)
 
 	ex_ll_init_cursor(&csr, stree->token_id, stree->token, '\0');
 	ex_ll_unit(state, &csr);
-	if (PA_DEBUG)
-		ex_stringify_extoken(csr.p.head);
+	ex_stringify_extoken_ifneeded(csr.p.head, "[LL]");
 	return (csr.p.head);
 }

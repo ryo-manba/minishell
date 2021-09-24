@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 03:52:35 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/15 05:06:01 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 01:17:56 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_pipeline	*mf_lex_parse(t_master *master, char *line, t_parse_state *ps)
 		ps->pipeline = NULL;
 	}
 	if (MS_DEBUG & MS_DEBUG_PRINT_PARSED)
-		print_pipeline(ps->pipeline, 0);
+		print_pipeline(master, ps->pipeline, 0);
 	return (ps->pipeline);
 }
 

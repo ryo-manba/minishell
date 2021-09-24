@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:21:48 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/13 02:44:33 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 01:10:59 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	pa_terminate_pipeline(t_parse_state *state, t_wdlist *word)
 
 	if (pa_syntax_term_pipeline(state, 0))
 		return (pa_syntax_error(state, word, "syntax error in pipeline"));
-	term = pa_operator_token_id(word);
+	term = pa_operator_token_id(state, word);
 	state->cursor.pipeline->joint = term;
 	if (!pa_add_new_pipeline(state))
 		return (pa_generic_error(state, word, "bad alloc pipeline"));
@@ -79,7 +79,7 @@ int	pa_terminate_clause(t_parse_state *state, t_wdlist *word)
 		return (pa_syntax_error(state, word, "syntax error in clause"));
 	if (!pa_add_new_clause(state))
 		return (pa_generic_error(state, word, "bad alloc clause"));
-	term = pa_operator_token_id(word);
+	term = pa_operator_token_id(state, word);
 	state->cursor.expecting_continuation = (term == TI_PIPE);
 	return (MS_AZ_SUCC);
 }

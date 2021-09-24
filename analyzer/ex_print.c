@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:01:02 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/20 11:49:34 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/22 21:26:20 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,12 @@ void	ex_stringify_extoken(t_ex_token *ext)
 		ext = ext->right;
 	}
 	printf("\n");
+}
+
+void	ex_stringify_extoken_ifneeded(t_ex_token *ext, char *preemble)
+{
+	if (!PA_DEBUG)
+		return ;
+	printf("%s ", preemble);
+	ex_stringify_extoken(ext);
 }

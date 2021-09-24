@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:39:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/20 13:09:35 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 00:51:28 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int			lx_treat_operator(t_lex_cursor *cursor, char c, char ct);
 int			lx_treat_space(t_lex_cursor *cursor, char c, char ct);
 int			lx_treat_nl(t_lex_cursor *cursor, char c, char ct);
 int			lx_treat_brace(t_lex_cursor *cursor, char c, char ct);
-int			lx_treat_quote(t_lex_cursor *cursor, char c, char ct);
+int			lx_treat_quote_and_word(t_lex_cursor *cursor, char c, char ct);
 int			lx_add_token(t_lex_cursor *cursor, char starting_char);
 void		lx_conclude_token(t_lex_cursor *cursor);
 int			lx_str_is_digital(const	char *str, size_t len);
@@ -88,5 +88,7 @@ int			lx_tail_is_an_operator(t_lex_cursor *cursor);
 void		lx_destroy_token(t_wdlist *t);
 int			lx_mark_failed(t_lex_cursor *cursor, int mark, char *message);
 t_wdlist	*lx_finalize(t_lex_cursor *cursor);
+int			lx_copy_op_table(t_master *master);
+int			lx_copy_all_op_table(t_master *master);
 
 #endif

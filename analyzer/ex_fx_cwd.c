@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 23:34:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/05 21:49:33 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/23 02:03:20 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,7 @@ static size_t	ex_open_and_pack(t_ex_state *state, t_ex_part_cursor *csr)
 	dir = opendir(str);
 	free(str);
 	if (!dir)
-	{
-		ex_mark_failed(state, 1, "[FX] opendir");
 		return (0);
-	}
 	n = 0;
 	while (!state->failed)
 	{

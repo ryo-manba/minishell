@@ -6,126 +6,11 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:26:24 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/20 13:12:28 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 01:20:23 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_analyzer.h"
-
-const char			*g_op_label[] = {
-	"<<-",
-	"<<",
-	">>",
-	"<&",
-	">&",
-	"<>",
-	"&&",
-	"||",
-	";;",
-	"<",
-	">",
-	"|",
-	"&",
-	";",
-	"(",
-	")",
-	NULL};
-
-const t_token_id	g_op_token_id[] = {
-	TI_LTLTHYPHEN,
-	TI_LTLT,
-	TI_GTGT,
-	TI_LTAND,
-	TI_GTAND,
-	TI_LTGT,
-	TI_ANDAND,
-	TI_PIPEPIPE,
-	TI_DSEMICOLON,
-	TI_LT,
-	TI_GT,
-	TI_PIPE,
-	TI_AND,
-	TI_SEMICOLON,
-	TI_PAREN_L,
-	TI_PAREN_R,
-	0};
-
-const size_t		g_op_len[] = {
-	3,
-	2,
-	2,
-	2,
-	2,
-	2,
-	2,
-	2,
-	2,
-	1,
-	1,
-	1,
-	1,
-	1,
-	1,
-	1,
-	0};
-
-const t_token_id	g_all_token_id[] = {
-	TI_WORD,
-	TI_IO_NUMBER,
-	TI_NAME,
-	TI_ASSIGNMENT_WORD,
-	TI_SUBSHELL,
-	// [redirection]
-	TI_LT, // <
-	TI_GT, // >
-	TI_LTLT, // <<
-	TI_GTGT, // >>
-	TI_LTGT, // <>
-	TI_LTAND, // <&
-	TI_GTAND, // >&
-	TI_LTLTHYPHEN, // <<-
-	// [term clause]
-	TI_PIPE, // |
-	// [term pipeline]
-	TI_ANDAND, // &&
-	TI_PIPEPIPE, // ||
-	TI_AND, // &
-	TI_SEMICOLON, // ;
-	TI_DSEMICOLON, // ;
-	// [open and close subshell]
-	TI_PAREN_L, // (
-	TI_PAREN_R, // )
-	TI_NONE,
-	0};
-
-const char			*g_all_token_label[] = {
-	"WORD",
-	"IO_NUMBER",
-	"NAME",
-	"ASSIGNMENT_WORD",
-	"SUBSHELL",
-	// [redirection]
-	"<",
-	">",
-	"<<",
-	">>",
-	"<>",
-	"<&",
-	">&",
-	"<<-",
-	// [term clause]
-	"|",
-	// [term pipeline]
-	"&&",
-	"||",
-	"&",
-	";",
-	";;",
-	// [open and close subshell]
-	"(",
-	")",
-	"NONE",
-	NULL};
 
 // returns 1 if active t_wdlist is an operator.
 int	lx_tail_is_an_operator(t_lex_cursor *cursor)
@@ -133,16 +18,18 @@ int	lx_tail_is_an_operator(t_lex_cursor *cursor)
 	const char	*strhead;
 	int			i;
 	size_t		d;
+	t_op		*ops;
 
 	if (!cursor || !cursor->tail)
 		return (0);
+	ops = cursor->master->lx_ops;
 	strhead = cursor->line + cursor->tail->i;
 	i = -1;
-	while (g_op_label[++i])
+	while (ops[++i].label)
 	{
 		d = cursor->i - cursor->tail->i;
-		if (d == g_op_len[i]
-			&& !ft_strncmp(strhead, g_op_label[i], g_op_len[i]))
+		if (d == ops[i].len
+			&& !ft_strncmp(strhead, ops[i].label, ops[i].len))
 			return (1);
 	}
 	return (0);
@@ -153,11 +40,13 @@ size_t	lx_cut_operator(t_lex_cursor *cursor)
 {
 	size_t	k;
 	size_t	n;
+	t_op	*ops;
 
 	k = 0;
-	while (g_op_label[k])
+	ops = cursor->master->lx_ops;
+	while (ops[k].label)
 	{
-		n = ft_starts_with(&(cursor->line[cursor->i]), g_op_label[k]);
+		n = ft_starts_with(&(cursor->line[cursor->i]), ops[k].label);
 		if (n)
 			return (n);
 		k += 1;
@@ -166,43 +55,49 @@ size_t	lx_cut_operator(t_lex_cursor *cursor)
 }
 
 // returns a t_token_id for given t_wdlist(only for operator)
-t_token_id	pa_operator_token_id(t_wdlist *word)
+t_token_id	pa_operator_token_id(t_parse_state *state, t_wdlist *word)
 {
-	int	i;
+	int		i;
+	t_op	*ops;
 
+	ops = state->master->lx_ops;
 	i = -1;
-	while (g_op_label[++i])
+	while (ops[++i].label)
 	{
-		if (!ft_strncmp(word->word, g_op_label[i], g_op_len[i]))
-			return (g_op_token_id[i]);
+		if (!ft_strncmp(word->word, ops[i].label, ops[i].len))
+			return (ops[i].token_id);
 	}
 	return (TI_NONE);
 }
 
 // returns a label string for given t_token_id(only for operator)
-const char	*pa_operator_label(t_token_id ti)
+const char	*pa_operator_label(t_master *master, t_token_id ti)
 {
-	int	i;
+	int		i;
+	t_op	*ops;
 
+	ops = master->lx_ops;
 	i = -1;
-	while (g_op_token_id[++i])
+	while (ops[++i].label)
 	{
-		if (g_op_token_id[i] == ti)
-			return (g_op_label[i]);
+		if (ops[i].token_id == ti)
+			return (ops[i].label);
 	}
 	return (NULL);
 }
 
 // returns a label string for given t_token_id
-const char	*pa_token_label(t_token_id ti)
+const char	*pa_token_label(t_master *master, t_token_id ti)
 {
-	int	i;
+	int		i;
+	t_op	*ops;
 
+	ops = master->lx_all_ops;
 	i = -1;
-	while (g_all_token_id[++i])
+	while (ops[++i].label)
 	{
-		if (g_all_token_id[i] == ti)
-			return (g_all_token_label[i]);
+		if (ops[i].token_id == ti)
+			return (ops[i].label);
 	}
 	return (NULL);
 }
