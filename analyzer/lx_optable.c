@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/25 00:38:16 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/25 03:44:38 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 03:52:07 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,6 @@ int	lx_copy_all_op_table(t_master *master)
 		{"(", TI_PAREN_L, 0},
 		{")", TI_PAREN_R, 0},
 		{"NONE", TI_NONE, 0},
-		{0},
+		{0}});
 	return (!master->lx_all_ops);
 }
