@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_print.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:05 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:43:55 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 21:19:09 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ t_shellvar	*blt_copy_env(t_shellvar *env)
 	copy = NULL;
 	while (tmp)
 	{
-		ms_env_add_back(&copy, ms_new_env(tmp->key, tmp->value));
+		if (tmp->is_env)
+			ms_env_add_back(&copy,
+				ms_new_env(tmp->key, tmp->value, tmp->is_env));
 		tmp = tmp->next;
 	}
 	return (copy);

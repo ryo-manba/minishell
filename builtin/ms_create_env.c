@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_create_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 14:53:27 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:52:12 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 21:00:13 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ t_shellvar	*ms_create_append_env(char *env)
 
 	if (ms_create_key_value(env, key_value) == MS_BLT_FAIL)
 		return (NULL);
-	append_var = ms_new_env(key_value[KEY], key_value[VALUE]);
+	append_var = ms_new_env(key_value[KEY], key_value[VALUE], 1);
 	free(key_value[KEY]);
 	free(key_value[VALUE]);
 	if (append_var == NULL)
@@ -68,6 +68,7 @@ int	ms_create_env(t_master *master)
 			ms_env_all_free(&(master->var));
 			return (1);
 		}
+		append_var->is_env = 1;
 		ms_env_add_back(&(master->var), append_var);
 		i++;
 	}
@@ -100,7 +101,7 @@ int	ms_create_key_value(char *env, char *key_value[2])
 	return (MS_BLT_SUCC);
 }
 
-t_shellvar	*ms_new_env(char *key, char *value)
+t_shellvar	*ms_new_env(char *key, char *value, int is_env)
 {
 	t_shellvar	*new_env;
 
@@ -112,6 +113,8 @@ t_shellvar	*ms_new_env(char *key, char *value)
 	}
 	if (ms_check_malloc_key_value(new_env, key, KEY) == MS_BLT_FAIL)
 		return (NULL);
+	if (is_env)
+		new_env->is_env = 1;
 	if (value == NULL)
 		new_env->value = NULL;
 	else

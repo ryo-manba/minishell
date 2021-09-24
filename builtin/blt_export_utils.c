@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:09 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 19:56:45 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 21:00:27 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-int	blt_append_env(t_shellvar *env, char *key, char *value)
+int	blt_append_env(t_shellvar *env, char *key, char *value, int is_env)
 {
 	t_shellvar	*append;
 
-	append = ms_new_env(key, value);
+	append = ms_new_env(key, value, is_env);
 	if (append == NULL)
 	{
 		ms_perror("malloc");
@@ -26,33 +26,39 @@ int	blt_append_env(t_shellvar *env, char *key, char *value)
 	return (MS_BLT_SUCC);
 }
 
-int	blt_append_or_update_env(t_shellvar *env, char *key, char *value)
+int	blt_append_or_update_env(t_shellvar *env, char *key, char *value,
+	int is_env)
 {
 	t_shellvar	*key_pos;
 
 	key_pos = ms_search_key(env, key);
 	if (key_pos == NULL)
 	{
-		if (blt_append_env(env, key, value) == MS_BLT_FAIL)
+		if (blt_append_env(env, key, value, is_env) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);
 	}
-	else if (value != NULL)
+	else
 	{
-		if (blt_update_env(key_pos, value) == MS_BLT_FAIL)
+		if (blt_update_env(key_pos, value, is_env) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
 }
 
-int	blt_update_env(t_shellvar *update_pos, char *value)
+int	blt_update_env(t_shellvar *update_pos, char *value, int is_env)
 {
-	free(update_pos->value);
-	update_pos->value = ft_strdup(value);
-	if (update_pos->value == NULL)
+	if (value)
 	{
-		ms_perror("malloc");
-		return (MS_BLT_FAIL);
+		free(update_pos->value);
+		update_pos->value = ft_strdup(value);
+		if (update_pos->value == NULL)
+		{
+			ms_perror("malloc");
+			return (MS_BLT_FAIL);
+		}
 	}
+	if (is_env)
+		update_pos->is_env = 1;
 	return (MS_BLT_SUCC);
 }
 

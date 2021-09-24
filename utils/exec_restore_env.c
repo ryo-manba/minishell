@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 22:37:21 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 15:56:10 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/24 21:28:55 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@ int	exec_get_env_size(t_shellvar *var)
 	tmp = var;
 	while (tmp)
 	{
+		if (tmp->is_env)
+			i += 1;
 		tmp = tmp->next;
-		i += 1;
 	}
 	return (i);
 }
@@ -54,22 +55,24 @@ char	**exec_restore_env(t_shellvar *var)
 	int			i;
 	t_shellvar	*tmp;
 
-	i = -1;
+	i = 0;
 	sz = exec_get_env_size(var);
-	env = (char **)malloc(sizeof(char *) * (sz + 1));
+	env = (char **)ft_calloc(sz + 1, sizeof(char *));
 	if (env == NULL)
 		return (NULL);
 	tmp = var;
-	while (++i < sz)
+	while (tmp)
 	{
-		env[i] = exec_restore(tmp);
-		if (env[i] == NULL)
+		if (tmp->is_env)
 		{
-			exec_all_free(env);
-			return (NULL);
+			env[i] = exec_restore(tmp);
+			if (env[i++] == NULL)
+			{
+				exec_all_free(env);
+				return (NULL);
+			}
 		}
 		tmp = tmp->next;
 	}
-	env[i] = NULL;
 	return (env);
 }

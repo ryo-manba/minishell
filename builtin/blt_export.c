@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:12 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 01:53:59 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/24 20:43:47 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	blt_append_or_join_env(t_shellvar *var, char *key_value[2])
 	key_pos = ms_search_key(var, key_value[KEY]);
 	if (key_pos == NULL)
 	{
-		if (blt_append_env(var, key_value[KEY], key_value[VALUE]))
+		if (blt_append_env(var, key_value[KEY], key_value[VALUE], 1))
 			return (MS_BLT_FAIL);
 	}
 	else if (key_value[VALUE] != NULL)
@@ -45,7 +45,7 @@ int	blt_check_and_export(t_stree *tree, t_shellvar *var, char *key_value[2])
 	else
 	{
 		if (blt_append_or_update_env(
-				tmp, key_value[KEY], key_value[VALUE]) == MS_BLT_FAIL)
+				tmp, key_value[KEY], key_value[VALUE], 1) == MS_BLT_FAIL)
 			return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
@@ -97,6 +97,7 @@ int	blt_join_env(t_shellvar *key_pos, char *key_value[2])
 		ms_perror("malloc");
 		return (MS_BLT_FAIL);
 	}
+	key_pos->is_env = 1;
 	return (MS_BLT_SUCC);
 }
 

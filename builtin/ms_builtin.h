@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtin.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:57:06 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/24 20:45:06 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int			ms_check_malloc_key_value(
 t_shellvar	*ms_create_append_env(char *env);
 int			ms_create_env(t_master *master);
 int			ms_create_key_value(char *env, char *key_value[2]);
-t_shellvar	*ms_new_env(char *key, char *value);
+t_shellvar	*ms_new_env(char *key, char *value, int is_env);
 
 /* ms_env_utils */
 void		ms_env_add_back(t_shellvar **env, t_shellvar *new_var);
@@ -109,8 +109,6 @@ void		blt_quick_sort(t_shellvar *first, t_shellvar *last);
 void		blt_swap_env(t_shellvar *env1, t_shellvar *env2);
 
 /* blt_env */
-int			blt_search_and_update_env(
-				t_shellvar *env, char *key, char *new_value);
 int			blt_env(t_shellvar *var);
 
 /* blt_exit */
@@ -134,9 +132,11 @@ void		blt_print_export(t_shellvar *env);
 void		blt_export_print_and_sort_env(t_shellvar *env);
 
 /* blt_export_utils */
-int			blt_append_env(t_shellvar *env, char *key, char *value);
-int			blt_append_or_update_env(t_shellvar *env, char *key, char *value);
-int			blt_update_env(t_shellvar *update_pos, char *value);
+int			blt_append_env(t_shellvar *env, char *key, char *value,
+				int is_env);
+int			blt_append_or_update_env(t_shellvar *env, char *key, char *value,
+				int is_env);
+int			blt_update_env(t_shellvar *update_pos, char *value, int is_env);
 int			blt_delvalue_env(t_shellvar *update_pos);
 t_shellvar	*ms_search_key(t_shellvar *env, char *key);
 
