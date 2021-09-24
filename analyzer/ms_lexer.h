@@ -65,8 +65,10 @@ typedef struct s_lex_cursor
 	char		under_quoted;
 	int			under_brace;
 	int			i;
+	int			escaping;
 	int			failed;
 	int			error_printed;
+	int			bs[2];
 }	t_lex_cursor;
 
 # define CHARS_WORD_INCLUDED "\"'_{}"
@@ -88,6 +90,10 @@ int			lx_tail_is_an_operator(t_lex_cursor *cursor);
 void		lx_destroy_token(t_wdlist *t);
 int			lx_mark_failed(t_lex_cursor *cursor, int mark, char *message);
 t_wdlist	*lx_finalize(t_lex_cursor *cursor);
+int			lx_is_quoted(t_lex_cursor *cursor, char c);
+void		lx_update_bs(t_lex_cursor *cursor, char c);
+int			ms_is_quoted(int bs[2], int i, char c, char quoted);
+void		ms_update_bs(int bs[2], int i, char c, char quoted);
 int			lx_copy_op_table(t_master *master);
 int			lx_copy_all_op_table(t_master *master);
 

@@ -6,13 +6,13 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:31:20 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/16 23:15:41 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/22 21:26:30 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_analyzer.h"
 
-int	lx_treat_quote(t_lex_cursor *cursor, char c, char ct)
+int	lx_treat_quote_and_word(t_lex_cursor *cursor, char c, char ct)
 {
 	if (c == cursor->under_quoted)
 		cursor->under_quoted = '\0';
@@ -34,6 +34,7 @@ int	lx_treat_quote(t_lex_cursor *cursor, char c, char ct)
 	}
 	else
 		return (0);
+	lx_update_bs(cursor, c);
 	cursor->i += 1;
 	return (1);
 }
@@ -59,6 +60,7 @@ int	lx_treat_brace(t_lex_cursor *cursor, char c, char ct)
 	}
 	else
 		return (0);
+	lx_update_bs(cursor, c);
 	cursor->i += 1;
 	return (1);
 }
@@ -71,6 +73,7 @@ int	lx_treat_nl(t_lex_cursor *cursor, char c, char ct)
 	lx_conclude_token(cursor);
 	if (lx_add_token(cursor, ct))
 		return (lx_mark_failed(cursor, LX_ERR_GEN, "add l-token(nl)"));
+	lx_update_bs(cursor, c);
 	cursor->i += 1;
 	return (1);
 }
@@ -81,6 +84,7 @@ int	lx_treat_space(t_lex_cursor *cursor, char c, char ct)
 	if (ct != LC_SPACE)
 		return (0);
 	lx_conclude_token(cursor);
+	lx_update_bs(cursor, c);
 	cursor->i += 1;
 	return (1);
 }
@@ -99,6 +103,8 @@ int	lx_treat_operator(t_lex_cursor *cursor, char c, char ct)
 			return (lx_mark_failed(cursor, LX_ERR_GEN, "a lex-token(op)"));
 	}
 	cursor->i += lx_cut_operator(cursor);
+	cursor->bs[0] = 0;
+	cursor->bs[1] = 0;
 	lx_conclude_token(cursor);
 	return (1);
 }

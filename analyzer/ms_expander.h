@@ -85,6 +85,7 @@ typedef struct s_ex_unit_cursor
 	size_t				substr_s;
 	size_t				substr_e;
 	char				quote;
+	int					bs[2];
 }	t_ex_unit_cursor;
 
 typedef struct s_ex_cursor
