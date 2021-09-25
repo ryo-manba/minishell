@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 21:15:07 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/25 13:13:42 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,18 @@ char	**exec_create_split_path(t_shellvar *var)
 {
 	t_shellvar	*path_pos;
 	char		**split_path;
+	char		*path_not_set;
 
 	path_pos = ms_search_key(var, "PATH");
 	if (path_pos == NULL || path_pos->value == NULL
 		|| ft_strlen(path_pos->value) == 0)
-		return (NULL);
-	split_path = ft_split_rough(path_pos->value, ':');
+	{
+		path_not_set = ft_strdup(".");
+		split_path = ft_split_rough(path_not_set, ':');
+		free(path_not_set);
+	}
+	else
+		split_path = ft_split_rough(path_pos->value, ':');
 	if (split_path == NULL)
 		ms_perror_exit("malloc");
 	return (split_path);
