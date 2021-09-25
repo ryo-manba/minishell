@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_get_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/25 13:13:42 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/25 16:34:10 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*exec_strjoin(char *split_path, char *cmd)
 }
 
 // err_path is a path that exists but is kept in case of failure.
-char	*exec_create_path(char *cmd, char **split_path)
+char	*exec_create_path(char *cmd, char **split_path, int is_command)
 {
 	char		*dir;
 	char		*path;
@@ -56,7 +56,7 @@ char	*exec_create_path(char *cmd, char **split_path)
 		if (ft_strlen(dir) == 0)
 			dir = ".";
 		path = exec_strjoin(dir, cmd);
-		if (exec_check_path_stat(path, 1) == MS_EXEC_SUCC)
+		if (exec_check_path_stat(path, is_command) == MS_EXEC_SUCC)
 		{
 			free(err_path);
 			return (path);
@@ -69,19 +69,18 @@ char	*exec_create_path(char *cmd, char **split_path)
 	return (err_path);
 }
 
-char	**exec_create_split_path(t_shellvar *var)
+char	**exec_create_split_path(t_shellvar *var, int *look_from_cd)
 {
 	t_shellvar	*path_pos;
 	char		**split_path;
-	char		*path_not_set;
 
+	*look_from_cd = 0;
 	path_pos = ms_search_key(var, "PATH");
 	if (path_pos == NULL || path_pos->value == NULL
 		|| ft_strlen(path_pos->value) == 0)
 	{
-		path_not_set = ft_strdup(".");
-		split_path = ft_split_rough(path_not_set, ':');
-		free(path_not_set);
+		*look_from_cd = 1;
+		split_path = ft_split_rough(".", ':');
 	}
 	else
 		split_path = ft_split_rough(path_pos->value, ':');
@@ -94,16 +93,15 @@ char	*exec_get_path(char *cmd, t_shellvar *var)
 {
 	char	**split_path;
 	char	*path;
+	int		look_from_cd;
 
-	split_path = exec_create_split_path(var);
+	split_path = exec_create_split_path(var, &look_from_cd);
 	if (split_path == NULL)
 	{
 		g_ex_states = NO_SUCH_FILE;
 		return (NULL);
 	}
-	path = exec_create_path(cmd, split_path);
-	if (!path && (g_ex_states != IS_A_DIR && g_ex_states != PERMISSION))
-		g_ex_states = CMD_NOT_FOUND;
+	path = exec_create_path(cmd, split_path, !look_from_cd);
 	exec_all_free(split_path);
 	return (path);
 }

@@ -118,6 +118,7 @@ run_case_bash_c		ln_in_error_c
 run_case_bash_file	dollar_question
 run_case			exit_arg
 run_case			redir
+run_case_bash_file	get_path
 run_case_bash_file	echo
 run_case_bash_file	pipe
 run_case_bash_file	pwd

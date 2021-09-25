@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 23:56:50 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/25 16:34:09 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int		exec_check_cmd_stat(char *path);
 
 /* exec_get_path */
 void	exec_all_free(char **s);
-char	*exec_create_path(char *cmd, char **split_path);
-char	**exec_create_split_path(t_shellvar *var);
+char	*exec_create_path(char *cmd, char **split_path, int is_command);
+char	**exec_create_split_path(t_shellvar *var, int *look_from_cd);
 char	*exec_get_path(char *cmd, t_shellvar *var);
 char	*exec_strjoin(char *path, char *cmd);
 
