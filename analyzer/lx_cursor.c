@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 02:12:20 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/22 22:49:30 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 12:09:14 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ t_wdlist	*lx_unclosed_quote(t_lex_cursor *cursor)
 	ft_putstr_fd("unexpected EOF while looking for matching `", STDERR_FILENO);
 	ft_putchar_fd(cursor->under_quoted, STDERR_FILENO);
 	ft_putstr_fd("'\n", STDERR_FILENO);
+	g_ex_states = 2;
 	cursor->master->line_num += 1;
 	lx_error_prologue(cursor);
 	ft_putstr_fd("syntax error: unexpected end of file\n", STDERR_FILENO);
-	g_ex_states = 2;
 	lx_destroy_token(cursor->head);
 	return (NULL);
 }
@@ -68,7 +68,7 @@ t_wdlist	*lx_finalize(t_lex_cursor *cursor)
 		lx_destroy_token(cursor->head);
 		return (NULL);
 	}
-	else if (cursor->under_quoted)
+	else if (cursor->master->opt_c && cursor->under_quoted)
 		return (lx_unclosed_quote(cursor));
 	else
 		lx_conclude_token(cursor);
