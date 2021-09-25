@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 21:27:00 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 21:27:09 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/25 17:42:46 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ int	exec_check_cmd_stat(char *path)
 	if (S_ISREG(sb.st_mode))
 	{
 		if ((sb.st_mode & S_IXUSR))
+		{
+			g_ex_states = 0;
 			return (MS_EXEC_SUCC);
+		}
 		else
 			g_ex_states = PERMISSION;
 	}
