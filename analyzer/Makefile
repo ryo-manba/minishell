@@ -24,7 +24,8 @@ SRCS		:=	$(LEXER_SRCS)\
 				$(EXPANDER_SRCS)
 
 CC			:= gcc
-CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror
+CFLAGS		:= -g -Wall -Wextra -Werror
+# CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror
 # CFLAGS		:= -g -Wall -Wextra -Werror
 ifdef PA_DEBUG
 	CFLAGS	+=	-D PA_DEBUG=1

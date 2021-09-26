@@ -19,14 +19,17 @@ SRCS		:=	exec_error.c \
 				ms_redir_heredoc.c\
 				ms_signal_handler.c \
 
+ifndef RL_PATH
+	RL_PATH	:=/usr/local/opt/readline
+endif
 
 TEST_SRCS	:=	main.c
 OBJS		:=	$(SRCS:.c=.o)
 TEST_OBJS	:=	$(TEST_SRCS:.c=.o)
 RM			:= rm -f
 CC			:= gcc
-CFLAGS		:= -Wall -Wextra -Werror -I/usr/local/opt/readline/include/
-#CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -I/usr/local/opt/readline/include/
+CFLAGS		:= -Wall -Wextra -Werror -I$(RL_PATH)/include/
+#CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -I$(RL_PATH)/include/
 LIBFT_DIR	:=	../libft
 LIBFT		:=	$(LIBFT_DIR)/libft.a
 

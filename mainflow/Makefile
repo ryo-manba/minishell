@@ -5,8 +5,13 @@ SRCS		:=	ms_main.c\
 				mf_opt.c\
 				mf_error.c\
 
+ifndef RL_PATH
+	RL_PATH	:=/usr/local/opt/readline
+endif
+
 CC			:= gcc
-CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -I/usr/local/opt/readline/include/
+CFLAGS		:= -Wall -Wextra -Werror -I$(RL_PATH)/include/
+#CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -I/usr/local/opt/readline/include/
 # CFLAGS		:= -g -Wall -Wextra -Werror -D PA_DEBUG=1
 ifdef MS_DEBUG
 	CFLAGS	+= -D MS_DEBUG=$(MS_DEBUG)
@@ -24,18 +29,18 @@ BLTIN_DIR	:= ../builtin
 BLTIN		:= $(BLTIN_DIR)/libmblt.a
 NORM		:= python3 -m norminette
 
-INC			:= -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
+INC			:= -L$(RL_PATH)/lib -I$(RL_PATH)/include
 
 all			: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
-	$(CC) $(CFLAGS) $(LFLAGS) -o $(NAME) $(INC) $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
+	$(CC) $(CFLAGS) $(INC) $(LFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
 $(LIBFT)	:
 	$(MAKE) -C $(LIBFT_DIR)
 $(ANALYZER)	:
 	$(MAKE) -C $(ANALYZER_DIR) $(ANALYZER_DEFS)
 $(UTILS)	:
-	$(MAKE) -C $(UTILS_DIR)
+	$(MAKE) -C $(UTILS_DIR) RL_PATH=$(RL_PATH)
 $(BLTIN)	:
 	$(MAKE) -C $(BLTIN_DIR)
 
