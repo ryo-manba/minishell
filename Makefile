@@ -3,6 +3,7 @@ SRCS		:=	ms_main.c\
 				mf_repl.c\
 				mf_lpx.c\
 				mf_opt.c\
+				mf_signal_handler.c\
 				mf_error.c\
 
 ifndef RL_PATH

@@ -6,21 +6,11 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/26 17:09:46 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/26 23:43:14 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	ms_sigint_handler(int sig)
-{
-	(void)sig;
-	ft_putchar_fd('\n', STDOUT_FILENO);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-	g_ex_states = 1;
-}
 
 void	mf_print_master(t_master *master)
 {
@@ -97,7 +87,7 @@ int	main(int argc, char **argv)
 	t_master	master;
 	int			status;
 
-	if (signal(SIGINT, ms_sigint_handler) == SIG_ERR || \
+	if (signal(SIGINT, ms_sigint_handler_main) == SIG_ERR || \
 		signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		return (1);
 	status = mf_init_master(&master, argc, argv);

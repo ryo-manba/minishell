@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:32 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/26 16:47:51 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/26 23:42:24 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,7 @@ int			mf_print_errno(t_master *master, int mark, int given_errno);
 int			mf_mark_failed(t_master *master, int mark, char *message);
 void		mf_loop(t_master *master);
 t_pipeline	*mf_parse(t_master *master, char *line, t_parse_state *ps);
+void		ms_sigint_handler(int sig);
+void		ms_sigint_handler_main(int sig);
 
 #endif

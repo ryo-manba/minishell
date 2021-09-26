@@ -1,22 +1,22 @@
-[ OK ] Sun, 26 Sep 2021 16:50:42 +0900	tokenize_basic
-[ OK ] Sun, 26 Sep 2021 16:50:42 +0900	wildcard
-[ OK ] Sun, 26 Sep 2021 16:50:42 +0900	unclosed_quote
-[ OK ] Sun, 26 Sep 2021 16:50:42 +0900	subshell_basic
-[ OK ] Sun, 26 Sep 2021 16:50:42 +0900	subshell_pipe
-[ OK ] Sun, 26 Sep 2021 16:50:42 +0900	semicolon
-[ OK ] Sun, 26 Sep 2021 16:50:42 +0900	ln_in_error_file
-[ OK ] Sun, 26 Sep 2021 16:50:42 +0900	ln_in_error_stdin
-[ OK ] Sun, 26 Sep 2021 16:50:42 +0900	ln_in_error_c
-[ OK ] Sun, 26 Sep 2021 16:50:42 +0900	dollar_question
-[ OK ] Sun, 26 Sep 2021 16:50:42 +0900	exit_arg
-[FAIL] Sun, 26 Sep 2021 16:50:43 +0900	redir
-[ OK ] Sun, 26 Sep 2021 16:50:43 +0900	get_path
-[ OK ] Sun, 26 Sep 2021 16:50:43 +0900	echo
-[ OK ] Sun, 26 Sep 2021 16:50:43 +0900	pipe
-[ OK ] Sun, 26 Sep 2021 16:50:43 +0900	pwd
-[ OK ] Sun, 26 Sep 2021 16:50:43 +0900	export
-[FAIL] Sun, 26 Sep 2021 16:50:43 +0900	export_export
-[ OK ] Sun, 26 Sep 2021 16:50:43 +0900	cd
-[ OK ] Sun, 26 Sep 2021 16:50:43 +0900	unset
-[ OK ] Sun, 26 Sep 2021 16:50:43 +0900	env
-[ OK ] Sun, 26 Sep 2021 16:50:50 +0900	extreme
+[ OK ] Sun, 26 Sep 2021 23:44:25 +0900	tokenize_basic
+[ OK ] Sun, 26 Sep 2021 23:44:25 +0900	wildcard
+[ OK ] Sun, 26 Sep 2021 23:44:25 +0900	unclosed_quote
+[ OK ] Sun, 26 Sep 2021 23:44:25 +0900	subshell_basic
+[ OK ] Sun, 26 Sep 2021 23:44:25 +0900	subshell_pipe
+[ OK ] Sun, 26 Sep 2021 23:44:25 +0900	semicolon
+[ OK ] Sun, 26 Sep 2021 23:44:25 +0900	ln_in_error_file
+[ OK ] Sun, 26 Sep 2021 23:44:25 +0900	ln_in_error_stdin
+[ OK ] Sun, 26 Sep 2021 23:44:25 +0900	ln_in_error_c
+[ OK ] Sun, 26 Sep 2021 23:44:25 +0900	dollar_question
+[ OK ] Sun, 26 Sep 2021 23:44:26 +0900	exit_arg
+[FAIL] Sun, 26 Sep 2021 23:44:26 +0900	redir
+[ OK ] Sun, 26 Sep 2021 23:44:26 +0900	get_path
+[ OK ] Sun, 26 Sep 2021 23:44:26 +0900	echo
+[ OK ] Sun, 26 Sep 2021 23:44:26 +0900	pipe
+[ OK ] Sun, 26 Sep 2021 23:44:26 +0900	pwd
+[ OK ] Sun, 26 Sep 2021 23:44:26 +0900	export
+[FAIL] Sun, 26 Sep 2021 23:44:27 +0900	export_export
+[ OK ] Sun, 26 Sep 2021 23:44:27 +0900	cd
+[ OK ] Sun, 26 Sep 2021 23:44:27 +0900	unset
+[ OK ] Sun, 26 Sep 2021 23:44:27 +0900	env
+[ OK ] Sun, 26 Sep 2021 23:44:33 +0900	extreme

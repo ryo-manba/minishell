@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir_heredoc_io.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:16:33 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/26 14:16:53 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/26 19:24:38 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	ms_heredoc_read(t_list **lst, char *delimiter)
 {
 	char	*line;
 
+	g_ex_states = 0;
 	while (1)
 	{
 		line = readline("> ");

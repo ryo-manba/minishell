@@ -1,13 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_signal_handler.c                                :+:      :+:    :+:   */
+/*   mf_signal_handler.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/09/15 23:37:53 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/26 19:27:25 by yokawada         ###   ########.fr       */
+/*   Created: 2021/09/26 23:41:50 by yokawada          #+#    #+#             */
+/*   Updated: 2021/09/26 23:42:05 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ms_utils.h"
+#include "minishell.h"
+
+void	ms_sigint_handler(int sig)
+{
+	(void)sig;
+	ft_putchar_fd('\n', STDOUT_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	g_ex_states = 1;
+}
+
+void	ms_sigint_handler_main(int sig)
+{
+	(void)sig;
+	ft_putchar_fd('\n', STDOUT_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	g_ex_states = 1;
+}
