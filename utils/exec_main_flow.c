@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/26 14:36:47 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 00:12:58 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state)
 	else
 		g_ex_states = exec_simple_command(pl->clause, master, state);
 	if ((pl->joint == TI_ANDAND && g_ex_states == 0) || \
-		(pl->joint == TI_PIPEPIPE && g_ex_states == 1) || \
+		(pl->joint == TI_PIPEPIPE && g_ex_states != 0) || \
 		pl->joint == TI_SEMICOLON)
 	{
 		if (!master->exited)
