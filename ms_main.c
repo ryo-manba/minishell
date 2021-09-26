@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/25 01:00:49 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/26 17:09:46 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ int	main(int argc, char **argv)
 	t_master	master;
 	int			status;
 
-	setvbuf(stdout, (char *) NULL, _IONBF, 0);
 	if (signal(SIGINT, ms_sigint_handler) == SIG_ERR || \
 		signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 		return (1);
