@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/25 16:34:09 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/26 14:36:22 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ char	*exec_strjoin(char *path, char *cmd);
 char	**exec_create_command(t_stree *tree);
 void	exec_update_exitstatus(pid_t pid);
 int		ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state);
+void	ms_close_heredoc_fd(t_clause *cl);
 
 /* exec_pipe_cmd */
 int		exec_check_piping(t_dpipe *dpipe, t_clause *clause);
@@ -136,10 +137,17 @@ int		ms_open_redirect_input(t_redir *redir);
 int		ms_open_redirect_output(t_redir *redir);
 int		ms_redirect(t_ex_state *es, t_redir *redir);
 
-/* ms_redir_heredoc */
+/* ms_redir_heredoc_io */
 int		ms_heredoc_read(t_list **lst, char *delimiter);
 int		ms_heredoc_write(t_ex_state *es, t_list *lst, int quoted, int fd);
-int		ms_redirect_heredoc(t_ex_state *es, t_redir *redir);
+int		ms_heredoc_read_write(t_ex_state *es, t_redir **redir, int write_fd);
+
+/* ms_redir_heredoc */
+int		ms_heredoc_child(t_redir **rd, t_ex_state *es, int pipefd[2]);
+int		ms_heredoc_parent(t_redir **rd, int pipefd[2]);
+int		ms_heredoc_rd_loop(t_redir **rd, t_ex_state *es);
+int		ms_heredoc_pipe_loop(t_clause **cl, t_ex_state *es);
+int		ms_heredoc(t_clause **cl, t_ex_state *es);
 
 /* ms_signal_handler */
 void	ms_heredoc_sigint_handler(int sig);

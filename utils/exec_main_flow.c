@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 20:24:56 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/26 14:36:47 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,37 @@ void	exec_update_exitstatus(pid_t pid)
 		g_ex_states = WEXITSTATUS(status);
 }
 
+void	ms_close_heredoc_fd(t_clause *cl)
+{
+	t_clause	*tmp_cl;
+	t_redir		*tmp_rd;
+
+	tmp_cl = cl;
+	while (tmp_cl)
+	{
+		tmp_rd = tmp_cl->redir;
+		while (tmp_rd)
+		{
+			if (tmp_rd->heredoc_fd != 0)
+			{
+				if (close(tmp_rd->heredoc_fd) == -1)
+					ms_perror("close");
+			}
+			tmp_rd = tmp_rd->next;
+		}
+		tmp_cl = tmp_cl->next;
+	}
+}
+
 int	ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state)
 {
 	if (pl == NULL)
 		return (0);
+	if (ms_heredoc(&pl->clause, state))
+	{
+		ms_close_heredoc_fd(pl->clause);
+		return (1);
+	}
 	if (pl->clause->next != NULL)
 		exec_pipe_command(pl, master, state);
 	else
@@ -73,5 +100,6 @@ int	ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state)
 		if (!master->exited)
 			ms_executer(pl->next, master, state);
 	}
+	ms_close_heredoc_fd(pl->clause);
 	return (0);
 }

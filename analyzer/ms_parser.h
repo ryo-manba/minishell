@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_parser.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:40:02 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/25 01:20:40 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/26 12:38:19 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ typedef struct s_redir
 	struct s_redir	*next;
 	t_stree			*operand_left;
 	t_stree			*operand_right;
+	int				heredoc_fd;
 	t_token_id		redir_op;
 }	t_redir;
 

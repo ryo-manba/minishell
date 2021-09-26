@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_expander.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:19:44 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/20 11:48:27 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/25 23:36:09 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ t_redir	*ms_expand_a_redir(t_ex_state *state, t_redir *redir)
 	if (!cloned)
 		return ((t_redir *)ex_error(state, NULL, "bad alloc"));
 	cloned->redir_op = redir->redir_op;
+	cloned->heredoc_fd = redir->heredoc_fd;
 	make_state_for_redir(state, redir);
 	cloned->operand_right = ms_expand_stree(state, redir->operand_right);
 	reverse_state_for_redir(state);

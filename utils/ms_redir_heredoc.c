@@ -6,108 +6,103 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 18:09:47 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/26 14:19:34 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-volatile sig_atomic_t	g_ex_states;
-
-int	ms_heredoc_check_states(t_list **lst, int backup_fd)
+int	ms_heredoc_child(t_redir **rd, t_ex_state *es, int pipefd[2])
 {
-	if (g_ex_states == 1)
+	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
+		ms_perror_exit("signal");
+	close(pipefd[0]);
+	if (ms_heredoc_read_write(es, rd, pipefd[1])) // 予期せぬエラーの場合
 	{
-		if (dup2(backup_fd, STDIN_FILENO) == -1)
-			ms_perror("dup2");
-		if (close(backup_fd) == -1)
-			ms_perror("close");
-		ft_lstclear(lst, free);
-		return (MS_EXEC_SUCC);
+		close(pipefd[1]);
+		exit(1);
 	}
-	if (close(backup_fd) == -1)
-		ms_perror("close");
-	return (MS_EXEC_SUCC);
+	close(pipefd[1]);
+	exit(0);
 }
 
-// ctrl+C    -> Output a newline and exit
-// ctrl+D    -> exit
-// delemiter -> exit
-int	ms_heredoc_read(t_list **lst, char *delimiter)
+int	ms_heredoc_parent(t_redir **rd, int pipefd[2])
 {
-	char	*line;
-	int		backup_fd;
+	int	status;
 
-	backup_fd = dup(STDIN_FILENO);
-	if (backup_fd == -1)
+	(*rd)->heredoc_fd = pipefd[0];
+	close(pipefd[1]);
+	wait(&status);
+	if (WIFSIGNALED(status) && (WTERMSIG(status) == SIGINT))
 	{
-		ms_perror("dup");
-		return (MS_EXEC_FAIL);
+//		ft_putchar_fd('\n', STDOUT_FILENO);
+		g_ex_states = 1;
+		return (1);
 	}
-	if (ms_heredoc_signal_set())
-		return (MS_EXEC_FAIL);
-	while (1)
+	else
 	{
-		line = readline("> ");
-		if (line == NULL || ft_strcmp(line, delimiter) == 0 || g_ex_states == 1)
-			break ;
-		if (ft_lstpush_back(lst, line))
-		{
-			ms_perror("malloc");
-			g_ex_states = 1;
-			break ;
-		}
+		g_ex_states = WEXITSTATUS(status);
+		if (g_ex_states != 0)
+			return (1);
 	}
-	return (ms_heredoc_check_states(lst, backup_fd));
+	return (0);
 }
 
-int	ms_heredoc_write(t_ex_state *es, t_list *lst, int quoted, int fd)
+int	ms_heredoc_rd_loop(t_redir **rd, t_ex_state *es)
 {
-	t_list		*tmp;
-	t_list		*head;
-	char		*expanded;
-
-	tmp = lst;
-	head = tmp;
-	if (quoted == 0)
-	{
-		while (tmp != NULL)
-		{
-			expanded = ex_ll_heredoc_line(es, (char *)tmp->content);
-			if (!expanded)
-				return (MS_EXEC_FAIL);
-			free(tmp->content);
-			tmp->content = expanded;
-			tmp = tmp->next;
-		}
-	}
-	while (head)
-	{
-		ft_putendl_fd(head->content, fd);
-		head = head->next;
-	}
-	close(fd);
-	return (MS_EXEC_SUCC);
-}
-
-// If you exit by entering ctrl+C, nothing will be done.
-int	ms_redirect_heredoc(t_ex_state *es, t_redir *redir)
-{
-	t_list	*lst;
 	int		pipefd[2];
-	int		quoted;
+	pid_t	pid;
 
-	lst = NULL;
-	quoted = !!redir->operand_right->quote_involved;
-	if (ms_heredoc_read(&lst, redir->operand_right->token) == MS_EXEC_FAIL)
-		return (MS_EXEC_FAIL);
-	if (pipe(pipefd) == -1)
-		return (MS_EXEC_FAIL);
-	if (dup2(pipefd[0], STDIN_FILENO) == -1)
-		return (MS_EXEC_FAIL);
-	if (close(pipefd[0]) == -1)
-		return (MS_EXEC_FAIL);
-	ms_heredoc_write(es, lst, quoted, pipefd[1]);
-	ft_lstclear(&lst, free);
-	return (MS_EXEC_SUCC);
+	while (*rd)
+	{
+		if ((*rd)->redir_op == TI_LTLT)
+		{
+			if (pipe(pipefd) == -1)
+			{
+				ms_perror("pipe");
+				return (1);
+			}
+			pid = fork();
+			if (pid == -1)
+			{
+				ms_perror("fork");
+				return (1);
+			}
+			if (pid == 0)
+				ms_heredoc_child(rd, es, pipefd);
+			else
+			{
+				if (ms_heredoc_parent(rd, pipefd))
+					return (1);
+			}
+		}
+		*rd = (*rd)->next;
+	}
+	return (0);
+}
+
+int	ms_heredoc_pipe_loop(t_clause **cl, t_ex_state *es)
+{
+	t_redir	*head;
+
+	while (*cl)
+	{
+		head = (*cl)->redir;
+		if (ms_heredoc_rd_loop(&(*cl)->redir, es))
+			return (1);
+		(*cl)->redir = head;
+		(*cl) = (*cl)->next;
+	}
+	return (0);
+}
+
+int	ms_heredoc(t_clause **cl, t_ex_state *es)
+{
+	t_clause *head;
+
+	head = *cl;
+	if (ms_heredoc_pipe_loop(cl, es))
+		return (1);
+	*cl = head;
+	return (0);
 }

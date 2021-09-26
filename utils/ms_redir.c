@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 21:45:37 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/26 13:45:45 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int	ms_open_redirect_output(t_redir *redir)
 
 int	ms_redirect(t_ex_state *es, t_redir *redir)
 {
+	(void)es;
 	if (redir->redir_op == TI_LT)
 		return (ms_open_redirect_input(redir));
 	else if (redir->redir_op == TI_GT)
@@ -80,6 +81,10 @@ int	ms_redirect(t_ex_state *es, t_redir *redir)
 	else if (redir->redir_op == TI_GTGT)
 		return (ms_open_redirect_append(redir));
 	else if (redir->redir_op == TI_LTLT)
-		return (ms_redirect_heredoc(es, redir));
+	{
+		if ((dup2(redir->heredoc_fd, STDIN_FILENO) == 0))
+			return (0);
+		ms_perror("dup2");
+	}
 	return (1);
 }

@@ -16,6 +16,7 @@ SRCS		:=	exec_error.c \
 				ms_pipe.c \
 				ms_redir.c \
 				ms_redir_error.c \
+				ms_redir_heredoc_io.c\
 				ms_redir_heredoc.c\
 				ms_signal_handler.c \
 
