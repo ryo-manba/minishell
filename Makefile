@@ -20,21 +20,21 @@ ifdef MS_DEBUG
 	CFLAGS	+= -D MS_DEBUG=$(MS_DEBUG)
 	ANALYZER_DEFS	:= "PA_DEBUG=1"
 endif
-LFLAGS		:= -lreadline -lhistory
-OBJS		:= $(SRCS:.c=.o)
-LIBFT_DIR	:= ../libft
-LIBFT		:= $(LIBFT_DIR)/libft.a
-ANALYZER_DIR	:= ../analyzer
-ANALYZER	:= $(ANALYZER_DIR)/libmsa.a
-UTILS_DIR	:= ../utils
-UTILS		:= $(UTILS_DIR)/libmu.a
-BLTIN_DIR	:= ../builtin
-BLTIN		:= $(BLTIN_DIR)/libmblt.a
-NORM		:= python3 -m norminette
+LFLAGS			:= -lreadline -lhistory
+OBJS			:= $(SRCS:.c=.o)
+LIBFT_DIR		:= ./libft
+LIBFT			:= $(LIBFT_DIR)/libft.a
+ANALYZER_DIR	:= ./analyzer
+ANALYZER		:= $(ANALYZER_DIR)/libmsa.a
+UTILS_DIR		:= ./utils
+UTILS			:= $(UTILS_DIR)/libmu.a
+BLTIN_DIR		:= ./builtin
+BLTIN			:= $(BLTIN_DIR)/libmblt.a
+NORM			:= python3 -m norminette
 
-INC			:= -L$(RL_PATH)/lib -I$(RL_PATH)/include
+INC				:= -L$(RL_PATH)/lib -I$(RL_PATH)/include
 
-all			: $(NAME)
+all				: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
 	$(CC) $(CFLAGS) $(INC) $(LFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
@@ -51,12 +51,21 @@ $(BLTIN)	:
 clean		:
 	$(RM) $(OBJS)
 
+.PHONY		: allclean
+allclean	:
+	$(RM) $(OBJS)
+	$(MAKE) -C $(ANALYZER_DIR) clean
+	$(MAKE) -C $(UTILS_DIR) clean
+	$(MAKE) -C $(BLTIN_DIR) clean
+	$(MAKE) -C $(LIBFT_DIR) clean
+
 .PHONY		: fclean
 fclean		: clean
 	$(RM) $(NAME)
 	$(MAKE) -C $(ANALYZER_DIR) fclean
 	$(MAKE) -C $(UTILS_DIR) fclean
 	$(MAKE) -C $(BLTIN_DIR) fclean
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 .PHONY		: re
 # fclean all submodules without libft and rebuild.

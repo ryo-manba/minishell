@@ -6,16 +6,16 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:32 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/18 10:05:00 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/26 16:47:51 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# include "../common/ms_common.h"
-# include "../analyzer/ms_analyzer.h"
-# include "../analyzer/test_analyzer.h"
-# include "../utils/ms_utils.h"
+# include "common/ms_common.h"
+# include "analyzer/ms_analyzer.h"
+# include "analyzer/test_analyzer.h"
+# include "utils/ms_utils.h"
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>

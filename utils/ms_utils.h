@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/26 14:36:22 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/26 16:48:11 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <sys/stat.h>
 # include "../libft/libft.h"
 # include "../analyzer/ms_analyzer.h"
-# include "../mainflow/minishell.h"
+# include "../minishell.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 

@@ -81,7 +81,9 @@ function run_case_bash_c() {
 	clear_evidence
 	# print_case $1
 	# set -x
+	export YOUR_SHELL=$MINISHELL
 	$MINISHELL -c "$(cat ${CASE_DIR}$1.sh)" > ${TEST_DIR}mine.txt 2>&1
+	export YOUR_SHELL=`whereis bash`
 	bash -c "$(cat ${CASE_DIR}$1.sh)" 2>&1 | sed s@^bash:@$MINISHELL:@ > ${TEST_DIR}ref.txt
 	compare_evidence
 	print_result $1
@@ -123,6 +125,7 @@ run_case_bash_file	echo
 run_case_bash_file	pipe
 run_case_bash_file	pwd
 run_case_bash_file	export
+run_case_bash_by_c	export_export
 run_case_bash_file	cd
 run_case_bash_file	unset
 run_case_bash_file	env
