@@ -10,9 +10,12 @@ ifndef RL_PATH
 endif
 
 CC			:= gcc
-CFLAGS		:= -Wall -Wextra -Werror -I$(RL_PATH)/include/
-#CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror -I/usr/local/opt/readline/include/
-# CFLAGS		:= -g -Wall -Wextra -Werror -D PA_DEBUG=1
+ifdef SANITIZE
+	CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror
+else
+	CFLAGS		:= -Wall -Wextra -Werror
+endif
+CFLAGS			+= -I$(RL_PATH)/include/
 ifdef MS_DEBUG
 	CFLAGS	+= -D MS_DEBUG=$(MS_DEBUG)
 	ANALYZER_DEFS	:= "PA_DEBUG=1"
@@ -36,13 +39,13 @@ all			: $(NAME)
 $(NAME): $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
 	$(CC) $(CFLAGS) $(INC) $(LFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
 $(LIBFT)	:
-	$(MAKE) -C $(LIBFT_DIR)
+	$(MAKE) -C $(LIBFT_DIR) CFLAGS="$(CFLAGS)"
 $(ANALYZER)	:
-	$(MAKE) -C $(ANALYZER_DIR) $(ANALYZER_DEFS)
+	$(MAKE) -C $(ANALYZER_DIR) $(ANALYZER_DEFS) CFLAGS="$(CFLAGS)"
 $(UTILS)	:
-	$(MAKE) -C $(UTILS_DIR) RL_PATH=$(RL_PATH)
+	$(MAKE) -C $(UTILS_DIR) RL_PATH=$(RL_PATH) CFLAGS="$(CFLAGS)"
 $(BLTIN)	:
-	$(MAKE) -C $(BLTIN_DIR)
+	$(MAKE) -C $(BLTIN_DIR) CFLAGS="$(CFLAGS)"
 
 .PHONY		: clean
 clean		:

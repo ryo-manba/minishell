@@ -19,14 +19,14 @@ EXPANDER_SRCS	:=	ms_expander.c\
 
 BLT_DIR 		:=	../builtin
 
-SRCS		:=	$(LEXER_SRCS)\
-				$(PARSER_SRCS)\
-				$(EXPANDER_SRCS)
+SRCS			:=	$(LEXER_SRCS)\
+					$(PARSER_SRCS)\
+					$(EXPANDER_SRCS)
 
 CC			:= gcc
-CFLAGS		:= -g -Wall -Wextra -Werror
-# CFLAGS		:= -g -fsanitize=address -Wall -Wextra -Werror
-# CFLAGS		:= -g -Wall -Wextra -Werror
+ifndef CFLAGS
+	CFLAGS		:=	-g -Wall -Wextra -Werror
+endif
 ifdef PA_DEBUG
 	CFLAGS	+=	-D PA_DEBUG=1
 endif
@@ -35,8 +35,6 @@ LIBFT_DIR	:= ../libft
 LIBFT		:= $(LIBFT_DIR)/libft.a
 NORM		:= python3 -m norminette
 NAME		:= libmsa.a
-# BLTIN_DIR	:= ../builtin
-# BLTIN		:= $(BLTIN_DIR)/libmblt.a
 
 all			: $(NAME)
 

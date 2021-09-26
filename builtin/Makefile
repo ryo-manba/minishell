@@ -28,7 +28,9 @@ OBJS		:=	$(SRCS:.c=.o)
 TEST_OBJS	:=	$(TEST_SRCS:.c=.o)
 RM			:=	rm -f
 CC			:= 	gcc
-CFLAGS		:=	-g -Wall -Wextra -Werror
+ifndef CFLAGS
+	CFLAGS		:=	-g -Wall -Wextra -Werror
+endif
 #CFLAGS		:=	-g -fsanitize=address -Wall -Wextra -Werror
 LIBFT_DIR	:=	../libft
 LIBFT		:=	$(LIBFT_DIR)/libft.a
