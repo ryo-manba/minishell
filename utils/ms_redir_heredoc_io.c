@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:16:33 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/26 14:16:53 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/26 23:44:02 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ms_heredoc_read(t_list **lst, char *delimiter)
 	while (1)
 	{
 		line = readline("> ");
-		if (line == NULL || ft_strcmp(line, delimiter) == 0 || g_ex_states == 1)
+		if (line == NULL || ft_strcmp(line, delimiter) == 0)
 			break ;
 		if (ft_lstpush_back(lst, line))
 		{
@@ -62,8 +62,6 @@ int	ms_heredoc_write(t_ex_state *es, t_list *lst, int quoted, int fd)
 		ft_putendl_fd(head->content, fd);
 		head = head->next;
 	}
-	if (close(fd) == -1)
-		return (MS_EXEC_FAIL);
 	return (MS_EXEC_SUCC);
 }
 

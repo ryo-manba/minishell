@@ -18,7 +18,6 @@ SRCS		:=	exec_error.c \
 				ms_redir_error.c \
 				ms_redir_heredoc_io.c\
 				ms_redir_heredoc.c\
-				ms_signal_handler.c \
 
 ifndef RL_PATH
 	RL_PATH	:=/usr/local/opt/readline

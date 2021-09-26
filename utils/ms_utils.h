@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/26 16:48:11 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/26 23:40:01 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,12 +145,8 @@ int		ms_heredoc_read_write(t_ex_state *es, t_redir **redir, int write_fd);
 /* ms_redir_heredoc */
 int		ms_heredoc_child(t_redir **rd, t_ex_state *es, int pipefd[2]);
 int		ms_heredoc_parent(t_redir **rd, int pipefd[2]);
-int		ms_heredoc_rd_loop(t_redir **rd, t_ex_state *es);
-int		ms_heredoc_pipe_loop(t_clause **cl, t_ex_state *es);
+int		ms_heredoc_rd(t_redir **rd, t_ex_state *es);
+int		ms_heredoc_loop(t_redir **rd, t_ex_state *es);
 int		ms_heredoc(t_clause **cl, t_ex_state *es);
-
-/* ms_signal_handler */
-void	ms_heredoc_sigint_handler(int sig);
-int		ms_heredoc_signal_set(void);
 
 #endif
