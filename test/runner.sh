@@ -112,6 +112,7 @@ run_case_bash_file	wildcard
 run_case			unclosed_quote
 run_case_bash_file	subshell_basic
 run_case_bash_file	subshell_pipe
+run_case_bash_file	subshell_fork
 run_case_bash_file	semicolon
 run_case_bash_file	andor
 run_case_bash_file	ln_in_error_file
