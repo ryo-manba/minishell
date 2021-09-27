@@ -6,13 +6,13 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/12 18:45:18 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/23 21:03:03 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:12:49 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_msopt	mf_opt_for_arg(char *argv)
+static t_msopt	mf_opt_for_arg(char *argv)
 {
 	if (ft_strcmp(argv, "-c") == 0)
 		return (MSO_C);
@@ -21,7 +21,7 @@ t_msopt	mf_opt_for_arg(char *argv)
 	return (MSO_BARE);
 }
 
-int	mf_setup_opt(t_master *master)
+static int	mf_setup_opt(t_master *master)
 {
 	if (master->opt_c)
 	{

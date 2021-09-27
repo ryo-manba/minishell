@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 13:23:15 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/20 17:28:42 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:14:13 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,28 @@
 static int	do_split(t_ex_state *state, t_ex_unit_cursor *csr)
 {
 	return (state->no_split && csr->s.tail->pa_token_id == TI_ASSIGNMENT_WORD);
+}
+
+static int	ex_split_var_token(t_ex_state *state, t_ex_unit_cursor *csr,
+	t_ex_token *temp)
+{
+	int	white_space;
+
+	csr->vs = 0;
+	csr->i = 0;
+	while (!state->failed && temp->token[csr->i])
+	{
+		csr->vs = csr->i;
+		white_space = !!ft_strchr(EX_IFS, temp->token[csr->i]);
+		while (temp->token[csr->i]
+			&& white_space == !!ft_strchr(EX_IFS, temp->token[csr->i]))
+			csr->i += 1;
+		if (white_space)
+			ex_push_back_divider_if_needed(state, csr, temp);
+		else
+			ex_clone_and_push_back_token(state, csr, temp);
+	}
+	return (!!state->failed);
 }
 
 int	ex_push_back_divider_if_needed(t_ex_state *state, t_ex_unit_cursor *csr,
@@ -63,28 +85,6 @@ t_ex_token	*ex_clone_and_push_back_token(t_ex_state *state,
 	if (!csr->p.head)
 		csr->p.head = csr->p.tail;
 	return (cloned_ext);
-}
-
-int	ex_split_var_token(t_ex_state *state, t_ex_unit_cursor *csr,
-	t_ex_token *temp)
-{
-	int	white_space;
-
-	csr->vs = 0;
-	csr->i = 0;
-	while (!state->failed && temp->token[csr->i])
-	{
-		csr->vs = csr->i;
-		white_space = !!ft_strchr(EX_IFS, temp->token[csr->i]);
-		while (temp->token[csr->i]
-			&& white_space == !!ft_strchr(EX_IFS, temp->token[csr->i]))
-			csr->i += 1;
-		if (white_space)
-			ex_push_back_divider_if_needed(state, csr, temp);
-		else
-			ex_clone_and_push_back_token(state, csr, temp);
-	}
-	return (!!state->failed);
 }
 
 t_ex_token	*ex_split(t_ex_state *state, t_ex_token *token)
