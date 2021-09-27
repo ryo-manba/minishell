@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/27 12:15:23 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 12:23:15 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ms_sigint_handler(int sig)
 	g_ex_states = 1;
 }
 
-void	mf_print_master(t_master *master)
+static void	mf_print_master(t_master *master)
 {
 	ft_putstr_fd("c?: ", STDERR_FILENO);
 	ft_putnbr_fd(master->opt_c, STDERR_FILENO);
@@ -45,7 +45,7 @@ void	mf_print_master(t_master *master)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
-int	mf_init_master(t_master *master, int argc, char **argv)
+static int	mf_init_master(t_master *master, int argc, char **argv)
 {
 	int	status;
 
@@ -74,7 +74,7 @@ int	mf_init_master(t_master *master, int argc, char **argv)
 	return (MS_MS_SUCC);
 }
 
-int	mf_destroy_master(t_master *master)
+static int	mf_destroy_master(t_master *master)
 {
 	while (master->spcursor.lines
 		&& master->spcursor.lines[master->spcursor.i])

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 17:07:08 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/23 12:37:05 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:13:08 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	mf_loop_epilogue(t_master *master)
 	ft_putstr_fd("'\n", STDERR_FILENO);
 }
 
-int	mf_read_line(t_master *master, char **line)
+static int	mf_read_line(t_master *master, char **line)
 {
 	int		status;
 
@@ -48,7 +48,7 @@ int	mf_read_line(t_master *master, char **line)
 	return (!*line);
 }
 
-int	mf_execute(t_master *master, t_pipeline *pipeline)
+static int	mf_execute(t_master *master, t_pipeline *pipeline)
 {
 	t_ex_state	es;
 

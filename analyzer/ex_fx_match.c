@@ -6,13 +6,13 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 18:59:33 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/07 12:58:38 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:15:01 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_analyzer.h"
 
-int	ex_fx_exec_match(t_ex_fx_dpcursor *dc, t_ex_token *file)
+static int	ex_fx_exec_match(t_ex_fx_dpcursor *dc, t_ex_token *file)
 {
 	size_t	i;
 	size_t	j;

@@ -6,13 +6,14 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 03:52:35 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/25 01:17:56 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:12:29 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_pipeline	*mf_lex_parse(t_master *master, char *line, t_parse_state *ps)
+static t_pipeline	*mf_lex_parse(t_master *master,
+	char *line, t_parse_state *ps)
 {
 	t_lex_cursor	lx_cursor;
 	t_wdlist		*lexer_token;
