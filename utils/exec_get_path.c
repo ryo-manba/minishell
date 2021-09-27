@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_get_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/25 16:34:10 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 10:58:43 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	exec_all_free(char **s)
 	free(s);
 }
 
-char	*exec_strjoin(char *split_path, char *cmd)
+static char	*exec_strjoin(char *split_path, char *cmd)
 {
 	char	*tmp;
 	char	*path;
@@ -41,7 +41,8 @@ char	*exec_strjoin(char *split_path, char *cmd)
 }
 
 // err_path is a path that exists but is kept in case of failure.
-char	*exec_create_path(char *cmd, char **split_path, int is_command)
+static char	*exec_create_path(
+		char *cmd, char **split_path, int is_command)
 {
 	char		*dir;
 	char		*path;
@@ -69,7 +70,7 @@ char	*exec_create_path(char *cmd, char **split_path, int is_command)
 	return (err_path);
 }
 
-char	**exec_create_split_path(t_shellvar *var, int *look_from_cd)
+static char	**exec_create_split_path(t_shellvar *var, int *look_from_cd)
 {
 	t_shellvar	*path_pos;
 	char		**split_path;

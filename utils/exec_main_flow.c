@@ -6,40 +6,11 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 00:12:58 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:01:20 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
-
-// {"ls", "-l", "NULL"}
-// Set the argument to this format.
-char	**exec_create_command(t_stree *tree)
-{
-	char	**command;
-	size_t	i;
-	t_stree	*tmp;
-
-	i = exec_get_command_size(tree);
-	command = (char **)malloc(sizeof(char *) * (i + 1));
-	if (command == NULL)
-		ms_perror_exit("malloc");
-	tmp = tree;
-	i = 0;
-	while (tmp)
-	{
-		command[i] = ft_strdup(tmp->token);
-		if (command[i] == NULL)
-		{
-			exec_all_free(command);
-			ms_perror_exit("malloc");
-		}
-		tmp = tmp->right;
-		i++;
-	}
-	command[i] = NULL;
-	return (command);
-}
 
 void	exec_update_exitstatus(pid_t pid)
 {
@@ -58,7 +29,7 @@ void	exec_update_exitstatus(pid_t pid)
 		g_ex_states = WEXITSTATUS(status);
 }
 
-void	ms_close_heredoc_fd(t_clause *cl)
+static void	ms_close_heredoc_fd(t_clause *cl)
 {
 	t_clause	*tmp_cl;
 	t_redir		*tmp_rd;

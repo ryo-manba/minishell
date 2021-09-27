@@ -6,13 +6,13 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/26 23:35:27 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:37:57 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-int	ms_heredoc_child(t_redir **rd, t_ex_state *es, int pipefd[2])
+static int	ms_heredoc_child(t_redir **rd, t_ex_state *es, int pipefd[2])
 {
 	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
 		ms_perror_exit("signal");
@@ -27,7 +27,7 @@ int	ms_heredoc_child(t_redir **rd, t_ex_state *es, int pipefd[2])
 	exit(0);
 }
 
-int	ms_heredoc_parent(t_redir **rd, int pipefd[2])
+static int	ms_heredoc_parent(t_redir **rd, int pipefd[2])
 {
 	int	status;
 
@@ -50,7 +50,7 @@ int	ms_heredoc_parent(t_redir **rd, int pipefd[2])
 	return (0);
 }
 
-int	ms_heredoc_rd(t_redir **rd, t_ex_state *es)
+static int	ms_heredoc_rd(t_redir **rd, t_ex_state *es)
 {
 	pid_t	pid;
 	int		pipefd[2];
@@ -78,7 +78,7 @@ int	ms_heredoc_rd(t_redir **rd, t_ex_state *es)
 	return (0);
 }
 
-int	ms_heredoc_loop(t_redir **rd, t_ex_state *es)
+static int	ms_heredoc_loop(t_redir **rd, t_ex_state *es)
 {
 	int		ret;
 

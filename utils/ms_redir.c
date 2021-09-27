@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/26 13:45:45 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:40:52 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ms_open_at(int fd, const char *path, int oflag, int mode)
 	return (0);
 }
 
-int	ms_open_redirect_append(t_redir *redir)
+static int	ms_open_redirect_append(t_redir *redir)
 {
 	const char	*path = redir->operand_right->token;
 	int			io_number;
@@ -47,7 +47,7 @@ int	ms_open_redirect_append(t_redir *redir)
 // [abstract functions for redirection]
 // open file for input-redirection [io_number]< path
 // if io_number is not specified, STDIN_FILENO will be used for default value.
-int	ms_open_redirect_input(t_redir *redir)
+static int	ms_open_redirect_input(t_redir *redir)
 {
 	const char	*path = redir->operand_right->token;
 	int			io_number;
@@ -59,7 +59,7 @@ int	ms_open_redirect_input(t_redir *redir)
 	return (ms_open_at(io_number, path, O_RDONLY, -1));
 }
 
-int	ms_open_redirect_output(t_redir *redir)
+static int	ms_open_redirect_output(t_redir *redir)
 {
 	const char	*path = redir->operand_right->token;
 	int			io_number;

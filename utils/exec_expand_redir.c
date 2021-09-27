@@ -6,18 +6,17 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 20:24:37 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/26 14:35:37 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 10:57:02 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-int	exec_expand_redir_loop(
-		t_master *master, t_redir *rd, t_ex_state *es, int stdin_copy)
+static int	exec_expand_redir_loop(
+		t_master *master, t_redir *rd, t_ex_state *es)
 {
 	t_redir	*expanded_rd;
 
-	(void)stdin_copy;
 	while (rd)
 	{
 		expanded_rd = ms_expand_a_redir(es, rd);
@@ -43,6 +42,6 @@ int	exec_expand_redirect(t_master *master, t_clause *clause)
 
 	ms_ex_init_state(&es, master);
 	rd = clause->redir;
-	ret = exec_expand_redir_loop(master, rd, &es, 0);
+	ret = exec_expand_redir_loop(master, rd, &es);
 	return (ret);
 }

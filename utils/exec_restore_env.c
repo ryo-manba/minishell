@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_restore_env.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 22:37:21 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 21:28:55 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:04:07 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-int	exec_get_env_size(t_shellvar *var)
+static int	exec_get_env_size(t_shellvar *var)
 {
 	int			i;
 	t_shellvar	*tmp;
@@ -28,7 +28,7 @@ int	exec_get_env_size(t_shellvar *var)
 	return (i);
 }
 
-char	*exec_restore(t_shellvar *var)
+static char	*exec_restore(t_shellvar *var)
 {
 	char	*tmp;
 	char	*env;

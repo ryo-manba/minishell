@@ -6,13 +6,33 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:32:51 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 18:08:57 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:36:03 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-int	ms_check_fd(char *fd)
+// The contents of the string 's' are
+// EACCES : file_name
+// OVER_FD: fd
+void	ms_redir_print_error(t_master *master, int err, char *s)
+{
+	exec_error_prologue(master, 1);
+	if (err == EACCES)
+	{
+		ft_putstr_fd(s, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putendl_fd(strerror(errno), STDERR_FILENO);
+		return ;
+	}
+	if (err == OVER_FD)
+		ft_putstr_fd(s, STDERR_FILENO);
+	if (err == OVER_INT)
+		ft_putstr_fd("file descriptor out of range", STDERR_FILENO);
+	ft_putendl_fd(": Bad file descriptor", STDERR_FILENO);
+}
+
+static int	ms_check_fd(char *fd)
 {
 	int64_t	num;
 	int		i;
@@ -54,24 +74,4 @@ int	ms_check_fd_print_error(t_redir *rd, t_master *master)
 		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 	}
 	return (errno);
-}
-
-// The contents of the string 's' are
-// EACCES : file_name
-// OVER_FD: fd
-void	ms_redir_print_error(t_master *master, int err, char *s)
-{
-	exec_error_prologue(master, 1);
-	if (err == EACCES)
-	{
-		ft_putstr_fd(s, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putendl_fd(strerror(errno), STDERR_FILENO);
-		return ;
-	}
-	if (err == OVER_FD)
-		ft_putstr_fd(s, STDERR_FILENO);
-	if (err == OVER_INT)
-		ft_putstr_fd("file descriptor out of range", STDERR_FILENO);
-	ft_putendl_fd(": Bad file descriptor", STDERR_FILENO);
 }

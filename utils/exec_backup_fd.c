@@ -6,13 +6,13 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/16 00:08:03 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 21:35:48 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 10:53:14 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-int	exec_close_backup_fd(int backup_fd[3])
+static int	exec_close_backup_fd(int backup_fd[3])
 {
 	if (close(backup_fd[0]) == -1 || \
 		close(backup_fd[1]) == -1 || \

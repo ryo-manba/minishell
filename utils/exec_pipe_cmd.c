@@ -6,13 +6,13 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 23:57:38 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:03:09 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-int	exec_check_piping(t_dpipe *dpipe, t_clause *clause)
+static int	exec_check_piping(t_dpipe *dpipe, t_clause *clause)
 {
 	if (clause->next != NULL)
 	{
@@ -26,7 +26,7 @@ int	exec_check_piping(t_dpipe *dpipe, t_clause *clause)
 }
 
 // If it's a subshell, run it recursively.
-void	exec_pipe_child(
+static void	exec_pipe_child(
 	t_clause *clause, t_master *master, t_ex_state *es, t_dpipe *dpipe)
 {
 	t_stree	*expanded;
@@ -53,7 +53,16 @@ void	exec_pipe_child(
 		exec_run_cmd_exit(es->master, expanded, master->var);
 }
 
-pid_t	exec_pipe_cmd_loop(
+static void	exec_pipe_parent(t_dpipe *dpipe)
+{
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+		ms_perror_exit("signal");
+	ms_close_and_update_pipe(dpipe->new, dpipe->before);
+	if (signal(SIGINT, ms_sigint_handler) == SIG_ERR)
+		ms_perror_exit("signal");
+}
+
+static pid_t	exec_pipe_cmd_loop(
 		t_master *master, t_clause *cl, t_dpipe *dpipe, t_ex_state *state)
 {
 	t_clause	*tmp_cl;
@@ -93,13 +102,4 @@ int	exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state)
 	pid = exec_pipe_cmd_loop(master, pl->clause, &dpipe, state);
 	exec_set_signal_wait(pid);
 	return (g_ex_states);
-}
-
-void	exec_pipe_parent(t_dpipe *dpipe)
-{
-	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
-		ms_perror_exit("signal");
-	ms_close_and_update_pipe(dpipe->new, dpipe->before);
-	if (signal(SIGINT, ms_sigint_handler) == SIG_ERR)
-		ms_perror_exit("signal");
 }

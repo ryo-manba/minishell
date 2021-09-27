@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/26 14:17:10 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:05:59 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	exec_subshell(t_clause *clause, t_master *master, t_ex_state *es)
 	return (g_ex_states);
 }
 
-int	exec_ex_cmd(t_master *master, t_shellvar *var, t_stree *expanded)
+static int	exec_ex_cmd(t_master *master, t_shellvar *var, t_stree *expanded)
 {
 	pid_t		pid;
 
@@ -43,6 +43,26 @@ int	exec_ex_cmd(t_master *master, t_shellvar *var, t_stree *expanded)
 			ms_perror_exit("signal");
 	}
 	return (g_ex_states);
+}
+
+static int	exec_simple_redir(t_master *master,
+	t_clause *clause, int backup_fd[3])
+{
+	int	rv;
+
+	if (clause->redir)
+	{
+		rv = exec_create_backup_fd(backup_fd);
+		if (rv)
+			return (MS_EXEC_FAIL);
+		rv = exec_expand_redirect(master, clause);
+		if (rv)
+		{
+			exec_duplicate_backup_fd(backup_fd);
+			return (rv);
+		}
+	}
+	return (MS_EXEC_SUCC);
 }
 
 // If built-in, run as is.
@@ -75,24 +95,4 @@ int	exec_simple_command(t_clause *clause, t_master *master, t_ex_state *es)
 	if (clause->redir && exec_duplicate_backup_fd(backup_fd) == 1)
 		return (exec_out(MS_EXEC_FAIL, expanded));
 	return (exec_out(g_ex_states, expanded));
-}
-
-int	exec_simple_redir(t_master *master,
-	t_clause *clause, int backup_fd[3])
-{
-	int	rv;
-
-	if (clause->redir)
-	{
-		rv = exec_create_backup_fd(backup_fd);
-		if (rv)
-			return (MS_EXEC_FAIL);
-		rv = exec_expand_redirect(master, clause);
-		if (rv)
-		{
-			exec_duplicate_backup_fd(backup_fd);
-			return (rv);
-		}
-	}
-	return (MS_EXEC_SUCC);
 }

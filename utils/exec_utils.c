@@ -6,34 +6,11 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:46 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 21:54:40 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:08:13 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
-
-void	exec_check_path_exit(t_master *master, t_stree *expanded, char *path)
-{
-	if (g_ex_states == PERMISSION || g_ex_states == IS_A_DIR)
-		exec_print_error_exit(master, g_ex_states, path);
-	else if (path == NULL)
-		exec_print_error_exit(master, g_ex_states, expanded->token);
-}
-
-size_t	exec_get_command_size(t_stree *tree)
-{
-	t_stree	*tmp;
-	size_t	sz;
-
-	tmp = tree;
-	sz = 0;
-	while (tmp != NULL)
-	{
-		tmp = tmp->right;
-		sz++;
-	}
-	return (sz);
-}
 
 void	exec_set_signal_wait(pid_t pid)
 {

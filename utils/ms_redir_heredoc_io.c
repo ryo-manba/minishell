@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:16:33 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/26 23:44:02 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 11:37:03 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 
 volatile sig_atomic_t	g_ex_states;
 
-// ctrl+C    -> Output a newline and exit
-// ctrl+D    -> exit
-// delemiter -> exit
-int	ms_heredoc_read(t_list **lst, char *delimiter)
+static int	ms_heredoc_read(t_list **lst, char *delimiter)
 {
 	char	*line;
 
@@ -37,7 +34,7 @@ int	ms_heredoc_read(t_list **lst, char *delimiter)
 	return (0);
 }
 
-int	ms_heredoc_write(t_ex_state *es, t_list *lst, int quoted, int fd)
+static int	ms_heredoc_write(t_ex_state *es, t_list *lst, int quoted, int fd)
 {
 	t_list		*tmp;
 	t_list		*head;
