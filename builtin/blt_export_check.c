@@ -6,33 +6,22 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:52:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:43:34 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 10:46:34 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-int	blt_check_and_separate_env(
-		t_master *master, char *token, char *key_value[2])
+static void	blt_export_print_error(t_master *master, char *token)
 {
-	int32_t	equal_idx;
-
-	equal_idx = ft_strchr_i(token, '=');
-	if (blt_check_export_key(token, equal_idx) == MS_BLT_FAIL)
-	{
-		blt_export_print_error(master, token);
-		return (MS_BLT_FAIL);
-	}
-	if (blt_separate_key_value(equal_idx, token, key_value) == MS_BLT_FAIL)
-	{
-		ms_perror("malloc");
-		return (MS_BLT_FAIL);
-	}
-	return (MS_BLT_SUCC);
+	exec_error_prologue(master, 0);
+	ft_putstr_fd("export: `", STDERR_FILENO);
+	ft_putstr_fd(token, STDERR_FILENO);
+	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
 }
 
 // Check the export key follows the format
-int	blt_check_export_key(char *token, int32_t equal_idx)
+static int	blt_check_export_key(char *token, int32_t equal_idx)
 {
 	int32_t	i;
 
@@ -56,15 +45,8 @@ int	blt_check_export_key(char *token, int32_t equal_idx)
 	return (MS_BLT_SUCC);
 }
 
-void	blt_export_print_error(t_master *master, char *token)
-{
-	exec_error_prologue(master, 0);
-	ft_putstr_fd("export: `", STDERR_FILENO);
-	ft_putstr_fd(token, STDERR_FILENO);
-	ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
-}
-
-int	blt_separate_key_value(int32_t equal_idx, char *token, char *key_value[2])
+static int	blt_separate_key_value(
+		int32_t equal_idx, char *token, char *key_value[2])
 {
 	if (equal_idx != -1 && token[equal_idx - 1] == '+')
 		key_value[KEY] = ft_substr(token, 0, equal_idx - 1);
@@ -82,6 +64,25 @@ int	blt_separate_key_value(int32_t equal_idx, char *token, char *key_value[2])
 			free(key_value[KEY]);
 			return (MS_BLT_FAIL);
 		}
+	}
+	return (MS_BLT_SUCC);
+}
+
+int	blt_check_and_separate_env(
+		t_master *master, char *token, char *key_value[2])
+{
+	int32_t	equal_idx;
+
+	equal_idx = ft_strchr_i(token, '=');
+	if (blt_check_export_key(token, equal_idx) == MS_BLT_FAIL)
+	{
+		blt_export_print_error(master, token);
+		return (MS_BLT_FAIL);
+	}
+	if (blt_separate_key_value(equal_idx, token, key_value) == MS_BLT_FAIL)
+	{
+		ms_perror("malloc");
+		return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
 }

@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 12:26:20 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 22:07:00 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 10:28:18 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	blt_malloc_failed_lstclear(t_list **lst)
 	return (MS_BLT_FAIL);
 }
 
-int	blt_create_lst_loop(t_list **lst, char *s, int idx)
+static int	blt_create_lst_loop(t_list **lst, char *s, int idx)
 {
 	int		len;
 	int		start;

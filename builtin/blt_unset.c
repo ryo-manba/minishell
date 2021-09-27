@@ -6,13 +6,13 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:18 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:45:01 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 10:46:19 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-void	blt_unset_head(t_shellvar **env)
+static void	blt_unset_head(t_shellvar **env)
 {
 	t_shellvar	*tmp;
 
@@ -21,7 +21,8 @@ void	blt_unset_head(t_shellvar **env)
 	ms_env_free(tmp);
 }
 
-void	blt_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos)
+static void	blt_unset_second_and_subsequent(
+		t_shellvar *env, t_shellvar *key_pos)
 {
 	t_shellvar	*head;
 	t_shellvar	*tmp;
@@ -34,7 +35,7 @@ void	blt_unset_second_and_subsequent(t_shellvar *env, t_shellvar *key_pos)
 	ms_env_free(tmp);
 }
 
-int	blt_check_identifier(t_master *master, t_stree *tree)
+static int	blt_check_identifier(t_master *master, t_stree *tree)
 {
 	if (lx_str_is_for_name(tree->token, -1))
 		return (MS_BLT_SUCC);

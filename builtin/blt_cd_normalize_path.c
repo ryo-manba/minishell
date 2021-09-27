@@ -6,13 +6,13 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 12:29:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:57:22 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 10:45:46 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-void	blt_pre_absolute_path(t_list **pwd_lst, t_list **arg_lst)
+static void	blt_pre_absolute_path(t_list **pwd_lst, t_list **arg_lst)
 {
 	*pwd_lst = blt_lst_init(pwd_lst);
 	if (*arg_lst && (ft_strlen((*arg_lst)->content) == 2 && \
@@ -44,7 +44,8 @@ int	blt_pre_absolute_lst(t_list **lst, char *s)
 	return (i);
 }
 
-char	*blt_cd_create_path(t_list *pwd_lst, t_list *arg_lst, int is_absolute)
+static char	*blt_cd_create_path(
+		t_list *pwd_lst, t_list *arg_lst, int is_absolute)
 {
 	t_list	*tmp_lst;
 

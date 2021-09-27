@@ -6,13 +6,58 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:48:50 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:41:57 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 10:37:09 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-int	blt_check_long_overflow(char *ex_status)
+// return 2 with NOT_A_NUMBER(for newer bash)
+static int	blt_exit_print_error(t_master *master, int flag, char *error_args)
+{
+	if (master->interactive_shell)
+		ft_putendl_fd("exit", STDERR_FILENO);
+	exec_error_prologue(master, 0);
+	ft_putstr_fd("exit: ", STDERR_FILENO);
+	if (flag == NOT_A_NUMBER)
+	{
+		ft_putstr_fd(error_args, STDERR_FILENO);
+		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
+		return (2);
+	}
+	if (flag == 2)
+	{
+		ft_putendl_fd("too many arguments", STDERR_FILENO);
+		return (1);
+	}
+	return (MS_BLT_FAIL);
+}
+
+/**
+ * $ exit "   42    "  OK
+ * $ exit "   42 1  "  NG
+ */
+static int	blt_is_args_correct(char *args)
+{
+	size_t	i;
+
+	i = 0;
+	if (args[i] == '+' || args[i] == '-')
+		i += 1;
+	while (ft_isspace(args[i]))
+		i += 1;
+	if (args[i] == '\0')
+		return (MS_BLT_FAIL);
+	while (ft_isdigit(args[i]))
+		i += 1;
+	while (ft_isspace(args[i]))
+		i += 1;
+	if (args[i] == '\0')
+		return (MS_BLT_SUCC);
+	return (MS_BLT_FAIL);
+}
+
+static int	blt_check_long_overflow(char *ex_status)
 {
 	int			i;
 	int			sign;
@@ -58,49 +103,4 @@ int	blt_exit(t_stree *tree, t_master *master)
 	if (master->interactive_shell)
 		ft_putendl_fd("exit", STDERR_FILENO);
 	exit(ex_status);
-}
-
-// return 2 with NOT_A_NUMBER(for newer bash)
-int	blt_exit_print_error(t_master *master, int flag, char *error_args)
-{
-	if (master->interactive_shell)
-		ft_putendl_fd("exit", STDERR_FILENO);
-	exec_error_prologue(master, 0);
-	ft_putstr_fd("exit: ", STDERR_FILENO);
-	if (flag == NOT_A_NUMBER)
-	{
-		ft_putstr_fd(error_args, STDERR_FILENO);
-		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-		return (2);
-	}
-	if (flag == 2)
-	{
-		ft_putendl_fd("too many arguments", STDERR_FILENO);
-		return (1);
-	}
-	return (MS_BLT_FAIL);
-}
-
-/**
- * $ exit "   42    "  OK
- * $ exit "   42 1  "  NG
- */
-int	blt_is_args_correct(char *args)
-{
-	size_t	i;
-
-	i = 0;
-	if (args[i] == '+' || args[i] == '-')
-		i += 1;
-	while (ft_isspace(args[i]))
-		i += 1;
-	if (args[i] == '\0')
-		return (MS_BLT_FAIL);
-	while (ft_isdigit(args[i]))
-		i += 1;
-	while (ft_isspace(args[i]))
-		i += 1;
-	if (args[i] == '\0')
-		return (MS_BLT_SUCC);
-	return (MS_BLT_FAIL);
 }

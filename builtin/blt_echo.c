@@ -3,16 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   blt_echo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 14:53:20 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/20 14:06:21 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 10:35:11 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-int	blt_check_option(char *token)
+static void	blt_echo_print_error(t_master *master, char *message)
+{
+	exec_error_prologue(master, 0);
+	ft_putstr_fd("echo: write error: ", STDERR_FILENO);
+	ft_putendl_fd(message, STDERR_FILENO);
+}
+
+static int	blt_check_option(char *token)
 {
 	int	i;
 
@@ -61,11 +68,4 @@ int	blt_echo(t_stree *tree, t_master *master)
 		return (MS_BLT_FAIL);
 	}
 	return (MS_BLT_SUCC);
-}
-
-void	blt_echo_print_error(t_master *master, char *message)
-{
-	exec_error_prologue(master, 0);
-	ft_putstr_fd("echo: write error: ", STDERR_FILENO);
-	ft_putendl_fd(message, STDERR_FILENO);
 }

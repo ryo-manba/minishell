@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   blt_cd_no_current.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 15:28:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 01:52:23 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 10:28:57 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-char	*blt_check_slash_join(char *env_pwd, char *arg)
+static char	*blt_check_slash_join(char *env_pwd, char *arg)
 {
 	size_t	sz;
 	char	*tmp;

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   blt_export_print.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:05 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 01:52:40 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 10:40:53 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-void	blt_putstr_with_escaping(char *str)
+static void	blt_putstr_with_escaping(char *str)
 {
 	size_t	n;
 
@@ -35,7 +35,7 @@ void	blt_putstr_with_escaping(char *str)
 	}
 }
 
-t_shellvar	*blt_copy_env(t_shellvar *env)
+static t_shellvar	*blt_copy_env(t_shellvar *env)
 {
 	t_shellvar	*tmp;
 	t_shellvar	*copy;
@@ -52,7 +52,7 @@ t_shellvar	*blt_copy_env(t_shellvar *env)
 	return (copy);
 }
 
-void	blt_print_export(t_shellvar *env)
+static void	blt_print_export(t_shellvar *env)
 {
 	t_shellvar	*tmp;
 
@@ -73,7 +73,7 @@ void	blt_print_export(t_shellvar *env)
 	}
 }
 
-void	blt_export_print_and_sort_env(t_shellvar *env)
+void	blt_export_print_sorted_env(t_shellvar *env)
 {
 	t_shellvar	*copy;
 
