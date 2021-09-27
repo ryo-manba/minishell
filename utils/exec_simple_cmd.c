@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 11:05:59 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 21:52:02 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,21 @@
 
 int	exec_subshell(t_clause *clause, t_master *master, t_ex_state *es)
 {
-	ms_executer(clause->stree->subshell, master, es);
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		ms_perror("fork");
+		return (1);
+	}
+	else if (pid == 0)
+	{
+		ms_executer(clause->stree->subshell, master, es);
+		exit(g_ex_states);
+	}
+	else
+		exec_update_exitstatus(pid);
 	return (g_ex_states);
 }
 
