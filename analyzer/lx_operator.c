@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:26:24 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/25 01:20:23 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 09:28:50 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	lx_tail_is_an_operator(t_lex_cursor *cursor)
 	return (0);
 }
 
-// `line[i]`から最も長い演算子が取れるまで`i`を進める
 size_t	lx_cut_operator(t_lex_cursor *cursor)
 {
 	size_t	k;

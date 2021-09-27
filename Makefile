@@ -96,6 +96,7 @@ norm		:
 # norm all submodules
 normall		:
 	$(NORM) $(SRCS) *.h
+	$(NORM) common/*
 	$(MAKE) -C $(LIBFT_DIR) norm
 	$(MAKE) -C $(ANALYZER_DIR) norm
 	$(MAKE) -C $(UTILS_DIR) norm

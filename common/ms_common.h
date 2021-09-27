@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/11 00:02:05 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/25 00:53:39 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 09:26:45 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ typedef enum e_token_id
 	TI_PAREN_R,
 	TI_NONE,
 }	t_token_id;
-
 
 typedef struct s_op
 {

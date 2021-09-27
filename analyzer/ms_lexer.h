@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:39:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/25 00:51:28 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 01:54:55 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,7 @@ int			lx_treat_quote_and_word(t_lex_cursor *cursor, char c, char ct);
 int			lx_add_token(t_lex_cursor *cursor, char starting_char);
 void		lx_conclude_token(t_lex_cursor *cursor);
 int			lx_str_is_digital(const	char *str, size_t len);
-int			lx_char_is_for_name(char c, size_t pos);
 int			lx_str_is_for_name(const char *str, size_t len);
-int			lx_char_is_for_bare(char c);
 int			lx_str_is_for_assignment_word(const char *str, size_t len);
 int			lx_tail_is_an_operator(t_lex_cursor *cursor);
 void		lx_destroy_token(t_wdlist *t);

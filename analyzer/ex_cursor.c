@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 19:01:57 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/16 10:17:59 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 01:45:51 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,6 @@ void	ex_add_token_csr(t_ex_part_cursor *cursor, t_ex_token *ext)
 	cursor->tail = ext;
 	if (!cursor->head)
 		cursor->head = cursor->tail;
-}
-
-t_ex_token	*ex_pop_src_token_csr(t_ex_part_cursor *cursor)
-{
-	if (cursor->tail)
-		cursor->tail = cursor->tail->right;
-	return (cursor->tail);
 }
 
 void	ex_ll_init_cursor(t_ex_unit_cursor *cursor, t_token_id tid,

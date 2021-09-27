@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/25 02:07:35 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 01:52:43 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ void		blt_lstlast_del(t_list *lst);
 /* blt_cd_no_current */
 char		*blt_check_slash_join(char *env_pwd, char *arg);
 int			blt_cd_no_current(t_master *master, t_shellvar *env, char *arg);
-int			blt_cd_no_prevdir(t_master *master, t_shellvar *env, char *now_pwd);
 
 /* blt_cd_normalize_path */
 void		blt_pre_absolute_path(t_list **pwd_lst, t_list **arg_lst);
@@ -125,7 +124,6 @@ int			blt_separate_key_value(
 				int32_t equal_idx, char *token, char *key_value[2]);
 
 /* blt_export_print */
-int			blt_check_escape(char *s);
 t_shellvar	*blt_copy_env(t_shellvar *env);
 void		blt_print_export(t_shellvar *env);
 void		blt_export_print_and_sort_env(t_shellvar *env);

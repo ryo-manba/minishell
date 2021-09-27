@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   blt_cd_no_current.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 15:28:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 23:04:43 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 01:52:23 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,21 +55,4 @@ No such file or directory", STDERR_FILENO);
 	ret = blt_cd_update(master, env, pwd);
 	free(pwd);
 	return (ret);
-}
-
-int	blt_cd_no_prevdir(t_master *master, t_shellvar *env, char *now_pwd)
-{
-	t_shellvar	*pwd_pos;
-	char		*old_pwd;
-
-	pwd_pos = ms_search_key(env, "PWD");
-	if (pwd_pos == NULL)
-		return (MS_BLT_SUCC);
-	old_pwd = ft_strdup(pwd_pos->value);
-	if (old_pwd == NULL)
-	{
-		ms_perror("malloc");
-		return (MS_BLT_FAIL);
-	}
-	return (blt_cd_update(master, env, now_pwd));
 }

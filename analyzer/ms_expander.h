@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:38:23 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/22 21:40:55 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 01:51:43 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,18 +107,15 @@ t_redir		*ms_expand_a_redir(t_ex_state *state, t_redir *redir);
 t_stree		*ms_expand_stree(t_ex_state *state, t_stree *stree);
 
 void		ex_add_token_csr(t_ex_part_cursor *cursor, t_ex_token *ext);
-t_ex_token	*ex_pop_src_token_csr(t_ex_part_cursor *cursor);
 
 void		ms_ex_init_state(t_ex_state *state, t_master *master);
 t_ex_token	*ex_shell_param(t_ex_state *state, t_stree *stree);
 t_ex_token	*ex_split(t_ex_state *state, t_ex_token *token);
 t_ex_token	*ex_fx(t_ex_state *state, t_ex_token *token);
-t_ex_token	*ex_filename(t_ex_state *state, t_ex_token *ext);
 t_stree		*ex_join(t_ex_state *state, t_ex_token *ext);
 t_ex_token	*ex_push_back_token(t_ex_state *state,
 				t_ex_unit_cursor *cursor, const char *given_str);
 
-char		*ex_lstcat(t_ex_token *ext);
 void		ex_init_cursor_mid(t_ex_unit_cursor *cursor, t_ex_token *ext);
 
 void		ex_ll_unit(t_ex_state *state, t_ex_unit_cursor *csr);

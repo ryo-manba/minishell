@@ -6,20 +6,11 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 18:00:05 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 21:19:09 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 01:52:40 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
-
-int	blt_check_escape(char *s)
-{
-	if (ft_strlen(s) == 2 && ft_strcmp(s, "\\n") == 0)
-		return (1);
-	if (ft_strlen(s) == 1 && ft_strchr_i("\"'`$\\", s[0]) != -1)
-		return (1);
-	return (0);
-}
 
 void	blt_putstr_with_escaping(char *str)
 {
