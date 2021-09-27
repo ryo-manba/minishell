@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/04 13:23:15 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/27 11:14:13 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/28 03:00:55 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	ex_push_back_divider_if_needed(t_ex_state *state, t_ex_unit_cursor *csr,
 
 	if (state->failed)
 		return (MS_AZ_FAIL);
-	if (!csr->p.tail)
+	if (!csr->p.tail || !token)
 		return (MS_AZ_SUCC);
 	divider = (t_ex_token *)ft_calloc(1, sizeof(t_ex_token));
 	if (!divider)
