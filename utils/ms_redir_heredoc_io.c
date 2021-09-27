@@ -6,13 +6,11 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:16:33 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 11:37:03 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/27 12:13:58 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
-
-volatile sig_atomic_t	g_ex_states;
 
 static int	ms_heredoc_read(t_list **lst, char *delimiter)
 {

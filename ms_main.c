@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ms_main.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 13:38:28 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/26 17:09:46 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/27 12:15:23 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+volatile sig_atomic_t	g_ex_states;
 
 void	ms_sigint_handler(int sig)
 {
