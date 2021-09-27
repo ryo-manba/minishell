@@ -36,6 +36,8 @@ INC				:= -L$(RL_PATH)/lib -I$(RL_PATH)/include
 
 all				: $(NAME)
 
+bonus			: $(NAME)
+
 $(NAME): $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
 	$(CC) $(CFLAGS) $(INC) $(LFLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(ANALYZER) $(UTILS) $(BLTIN)
 $(LIBFT)	:
