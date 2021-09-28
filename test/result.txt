@@ -1,23 +1,24 @@
-[ OK ] Mon, 27 Sep 2021 21:57:44 +0900	tokenize_basic
-[ OK ] Mon, 27 Sep 2021 21:57:44 +0900	wildcard
-[ OK ] Mon, 27 Sep 2021 21:57:44 +0900	unclosed_quote
-[ OK ] Mon, 27 Sep 2021 21:57:44 +0900	subshell_basic
-[ OK ] Mon, 27 Sep 2021 21:57:44 +0900	subshell_pipe
-[FAIL] Mon, 27 Sep 2021 21:57:44 +0900	subshell_fork
-[ OK ] Mon, 27 Sep 2021 21:57:44 +0900	semicolon
-[ OK ] Mon, 27 Sep 2021 21:57:45 +0900	andor
-[ OK ] Mon, 27 Sep 2021 21:57:45 +0900	ln_in_error_file
-[ OK ] Mon, 27 Sep 2021 21:57:45 +0900	ln_in_error_stdin
-[ OK ] Mon, 27 Sep 2021 21:57:45 +0900	ln_in_error_c
-[ OK ] Mon, 27 Sep 2021 21:57:45 +0900	dollar_question
-[ OK ] Mon, 27 Sep 2021 21:57:45 +0900	exit_arg
-[FAIL] Mon, 27 Sep 2021 21:57:45 +0900	redir
-[ OK ] Mon, 27 Sep 2021 21:57:46 +0900	get_path
-[ OK ] Mon, 27 Sep 2021 21:57:46 +0900	echo
-[ OK ] Mon, 27 Sep 2021 21:57:46 +0900	pipe
-[ OK ] Mon, 27 Sep 2021 21:57:46 +0900	pwd
-[ OK ] Mon, 27 Sep 2021 21:57:46 +0900	export
-[FAIL] Mon, 27 Sep 2021 21:57:47 +0900	export_export
-[ OK ] Mon, 27 Sep 2021 21:57:47 +0900	cd
-[ OK ] Mon, 27 Sep 2021 21:57:47 +0900	unset
-[ OK ] Mon, 27 Sep 2021 21:57:47 +0900	env
+[ OK ] Tue, 28 Sep 2021 03:06:00 +0900	tokenize_basic
+[ OK ] Tue, 28 Sep 2021 03:06:00 +0900	wildcard
+[ OK ] Tue, 28 Sep 2021 03:06:00 +0900	unclosed_quote
+[ OK ] Tue, 28 Sep 2021 03:06:00 +0900	subshell_basic
+[ OK ] Tue, 28 Sep 2021 03:06:01 +0900	subshell_pipe
+[ OK ] Tue, 28 Sep 2021 03:06:01 +0900	subshell_fork
+[ OK ] Tue, 28 Sep 2021 03:06:01 +0900	semicolon
+[ OK ] Tue, 28 Sep 2021 03:06:01 +0900	andor
+[ OK ] Tue, 28 Sep 2021 03:06:01 +0900	ln_in_error_file
+[ OK ] Tue, 28 Sep 2021 03:06:01 +0900	ln_in_error_stdin
+[ OK ] Tue, 28 Sep 2021 03:06:01 +0900	ln_in_error_c
+[ OK ] Tue, 28 Sep 2021 03:06:01 +0900	dollar_question
+[ OK ] Tue, 28 Sep 2021 03:06:01 +0900	exit_arg
+[FAIL] Tue, 28 Sep 2021 03:06:02 +0900	redir
+[ OK ] Tue, 28 Sep 2021 03:06:02 +0900	get_path
+[ OK ] Tue, 28 Sep 2021 03:06:02 +0900	echo
+[ OK ] Tue, 28 Sep 2021 03:06:02 +0900	pipe
+[ OK ] Tue, 28 Sep 2021 03:06:02 +0900	pwd
+[ OK ] Tue, 28 Sep 2021 03:06:02 +0900	export
+[FAIL] Tue, 28 Sep 2021 03:06:02 +0900	export_export
+[ OK ] Tue, 28 Sep 2021 03:06:02 +0900	cd
+[ OK ] Tue, 28 Sep 2021 03:06:02 +0900	unset
+[ OK ] Tue, 28 Sep 2021 03:06:02 +0900	env
+[ OK ] Tue, 28 Sep 2021 03:06:04 +0900	extreme

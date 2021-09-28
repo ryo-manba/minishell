@@ -33,3 +33,5 @@ export | grep -v _= | grep -v EX=
 export com="echo"
 $com b="a"$c'b'
 export | grep -v _= | grep -v EX=
+export str="   a  bb  ccc   "
+echo $str$str$str
