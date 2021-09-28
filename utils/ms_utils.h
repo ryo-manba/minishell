@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 11:44:10 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/28 20:54:36 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ char	**exec_restore_env(t_shellvar *var);
 void	exec_run_cmd_exit(t_master *master, t_stree *expanded, t_shellvar *var);
 
 /* exec_simple_cmd */
-int		exec_subshell(t_clause *clause, t_master *master, t_ex_state *es);
+int		exec_subshell(t_clause *clause, t_master *master,
+			t_ex_state *es, int backup_fd[3]);
 int		exec_simple_command(
 			t_clause *clause, t_master *master, t_ex_state *state);
 

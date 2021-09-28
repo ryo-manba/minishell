@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 11:03:09 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/28 20:54:21 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,6 @@ static void	exec_pipe_child(
 	t_stree	*expanded;
 
 	ms_do_piping(clause, dpipe->new, dpipe->before);
-	if (clause->stree && clause->stree->subshell)
-	{
-		exec_subshell(clause, master, es);
-		exit(g_ex_states);
-	}
 	es->no_split = !!ms_is_special_builtin(clause->stree);
 	expanded = ms_expand_stree(es, clause->stree);
 	es->no_split = 0;
@@ -47,6 +42,11 @@ static void	exec_pipe_child(
 	g_ex_states = exec_expand_redirect(es->master, clause);
 	if (g_ex_states != MS_BLT_SUCC || !expanded)
 		exit(g_ex_states);
+	if (clause->stree && clause->stree->subshell)
+	{
+		exec_subshell(clause, master, es, NULL);
+		exit(g_ex_states);
+	}
 	if (ms_is_builtin(expanded))
 		exit(ms_exec_builtin(expanded, es->master));
 	else

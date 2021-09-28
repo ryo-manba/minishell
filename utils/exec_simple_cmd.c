@@ -6,13 +6,14 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 21:52:02 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/28 21:08:33 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-int	exec_subshell(t_clause *clause, t_master *master, t_ex_state *es)
+int	exec_subshell(t_clause *clause,
+	t_master *master, t_ex_state *es, int backup_fd[3])
 {
 	pid_t	pid;
 
@@ -29,6 +30,8 @@ int	exec_subshell(t_clause *clause, t_master *master, t_ex_state *es)
 	}
 	else
 		exec_update_exitstatus(pid);
+	if (backup_fd)
+		exec_duplicate_backup_fd(backup_fd);
 	return (g_ex_states);
 }
 
@@ -87,8 +90,6 @@ int	exec_simple_command(t_clause *clause, t_master *master, t_ex_state *es)
 	int		backup_fd[3];
 	t_stree	*expanded;
 
-	if (clause->stree && clause->stree->subshell)
-		return (exec_subshell(clause, master, es));
 	es->no_split = !!ms_is_special_builtin(clause->stree);
 	expanded = ms_expand_stree(es, clause->stree);
 	es->no_split = 0;
@@ -102,6 +103,8 @@ int	exec_simple_command(t_clause *clause, t_master *master, t_ex_state *es)
 		exec_duplicate_backup_fd(backup_fd);
 		return (exec_out(MS_EXEC_FAIL, expanded));
 	}
+	if (clause->stree && clause->stree->subshell)
+		return (exec_subshell(clause, master, es, backup_fd));
 	if (ms_is_builtin(expanded))
 		g_ex_states = ms_exec_builtin(expanded, es->master);
 	else
