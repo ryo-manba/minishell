@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 11:01:20 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/28 22:44:32 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,48 +29,64 @@ void	exec_update_exitstatus(pid_t pid)
 		g_ex_states = WEXITSTATUS(status);
 }
 
-static void	ms_close_heredoc_fd(t_clause *cl)
+static void	ms_close_heredoc_fd(t_pipeline *pl)
 {
+	t_pipeline	*tmp_pl;
 	t_clause	*tmp_cl;
 	t_redir		*tmp_rd;
 
-	tmp_cl = cl;
-	while (tmp_cl)
+	tmp_pl = pl;
+	while (tmp_pl)
 	{
-		tmp_rd = tmp_cl->redir;
-		while (tmp_rd)
+		tmp_cl = tmp_pl->clause;
+		while (tmp_cl)
 		{
-			if (tmp_rd->heredoc_fd != 0)
+			tmp_rd = tmp_cl->redir;
+			while (tmp_rd)
 			{
-				if (close(tmp_rd->heredoc_fd) == -1)
-					ms_perror("close");
+				if (tmp_rd->heredoc_fd != 0)
+				{
+					if (close(tmp_rd->heredoc_fd) == -1)
+						ms_perror("close");
+				}
+				tmp_rd = tmp_rd->next;
 			}
-			tmp_rd = tmp_rd->next;
+			tmp_cl = tmp_cl->next;
 		}
-		tmp_cl = tmp_cl->next;
+		tmp_pl = tmp_pl->next;
 	}
+}
+
+int	ms_pipeline_check(t_pipeline *pl)
+{
+	if ((pl->joint == TI_ANDAND && g_ex_states == 0) || \
+		(pl->joint == TI_PIPEPIPE && g_ex_states != 0) || \
+		pl->joint == TI_SEMICOLON)
+		return (1);
+	return (0);
 }
 
 int	ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state)
 {
 	if (pl == NULL)
 		return (0);
-	if (ms_heredoc(&pl->clause, state))
+	if (ms_heredoc(pl, state))
 	{
-		ms_close_heredoc_fd(pl->clause);
+		ms_close_heredoc_fd(pl);
 		return (1);
 	}
 	if (pl->clause->next != NULL)
 		exec_pipe_command(pl, master, state);
 	else
 		g_ex_states = exec_simple_command(pl->clause, master, state);
-	if ((pl->joint == TI_ANDAND && g_ex_states == 0) || \
-		(pl->joint == TI_PIPEPIPE && g_ex_states != 0) || \
-		pl->joint == TI_SEMICOLON)
+	while (pl && !ms_pipeline_check(pl))
+		pl = pl->next;
+	if (pl && ms_pipeline_check(pl))
 	{
 		if (!master->exited)
 			ms_executer(pl->next, master, state);
 	}
-	ms_close_heredoc_fd(pl->clause);
+	if (pl)
+		ms_close_heredoc_fd(pl);
 	return (0);
 }

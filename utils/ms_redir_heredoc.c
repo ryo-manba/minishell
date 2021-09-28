@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 11:37:57 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/28 22:44:54 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,20 +100,25 @@ static int	ms_heredoc_loop(t_redir **rd, t_ex_state *es)
 	return (ret);
 }
 
-int	ms_heredoc(t_clause **cl, t_ex_state *es)
+int	ms_heredoc(t_pipeline *pl, t_ex_state *es)
 {
-	t_clause	*head_cl;
+	t_pipeline	*tmp_pl;
+	t_clause	*tmp_cl;
 	t_redir		*head_rd;
 
-	head_cl = *cl;
-	while (*cl)
+	tmp_pl = pl;
+	while (tmp_pl)
 	{
-		head_rd = (*cl)->redir;
-		if (ms_heredoc_loop(&(*cl)->redir, es))
-			return (1);
-		(*cl)->redir = head_rd;
-		(*cl) = (*cl)->next;
+		tmp_cl = tmp_pl->clause;
+		while (tmp_cl)
+		{
+			head_rd = tmp_cl->redir;
+			if (ms_heredoc_loop(&tmp_cl->redir, es))
+				return (1);
+			tmp_cl->redir = head_rd;
+			tmp_cl = tmp_cl->next;
+		}
+		tmp_pl = tmp_pl->next;
 	}
-	*cl = head_cl;
 	return (0);
 }
