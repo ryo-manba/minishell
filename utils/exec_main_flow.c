@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/28 22:44:32 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/28 23:20:05 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static void	ms_close_heredoc_fd(t_pipeline *pl)
 		tmp_cl = tmp_pl->clause;
 		while (tmp_cl)
 		{
+			if (tmp_cl->stree)
+				ms_close_heredoc_fd(tmp_cl->stree->subshell);
 			tmp_rd = tmp_cl->redir;
 			while (tmp_rd)
 			{
@@ -66,15 +68,21 @@ int	ms_pipeline_check(t_pipeline *pl)
 	return (0);
 }
 
-int	ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state)
+int	ms_executer_wrapper(t_pipeline *pl, t_master *master, t_ex_state *state)
 {
-	if (pl == NULL)
-		return (0);
 	if (ms_heredoc(pl, state))
 	{
 		ms_close_heredoc_fd(pl);
 		return (1);
 	}
+	ms_executer(pl, master, state);
+	return (0);
+}
+
+int	ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state)
+{
+	if (pl == NULL)
+		return (0);
 	if (pl->clause->next != NULL)
 		exec_pipe_command(pl, master, state);
 	else

@@ -1,0 +1,145 @@
+Target process is using Address Sanitizer so not generating corpse for better performance.
+2021-09-23 23:12:09.507 leaks[29916:5560223] *** Symbolication: analysis tool cannot dlopen /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.5/lib/darwin/libclang_rt.asan_osx_dynamic.dylib, so cannot introspect target process's malloc zone named asan_0x1069f5ce0.
+
+2021-09-23 23:12:09.508 leaks[29916:5560223] *** Symbolication:  no introspect structure for malloc zone asan_0x1069f5ce0
+2021-09-23 23:12:09.670 leaks[29916:5560223] *** Symbolication:  no introspect structure for malloc zone asan_0x1069f5ce0
+Process:         minishell [29907]
+Path:            /Users/USER/Desktop/*/minishell
+Load Address:    0x105c32000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Platform:        macOS
+Parent Process:  minishell [29904]
+
+Date/Time:       2021-09-23 23:12:09.206 +0900
+Launch Time:     2021-09-23 23:12:08.045 +0900
+OS Version:      macOS 11.5.2 (20G95)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.5.1 (12E507)
+
+Physical footprint:         736K
+Physical footprint (peak):  736K
+----
+
+leaks Report Version: 4.0
+Process 29907: 2 nodes malloced for 1 KB
+Process 29907: 0 leaks for 0 total leaked bytes.
+
+Target process is using Address Sanitizer so not generating corpse for better performance.
+2021-09-23 23:12:32.159 leaks[29938:5560389] *** Symbolication: analysis tool cannot dlopen /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.5/lib/darwin/libclang_rt.asan_osx_dynamic.dylib, so cannot introspect target process's malloc zone named asan_0x1069f5ce0.
+
+2021-09-23 23:12:32.159 leaks[29938:5560389] *** Symbolication:  no introspect structure for malloc zone asan_0x1069f5ce0
+2021-09-23 23:12:32.318 leaks[29938:5560389] *** Symbolication:  no introspect structure for malloc zone asan_0x1069f5ce0
+Process:         minishell [29904]
+Path:            /Users/USER/Desktop/*/minishell
+Load Address:    0x105c32000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Platform:        macOS
+Parent Process:  zsh [17229]
+
+Date/Time:       2021-09-23 23:12:31.870 +0900
+Launch Time:     2021-09-23 23:12:04.407 +0900
+OS Version:      macOS 11.5.2 (20G95)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.5.1 (12E507)
+
+Physical footprint:         5048K
+Physical footprint (peak):  5048K
+----
+
+leaks Report Version: 4.0
+Process 29904: 2 nodes malloced for 1 KB
+Process 29904: 0 leaks for 0 total leaked bytes.
+
+Target process is using Address Sanitizer so not generating corpse for better performance.
+2021-09-23 23:17:19.523 leaks[30264:5563798] *** Symbolication: analysis tool cannot dlopen /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.5/lib/darwin/libclang_rt.asan_osx_dynamic.dylib, so cannot introspect target process's malloc zone named asan_0x1016efce0.
+
+2021-09-23 23:17:19.523 leaks[30264:5563798] *** Symbolication:  no introspect structure for malloc zone asan_0x1016efce0
+2021-09-23 23:17:19.730 leaks[30264:5563798] *** Symbolication:  no introspect structure for malloc zone asan_0x1016efce0
+Process:         minishell [30261]
+Path:            /Users/USER/Desktop/*/minishell
+Load Address:    0x10092d000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Platform:        macOS
+Parent Process:  zsh [17229]
+
+Date/Time:       2021-09-23 23:17:19.171 +0900
+Launch Time:     2021-09-23 23:17:17.154 +0900
+OS Version:      macOS 11.5.2 (20G95)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.5.1 (12E507)
+
+Physical footprint:         4768K
+Physical footprint (peak):  4768K
+----
+
+leaks Report Version: 4.0
+Process 30261: 2 nodes malloced for 1 KB
+Process 30261: 0 leaks for 0 total leaked bytes.
+
+Target process is using Address Sanitizer so not generating corpse for better performance.
+2021-09-23 23:21:56.739 leaks[30857:5568571] *** Symbolication: analysis tool cannot dlopen /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.5/lib/darwin/libclang_rt.asan_osx_dynamic.dylib, so cannot introspect target process's malloc zone named asan_0x108012ce0.
+
+2021-09-23 23:21:56.739 leaks[30857:5568571] *** Symbolication:  no introspect structure for malloc zone asan_0x108012ce0
+2021-09-23 23:21:56.902 leaks[30857:5568571] *** Symbolication:  no introspect structure for malloc zone asan_0x108012ce0
+Process:         minishell [30851]
+Path:            /Users/USER/Desktop/*/minishell
+Load Address:    0x10724d000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Platform:        macOS
+Parent Process:  minishell [30390]
+
+Date/Time:       2021-09-23 23:21:56.454 +0900
+Launch Time:     2021-09-23 23:21:55.471 +0900
+OS Version:      macOS 11.5.2 (20G95)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.5.1 (12E507)
+
+Physical footprint:         748K
+Physical footprint (peak):  748K
+----
+
+leaks Report Version: 4.0
+Process 30851: 2 nodes malloced for 1 KB
+Process 30851: 0 leaks for 0 total leaked bytes.
+
+Target process is using Address Sanitizer so not generating corpse for better performance.
+2021-09-23 23:54:52.000 leaks[31579:5586464] *** Symbolication: analysis tool cannot dlopen /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.5/lib/darwin/libclang_rt.asan_osx_dynamic.dylib, so cannot introspect target process's malloc zone named asan_0x109560ce0.
+
+2021-09-23 23:54:52.000 leaks[31579:5586464] *** Symbolication:  no introspect structure for malloc zone asan_0x109560ce0
+2021-09-23 23:54:52.159 leaks[31579:5586464] *** Symbolication:  no introspect structure for malloc zone asan_0x109560ce0
+Process:         minishell [31573]
+Path:            /Users/USER/Desktop/*/minishell
+Load Address:    0x10879f000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Platform:        macOS
+Parent Process:  zsh [17229]
+
+Date/Time:       2021-09-23 23:54:51.698 +0900
+Launch Time:     2021-09-23 23:54:44.374 +0900
+OS Version:      macOS 11.5.2 (20G95)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.5.1 (12E507)
+
+Physical footprint:         4892K
+Physical footprint (peak):  4892K
+----
+
+leaks Report Version: 4.0
+Process 31573: 2 nodes malloced for 1 KB
+Process 31573: 0 leaks for 0 total leaked bytes.
+

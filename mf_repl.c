@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mf_repl.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 17:07:08 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/27 11:13:08 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/28 23:05:36 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int	mf_execute(t_master *master, t_pipeline *pipeline)
 	t_ex_state	es;
 
 	ms_ex_init_state(&es, master);
-	ms_executer(pipeline, master, &es);
+	ms_executer_wrapper(pipeline, master, &es);
 	return (g_ex_states);
 }
 

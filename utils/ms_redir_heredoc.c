@@ -6,19 +6,19 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/28 22:44:54 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/28 23:16:26 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-static int	ms_heredoc_child(t_redir **rd, t_ex_state *es, int pipefd[2])
+static int	ms_heredoc_child(t_redir *rd, t_ex_state *es, int pipefd[2])
 {
 	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
 		ms_perror_exit("signal");
 	if (close(pipefd[0]) == -1)
 		ms_perror_exit("close");
-	if (ms_heredoc_read_write(es, rd, pipefd[1]))
+	if (ms_heredoc_read_write(es, &rd, pipefd[1]))
 	{
 		if (close(pipefd[1]) == -1)
 			ms_perror_exit("close");
@@ -27,11 +27,11 @@ static int	ms_heredoc_child(t_redir **rd, t_ex_state *es, int pipefd[2])
 	exit(0);
 }
 
-static int	ms_heredoc_parent(t_redir **rd, int pipefd[2])
+static int	ms_heredoc_parent(t_redir *rd, int pipefd[2])
 {
 	int	status;
 
-	(*rd)->heredoc_fd = pipefd[0];
+	rd->heredoc_fd = pipefd[0];
 	if (close(pipefd[1]) == -1)
 		ms_perror("close");
 	wait(&status);
@@ -50,7 +50,7 @@ static int	ms_heredoc_parent(t_redir **rd, int pipefd[2])
 	return (0);
 }
 
-static int	ms_heredoc_rd(t_redir **rd, t_ex_state *es)
+static int	ms_heredoc_rd(t_redir *rd, t_ex_state *es)
 {
 	pid_t	pid;
 	int		pipefd[2];
@@ -78,14 +78,14 @@ static int	ms_heredoc_rd(t_redir **rd, t_ex_state *es)
 	return (0);
 }
 
-static int	ms_heredoc_loop(t_redir **rd, t_ex_state *es)
+static int	ms_heredoc_loop(t_redir *rd, t_ex_state *es)
 {
 	int		ret;
 
 	ret = 0;
-	while (*rd)
+	while (rd)
 	{
-		if ((*rd)->redir_op == TI_LTLT)
+		if (rd->redir_op == TI_LTLT)
 		{
 			if (ms_heredoc_rd(rd, es))
 			{
@@ -93,7 +93,7 @@ static int	ms_heredoc_loop(t_redir **rd, t_ex_state *es)
 				break ;
 			}
 		}
-		*rd = (*rd)->next;
+		rd = rd->next;
 	}
 	if (signal(SIGINT, ms_sigint_handler) == SIG_ERR)
 		ms_perror("signal");
@@ -113,7 +113,9 @@ int	ms_heredoc(t_pipeline *pl, t_ex_state *es)
 		while (tmp_cl)
 		{
 			head_rd = tmp_cl->redir;
-			if (ms_heredoc_loop(&tmp_cl->redir, es))
+			if (ms_heredoc_loop(tmp_cl->redir, es))
+				return (1);
+			if (tmp_cl->stree && ms_heredoc(tmp_cl->stree->subshell, es))
 				return (1);
 			tmp_cl->redir = head_rd;
 			tmp_cl = tmp_cl->next;

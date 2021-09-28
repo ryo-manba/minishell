@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+         #
+#    By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:59:59 by rmatsuka          #+#    #+#              #
-#    Updated: 2021/09/23 20:48:36 by yokawada         ###   ########.fr        #
+#    Updated: 2021/09/26 22:11:27 by rmatsuka         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,7 +68,7 @@ OBJS	=	$(SRCS:.c=.o)
 RM		=	rm -f
 LIBC	=	ar rcs
 CC		= 	gcc
-CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	=	-g -Wall -Wextra -Werror
 NORM		:= python3 -m norminette
 
 all:		$(NAME)

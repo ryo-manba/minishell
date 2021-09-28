@@ -1,0 +1,87 @@
+Target process is using Address Sanitizer so not generating corpse for better performance.
+2021-09-24 21:50:15.764 leaks[79184:6010879] *** Symbolication: analysis tool cannot dlopen /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.5/lib/darwin/libclang_rt.asan_osx_dynamic.dylib, so cannot introspect target process's malloc zone named asan_0x10b9e3ce0.
+
+2021-09-24 21:50:15.764 leaks[79184:6010879] *** Symbolication:  no introspect structure for malloc zone asan_0x10b9e3ce0
+2021-09-24 21:50:15.930 leaks[79184:6010879] *** Symbolication:  no introspect structure for malloc zone asan_0x10b9e3ce0
+Process:         minishell [79180]
+Path:            /Users/USER/Desktop/*/minishell
+Load Address:    0x10ac0c000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Platform:        macOS
+Parent Process:  minishell [79174]
+
+Date/Time:       2021-09-24 21:50:15.465 +0900
+Launch Time:     2021-09-24 21:50:14.393 +0900
+OS Version:      macOS 11.5.2 (20G95)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.5.1 (12E507)
+
+Physical footprint:         744K
+Physical footprint (peak):  744K
+----
+
+leaks Report Version: 4.0
+Process 79180: 2 nodes malloced for 1 KB
+Process 79180: 0 leaks for 0 total leaked bytes.
+
+Target process is using Address Sanitizer so not generating corpse for better performance.
+2021-09-24 21:51:01.850 leaks[79255:6011686] *** Symbolication: analysis tool cannot dlopen /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.5/lib/darwin/libclang_rt.asan_osx_dynamic.dylib, so cannot introspect target process's malloc zone named asan_0x10260ace0.
+
+2021-09-24 21:51:01.850 leaks[79255:6011686] *** Symbolication:  no introspect structure for malloc zone asan_0x10260ace0
+2021-09-24 21:51:02.015 leaks[79255:6011686] *** Symbolication:  no introspect structure for malloc zone asan_0x10260ace0
+Process:         minishell [79251]
+Path:            /Users/USER/Desktop/*/minishell
+Load Address:    0x10183e000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Platform:        macOS
+Parent Process:  minishell [79250]
+
+Date/Time:       2021-09-24 21:51:01.552 +0900
+Launch Time:     2021-09-24 21:51:00.567 +0900
+OS Version:      macOS 11.5.2 (20G95)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.5.1 (12E507)
+
+Physical footprint:         744K
+Physical footprint (peak):  744K
+----
+
+leaks Report Version: 4.0
+Process 79251: 2 nodes malloced for 1 KB
+Process 79251: 0 leaks for 0 total leaked bytes.
+
+Target process is using Address Sanitizer so not generating corpse for better performance.
+2021-09-24 21:51:03.384 leaks[79260:6011728] *** Symbolication: analysis tool cannot dlopen /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/12.0.5/lib/darwin/libclang_rt.asan_osx_dynamic.dylib, so cannot introspect target process's malloc zone named asan_0x10260ace0.
+
+2021-09-24 21:51:03.384 leaks[79260:6011728] *** Symbolication:  no introspect structure for malloc zone asan_0x10260ace0
+2021-09-24 21:51:03.556 leaks[79260:6011728] *** Symbolication:  no introspect structure for malloc zone asan_0x10260ace0
+Process:         minishell [79250]
+Path:            /Users/USER/Desktop/*/minishell
+Load Address:    0x10183e000
+Identifier:      minishell
+Version:         ???
+Code Type:       X86-64
+Platform:        macOS
+Parent Process:  bash [55607]
+
+Date/Time:       2021-09-24 21:51:03.091 +0900
+Launch Time:     2021-09-24 21:51:00.495 +0900
+OS Version:      macOS 11.5.2 (20G95)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 12.5.1 (12E507)
+
+Physical footprint:         3316K
+Physical footprint (peak):  3316K
+----
+
+leaks Report Version: 4.0
+Process 79250: 2 nodes malloced for 1 KB
+Process 79250: 0 leaks for 0 total leaked bytes.
+
