@@ -1,0 +1,15 @@
+(xxxx) || (ls)
+(xxxx || ls)
+(ls) && (xxxx)
+(ls && xxxx)
+(xxxx || pwd && ls)
+(pwd && ls || cat)
+(xxxx && pwd || ls)
+pwd && (cd ..) && pwd
+pwd && (cd .. && pwd)
+pwd && (cd .. && pwd && cd ../../ && pwd)
+(pwd && xxxx || cd .. && pwd)
+(xxxx || pwd && ls)
+(echo hello | cat) && ls
+(ls | cat) || (ls && pwd)
+(ls || cat) && (pwd) || (ls)

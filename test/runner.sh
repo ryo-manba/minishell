@@ -113,6 +113,10 @@ run_case			unclosed_quote
 run_case_bash_file	subshell_basic
 run_case_bash_file	subshell_pipe
 run_case_bash_file	subshell_fork
+run_case_bash_file 	subshell_export
+run_case_bash_file	subshell_and_or
+run_case_bash_file	subshell_redir
+run_case_bash_file	subshell_single_unit.sh
 run_case_bash_file	semicolon
 run_case_bash_file	andor
 run_case_bash_file	ln_in_error_file
