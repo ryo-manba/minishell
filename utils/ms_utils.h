@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/29 00:50:46 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/29 22:34:05 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int		ms_check_fd_print_error(t_redir *rd, t_master *master);
 
 /* ms_redir_heredoc_io */
 int		ms_heredoc_read_write(t_ex_state *es, t_redir **redir, int write_fd);
+int		ms_redir_is_heredoc(t_redir *redir);
 
 /* ms_redir_heredoc */
 int		ms_heredoc(t_pipeline *pl, t_ex_state *es);

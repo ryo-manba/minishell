@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/28 23:16:26 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/29 22:58:59 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,17 +81,22 @@ static int	ms_heredoc_rd(t_redir *rd, t_ex_state *es)
 static int	ms_heredoc_loop(t_redir *rd, t_ex_state *es)
 {
 	int		ret;
+	t_redir	*expanded;
 
 	ret = 0;
 	while (rd)
 	{
-		if (rd->redir_op == TI_LTLT)
+		if (ms_redir_is_heredoc(rd))
 		{
-			if (ms_heredoc_rd(rd, es))
+			expanded = ms_expand_a_redir(es, rd);
+			if (!expanded || ms_heredoc_rd(expanded, es))
 			{
 				ret = 1;
+				pa_destroy_redir(expanded);
 				break ;
 			}
+			rd->heredoc_fd = expanded->heredoc_fd;
+			pa_destroy_redir(expanded);
 		}
 		rd = rd->next;
 	}

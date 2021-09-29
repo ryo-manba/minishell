@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir_heredoc_io.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:16:33 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 12:13:58 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/29 23:15:26 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,16 @@ int	ms_heredoc_read_write(t_ex_state *es, t_redir **redir, int write_fd)
 	}
 	ft_lstclear(&lst, free);
 	return (MS_EXEC_SUCC);
+}
+
+int	ms_redir_is_heredoc(t_redir *redir)
+{
+	if (redir)
+	{
+		if (redir->redir_op == TI_LTLT)
+			return (1);
+		if (redir->redir_op == TI_LTLTHYPHEN)
+			return (1);
+	}
+	return (0);
 }

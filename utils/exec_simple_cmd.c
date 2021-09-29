@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/29 11:32:33 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/29 23:06:54 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	exec_simple_command(t_clause *clause, t_master *master, t_ex_state *es)
 
 	exec_create_backup_fd(backup_fd);
 	es->no_split = !!ms_is_special_builtin(clause->stree);
-	expanded = ms_expand_stree(es, clause->stree);
+	expanded = ms_expand_stree(es, clause->stree, 0);
 	es->no_split = 0;
 	if (!expanded && es->failed == 0 && !clause->redir)
 		return (MS_EXEC_SUCC);

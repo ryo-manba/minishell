@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_expander.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:19:44 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/25 23:36:09 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/29 23:30:16 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ t_redir	*ms_expand_a_redir(t_ex_state *state, t_redir *redir)
 	cloned->redir_op = redir->redir_op;
 	cloned->heredoc_fd = redir->heredoc_fd;
 	make_state_for_redir(state, redir);
-	cloned->operand_right = ms_expand_stree(state, redir->operand_right);
+	cloned->operand_right = ms_expand_stree(state, redir->operand_right,
+			ms_redir_is_heredoc(redir));
 	reverse_state_for_redir(state);
 	if (!state->failed)
-		cloned->operand_left = ms_expand_stree(state, redir->operand_left);
+		cloned->operand_left = ms_expand_stree(state, redir->operand_left, 0);
 	if (state->failed || !cloned->operand_right
 		|| cloned->operand_right->right
 		|| (cloned->operand_left && cloned->operand_left->left))
@@ -69,7 +70,7 @@ t_redir	*ms_expand_a_redir(t_ex_state *state, t_redir *redir)
 	return (cloned);
 }
 
-t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
+t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src, int for_heredoc)
 {
 	t_ex_cursor	cursor;
 	t_ex_token	*res;
@@ -80,9 +81,9 @@ t_stree	*ms_expand_stree(t_ex_state *state, t_stree *src)
 	cursor.src.tail = src;
 	while (!state->failed && cursor.src.tail)
 	{
-		res = ex_shell_param(state, cursor.src.tail);
+		res = ex_shell_param(state, cursor.src.tail, for_heredoc);
 		res = ex_split(state, res);
-		if (cursor.src.tail->token_id != TI_ASSIGNMENT_WORD)
+		if (cursor.src.tail->token_id != TI_ASSIGNMENT_WORD && !for_heredoc)
 			res = ex_fx(state, res);
 		st = ex_join(state, res);
 		concat_stree_cursor(&cursor, st);

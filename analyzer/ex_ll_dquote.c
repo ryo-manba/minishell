@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 21:31:49 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/19 11:44:02 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/29 23:17:05 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ex_strcat_exlist(t_ex_token *head, size_t s)
 	return (joined);
 }
 
-int	ex_ll_trap_dquote(t_ex_state *state, t_ex_unit_cursor *csr)
+int	ex_ll_trap_dquote(t_ex_state *state, t_ex_unit_cursor *csr, int for_heredoc)
 {
 	t_ex_unit_cursor	dcursor;
 	char				*joined;
@@ -42,7 +42,7 @@ int	ex_ll_trap_dquote(t_ex_state *state, t_ex_unit_cursor *csr)
 
 	ex_ll_init_cursor(&dcursor, csr->pa_token_id, csr->str + csr->i, '"');
 	nul_terminated = !dcursor.str[dcursor.n];
-	ex_ll_unit(state, &dcursor);
+	ex_ll_unit(state, &dcursor, for_heredoc);
 	if (state->failed)
 		return (MS_AZ_FAIL);
 	joined = ex_strcat_exlist(dcursor.p.head, 0);
@@ -71,7 +71,7 @@ char	*ex_ll_heredoc_line(t_ex_state *es, char *line)
 	ms_ex_init_state(&hstate, es->master);
 	ex_ll_init_cursor(&cursor, TI_WORD, line, '\0');
 	hstate.ignore_quote = 1;
-	ex_ll_unit(&hstate, &cursor);
+	ex_ll_unit(&hstate, &cursor, 0);
 	if (hstate.failed)
 		return (NULL);
 	joined = ex_strcat_exlist(cursor.p.head, 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/28 20:54:21 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/29 23:06:50 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	exec_pipe_child(
 
 	ms_do_piping(clause, dpipe->new, dpipe->before);
 	es->no_split = !!ms_is_special_builtin(clause->stree);
-	expanded = ms_expand_stree(es, clause->stree);
+	expanded = ms_expand_stree(es, clause->stree, 0);
 	es->no_split = 0;
 	if (!expanded && es->failed == 0 && !clause->redir)
 		exit(0);
