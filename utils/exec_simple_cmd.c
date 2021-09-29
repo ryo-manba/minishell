@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/28 21:08:33 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/29 00:08:02 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,9 +69,6 @@ static int	exec_simple_redir(t_master *master,
 
 	if (clause->redir)
 	{
-		rv = exec_create_backup_fd(backup_fd);
-		if (rv)
-			return (MS_EXEC_FAIL);
 		rv = exec_expand_redirect(master, clause);
 		if (rv)
 		{
@@ -90,6 +87,7 @@ int	exec_simple_command(t_clause *clause, t_master *master, t_ex_state *es)
 	int		backup_fd[3];
 	t_stree	*expanded;
 
+	exec_create_backup_fd(backup_fd);
 	es->no_split = !!ms_is_special_builtin(clause->stree);
 	expanded = ms_expand_stree(es, clause->stree);
 	es->no_split = 0;
