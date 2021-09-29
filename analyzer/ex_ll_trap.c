@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/03 22:14:46 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/16 10:22:22 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/29 23:59:17 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int	ex_ll_trap_bare(t_ex_state *state, t_ex_unit_cursor *csr)
 	char	c;
 
 	c = csr->str[csr->i];
-	if ((c == '\'' && !csr->quote)
-		|| c == '"'
+	if ((c == '\'' && !csr->quote && !state->ignore_quote)
+		|| (c == '"' && !state->ignore_quote)
 		|| (!state->no_param && c == '$')
 		|| !c)
 	{
