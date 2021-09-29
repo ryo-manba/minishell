@@ -6,34 +6,32 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/28 23:20:05 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/29 00:50:07 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-void	exec_update_exitstatus(pid_t pid)
+static void	ms_close_loop(t_redir *rd)
 {
-	int	status;
+	t_redir	*tmp_rd;
 
-	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status))
+	tmp_rd = rd;
+	while (tmp_rd)
 	{
-		if (WTERMSIG(status) == SIGQUIT)
-			ft_putendl_fd("Quit: 3", STDERR_FILENO);
-		else if (WTERMSIG(status) == SIGINT)
-			ft_putchar_fd('\n', STDERR_FILENO);
-		g_ex_states = WTERMSIG(status) + 128;
+		if (tmp_rd->heredoc_fd != 0)
+		{
+			if (close(tmp_rd->heredoc_fd) == -1)
+				ms_perror("close");
+		}
+		tmp_rd = tmp_rd->next;
 	}
-	else
-		g_ex_states = WEXITSTATUS(status);
 }
 
 static void	ms_close_heredoc_fd(t_pipeline *pl)
 {
 	t_pipeline	*tmp_pl;
 	t_clause	*tmp_cl;
-	t_redir		*tmp_rd;
 
 	tmp_pl = pl;
 	while (tmp_pl)
@@ -43,16 +41,7 @@ static void	ms_close_heredoc_fd(t_pipeline *pl)
 		{
 			if (tmp_cl->stree)
 				ms_close_heredoc_fd(tmp_cl->stree->subshell);
-			tmp_rd = tmp_cl->redir;
-			while (tmp_rd)
-			{
-				if (tmp_rd->heredoc_fd != 0)
-				{
-					if (close(tmp_rd->heredoc_fd) == -1)
-						ms_perror("close");
-				}
-				tmp_rd = tmp_rd->next;
-			}
+			ms_close_loop(tmp_cl->redir);
 			tmp_cl = tmp_cl->next;
 		}
 		tmp_pl = tmp_pl->next;

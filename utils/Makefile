@@ -11,6 +11,7 @@ SRCS		:=	exec_error.c \
 				exec_pipe_cmd.c \
 				exec_restore_env.c \
 				exec_simple_cmd.c \
+				exec_update_exitstatus.c \
 				exec_utils.c \
 				exec_run.c \
 				ms_pipe.c \

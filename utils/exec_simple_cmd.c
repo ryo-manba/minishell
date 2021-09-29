@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/29 00:08:02 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/29 11:32:33 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,7 @@ int	exec_simple_command(t_clause *clause, t_master *master, t_ex_state *es)
 		return (MS_EXEC_SUCC);
 	if (!expanded && es->failed)
 		return (MS_EXEC_FAIL);
-	if (exec_simple_redir(
-			es->master, clause, backup_fd) == MS_EXEC_FAIL)
+	if (exec_simple_redir(es->master, clause, backup_fd))
 	{
 		exec_duplicate_backup_fd(backup_fd);
 		return (exec_out(MS_EXEC_FAIL, expanded));

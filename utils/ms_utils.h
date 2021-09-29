@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/28 23:07:25 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/29 00:50:46 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*exec_get_path(char *cmd, t_shellvar *var);
 /* exec_main_flow */
 void	exec_update_exitstatus(pid_t pid);
 int		ms_executer_wrapper(
-		t_pipeline *pl, t_master *master, t_ex_state *state);
+			t_pipeline *pl, t_master *master, t_ex_state *state);
 int		ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state);
 
 /* exec_pipe_cmd */
@@ -88,6 +88,9 @@ char	**exec_restore_env(t_shellvar *var);
 
 /* exec_run */
 void	exec_run_cmd_exit(t_master *master, t_stree *expanded, t_shellvar *var);
+
+/* exec_update_exitstatus */
+void	exec_update_exitstatus(pid_t pid);
 
 /* exec_simple_cmd */
 int		exec_subshell(t_clause *clause, t_master *master,
