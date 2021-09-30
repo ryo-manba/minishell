@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 10:58:43 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/30 20:20:18 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	exec_all_free(char **s)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (s[i])
@@ -47,7 +47,7 @@ static char	*exec_create_path(
 	char		*dir;
 	char		*path;
 	char		*err_path;
-	int			i;
+	ssize_t		i;
 
 	i = -1;
 	err_path = NULL;

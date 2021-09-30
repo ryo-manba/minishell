@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:08:43 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 20:57:41 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/30 19:53:45 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int				ft_toupper(int c);
 int				ft_tolower(int c);
 int				ft_memcmp(const void *s1, const void *s2, size_t sz);
 char			*ft_strdup(const char *src);
-char			*ft_substr(char const *s, unsigned int start, size_t len);
+char			*ft_substr(char const *s, size_t start, size_t len);
 char			*ft_substr_range(char const *s,
 					unsigned int start, unsigned int end);
 char			*ft_strchr(const char *s, int c);
