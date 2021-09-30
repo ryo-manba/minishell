@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:38:23 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/30 22:03:59 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/30 22:40:00 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ t_ex_token	*ex_fx(t_ex_state *state, t_ex_token *token);
 t_stree		*ex_join(t_ex_state *state, t_ex_token *ext);
 t_ex_token	*ex_push_back_token(t_ex_state *state,
 				t_ex_unit_cursor *cursor, const char *given_str);
+int			ex_fx_list_is_for_fx(t_ex_token *ext);
 
 void		ex_init_cursor_mid(t_ex_unit_cursor *cursor, t_ex_token *ext);
 
@@ -139,8 +140,6 @@ void		ex_ll_init_cursor(t_ex_unit_cursor *cursor, t_token_id tid,
 int			ex_push_back_divider_if_needed(t_ex_state *state,
 				t_ex_unit_cursor *csr, t_ex_token *token);
 t_ex_token	*ex_fx_dir_ents(t_ex_state *state);
-size_t		ex_fx_expand(t_ex_state *state, t_ex_unit_cursor *cursor,
-				char *pattern, size_t n);
 size_t		ex_fx_expand_lst(t_ex_state *state, t_ex_unit_cursor *cursor,
 				t_ex_token *pattern, size_t n);
 t_ex_token	*ex_clone_and_push_back_token(t_ex_state *state,

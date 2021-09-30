@@ -1,29 +1,30 @@
-[ OK ] Thu, 30 Sep 2021 00:06:58 +0900	tokenize_basic
-[ OK ] Thu, 30 Sep 2021 00:06:58 +0900	wildcard
-[ OK ] Thu, 30 Sep 2021 00:06:58 +0900	unclosed_quote
-[ OK ] Thu, 30 Sep 2021 00:06:58 +0900	subshell_basic
-[ OK ] Thu, 30 Sep 2021 00:06:59 +0900	subshell_pipe
-[ OK ] Thu, 30 Sep 2021 00:06:59 +0900	subshell_fork
-[ OK ] Thu, 30 Sep 2021 00:06:59 +0900	subshell_export
-[ OK ] Thu, 30 Sep 2021 00:06:59 +0900	subshell_and_or
-[ OK ] Thu, 30 Sep 2021 00:07:00 +0900	subshell_redir
-[ OK ] Thu, 30 Sep 2021 00:07:00 +0900	subshell_single_unit.sh
-[ OK ] Thu, 30 Sep 2021 00:07:00 +0900	semicolon
-[ OK ] Thu, 30 Sep 2021 00:07:00 +0900	andor
-[FAIL] Thu, 30 Sep 2021 00:07:04 +0900	expander
-[ OK ] Thu, 30 Sep 2021 00:07:04 +0900	ln_in_error_file
-[ OK ] Thu, 30 Sep 2021 00:07:04 +0900	ln_in_error_stdin
-[ OK ] Thu, 30 Sep 2021 00:07:05 +0900	ln_in_error_c
-[ OK ] Thu, 30 Sep 2021 00:07:05 +0900	dollar_question
-[ OK ] Thu, 30 Sep 2021 00:07:05 +0900	exit_arg
-[FAIL] Thu, 30 Sep 2021 00:07:05 +0900	redir
-[ OK ] Thu, 30 Sep 2021 00:07:05 +0900	get_path
-[ OK ] Thu, 30 Sep 2021 00:07:05 +0900	echo
-[ OK ] Thu, 30 Sep 2021 00:07:05 +0900	pipe
-[ OK ] Thu, 30 Sep 2021 00:07:05 +0900	pwd
-[ OK ] Thu, 30 Sep 2021 00:07:06 +0900	export
-[FAIL] Thu, 30 Sep 2021 00:07:06 +0900	export_export
-[ OK ] Thu, 30 Sep 2021 00:07:06 +0900	cd
-[ OK ] Thu, 30 Sep 2021 00:07:06 +0900	unset
-[ OK ] Thu, 30 Sep 2021 00:07:06 +0900	env
-[ OK ] Thu, 30 Sep 2021 00:07:09 +0900	extreme
+[ OK ] Thu, 30 Sep 2021 22:42:58 +0900	tokenize_basic
+[ OK ] Thu, 30 Sep 2021 22:42:58 +0900	wildcard
+[ OK ] Thu, 30 Sep 2021 22:42:58 +0900	unclosed_quote
+[ OK ] Thu, 30 Sep 2021 22:42:58 +0900	subshell_basic
+[ OK ] Thu, 30 Sep 2021 22:42:59 +0900	subshell_pipe
+[ OK ] Thu, 30 Sep 2021 22:42:59 +0900	subshell_fork
+[ OK ] Thu, 30 Sep 2021 22:42:59 +0900	subshell_export
+[ OK ] Thu, 30 Sep 2021 22:42:59 +0900	subshell_and_or
+[ OK ] Thu, 30 Sep 2021 22:43:00 +0900	subshell_redir
+[ OK ] Thu, 30 Sep 2021 22:43:00 +0900	subshell_single_unit.sh
+[ OK ] Thu, 30 Sep 2021 22:43:00 +0900	semicolon
+[ OK ] Thu, 30 Sep 2021 22:43:00 +0900	andor
+[ OK ] Thu, 30 Sep 2021 22:43:05 +0900	expander
+[ OK ] Thu, 30 Sep 2021 22:43:05 +0900	ln_in_error_file
+[ OK ] Thu, 30 Sep 2021 22:43:05 +0900	ln_in_error_stdin
+[ OK ] Thu, 30 Sep 2021 22:43:05 +0900	ln_in_error_c
+[ OK ] Thu, 30 Sep 2021 22:43:05 +0900	dollar_question
+[ OK ] Thu, 30 Sep 2021 22:43:06 +0900	exit_arg
+[FAIL] Thu, 30 Sep 2021 22:43:06 +0900	redir
+[ OK ] Thu, 30 Sep 2021 22:43:06 +0900	get_path
+[ OK ] Thu, 30 Sep 2021 22:43:06 +0900	echo
+[ OK ] Thu, 30 Sep 2021 22:43:06 +0900	pipe
+[ OK ] Thu, 30 Sep 2021 22:43:06 +0900	pwd
+[ OK ] Thu, 30 Sep 2021 22:43:07 +0900	export
+[ OK ] Thu, 30 Sep 2021 22:43:07 +0900	cd
+[ OK ] Thu, 30 Sep 2021 22:43:07 +0900	unset
+[ OK ] Thu, 30 Sep 2021 22:43:07 +0900	env
+[ OK ] Thu, 30 Sep 2021 22:43:14 +0900	extreme
+[FAIL] Thu, 30 Sep 2021 22:43:14 +0900	fail_expander
+[ OK ] Thu, 30 Sep 2021 22:43:14 +0900	fail_exit

@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 05:54:52 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/30 21:32:10 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/30 22:39:37 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,23 +62,6 @@ size_t	ex_fx_exlist_len(t_ex_token *ext)
 	return (n);
 }
 
-int	ex_fx_list_is_for_fx(t_ex_token *ext)
-{
-	t_ex_token	*temp;
-
-	temp = ext;
-	while (temp && temp->token)
-	{
-		if (temp->token_id != XI_DQUOTED && temp->token_id != XI_SQUOTED)
-		{
-			if (!!ft_strchr((char *)temp->token, '*'))
-				return (1);
-		}
-		temp = temp->right;
-	}
-	return (0);
-}
-
 t_ex_token	*ex_fx_terminate(t_ex_state *state,
 	t_ex_unit_cursor *cursor, t_ex_token *temp)
 {
@@ -102,7 +85,6 @@ t_ex_token	*ex_fx_terminate(t_ex_state *state,
 		cursor->running = temp->token_id;
 		cursor->pa_token_id = temp->pa_token_id;
 		matched_count = ex_fx_expand_lst(state, cursor, temp, mm);
-		// matched_count = ex_fx_expand(state, cursor, joined, ft_strlen(joined));
 	}
 	free(joined);
 	if (!state->failed && matched_count == 0)

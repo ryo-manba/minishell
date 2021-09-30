@@ -15,3 +15,14 @@ chmod a+r .
 echo "*"
 echo '*'
 echo * *
+cd ..
+echo *.c
+echo "*".c
+echo *."c"
+echo *".c"
+echo "*"*
+echo *"*"
+echo ."*"
+echo "."**
+echo ".."*
+

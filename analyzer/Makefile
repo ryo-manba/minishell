@@ -13,7 +13,7 @@ EXPANDER_SRCS	:=	ms_expander.c\
 					ex_ll.c ex_ll_trap.c ex_ll_dquote.c ex_ll_var.c\
 					ex_ll_spvar.c\
 					ex_split.c\
-					ex_fx.c ex_fx_cwd.c ex_fx_match.c\
+					ex_fx.c ex_fx_cwd.c ex_fx_match.c ex_fx_utils.c\
 					ex_join.c\
 					test_parser.c
 

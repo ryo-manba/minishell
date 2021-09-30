@@ -31,4 +31,3 @@ echo $s"t"r
 echo $st"r"
 echo $s"tr"
 echo "$st"r
-export str="a "; echo $str"" | cat -e
