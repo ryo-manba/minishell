@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:54 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/29 00:50:07 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/30 21:24:32 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,12 @@ static void	ms_close_loop(t_redir *rd)
 	while (tmp_rd)
 	{
 		if (tmp_rd->heredoc_fd != 0)
-		{
-			if (close(tmp_rd->heredoc_fd) == -1)
-				ms_perror("close");
-		}
+			close(tmp_rd->heredoc_fd);
 		tmp_rd = tmp_rd->next;
 	}
 }
 
-static void	ms_close_heredoc_fd(t_pipeline *pl)
+void	ms_close_heredoc_fd(t_pipeline *pl)
 {
 	t_pipeline	*tmp_pl;
 	t_clause	*tmp_cl;
@@ -83,7 +80,5 @@ int	ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state)
 		if (!master->exited)
 			ms_executer(pl->next, master, state);
 	}
-	if (pl)
-		ms_close_heredoc_fd(pl);
 	return (0);
 }

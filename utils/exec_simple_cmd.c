@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_simple_cmd.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/29 23:06:54 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/30 21:49:05 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	exec_simple_command(t_clause *clause, t_master *master, t_ex_state *es)
 		g_ex_states = ms_exec_builtin(expanded, es->master);
 	else
 		g_ex_states = exec_ex_cmd(es->master, master->var, expanded);
-	if (clause->redir && exec_duplicate_backup_fd(backup_fd) == 1)
+	if (exec_duplicate_backup_fd(backup_fd) == 1)
 		return (exec_out(MS_EXEC_FAIL, expanded));
 	return (exec_out(g_ex_states, expanded));
 }

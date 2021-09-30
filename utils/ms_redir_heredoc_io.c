@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir_heredoc_io.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 14:16:33 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/29 23:15:26 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/30 20:18:23 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ static int	ms_heredoc_read(t_list **lst, char *delimiter)
 
 static int	ms_heredoc_write(t_ex_state *es, t_list *lst, int quoted, int fd)
 {
-	t_list		*tmp;
-	t_list		*head;
-	char		*expanded;
+	t_list	*tmp;
+	t_list	*head;
+	char	*expanded;
 
 	tmp = lst;
 	head = tmp;

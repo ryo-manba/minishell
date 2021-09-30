@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/09 13:32:51 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 11:36:03 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/30 20:25:18 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ms_redir_print_error(t_master *master, int err, char *s)
 static int	ms_check_fd(char *fd)
 {
 	int64_t	num;
-	int		i;
+	size_t	i;
 
 	if (fd == NULL)
 		return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_builtin.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 17:48:40 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 10:49:49 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/30 20:02:11 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void		blt_lstlast_del(t_list *lst);
 int			blt_cd_no_current(t_master *master, t_shellvar *env, char *arg);
 
 /* blt_cd_normalize_path */
-int			blt_pre_absolute_lst(t_list **lst, char *s);
+size_t		blt_pre_absolute_lst(t_list **lst, char *s);
 char		*blt_cd_has_args(t_master *master, t_stree *tree);
 
 /* blt_cd_normalize_utils */

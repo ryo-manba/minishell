@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/29 22:34:05 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/30 21:22:24 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	exec_update_exitstatus(pid_t pid);
 int		ms_executer_wrapper(
 			t_pipeline *pl, t_master *master, t_ex_state *state);
 int		ms_executer(t_pipeline *pl, t_master *master, t_ex_state *state);
+void	ms_close_heredoc_fd(t_pipeline *pl);
 
 /* exec_pipe_cmd */
 int		exec_pipe_command(t_pipeline *pl, t_master *master, t_ex_state *state);

@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 15:29:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 10:49:40 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/30 20:04:05 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	blt_cd_update(t_master *master, t_shellvar *env, char *pwd)
 {
-	int			flag;
+	int			ret;
 	char		*old_pwd;
 	t_shellvar	*env_pwd_pos;
 
-	flag = 0;
+	ret = 0;
 	free(master->pwd);
 	master->pwd = ft_strdup(pwd);
 	env_pwd_pos = ms_search_key(env, "PWD");
@@ -30,9 +30,9 @@ int	blt_cd_update(t_master *master, t_shellvar *env, char *pwd)
 		return (1);
 	if (blt_append_or_update_env(&env, "OLDPWD", old_pwd, 0) || \
 		blt_append_or_update_env(&env, "PWD", master->pwd, 0))
-		flag = 1;
+		ret = 1;
 	free(old_pwd);
-	return (flag);
+	return (ret);
 }
 
 // If PWD and OLDPWD are unset, do not create a new one.
@@ -40,7 +40,7 @@ int	blt_cd_update_pwd(
 	t_master *master, t_stree *tree, t_shellvar *env, int is_succ)
 {
 	char	*pwd;
-	int		flag;
+	int		ret;
 
 	errno = 0;
 	pwd = getcwd(NULL, 0);
@@ -60,7 +60,7 @@ int	blt_cd_update_pwd(
 				return (MS_BLT_FAIL);
 		}
 	}
-	flag = blt_cd_update(master, env, pwd);
+	ret = blt_cd_update(master, env, pwd);
 	free(pwd);
-	return (flag);
+	return (ret);
 }

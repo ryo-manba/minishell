@@ -6,15 +6,15 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/13 22:37:21 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 11:04:07 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/30 20:26:55 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
 
-static int	exec_get_env_size(t_shellvar *var)
+static size_t	exec_get_env_size(t_shellvar *var)
 {
-	int			i;
+	size_t		i;
 	t_shellvar	*tmp;
 
 	i = 0;
@@ -50,9 +50,9 @@ static char	*exec_restore(t_shellvar *var)
 
 char	**exec_restore_env(t_shellvar *var)
 {
-	int			sz;
+	size_t		i;
+	size_t		sz;
 	char		**env;
-	int			i;
 	t_shellvar	*tmp;
 
 	i = 0;

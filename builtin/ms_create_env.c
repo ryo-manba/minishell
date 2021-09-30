@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_create_env.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 14:53:27 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/24 21:00:13 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/30 20:12:13 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ms_create_env(t_master *master)
 {
 	extern char	**environ;
 	t_shellvar	*append_var;
-	int			i;
+	size_t		i;
 
 	i = 0;
 	while (environ[i])
@@ -82,7 +82,7 @@ int	ms_create_env(t_master *master)
 
 int	ms_create_key_value(char *env, char *key_value[2])
 {
-	int	equal_idx;
+	ssize_t	equal_idx;
 
 	equal_idx = ft_strchr_i(env, '=');
 	key_value[KEY] = ft_substr(env, 0, equal_idx);
