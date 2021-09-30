@@ -14,3 +14,4 @@ test/cases/redir.sh: line 13: 10240: Bad file descriptor
 rm: tmpfile3: No such file or directory
 test/cases/redir.sh: line 14: file descriptor out of range: Bad file descriptor
 rm: tmpfile3: No such file or directory
+cat: stdout: Bad file descriptor

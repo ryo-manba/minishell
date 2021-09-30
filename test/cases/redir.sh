@@ -12,3 +12,4 @@ aaa > tmpfile1 | bbb > tmpfile2 | ccc > tmpfile3 | file tmpfile1 tmpfile2 tmpfil
 echo hello 1>tmpfile1 2>tmpfile2 | cat tmpfile1 | rm tmpfile1 tmpfile2
 echo hello 1>tmpfile1 10240>tmpfile2  2>tmpfile3 | file tmpfile1 tmpfile2 tmpfile3 | rm tmpfile1 tmpfile2 tmpfile3
 echo hello 1>tmpfile1 2147483648>tmpfile2 > tmpfile3 | cat tmpfile1 | rm tmpfile1 tmpfile2 tmpfile3
+echo hello | cat 1< test/runner.sh

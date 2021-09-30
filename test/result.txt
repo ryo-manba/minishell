@@ -1,30 +1,32 @@
-[ OK ] Thu, 30 Sep 2021 23:58:25 +0900	tokenize_basic
-[ OK ] Thu, 30 Sep 2021 23:58:25 +0900	wildcard
-[ OK ] Thu, 30 Sep 2021 23:58:25 +0900	unclosed_quote
-[ OK ] Thu, 30 Sep 2021 23:58:25 +0900	subshell_basic
-[ OK ] Thu, 30 Sep 2021 23:58:25 +0900	subshell_pipe
-[ OK ] Thu, 30 Sep 2021 23:58:26 +0900	subshell_fork
-[ OK ] Thu, 30 Sep 2021 23:58:26 +0900	subshell_export
-[ OK ] Thu, 30 Sep 2021 23:58:26 +0900	subshell_and_or
-[ OK ] Thu, 30 Sep 2021 23:58:27 +0900	subshell_redir
-[ OK ] Thu, 30 Sep 2021 23:58:27 +0900	subshell_single_unit.sh
-[ OK ] Thu, 30 Sep 2021 23:58:27 +0900	semicolon
-[ OK ] Thu, 30 Sep 2021 23:58:27 +0900	andor
-[ OK ] Thu, 30 Sep 2021 23:58:31 +0900	expander
-[ OK ] Thu, 30 Sep 2021 23:58:31 +0900	ln_in_error_file
-[ OK ] Thu, 30 Sep 2021 23:58:31 +0900	ln_in_error_stdin
-[ OK ] Thu, 30 Sep 2021 23:58:31 +0900	ln_in_error_c
-[ OK ] Thu, 30 Sep 2021 23:58:31 +0900	dollar_question
-[ OK ] Thu, 30 Sep 2021 23:58:32 +0900	exit_arg
-[ OK ] Thu, 30 Sep 2021 23:58:32 +0900	redir
-[ OK ] Thu, 30 Sep 2021 23:58:32 +0900	get_path
-[ OK ] Thu, 30 Sep 2021 23:58:32 +0900	echo
-[ OK ] Thu, 30 Sep 2021 23:58:33 +0900	pipe
-[ OK ] Thu, 30 Sep 2021 23:58:33 +0900	pwd
-[ OK ] Thu, 30 Sep 2021 23:58:34 +0900	export
-[ OK ] Thu, 30 Sep 2021 23:58:34 +0900	cd
-[ OK ] Thu, 30 Sep 2021 23:58:35 +0900	unset
-[ OK ] Thu, 30 Sep 2021 23:58:35 +0900	env
-[ OK ] Thu, 30 Sep 2021 23:58:43 +0900	extreme
-[FAIL] Thu, 30 Sep 2021 23:58:43 +0900	fail_expander
-[FAIL] Thu, 30 Sep 2021 23:58:43 +0900	fail_exit
+[ OK ] Fri, 01 Oct 2021 01:25:20 +0900	tokenize_basic
+[ OK ] Fri, 01 Oct 2021 01:25:20 +0900	wildcard
+[ OK ] Fri, 01 Oct 2021 01:25:20 +0900	unclosed_quote
+[ OK ] Fri, 01 Oct 2021 01:25:21 +0900	subshell_basic
+[ OK ] Fri, 01 Oct 2021 01:25:21 +0900	subshell_pipe
+[ OK ] Fri, 01 Oct 2021 01:25:21 +0900	subshell_fork
+[ OK ] Fri, 01 Oct 2021 01:25:21 +0900	subshell_export
+[ OK ] Fri, 01 Oct 2021 01:25:22 +0900	subshell_and_or
+[ OK ] Fri, 01 Oct 2021 01:25:23 +0900	subshell_redir
+[ OK ] Fri, 01 Oct 2021 01:25:23 +0900	subshell_single_unit.sh
+[ OK ] Fri, 01 Oct 2021 01:25:23 +0900	semicolon
+[ OK ] Fri, 01 Oct 2021 01:25:23 +0900	andor
+[ OK ] Fri, 01 Oct 2021 01:25:26 +0900	expander
+[ OK ] Fri, 01 Oct 2021 01:25:26 +0900	ln_in_error_file
+[ OK ] Fri, 01 Oct 2021 01:25:26 +0900	ln_in_error_stdin
+[ OK ] Fri, 01 Oct 2021 01:25:27 +0900	ln_in_error_c
+[ OK ] Fri, 01 Oct 2021 01:25:27 +0900	dollar_question
+[ OK ] Fri, 01 Oct 2021 01:25:27 +0900	exit_arg
+[ OK ] Fri, 01 Oct 2021 01:25:27 +0900	redir
+[FAIL] Fri, 01 Oct 2021 01:25:27 +0900	redir_basic
+[FAIL] Fri, 01 Oct 2021 01:25:28 +0900	redir_basic_in
+[ OK ] Fri, 01 Oct 2021 01:25:28 +0900	get_path
+[ OK ] Fri, 01 Oct 2021 01:25:28 +0900	echo
+[ OK ] Fri, 01 Oct 2021 01:25:29 +0900	pipe
+[ OK ] Fri, 01 Oct 2021 01:25:29 +0900	pwd
+[ OK ] Fri, 01 Oct 2021 01:25:29 +0900	export
+[ OK ] Fri, 01 Oct 2021 01:25:29 +0900	cd
+[ OK ] Fri, 01 Oct 2021 01:25:30 +0900	unset
+[ OK ] Fri, 01 Oct 2021 01:25:30 +0900	env
+[ OK ] Fri, 01 Oct 2021 01:25:36 +0900	extreme
+[FAIL] Fri, 01 Oct 2021 01:25:36 +0900	fail_expander
+[FAIL] Fri, 01 Oct 2021 01:25:36 +0900	fail_exit
