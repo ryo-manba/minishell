@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:52:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 10:46:34 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/30 20:14:38 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static void	blt_export_print_error(t_master *master, char *token)
 }
 
 // Check the export key follows the format
-static int	blt_check_export_key(char *token, int32_t equal_idx)
+static int	blt_check_export_key(char *token, ssize_t equal_idx)
 {
-	int32_t	i;
+	ssize_t	i;
 
 	i = 0;
 	if (equal_idx == 0)
@@ -46,7 +46,7 @@ static int	blt_check_export_key(char *token, int32_t equal_idx)
 }
 
 static int	blt_separate_key_value(
-		int32_t equal_idx, char *token, char *key_value[2])
+		ssize_t equal_idx, char *token, char *key_value[2])
 {
 	if (equal_idx != -1 && token[equal_idx - 1] == '+')
 		key_value[KEY] = ft_substr(token, 0, equal_idx - 1);
@@ -71,7 +71,7 @@ static int	blt_separate_key_value(
 int	blt_check_and_separate_env(
 		t_master *master, char *token, char *key_value[2])
 {
-	int32_t	equal_idx;
+	ssize_t	equal_idx;
 
 	equal_idx = ft_strchr_i(token, '=');
 	if (blt_check_export_key(token, equal_idx) == MS_BLT_FAIL)

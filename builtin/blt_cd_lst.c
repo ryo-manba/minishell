@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 12:26:20 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 10:28:18 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/30 19:59:48 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ int	blt_malloc_failed_lstclear(t_list **lst)
 	return (MS_BLT_FAIL);
 }
 
-static int	blt_create_lst_loop(t_list **lst, char *s, int idx)
+static int	blt_create_lst_loop(t_list **lst, char *s, size_t idx)
 {
-	int		len;
-	int		start;
+	size_t	len;
+	size_t	start;
 	char	*dir;
 
 	while (s[idx])
@@ -58,7 +58,7 @@ static int	blt_create_lst_loop(t_list **lst, char *s, int idx)
 
 t_list	*blt_cd_create_list(char *s, int is_absolute)
 {
-	int		i;
+	size_t	i;
 	t_list	*lst;
 
 	lst = (t_list *)ft_calloc(1, sizeof(t_list));

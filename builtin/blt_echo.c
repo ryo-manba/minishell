@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 14:53:20 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 10:35:11 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/30 20:05:21 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	blt_echo_print_error(t_master *master, char *message)
 
 static int	blt_check_option(char *token)
 {
-	int	i;
+	size_t	i;
 
 	i = 1;
 	if (ft_strlen(token) >= 2 && ft_strncmp(token, "-n", 2) == 0)

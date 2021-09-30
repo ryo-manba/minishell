@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 12:29:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 10:45:46 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/30 20:02:00 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	blt_pre_absolute_path(t_list **pwd_lst, t_list **arg_lst)
 	}
 }
 
-int	blt_pre_absolute_lst(t_list **lst, char *s)
+size_t	blt_pre_absolute_lst(t_list **lst, char *s)
 {
 	size_t	i;
 

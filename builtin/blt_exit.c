@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 17:48:50 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 10:37:09 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/30 20:10:19 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ static int	blt_is_args_correct(char *args)
 
 static int	blt_check_long_overflow(char *ex_status)
 {
-	int			i;
 	int			sign;
+	size_t		i;
 	uint64_t	unum;
 
 	i = 0;
