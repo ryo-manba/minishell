@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_redir_heredoc.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/29 22:58:59 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/30 21:31:49 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static int	ms_heredoc_parent(t_redir *rd, int pipefd[2])
 	wait(&status);
 	if (WIFSIGNALED(status) && (WTERMSIG(status) == SIGINT))
 	{
+		if (close(pipefd[0]) == -1)
+			ms_perror("close");
 		ft_putchar_fd('\n', STDOUT_FILENO);
 		g_ex_states = 1;
 		return (1);

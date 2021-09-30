@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/14 17:07:08 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/28 23:05:36 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/09/30 21:24:07 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void	mf_loop(t_master *master)
 		safe_star_free((void **)&line);
 		if (!ps.failed && ps.pipeline)
 			mf_execute(master, ps.pipeline);
+		ms_close_heredoc_fd(ps.pipeline);
 		pa_destroy_pipeline(ps.pipeline);
 		ps.pipeline = NULL;
 		master->line_num += 1;
