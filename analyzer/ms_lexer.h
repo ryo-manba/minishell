@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:39:11 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/27 01:54:55 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/30 19:45:40 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ typedef struct s_wdlist
 {
 	struct s_wdlist	*next;
 	const char		*word;
-	int				i;
-	int				len;
+	size_t			i;
+	size_t			len;
 	int				concluded;
 	char			starting_chartype;
 	char			delimiter;
@@ -64,7 +64,7 @@ typedef struct s_lex_cursor
 	const char	*line;
 	char		under_quoted;
 	int			under_brace;
-	int			i;
+	size_t		i;
 	int			escaping;
 	int			failed;
 	int			error_printed;

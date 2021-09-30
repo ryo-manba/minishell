@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:26:24 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/27 09:28:50 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/30 19:49:10 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	lx_tail_is_an_operator(t_lex_cursor *cursor)
 {
 	const char	*strhead;
-	int			i;
+	ssize_t		i;
 	size_t		d;
 	t_op		*ops;
 
@@ -56,7 +56,7 @@ size_t	lx_cut_operator(t_lex_cursor *cursor)
 // returns a t_token_id for given t_wdlist(only for operator)
 t_token_id	pa_operator_token_id(t_parse_state *state, t_wdlist *word)
 {
-	int		i;
+	ssize_t	i;
 	t_op	*ops;
 
 	ops = state->master->lx_ops;
@@ -72,7 +72,7 @@ t_token_id	pa_operator_token_id(t_parse_state *state, t_wdlist *word)
 // returns a label string for given t_token_id(only for operator)
 const char	*pa_operator_label(t_master *master, t_token_id ti)
 {
-	int		i;
+	ssize_t	i;
 	t_op	*ops;
 
 	ops = master->lx_ops;
@@ -88,7 +88,7 @@ const char	*pa_operator_label(t_master *master, t_token_id ti)
 // returns a label string for given t_token_id
 const char	*pa_token_label(t_master *master, t_token_id ti)
 {
-	int		i;
+	ssize_t	i;
 	t_op	*ops;
 
 	ops = master->lx_all_ops;

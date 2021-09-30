@@ -91,15 +91,23 @@ function run_case_bash_c() {
 }
 
 #
-function run_case_bash_by_c() {
+function run_case_line_by_c() {
 	if [ "$given_case" != "" -a "$given_case" != $1 ]; then
 		return 0
 	fi
 	clear_evidence
 	# print_case $1
 	# set -x
-	bash ${CASE_DIR}$1.sh $MINISHELL > ${TEST_DIR}mine.txt 2>&1
-	bash ${CASE_DIR}$1.sh bash 2>&1 | sed s@^bash:@$MINISHELL:@ > ${TEST_DIR}ref.txt
+	(cat ${CASE_DIR}$1.sh | while read line
+	do
+	$MINISHELL -c "$line"
+	echo $?
+	done ) > ${TEST_DIR}mine.txt 2>&1
+	(cat ${CASE_DIR}$1.sh | while read line
+	do
+	bash -c "$line"
+	echo $?
+	done ) 2>&1 | sed s@^bash:@$MINISHELL:@ > ${TEST_DIR}ref.txt
 	compare_evidence
 	print_result $1
 	# { set +x; } 2>/dev/null
@@ -138,4 +146,4 @@ run_case_bash_file	unset
 run_case_bash_file	env
 run_case_bash_file	extreme
 run_case_bash_file	fail_expander
-run_case_bash_by_c	fail_exit
+run_case_line_by_c	fail_exit

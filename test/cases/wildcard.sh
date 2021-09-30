@@ -25,4 +25,12 @@ echo *"*"
 echo ."*"
 echo "."**
 echo ".."*
-
+export wildcard="*"
+echo $wildcard
+echo "$wildcard"
+echo '$wildcard'
+echo "'$wildcard'"
+echo '"$wildcard"'
+echo $wildcard.c
+echo .$wildcard
+echo ${wildcard}c

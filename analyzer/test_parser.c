@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/10 20:06:13 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/25 01:17:21 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/30 20:26:38 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	print_words(t_wdlist *words)
 {
 	char	*lex_type;
 	char	*temp_s;
-	int		temp_i;
+	size_t	temp_i;
 
 	while (words)
 	{
@@ -121,7 +121,8 @@ void	print_words(t_wdlist *words)
 			temp_s = "\\n";
 			temp_i = 2;
 		}
-		printf("<%s{%.*s}'%d'> ", lex_type, temp_i, temp_s, words->delimiter);
+		printf("<%s{%.*s}'%d'> ", lex_type,
+			(int)temp_i, temp_s, words->delimiter);
 		words = words->next;
 	}
 	printf("\n");
