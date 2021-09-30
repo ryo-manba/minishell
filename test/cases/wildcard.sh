@@ -12,3 +12,6 @@ echo a*
 echo *
 echo ***
 chmod a+r .
+echo "*"
+echo '*'
+echo * *

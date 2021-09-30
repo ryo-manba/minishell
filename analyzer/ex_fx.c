@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/05 05:54:52 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/20 17:28:24 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/30 21:32:10 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,44 @@ static int	ex_fx_extdup(t_ex_state *state, t_ex_unit_cursor *cursor,
 	return (!!state->failed);
 }
 
-static t_ex_token	*ex_fx_terminate(t_ex_state *state,
+size_t	ex_fx_exlist_len(t_ex_token *ext)
+{
+	size_t		n;
+	t_ex_token	*temp;
+
+	n = 0;
+	temp = ext;
+	while (temp && temp->token)
+	{
+		n += ft_strlen(temp->token);
+		temp = temp->right;
+	}
+	return (n);
+}
+
+int	ex_fx_list_is_for_fx(t_ex_token *ext)
+{
+	t_ex_token	*temp;
+
+	temp = ext;
+	while (temp && temp->token)
+	{
+		if (temp->token_id != XI_DQUOTED && temp->token_id != XI_SQUOTED)
+		{
+			if (!!ft_strchr((char *)temp->token, '*'))
+				return (1);
+		}
+		temp = temp->right;
+	}
+	return (0);
+}
+
+t_ex_token	*ex_fx_terminate(t_ex_state *state,
 	t_ex_unit_cursor *cursor, t_ex_token *temp)
 {
 	char	*joined;
-	size_t	m;
+	size_t	matched_count;
+	size_t	mm;
 
 	if (!temp)
 	{
@@ -62,15 +95,17 @@ static t_ex_token	*ex_fx_terminate(t_ex_state *state,
 	joined = ex_strcat_exlist(temp, 0);
 	if (!joined)
 		ex_mark_failed(state, 1, "[FX] join ex-fx pattern");
-	m = 0;
-	if (!state->failed && ft_strchr(joined, '*'))
+	mm = ex_fx_exlist_len(temp);
+	matched_count = 0;
+	if (!state->failed && ex_fx_list_is_for_fx(temp))
 	{
 		cursor->running = temp->token_id;
 		cursor->pa_token_id = temp->pa_token_id;
-		m = ex_fx_expand(state, cursor, joined, ft_strlen(joined));
+		matched_count = ex_fx_expand_lst(state, cursor, temp, mm);
+		// matched_count = ex_fx_expand(state, cursor, joined, ft_strlen(joined));
 	}
 	free(joined);
-	if (!state->failed && m == 0)
+	if (!state->failed && matched_count == 0)
 		ex_fx_extdup(state, cursor, temp);
 	return (cursor->p.tail);
 }

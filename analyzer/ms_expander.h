@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 01:38:23 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/29 23:17:16 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/09/30 22:03:59 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,14 @@ typedef struct s_ex_cursor
 
 typedef struct s_ex_fx_dpcursor
 {
-	t_ucp			dp[2];
-	char			*pattern;
-	size_t			n;
-	int				match_hidden;
-	size_t			mathched;
+	t_ucp		dp[2];
+	char		*pattern;
+	size_t		n;
+	int			match_hidden;
+	size_t		mathched;
+	t_ex_token	*pattern_list;
+	t_ex_token	*pattern_head;
+	size_t		i;
 }	t_ex_fx_dpcursor;
 
 t_redir		*ms_expand_a_redir(t_ex_state *state, t_redir *redir);
@@ -138,6 +141,8 @@ int			ex_push_back_divider_if_needed(t_ex_state *state,
 t_ex_token	*ex_fx_dir_ents(t_ex_state *state);
 size_t		ex_fx_expand(t_ex_state *state, t_ex_unit_cursor *cursor,
 				char *pattern, size_t n);
+size_t		ex_fx_expand_lst(t_ex_state *state, t_ex_unit_cursor *cursor,
+				t_ex_token *pattern, size_t n);
 t_ex_token	*ex_clone_and_push_back_token(t_ex_state *state,
 				t_ex_unit_cursor *csr, t_ex_token *token);
 
