@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:20:36 by yokawada          #+#    #+#             */
-/*   Updated: 2021/10/01 18:45:43 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/10/01 21:03:25 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_stree	*pa_add_stree(t_parse_state *state, t_stree *stree)
 	{
 		if (!pa_add_new_clause(state))
 		{
-			free(stree);
+			pa_destroy_stree(stree);
 			return (NULL);
 		}
 	}
