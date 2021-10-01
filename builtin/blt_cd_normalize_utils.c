@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 12:31:03 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 10:32:31 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/10/01 17:43:16 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ char	*blt_cd_restore_path(t_list *pwd_lst)
 		return (NULL);
 	}
 	if (pwd_lst->next == NULL)
+	{
+		ft_lstclear(&pwd_lst, free);
 		return (slash);
+	}
 	free(slash);
 	return (blt_slash_join_path(pwd_lst));
 }

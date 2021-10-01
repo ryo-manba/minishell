@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 12:26:20 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/30 19:59:48 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/10/01 17:44:04 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ t_list	*blt_lst_init(t_list **del_lst)
 	t_list	*lst;
 
 	ft_lstclear(del_lst, free);
-	lst = (t_list *)ft_calloc(sizeof(t_list), 1);
+	if (*del_lst)
+		free(*del_lst);
+	lst = (t_list *)ft_calloc(1, sizeof(t_list));
 	return (lst);
 }
 
@@ -48,7 +50,8 @@ static int	blt_create_lst_loop(t_list **lst, char *s, size_t idx)
 			dir = ft_substr(s, start, len);
 			if (dir == NULL)
 				return (blt_malloc_failed_lstclear(lst));
-			ft_lstpush_back(lst, dir);
+			ft_lstpush_back(lst, ft_strdup(dir));
+			free(dir);
 		}
 		while (s[idx] == '/')
 			idx += 1;

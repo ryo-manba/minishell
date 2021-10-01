@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/23 12:29:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/30 20:02:00 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/10/01 17:41:46 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ char	*blt_cd_has_args(t_master *master, t_stree *tree)
 	t_list	*arg_lst;
 	int		is_absolute;
 
-	is_absolute = 0;
-	pwd_lst = blt_cd_create_list(master->pwd, 1);
+	is_absolute = 1;
+	pwd_lst = blt_cd_create_list(master->pwd, is_absolute);
 	if (pwd_lst == NULL)
 		return (NULL);
-	if (tree->token[0] == '/')
-		is_absolute = 1;
+	if (tree->token[0] != '/')
+		is_absolute = 0;
 	arg_lst = blt_cd_create_list(tree->token, is_absolute);
 	if (arg_lst == NULL)
 	{

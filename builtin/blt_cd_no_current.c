@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/18 15:28:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/30 20:00:43 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/10/01 17:17:33 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static char	*blt_check_slash_join(char *env_pwd, char *arg)
 			return (NULL);
 		}
 		pwd = ft_strjoin(tmp, arg);
+		free(tmp);
 	}
 	else
 		pwd = ft_strjoin(env_pwd, arg);
