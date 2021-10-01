@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:22:13 by yokawada          #+#    #+#             */
-/*   Updated: 2021/10/01 18:34:24 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/10/01 20:25:48 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@ static int	pa_unit_io_number(t_parse_state *state, t_wdlist *word)
 	if (!st)
 		return (pa_generic_error(state, word, "bad alloc"));
 	if (pa_redirection(state, next_word, st))
+	{
+		free(st);
 		return (pa_generic_error(state, next_word, "bad alloc"));
+	}
 	return (MS_AZ_SUCC);
 }
 
@@ -45,11 +48,11 @@ static int	pa_unit_token(t_parse_state *state, t_wdlist *word)
 {
 	t_stree	*st;
 
+	if (state->cursor.stree && state->cursor.stree->token_id == TI_SUBSHELL)
+		return (pa_syntax_error(state, word, "NEXT_TO_SUBSHELL"));
 	st = pa_make_stree(word, 0);
 	if (!st)
 		return (pa_generic_error(state, word, "bad alloc"));
-	if (state->cursor.stree && state->cursor.stree->token_id == TI_SUBSHELL)
-		return (pa_syntax_error(state, word, "NEXT_TO_SUBSHELL"));
 	if (lx_str_is_for_assignment_word(word->word, word->len))
 		st->token_id = TI_ASSIGNMENT_WORD;
 	if (!pa_add_stree(state, st))
