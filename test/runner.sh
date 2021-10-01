@@ -138,7 +138,6 @@ run_case			redir
 run_case_bash_file	redir_basic
 run_case_bash_file	redir_basic_in
 run_case_bash_file	redir_io_number
-run_case_bash_file	redir_extreme
 run_case_bash_file	get_path
 run_case_bash_file	echo
 run_case_bash_c		bad_characters
@@ -152,3 +151,4 @@ run_case_bash_file	env
 run_case_bash_file	extreme
 run_case_bash_file	fail_expander
 run_case_line_by_c	fail_exit
+run_case_bash_file	fail_redir_extreme
