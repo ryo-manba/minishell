@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:22:13 by yokawada          #+#    #+#             */
-/*   Updated: 2021/10/01 20:25:48 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/10/01 20:50:57 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ static int	pa_unit_io_number(t_parse_state *state, t_wdlist *word)
 	if (!st)
 		return (pa_generic_error(state, word, "bad alloc"));
 	if (pa_redirection(state, next_word, st))
-	{
-		free(st);
 		return (pa_generic_error(state, next_word, "bad alloc"));
-	}
 	return (MS_AZ_SUCC);
 }
 
