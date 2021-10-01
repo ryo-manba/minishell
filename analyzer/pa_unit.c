@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:22:13 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/25 01:11:05 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/10/01 18:34:24 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ static int	pa_unit_io_number(t_parse_state *state, t_wdlist *word)
 	t_stree		*st;
 	t_wdlist	*next_word;
 
-	st = pa_make_stree(word, 0);
-	if (!st)
-		return (pa_generic_error(state, word, "bad alloc"));
 	next_word = pa_shift_lx_token(state);
 	if (!next_word)
 		return (pa_syntax_error(state, word, "SOLE_IO_NUMBER"));
+	st = pa_make_stree(word, 0);
+	if (!st)
+		return (pa_generic_error(state, word, "bad alloc"));
 	if (pa_redirection(state, next_word, st))
 		return (pa_generic_error(state, next_word, "bad alloc"));
 	return (MS_AZ_SUCC);

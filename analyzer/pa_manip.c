@@ -6,7 +6,7 @@
 /*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/06 00:20:36 by yokawada          #+#    #+#             */
-/*   Updated: 2021/09/07 11:07:25 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/10/01 18:45:43 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,13 @@ t_clause	*pa_add_new_clause(t_parse_state *state)
 t_redir	*pa_add_redir(t_parse_state *state, t_redir *redir)
 {
 	if (!state->cursor.clause)
+	{
 		if (!pa_add_new_clause(state))
+		{
+			pa_destroy_redir(redir);
 			return (NULL);
+		}
+	}
 	if (state->cursor.redir)
 		state->cursor.redir->next = redir;
 	else
