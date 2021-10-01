@@ -141,6 +141,7 @@ run_case_bash_file	redir_io_number
 run_case_bash_file	redir_extreme
 run_case_bash_file	get_path
 run_case_bash_file	echo
+run_case_bash_c		bad_characters
 run_case_bash_file	pipe
 run_case_bash_file	pwd
 run_case_bash_file	export
