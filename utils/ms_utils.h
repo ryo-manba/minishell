@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/10/01 09:35:57 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/10/01 15:10:07 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int		ms_redir_is_heredoc(t_redir *redir);
 int		ms_heredoc(t_pipeline *pl, t_ex_state *es);
 
 /* ms_redir */
-int		ms_redirect(t_ex_state *es, t_redir *redir);
+int		ms_redirect(t_redir *redir);
 int		ms_open_at(int fd, const char *path, int oflag, int mode);
 
 #endif
