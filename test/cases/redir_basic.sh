@@ -30,3 +30,5 @@ echo hello14 000000000000000000000000001> tmpfile1
 cat -e tmpfile1
 echo hello15 000000000000000000000000000> tmpfile1
 cat -e tmpfile1
+echo hello16 123a456> tmpfile1
+cat -e tmpfile1

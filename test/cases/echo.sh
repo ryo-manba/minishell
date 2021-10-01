@@ -29,3 +29,11 @@ echo -n $PWD $OLDPWD
 echo
 echo -n "$PWD $OLDPWD"
 echo
+echo "a' " bc    "   d ef 1 > "'$ $"$$$$$'""
+echo hello -n hello
+export ECHO_OPT="-n"
+echo $ECHO_OPT
+echo "$ECHO_OPT"
+echo $ECHO_OPT hello
+echo hello $ECHO_OPT world
+echo hello world $ECHO_OPT

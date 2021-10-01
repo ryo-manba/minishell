@@ -28,6 +28,14 @@ $TEST 300 300>tmpfile
 cat tmpfile
 $TEST 1000 1000>tmpfile
 cat tmpfile
+$TEST 1 123a456>tmpfile
+cat tmpfile
+$TEST 1 123 a456>tmpfile
+cat tmpfile
+$TEST 1-123>tmpfile
+cat tmpfile
+$TEST 1 -123>tmpfile
+cat tmpfile
 $TEST 10000 10000>tmpfile
 cat tmpfile
 rm tmpfile
