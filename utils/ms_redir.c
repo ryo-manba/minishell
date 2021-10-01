@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 11:40:52 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/10/01 11:53:48 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	ms_open_at(int fd, const char *path, int oflag, int mode)
 		open_fd = open(path, oflag, mode);
 	if (open_fd < 0)
 		return (1);
+	if (open_fd == fd)
+		return (0);
 	if (dup2(open_fd, fd) == -1)
 		return (1);
 	if (close(open_fd) == -1)

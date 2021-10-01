@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/29 23:06:50 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/10/01 01:16:41 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	exec_pipe_child(
 		exit(0);
 	if (!expanded && es->failed)
 		exit(1);
-	g_ex_states = exec_expand_redirect(es->master, clause);
+	g_ex_states = exec_expand_redirect(es->master, clause, NULL);
 	if (g_ex_states != MS_BLT_SUCC || !expanded)
 		exit(g_ex_states);
 	if (clause->stree && clause->stree->subshell)

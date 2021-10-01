@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/30 21:22:24 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/10/01 09:35:57 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	exec_print_prologue(t_master *master);
 
 /* exec_expand_redir */
 int		exec_expand_redirect(
-			t_master *master, t_clause *clause);
+			t_master *master, t_clause *clause, int backup_fd[3]);
 
 /* exec_backup_fd */
 int		exec_create_backup_fd(int backup_fd[3]);

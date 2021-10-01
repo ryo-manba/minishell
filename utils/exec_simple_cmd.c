@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/30 21:49:05 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/10/01 12:00:35 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	exec_simple_redir(t_master *master,
 
 	if (clause->redir)
 	{
-		rv = exec_expand_redirect(master, clause);
+		rv = exec_expand_redirect(master, clause, backup_fd);
 		if (rv)
 		{
 			exec_duplicate_backup_fd(backup_fd);
@@ -77,6 +77,27 @@ static int	exec_simple_redir(t_master *master,
 		}
 	}
 	return (MS_EXEC_SUCC);
+}
+
+static int	exec_close_fd(t_redir *rd)
+{
+	t_redir	*tmp;
+	int		io_number;
+
+	if (rd == NULL)
+		return (1);
+	tmp = rd;
+	while (tmp)
+	{
+		if (tmp->operand_left)
+		{
+			io_number = ft_atoi(tmp->operand_left->token);
+			if (!(0 <= io_number && io_number <= 2))
+				close(io_number);
+		}
+		tmp = tmp->next;
+	}
+	return (1);
 }
 
 // If built-in, run as is.
@@ -106,7 +127,7 @@ int	exec_simple_command(t_clause *clause, t_master *master, t_ex_state *es)
 		g_ex_states = ms_exec_builtin(expanded, es->master);
 	else
 		g_ex_states = exec_ex_cmd(es->master, master->var, expanded);
-	if (exec_duplicate_backup_fd(backup_fd) == 1)
+	if (exec_close_fd(clause->redir) && exec_duplicate_backup_fd(backup_fd))
 		return (exec_out(MS_EXEC_FAIL, expanded));
 	return (exec_out(g_ex_states, expanded));
 }
