@@ -3,14 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:46 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/27 11:08:13 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/10/01 17:33:08 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_utils.h"
+
+int	exec_simple_for_subshell(t_clause *clause, t_stree *expanded)
+{
+	if (clause->stree && clause->stree->subshell)
+	{
+		pa_destroy_stree(expanded);
+		return (1);
+	}
+	return (0);
+}
 
 void	exec_set_signal_wait(pid_t pid)
 {

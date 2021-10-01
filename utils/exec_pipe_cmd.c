@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:08:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/10/01 01:16:41 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/10/01 17:06:47 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static void	exec_pipe_child(
 		exit(g_ex_states);
 	if (clause->stree && clause->stree->subshell)
 	{
+		pa_destroy_stree(expanded);
 		exec_subshell(clause, master, es, NULL);
 		exit(g_ex_states);
 	}

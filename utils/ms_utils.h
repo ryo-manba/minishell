@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ms_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/08 19:09:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/10/01 15:10:07 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/10/01 17:33:20 by yokawada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int		exec_simple_command(
 			t_clause *clause, t_master *master, t_ex_state *state);
 
 /* exec_utils */
+int		exec_simple_for_subshell(t_clause *clause, t_stree *expanded);
 void	exec_set_signal_wait(pid_t pid);
 int		exec_out(int rv, t_stree *expanded);
 

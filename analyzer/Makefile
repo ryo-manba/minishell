@@ -33,6 +33,7 @@ endif
 OBJS		:= $(SRCS:.c=.o)
 LIBFT_DIR	:= ../libft
 LIBFT		:= $(LIBFT_DIR)/libft.a
+BLTIN_DIR	:= ../builtin
 NORM		:= python3 -m norminette
 NAME		:= libmsa.a
 
@@ -66,7 +67,7 @@ fclean		: clean
 
 .PHONY		: re
 re			: fclean all
-	$(MAKE) -C $(BLTIN_DIR) fclean
+	$(MAKE) -C $(BLTIN_DIR) re
 
 .PHONY		: norm
 norm		:
