@@ -6,7 +6,7 @@
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/24 20:24:37 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/10/01 11:51:21 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/10/01 15:11:34 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ static int	ms_is_duplicate_backup(int backup_fd[3], char *fd)
 }
 
 static int	exec_redirect_and_check(t_master *master,
-		t_redir *expanded_rd, t_ex_state *es, int destroy_needed)
+		t_redir *expanded_rd, int destroy_needed)
 {
-	if (ms_redirect(es, expanded_rd) == MS_EXEC_FAIL)
+	if (ms_redirect(expanded_rd) == MS_EXEC_FAIL)
 	{
 		ms_check_fd_print_error(expanded_rd, master);
 		if (destroy_needed)
@@ -76,7 +76,7 @@ static int	exec_expand_redir_loop(
 		if (backup_fd && expanded_rd->operand_left && \
 			ms_is_duplicate_backup(backup_fd, expanded_rd->operand_left->token))
 			return (MS_EXEC_FAIL);
-		if (exec_redirect_and_check(master, expanded_rd, es, destroy_needed))
+		if (exec_redirect_and_check(master, expanded_rd, destroy_needed))
 			return (MS_EXEC_FAIL);
 		rd = rd->next;
 	}
