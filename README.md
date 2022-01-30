@@ -29,6 +29,7 @@ A small shell like bash.
 - Pipe
 - &&, ||, ;
 - subshell
+- wildcard(*)
 
 Implement a series of builtins: 
 - cd
